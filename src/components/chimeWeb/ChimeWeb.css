@@ -2,7 +2,7 @@
   --section-max-width: 700px;
   --color--primary: #fff;
   --color--secondary: #e7ecf0;
-  --color--tertiary: #2d2d2d;
+  --color--tertiary: transparent;
   --color-text-base: #fff;
   --color-text-hint: #e7ecf0;
   --color-text-link: #8bb0ff;
@@ -183,7 +183,7 @@ input:disabled {
 .el-player {
   width: 100%;
   height: 100%;
-  position: absolute;
+  position: fixed;
   top: 0;
   background: #000;
 }
@@ -191,7 +191,7 @@ input:disabled {
 /* Controls */
 .controls {
   display: flex;
-  justify-content: center;
+  justify-content: left;
   padding: 2rem;
 }
 
@@ -293,7 +293,7 @@ a.btn {
   right: 0;
   bottom: 0;
   z-index: 1;
-  transition: background 0.1s ease-in-out;
+  /* transition: background 0.1s ease-in-out; */
 }
 
 .player-controls__inner {
@@ -308,7 +308,7 @@ a.btn {
 }
 
 .overlay--hover #player-controls {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0);
 }
 
 .overlay--hover .player-btn {

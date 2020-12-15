@@ -1308,6 +1308,7 @@ input.rounded {
 .chat-line .username {
   font-weight: 800;
   padding-right: 0.1rem;
+  color: #fa7751;
 }
 
 .chat-line .username::after {
@@ -1320,6 +1321,7 @@ input.rounded {
   left: 0;
   right: 0;
   padding: 15px 0;
+  /* background: var(--color-bg-chat); */
   background: var(--color-bg-chat);
 }
 
