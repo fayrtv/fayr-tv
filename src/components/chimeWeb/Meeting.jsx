@@ -155,6 +155,11 @@ class Meeting extends Component {
       <div className="app-grid" onClick={this.handleClick}>
         <div className="main-stage">
           <div className="cams pos-relative">
+          <VideoPlayer
+            setMetadataId={this.setMetadataId}
+            videoStream={this.playbackURL}
+          />
+          </div>
           <LocalVideo
             chime={this.props.chime}
             joinInfo={this.joinInfo}
@@ -162,11 +167,6 @@ class Meeting extends Component {
           <RemoteVideoGroup
             chime={this.props.chime}
             joinInfo={this.joinInfo}
-          />
-          </div>
-          <VideoPlayer
-            setMetadataId={this.setMetadataId}
-            videoStream={this.playbackURL}
           />
           <Controls
             chime={this.props.chime}

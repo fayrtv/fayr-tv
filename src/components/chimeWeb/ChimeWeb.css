@@ -108,7 +108,7 @@ input:disabled {
   display: flex;
   flex-wrap: nowrap;
   justify-content: center;
-  padding: 1rem 0;
+  padding: 3rem 0;
   overflow-x: auto;
   background: transparent;
 }
@@ -135,9 +135,14 @@ input:disabled {
 
 .cam__preview .video-container,
 .cam__preview .attendee_cam {
-  width: 100%;
-  height: 100%;
+  /* width: 75%;
+  height: 75%;
+  */
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
   object-fit: cover;
+  position: fixed;
 }
 
 .video-container {
@@ -183,6 +188,7 @@ input:disabled {
 .el-player {
   width: 100%;
   height: 100%;
+  /* position: absolute; */
   position: fixed;
   top: 0;
   background: #000;

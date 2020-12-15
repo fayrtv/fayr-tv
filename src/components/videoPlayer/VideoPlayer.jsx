@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import * as config from '../../config';
 
 // Styles
-
 class VideoPlayer extends Component {
 
   constructor() {
@@ -24,9 +23,6 @@ class VideoPlayer extends Component {
   }
 
   mediaPlayerScriptLoaded = () => {
-    // This shows how to include the Amazon IVS Player with a script tag from our CDN
-    // If self hosting, you may not be able to use the create() method since it requires
-    // that file names do not change and are all hosted from the same directory.
 
     const MediaPlayerPackage = window.IVSPlayer;
 
