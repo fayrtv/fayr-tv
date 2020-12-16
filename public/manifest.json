@@ -1,6 +1,6 @@
 {
-  "short_name": "IVS-Chime Web Demo",
-  "name": "A demo web application intended as an educational tool for demonstrating how Amazon IVS, in conjunction with other AWS services",
+  "short_name": "FAYR TV Web App",
+  "name": "The MVP of FAYR TV build in React and deployed on AWS using SAM and IVS",
   "icons": [
     {
       "src": "favicon.ico",

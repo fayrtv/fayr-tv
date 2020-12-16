@@ -1,23 +1,25 @@
-# Amazon IVS + Chime Demo
+# FAYR TV: AWS SAM - AWS IVS - AWS Chime - AWS Lambda
 
-## Prerequisites 
+## Prerequisites
 
-* Access to AWS Account with permission to create IAM role, DynamoDB, Lambda, API Gateway, S3, and Cloudformation.
-* [AWS CLI Version 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
-* [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html)
+- Access to AWS Account with permission to create IAM role, DynamoDB, Lambda, API Gateway, S3, and Cloudformation.
+- [AWS CLI Version 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
+- [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html)
 
 ## Deploy from your local machine
 
 Before you start, run below command to make sure you're in the correct AWS account and configured.
+
 ```
 aws configure
 ```
+
 For additional help on configuring, please see https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html
 
 ### 1. Create an S3 bucket
 
-* Replace `<my-bucket-name>` with your bucket name.
-* Replace `<my-region>` with your region name.
+- Replace `<my-bucket-name>` with your bucket name.
+- Replace `<my-region>` with your region name.
 
 ```
 aws s3api create-bucket --bucket <my-bucket-name> --region <my-region> \
@@ -32,6 +34,7 @@ sam package \
 --output-template-file packaged.yaml \
 --s3-bucket <my-bucket-name>
 ```
+
 DO NOT run the output from above command, proceed to next step.
 
 ### 3. Deploy Cloudformation with SAM
@@ -44,12 +47,14 @@ sam deploy \
 --stack-name <my-stack-name> \
 --capabilities CAPABILITY_IAM
 ```
+
 On completion, copy the value of `ApiURL` and `WebSocketURI` as you will need it later for your client.
 
 Example of ApiURL: `https://xxxxxxxxxx.execute-api.us-west-2.amazonaws.com/Prod/`<br />
 Example of WebSocketURI: `wss://xxxxxxxxxx.execute-api.us-west-2.amazonaws.com/Prod`
 
 To retrieve Cloudformation stack outputs again, run below command:
+
 ```
 aws cloudformation describe-stacks \
 --stack-name <my-stack-name> --query 'Stacks[].Outputs'
@@ -63,6 +68,7 @@ Endpoint: `<ApiURL>join`<br />
 Method: POST<br />
 Content Type: JSON<br />
 Payload:
+
 ```
 {
     "title": "My-Room-Title",
@@ -71,8 +77,10 @@ Payload:
     "role": "host"
 }
 ```
+
 Response Code: 200<br />
 Response Body:
+
 ```
 {
   "JoinInfo": {
@@ -106,6 +114,7 @@ Endpoint: `<ApiURL>join`<br />
 Method: POST<br />
 Content Type: JSON<br />
 Payload:
+
 ```
 {
     "title": "My-Room-Title",
@@ -113,6 +122,7 @@ Payload:
     "role": "attendee"
 }
 ```
+
 Response Code: 200<br />
 Response Body: similar to above response
 
@@ -122,7 +132,8 @@ Endpoint: `<ApiURL>attendees?title=<My-Room-Title>`<br />
 Method: GET<br />
 Content Type: JSON<br />
 Response Code: 200<br />
-Response Body: 
+Response Body:
+
 ```
 [
     {
@@ -187,16 +198,19 @@ Follow these [detailed instructions](../web-ui) on how to get the UI running.
 ## Clean Up
 
 1. Delete Cloudformation stack:
+
 ```
 aws cloudformation delete-stack --stack-name <my-stack-name>
 ```
 
 3. Remove files in S3 bucket
+
 ```
 aws s3 rm s3://<my-bucket-name> --recursive
 ```
 
 2. Delete S3 bucket
+
 ```
 aws s3api delete-bucket --bucket <my-bucket-name> --region <my-region>
 ```
