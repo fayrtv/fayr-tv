@@ -154,13 +154,14 @@ input:disabled {
 
 .cam__meta {
   position: absolute;
-  bottom: 0.5rem;
+  /* top: 0.5rem; */
+  /* bottom: 0.5rem; */
   display: inline-flex;
   place-items: center;
   font-size: 1.2rem;
   font-weight: var(--font-weight-bold);
-  background: rgba(0, 0, 0, 0.8);
-  padding: 0.5rem 1rem;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.5rem 1.5rem;
   border-radius: var(--radius-small);
   z-index: 2;
   opacity: 1;
@@ -350,6 +351,7 @@ a.btn {
 
 .player-icon {
   fill: #fff;
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .player-btn--pause .player-icon--pause {

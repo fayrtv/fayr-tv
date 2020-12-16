@@ -1125,7 +1125,7 @@ textarea {
   resize: none;
   -webkit-appearance: none;
   padding: 1rem;
-  background: var(--color-bg-input);
+  background: var(--color-bg-input) transparent;
   border-radius: var(--radius-small);
 }
 

@@ -111,7 +111,7 @@ class VideoPlayer extends Component {
         if (btnMute.classList.contains("player-btn--mute")) {
           btnMute.classList.remove("player-btn--mute");
           btnMute.classList.add("player-btn--unmute");
-          player.setMuted(0);
+          player.setMuted(1);
         } else {
           btnMute.classList.remove("player-btn--unmute");
           btnMute.classList.add("player-btn--mute");
@@ -182,7 +182,7 @@ class VideoPlayer extends Component {
               </div>
             </div>
           </div>
-          <video id="video-player" className="el-player" ref={this.videoElement} playsInline muted></video>
+          <video id="video-player" className="el-player" ref={this.videoElement} playsInline unmuted></video>
         </div>
       </div>
     )
