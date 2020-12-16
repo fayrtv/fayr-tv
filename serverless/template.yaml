@@ -1,6 +1,6 @@
-AWSTemplateFormatVersion: '2010-09-09'
-Transform: 'AWS::Serverless-2016-10-31'
-Description: Amazon IVS and Chime Demo
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: "AWS::Serverless-2016-10-31"
+Description: FAYR TV AWS IVS Chime
 
 Globals:
   Function:
@@ -12,10 +12,19 @@ Globals:
         MEETINGS_TABLE_NAME: !Ref Meetings
         ATTENDEES_TABLE_NAME: !Ref Attendees
         CONNECTIONS_TABLE_NAME: !Ref ConnectionsTable
-        MESSAGING_WSS_URL: !Join ['', ['wss://', !Ref WebSocketApi, '.execute-api.', !Ref 'AWS::Region','.amazonaws.com/Prod']]
+        MESSAGING_WSS_URL:
+          !Join [
+            "",
+            [
+              "wss://",
+              !Ref WebSocketApi,
+              ".execute-api.",
+              !Ref "AWS::Region",
+              ".amazonaws.com/Prod",
+            ],
+          ]
 Resources:
-
-# Rest API
+  # Rest API
 
   ChimeMeetingsAccessPolicy:
     Type: AWS::IAM::Policy
@@ -26,16 +35,16 @@ Resources:
         Statement:
           - Effect: Allow
             Action:
-              - 'chime:CreateMeeting'
-              - 'chime:DeleteMeeting'
-              - 'chime:GetMeeting'
-              - 'chime:ListMeetings'
-              - 'chime:BatchCreateAttendee'
-              - 'chime:CreateAttendee'
-              - 'chime:DeleteAttendee'
-              - 'chime:GetAttendee'
-              - 'chime:ListAttendees'
-            Resource: '*'
+              - "chime:CreateMeeting"
+              - "chime:DeleteMeeting"
+              - "chime:GetMeeting"
+              - "chime:ListMeetings"
+              - "chime:BatchCreateAttendee"
+              - "chime:CreateAttendee"
+              - "chime:DeleteAttendee"
+              - "chime:GetAttendee"
+              - "chime:ListAttendees"
+            Resource: "*"
       Roles:
         - Ref: ChimeSdkJoinLambdaRole
         - Ref: ChimeSdkAttendeeLambdaRole
@@ -43,7 +52,7 @@ Resources:
         - Ref: ChimeSdkCreateMeetingLambdaRole
         - Ref: AuthorizeFunctionRole
   Meetings:
-    Type: 'AWS::DynamoDB::Table'
+    Type: "AWS::DynamoDB::Table"
     Properties:
       AttributeDefinitions:
         - AttributeName: "Title"
@@ -70,7 +79,7 @@ Resources:
         AttributeName: "TTL"
         Enabled: true
   Attendees:
-    Type: 'AWS::DynamoDB::Table'
+    Type: "AWS::DynamoDB::Table"
     Properties:
       AttributeDefinitions:
         - AttributeName: "AttendeeId"
@@ -82,7 +91,7 @@ Resources:
         ReadCapacityUnits: "5"
         WriteCapacityUnits: "5"
   ChimeSdkCreateMeetingLambda:
-    Type: 'AWS::Serverless::Function'
+    Type: "AWS::Serverless::Function"
     Properties:
       Handler: index.createMeeting
       CodeUri: lambda/
@@ -96,7 +105,7 @@ Resources:
             Path: /meeting
             Method: POST
   ChimeSdkJoinLambda:
-    Type: 'AWS::Serverless::Function'
+    Type: "AWS::Serverless::Function"
     Properties:
       Handler: index.join
       CodeUri: lambda/
@@ -112,7 +121,7 @@ Resources:
             Path: /join
             Method: POST
   ChimeSdkEndLambda:
-    Type: 'AWS::Serverless::Function'
+    Type: "AWS::Serverless::Function"
     Properties:
       Handler: index.end
       CodeUri: lambda/
@@ -126,7 +135,7 @@ Resources:
             Path: /end
             Method: POST
   ChimeSdkAttendeeLambda:
-    Type: 'AWS::Serverless::Function'
+    Type: "AWS::Serverless::Function"
     Properties:
       Handler: index.attendee
       CodeUri: lambda/
@@ -142,7 +151,7 @@ Resources:
             Path: /attendee
             Method: GET
   ChimeSdkAttendeesLambda:
-    Type: 'AWS::Serverless::Function'
+    Type: "AWS::Serverless::Function"
     Properties:
       Handler: index.attendees
       CodeUri: lambda/
@@ -158,12 +167,12 @@ Resources:
             Path: /attendees
             Method: GET
 
-# Websocket
+  # Websocket
 
   WebSocketApi:
     Type: AWS::ApiGatewayV2::Api
     Properties:
-      Name: !Sub '${AWS::StackName}-websocket'
+      Name: !Sub "${AWS::StackName}-websocket"
       ProtocolType: WEBSOCKET
       RouteSelectionExpression: "$request.body.message"
   ConnectRoute:
@@ -175,8 +184,8 @@ Resources:
       AuthorizerId: !Ref Authorizer
       OperationName: ConnectRoute
       Target: !Join
-        - '/'
-        - - 'integrations'
+        - "/"
+        - - "integrations"
           - !Ref ConnectIntegration
   ConnectIntegration:
     Type: AWS::ApiGatewayV2::Integration
@@ -185,8 +194,7 @@ Resources:
       Description: Connect Integration
       IntegrationType: AWS_PROXY
       IntegrationUri:
-        Fn::Sub:
-            arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OnConnectFunction.Arn}/invocations
+        Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OnConnectFunction.Arn}/invocations
   DisconnectRoute:
     Type: AWS::ApiGatewayV2::Route
     Properties:
@@ -195,8 +203,8 @@ Resources:
       AuthorizationType: NONE
       OperationName: DisconnectRoute
       Target: !Join
-        - '/'
-        - - 'integrations'
+        - "/"
+        - - "integrations"
           - !Ref DisconnectIntegration
   DisconnectIntegration:
     Type: AWS::ApiGatewayV2::Integration
@@ -205,8 +213,7 @@ Resources:
       Description: Disconnect Integration
       IntegrationType: AWS_PROXY
       IntegrationUri:
-        Fn::Sub:
-            arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OnDisconnectFunction.Arn}/invocations
+        Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OnDisconnectFunction.Arn}/invocations
   SendRoute:
     Type: AWS::ApiGatewayV2::Route
     Properties:
@@ -215,8 +222,8 @@ Resources:
       AuthorizationType: NONE
       OperationName: SendRoute
       Target: !Join
-        - '/'
-        - - 'integrations'
+        - "/"
+        - - "integrations"
           - !Ref SendIntegration
   SendIntegration:
     Type: AWS::ApiGatewayV2::Integration
@@ -225,14 +232,13 @@ Resources:
       Description: Send Integration
       IntegrationType: AWS_PROXY
       IntegrationUri:
-        Fn::Sub:
-            arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${SendMessageFunction.Arn}/invocations
+        Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${SendMessageFunction.Arn}/invocations
   Deployment:
     Type: AWS::ApiGatewayV2::Deployment
     DependsOn:
-    - ConnectRoute
-    - SendRoute
-    - DisconnectRoute
+      - ConnectRoute
+      - SendRoute
+      - DisconnectRoute
     Properties:
       ApiId: !Ref WebSocketApi
   Stage:
@@ -246,15 +252,15 @@ Resources:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
-      - AttributeName: MeetingId
-        AttributeType: S
-      - AttributeName: AttendeeId
-        AttributeType: S
+        - AttributeName: MeetingId
+          AttributeType: S
+        - AttributeName: AttendeeId
+          AttributeType: S
       KeySchema:
-      - AttributeName: MeetingId
-        KeyType: HASH
-      - AttributeName: AttendeeId
-        KeyType: RANGE
+        - AttributeName: MeetingId
+          KeyType: HASH
+        - AttributeName: AttendeeId
+          KeyType: RANGE
       BillingMode: PAY_PER_REQUEST
       SSESpecification:
         SSEEnabled: True
@@ -267,8 +273,8 @@ Resources:
       CodeUri: lambda/
       Handler: index.onconnect
       Policies:
-      - DynamoDBCrudPolicy:
-          TableName: !Ref ConnectionsTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ConnectionsTable
   OnConnectPermission:
     Type: AWS::Lambda::Permission
     DependsOn:
@@ -284,8 +290,8 @@ Resources:
       CodeUri: lambda/
       Handler: index.authorize
       Policies:
-      - DynamoDBCrudPolicy:
-          TableName: !Ref ConnectionsTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ConnectionsTable
   AuthorizePermission:
     Type: AWS::Lambda::Permission
     DependsOn:
@@ -302,8 +308,7 @@ Resources:
       ApiId: !Ref WebSocketApi
       AuthorizerType: REQUEST
       AuthorizerUri:
-        Fn::Sub:
-          arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AuthorizeFunction.Arn}/invocations
+        Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AuthorizeFunction.Arn}/invocations
       IdentitySource:
         - route.request.querystring.MeetingId
         - route.request.querystring.AttendeeId
@@ -314,8 +319,8 @@ Resources:
       CodeUri: lambda/
       Handler: index.ondisconnect
       Policies:
-      - DynamoDBCrudPolicy:
-          TableName: !Ref ConnectionsTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ConnectionsTable
   OnDisconnectPermission:
     Type: AWS::Lambda::Permission
     DependsOn:
@@ -331,14 +336,14 @@ Resources:
       CodeUri: lambda/
       Handler: index.sendmessage
       Policies:
-      - DynamoDBCrudPolicy:
-          TableName: !Ref ConnectionsTable
-      - Statement:
-        - Effect: Allow
-          Action:
-          - 'execute-api:ManageConnections'
-          Resource:
-          - !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${WebSocketApi}/*'
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ConnectionsTable
+        - Statement:
+            - Effect: Allow
+              Action:
+                - "execute-api:ManageConnections"
+              Resource:
+                - !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${WebSocketApi}/*"
   SendMessagePermission:
     Type: AWS::Lambda::Permission
     DependsOn:
@@ -355,4 +360,15 @@ Outputs:
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
   WebSocketURI:
     Description: "The Messaging WSS Protocol URI to connect to"
-    Value: !Join ['', ['wss://',!Ref WebSocketApi, '.execute-api.', !Ref 'AWS::Region','.amazonaws.com/', !Ref 'Stage']]
+    Value:
+      !Join [
+        "",
+        [
+          "wss://",
+          !Ref WebSocketApi,
+          ".execute-api.",
+          !Ref "AWS::Region",
+          ".amazonaws.com/",
+          !Ref "Stage",
+        ],
+      ]
