@@ -144,7 +144,7 @@ class Chat extends Component {
           <input
             ref={this.chatRef}
             type="text"
-            placeholder="Hier chatten ..."
+            placeholder="Hier tippen ..."
             value={message}
             maxLength={510}
             onChange={this.handleChange}

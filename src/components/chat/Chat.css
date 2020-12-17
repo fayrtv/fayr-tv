@@ -63,7 +63,7 @@
 .chat__wrapper .messages {
   overflow-x: hidden;
   overflow-y: auto;
-  background-color: rgba(0, 0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.3);
   top: 0;
   left: 0;
   right: 0;
