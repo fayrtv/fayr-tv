@@ -1,5 +1,6 @@
 :root {
-  --chat-row-template: 7.5rem 1fr 7.5rem;
+  --chat-row-template: 60% 1fr 15rem;
+  /* --chat-row-template: 7.5rem 1fr 7.5rem; */
   --room-link-label-font-size: 1.6rem;
   --composer-font-size: var(--room-link-label-font-size);
   --chat-line-font-size: var(--room-link-label-font-size);
@@ -63,7 +64,7 @@
 .chat__wrapper .messages {
   overflow-x: hidden;
   overflow-y: auto;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0);
   top: 0;
   left: 0;
   right: 0;

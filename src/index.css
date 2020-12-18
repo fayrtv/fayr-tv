@@ -84,7 +84,7 @@ select {
   --color--destructive: #fd2222;
   /* Sizing */
   --section-max-width: 800px;
-  --input-height: 5px;
+  --input-height: 42px;
   --radius: 10px;
   --radius-small: 0px;
   --header-height: 50px;

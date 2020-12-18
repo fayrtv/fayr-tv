@@ -85,10 +85,10 @@ class Join extends Component {
 
         <div className="welcome__content pd-4">
           <div className="content__inner">
-            <h2 className="mg-b-2">Sportliche Grüße aus Stuttgart!</h2>
+            <h2 className="mg-b-2">Du wurdest zu einer WatchParty eingeladen!</h2>
             <form action="">
               <fieldset className="mg-b-2">
-                <input type="text" placeholder="Your name" value={username} ref={this.inputRef} onChange={this.handleNameChange} />
+                <input type="text" placeholder="Name" value={username} ref={this.inputRef} onChange={this.handleNameChange} />
                 <button className="mg-t-1 btn btn--primary" disabled={joinRoomDisabled} onClick={this.handleJoinRoom}>Beitreten</button>
               </fieldset>
             </form>
