@@ -7,7 +7,7 @@ export const CHIME_ROOM_API = "https://vl8fth0307.execute-api.eu-central-1.amazo
 export const CHIME_ROOM_MAX_ATTENDEE = 12;
 
 // Default video stream to play inside the video player
-export const DEFAULT_VIDEO_STREAM = "https://zdf-hls-15.akamaized.net/hls/live/2016498/de/0f8cd85d141c27ece11d2287d7a07bbf/4/4.m3u8";
+export const DEFAULT_VIDEO_STREAM = "https://tagesschau-lh.akamaihd.net/i/tagesschau_3@66339/index_3776_av-p.m3u8?sd=10&rebase=on";
 
 // Default Chat websocket link
 export const CHAT_WEBSOCKET = "wss://fml0rdsl83.execute-api.eu-central-1.amazonaws.com/Prod";
