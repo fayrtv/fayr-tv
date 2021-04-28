@@ -71,7 +71,7 @@ class VideoPlayer extends Component {
     player.load(this.props.videoStream);
 
     // Setvolume
-    player.setVolume(1);
+    player.setVolume(0.3);
 
     // Show/Hide player controls
     playerOverlay.addEventListener(
