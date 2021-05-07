@@ -79,8 +79,7 @@ class Welcome extends Component {
 
           <div className="welcome__intro">
             <div className="intro__inner formatted-text">
-              {/* <img src="https://ibb.co/PwPV198" alt=" "/> */}
-              <img src="https://i.ibb.co/NZJGWmz/fayrtv-logo.png" alt="fayrtv-logo" border="0" height="55"></img>
+              <img src="https://i.ibb.co/wpz7sFz/fayrtv-logo-light.png" alt="fayrtv-logo" border="0" height="55"></img>
               {/* <h1>FAYR TV</h1> */}
               <h2>  </h2>
               <h2>Erlebe Live- und Sportevents wie noch nie zuvor!</h2>
