@@ -83,15 +83,15 @@ class Welcome extends Component {
               <img src="https://i.ibb.co/NZJGWmz/fayrtv-logo.png" alt="fayrtv-logo" border="0" height="55"></img>
               {/* <h1>FAYR TV</h1> */}
               <h2>  </h2>
-              <h2>Schaue Fussball wie noch nie zuvor!</h2>
-              <h3>Erstelle eine WatchParty oder trete einer bei und verbringe mit deinen Freunden eine geile Zeit!</h3>
+              <h2>Erlebe Live- und Sportevents wie noch nie zuvor!</h2>
+              <h3>Erstelle eine Watch Party oder trete einer bei und verbringe mit deinen Freunden eine geile Zeit!</h3>
             </div>
           </div>
 
           <div className="welcome__content pd-4">
             <div className="content__inner">
               <h2 className="mg-b-2">Starte eine Watch Party</h2>
-              <h3>Fiebere zusammen mit deinen Freunden mit und schaue dir das Spiel an!</h3>
+              <h3>Fiebere zusammen mit deinen Freunden mit und schaue dir Live- und Sportevents online an!</h3>
               <form action="">
                 <fieldset className="mg-b-2">
                   <input className="mg-b-2" type="text" placeholder="Dein Name" value={username} ref={this.inputRef} onChange={this.handleNameChange} />
