@@ -9,10 +9,10 @@ class Welcome extends Component {
   state = {
     role: 'host',
     username: '',
-    title: '',
+    title: config.RANDOM,
     playbackURL: config.DEFAULT_VIDEO_STREAM,
     errorMsg: '',
-    showError: false
+    showError: false,
   }
 
   constructor() {
@@ -71,7 +71,7 @@ class Welcome extends Component {
   }
 
   render() {
-    const { username, title, playbackURL } = this.state;
+    const { username, title, playbackURL, } = this.state;
     const createRoomDisabled = !username || !title || !playbackURL;
     return (
       <React.Fragment>
