@@ -151,6 +151,7 @@ select {
 @font-face {
   font-family: "WinnerSans";
   src: local("WinnerSans"), url(./fonts/font.woff) format("woff");
+  letter-spacing: 0.9rem;
 }
 
 /* Mediaqueries */

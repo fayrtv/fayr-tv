@@ -7,9 +7,9 @@ export const CHIME_ROOM_API = "https://vl8fth0307.execute-api.eu-central-1.amazo
 export const CHIME_ROOM_MAX_ATTENDEE = 12;
 
 // Default video stream to play inside the video player
-// export const DEFAULT_VIDEO_STREAM = "https://mcdn.daserste.de/daserste/de/master.m3u8";
+export const DEFAULT_VIDEO_STREAM = "https://derste247livede.akamaized.net/hls/live/658317/daserste_de/master_1280p_3628.m3u8";
 // export const DEFAULT_VIDEO_STREAM = "https://d1e4t3xfu0q4ky.cloudfront.net/fce11652-5078-4322-8e80-d04a71977b20/AppleHLS1/manunitedintermilan001.m3u8";
- export const DEFAULT_VIDEO_STREAM = "https://swrbwhls-i.akamaihd.net/hls/live/667638/swrbwd/master-720p-3628.m3u8"
+// export const DEFAULT_VIDEO_STREAM = "https://swrbwhls-i.akamaihd.net/hls/live/667638/swrbwd/master-720p-3628.m3u8"
 // export const DEFAULT_VIDEO_STREAM = "https://dh63srovlpzwh.cloudfront.net/out/v1/a33612727e4d421499b49e2e6fca31bd/26ffae83adec4ec984e2a35743d98185/b7b01ae410f54fda9dfc5905471986af/index.m3u8";
 
 // Default Chat websocket link
