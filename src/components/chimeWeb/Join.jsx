@@ -85,7 +85,7 @@ class Join extends Component {
 
         <div className="welcome__content pd-4">
           <div className="content__inner">
-            <h2 className="mg-b-2">Du wurdest zu einer WatchParty eingeladen!</h2>
+            <h2 className="mg-b-2">Du wurdest zu einer Watch Party eingeladen!</h2>
             <form action="">
               <fieldset className="mg-b-2">
                 <input type="text" placeholder="Name" value={username} ref={this.inputRef} onChange={this.handleNameChange} />

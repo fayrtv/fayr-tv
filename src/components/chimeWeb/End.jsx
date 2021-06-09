@@ -15,7 +15,7 @@ class End extends Component {
         <div className="welcome__intro">
           <div className="intro__inner formatted-text">
             <h1>FAYR TV</h1>
-            <h3>Erstelle eine WatchParty und verbringe mit deinen Freunden eine geile Zeit!</h3>
+            <h3>Wir hoffen ihr hattet Spaß und würden uns über euer Feedback freuen!</h3>
           </div>
         </div>
 
@@ -23,7 +23,7 @@ class End extends Component {
           <div className="content__inner formatted-text">
             <h2 className="mg-b-2">WatchParty geschlossen</h2>
             <p>Der Host hat die WatchParty beendet und für alle geschlossen.</p>
-            <a href={`${this.baseHref}/`} className="mg-t-3 btn btn--primary">Create a new room</a>
+            <a href={`${this.baseHref}/`} className="mg-t-3 btn btn--primary">Neue Watch Party erstellen</a>
           </div>
         </div>
       </div>
