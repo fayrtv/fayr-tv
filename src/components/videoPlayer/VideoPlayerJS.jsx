@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React, { useEffect, useRef, Component } from 'react';
 import PropTypes from 'prop-types';
 import * as config from '../../config';
-import React, {useEffect, useRef} from 'react';
 
 
 function VideoPlayer(options) {

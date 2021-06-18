@@ -82,6 +82,7 @@ select {
   --color--tertiary: #8d9ca7;
   --color--positive: #0fd70b;
   --color--destructive: #fd2222;
+  --color--redshade: #a34e4e;
   /* Sizing */
   --section-max-width: 800px;
   --input-height: 42px;
