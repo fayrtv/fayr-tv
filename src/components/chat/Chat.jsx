@@ -9,11 +9,13 @@ import {
 import ChatLine from "./subcomponents/ChatLine";
 import ChatInput from "./subcomponents/ChatInput";
 import * as config from '../../config';
+import { ChatOpenContext } from "../contexts/ChatOpenContext";
 
 // Styles
 import './Chat.css';
 
 class Chat extends Component {
+
 	constructor() {
 		super();
 
@@ -89,18 +91,22 @@ class Chat extends Component {
 		const { username } = this.props;
 		// const popup = showPopup ? 'show' : '';
 		return (
-			<div className="chat full-height pos-relative">
-				<div className="chat__wrapper full-width pos-relative">
-					<div className="messages pd-x-1 pos-absolute">
-						{messages.map(x => <ChatLine messageInfo={x} key={x.timestamp} />)}
-						<div ref={this.messagesEndRef} />
+			<ChatOpenContext.Consumer>
+				{({ isOpen }) => (
+					<div className={`chat ${!isOpen ? 'closed' : ''} full-height pos-relative`}>
+						<div className="chat__wrapper full-width pos-relative">
+							<div className="messages pd-x-1 pos-absolute">
+								{messages.map(x => <ChatLine messageInfo={x} key={x.timestamp} />)}
+								<div ref={this.messagesEndRef} />
+							</div>
+						</div>
+						<ChatInput
+							connection={connection}
+							inputRef={this.chatRef}
+							username={username} />
 					</div>
-				</div>
-				<ChatInput
-					connection={connection}
-					inputRef={this.chatRef}
-					username={username} />
-			</div>
+				)}
+			</ChatOpenContext.Consumer>
 		)
 	}
 }

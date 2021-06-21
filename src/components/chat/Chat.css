@@ -52,6 +52,20 @@
 	/* background: var(--color--tertiary); */
 	display: grid;
 	grid-template-rows: var(--chat-row-template);
+
+	transition: transform 0.5s ease-in-out;
+}
+
+.closed {
+	transform: translateX(100%);
+}
+
+@media (max-width: 960px) {
+
+	/* Large Screens and below */
+	.closed {
+		transform: translateY(100%);
+	}
 }
 
 .chat::before {
