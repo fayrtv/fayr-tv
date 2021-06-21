@@ -5,6 +5,7 @@ import {
   Route
 } from "react-router-dom";
 import * as config from '../config';
+import ChatOpenContextProvider from "./contexts/ChatOpenContext";
 // import './App.css';
 
 import ChimeSdkWrapper from './chime/ChimeSdkWrapper';
@@ -26,9 +27,10 @@ function App() {
             <End />
           </Route>
           <Route path={`${baseHref}/meeting`}>
-            <Meeting
-              chime={chime}
-            />
+            <ChatOpenContextProvider>
+                <Meeting
+                    chime={chime}/>
+            </ChatOpenContextProvider>
           </Route>
           <Route path={`${baseHref}/join`}>
             <Join
