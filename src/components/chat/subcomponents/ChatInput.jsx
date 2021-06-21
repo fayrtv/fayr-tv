@@ -44,7 +44,7 @@ export const ChatInput = ({ connection, inputRef, username }) => {
 			<button
 				className="btn btn--primary"
 				onClick={sendMessage}>
-				Send
+				Senden
 			</button>
 		</div>
 	);
