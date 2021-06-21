@@ -10,14 +10,14 @@ const urlRegExp = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._~#=]{2,256}\.[a-z]{2
 export const ChatLine = ({ messageInfo: { message, timestamp, username } }) => {
 
 	const parsedMessage = useMemo(() => message.replace(urlRegExp, (match) => {
-		const formattedMatch = match;
+		let formattedMatch = match;
 
 		if (!match.startsWith("http")) {
 			formattedMatch = `http://${match}`;
 		}
 
 		return `<a href=${formattedMatch} class="chat-line__link" target="_blank" rel="noopener noreferrer">${match}</a>`;
-	}));
+	}), [message]);
 
 	return (
 		<div className="chat-line">
