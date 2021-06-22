@@ -1293,30 +1293,6 @@ input.rounded {
   align-items: flex-start;
 }
 
-.chat-line {
-  padding: 12px 15px;
-  background: var(--color-bg-chat-bubble);
-  border-radius: var(--input-height);
-  display: flex;
-  margin: 0 0 5px 0;
-}
-
-.chat-line p {
-  display: inline;
-  font-weight: normal;
-  overflow-wrap: anywhere;
-}
-
-.chat-line .username {
-  font-weight: 800;
-  padding-right: 0.1rem;
-  color: #fa7751;
-}
-
-.chat-line .username::after {
-  content: " ";
-}
-
 .composer {
   position: absolute;
   bottom: 0;
