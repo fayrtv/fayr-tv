@@ -96,7 +96,9 @@ class Chat extends Component {
 					<div className={`chat ${!isOpen ? 'closed' : ''} full-height pos-relative`}>
 						<div className="chat__wrapper full-width pos-relative">
 							<div className="messages pd-x-1 pos-absolute">
-								{messages.map(x => <ChatLine messageInfo={x} key={x.timestamp} />)}
+								{messages.map(x => <ChatLine
+									messageInfo={x} key={x.timestamp}
+									personalUserName={username} />)}
 								<div ref={this.messagesEndRef} />
 							</div>
 						</div>

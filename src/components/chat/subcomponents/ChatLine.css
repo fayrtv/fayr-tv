@@ -12,12 +12,56 @@
 }
 
 .chat-line {
+	padding: 12px 15px;
+	background: var(--color-bg-chat-bubble);
+	border-radius: var(--input-height);
+	display: flex;
+	margin: 0 0 5px 0;
+
 	font-size: var(--chat-line-font-size);
 	padding: var(--chat-line-padding);
 
 	display: flex;
-	flex-direction: row;
 	justify-content: space-between;
+}
+
+.chat-line p {
+	display: inline;
+	font-weight: normal;
+	overflow-wrap: anywhere;
+}
+
+.chat-line .username {
+	font-weight: 800;
+	padding-right: 0.1rem;
+}
+
+.chat-line_leftsection {
+	max-width: 85%;
+
+	overflow-wrap: break-word;
+	-webkit-line-clamp: 4;
+	-webkit-box-orient: vertical;
+}
+
+.chat-line_leftsection .self {
+	color: lightblue;
+}
+
+.chat-line_leftsection .other {
+	color: #fa7751;
+}
+
+.chat-line .username::after {
+	content: " ";
+}
+
+.outgoing_chat {
+	flex-direction: row-reverse;
+}
+
+.incoming_chat {
+	flex-direction: row;
 }
 
 .chat-line__link {
