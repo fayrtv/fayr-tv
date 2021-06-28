@@ -62,9 +62,13 @@
 
 @media (max-width: 960px) {
 
+	.chat {
+		height: 40vh;
+	}
+
 	/* Large Screens and below */
 	.closed {
-		transform: translateY(100%);
+		display: none;
 	}
 }
 
