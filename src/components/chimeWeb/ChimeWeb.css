@@ -52,17 +52,6 @@ input:disabled {
 }
 
 @media (max-width: 960px) {
-	
-	/* Large Screens and below */
-	:root {
-	  --form-col-template: 1fr;
-	  --form-row-template: auto 1fr;
-	  --intro-text-align: center;
-	  --welcome-content-align-items: flex-start;
-	  --app-col-template: 1fr;
-	  --app-row-template: 2fr minmax(200px, 1fr);
-	}
-
 	.app-grid {
 		height: 100vh;
 		position: relative;
