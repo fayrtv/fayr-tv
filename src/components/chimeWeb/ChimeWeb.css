@@ -51,6 +51,16 @@ input:disabled {
   overflow: hidden;
 }
 
+@media (max-width: 960px) {
+	.app-grid {
+		height: 100vh;
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+	}
+  }
+
 .form-grid {
   height: 100vh;
   position: relative;
@@ -90,6 +100,23 @@ input:disabled {
   overflow-y: auto;
 }
 
+@media (max-width: 960px) {	
+	/* Large Screens and below */
+
+	.main-stage {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.app-grid {
+		height: 100vh;
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+	}
+}
+
 .modal__overlay {
   z-index: 2;
 }
@@ -116,6 +143,7 @@ input:disabled {
 .cam {
   background: transparent;
   height: 100%;
+  min-height: 100px;
   flex: 0 1 10px;
   /* background: var(--color--tertiary); */
   margin: 0 0.5rem;
@@ -199,7 +227,15 @@ input:disabled {
   display: flex;
   justify-content: left;
   padding: 2rem;
+  flex-wrap: wrap;
 }
+
+@media (max-width: 960px) {
+	/* Large Screens and below */
+	.controls {
+		padding: 1rem;
+	}
+  }
 
 .controls__btn {
   width: 44px;
