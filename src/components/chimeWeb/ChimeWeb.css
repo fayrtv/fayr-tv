@@ -95,13 +95,31 @@ input:disabled {
 
 /* Main stage */
 .main-stage {
-  display: grid;
-  grid-template-rows: minmax(80px, 160px) 1fr auto;
-  overflow-y: auto;
+	height: 100vh;
+	display: grid;
+	grid-template-rows: minmax(80px, 160px) 1fr auto;
+	overflow-y: auto;
 }
 
-@media (max-width: 960px) {	
+@media (min-width:481px) and (max-width: 960px) {
 	/* Large Screens and below */
+
+	.main-stage {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.app-grid {
+		height: 100vh;
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+	}
+}
+
+@media (max-width:480px) {
+	/* Tall Screens and below */
 
 	.main-stage {
 		display: flex;
