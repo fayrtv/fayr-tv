@@ -190,7 +190,7 @@ class Meeting extends Component {
         <Chat
           chime={this.props.chime}
           title={this.title}
-          username={this.username}
+          userName={this.username}
           joinInfo={this.joinInfo}
         />
         {this.state.showSettings && (

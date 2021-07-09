@@ -1,9 +1,17 @@
 // Framework
 import React, { createContext, useState } from "react";
 
-export const ChatOpenContext = createContext();
+type Context = {
+	isOpen: boolean;
+	set: React.Dispatch<boolean>;
+}
 
-export const ChatOpenContextProvider = ({ children }) => {
+export const ChatOpenContext = createContext<Context>({
+	isOpen: false,
+	set: _ => void 0,
+});
+
+export const ChatOpenContextProvider: React.FC = ({ children }) => {
 
 	const [isOpen, setIsOpen] = useState(true);
 
