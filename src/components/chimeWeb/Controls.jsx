@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 import * as config from '../../config';
 import { ChatOpenContext } from "../contexts/ChatOpenContext";
@@ -162,12 +163,15 @@ class Controls extends Component {
 					<span className={`popuptext ${popup}`} id="myPopup">WatchParty-Link gespeichert</span>
 				</button>
 
-				<button className={`controls__btn ${chat_controls} btn rounded btn--chat`} onClick={this.handleChatClick} title={`${this.context.isOpen ? "Hide" : "Show"} chat`}>
-					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
-						<path d="M 4 3 C 2.9 3 2 3.9 2 5 L 2 17 L 5 14 L 8 14 L 8 17 C 8 18.1 8.9 19 10 19 L 19 19 L 22 22 L 22 10 C 22 8.9 21.1 8 20 8 L 16 8 L 16 5 C 16 3.9 15.1 3 14 3 L 4 3 z M 4 5 L 14 5 L 14 12 L 4 12 L 4 5 z M 16 10 L 20 10 L 20 17 L 10 17 L 10 14 L 14 14 C 15.1 14 16 13.1 16 12 L 16 10 z">
-						</path>
-					</svg>
-				</button>
+				<div className="btn--chat--container">
+					<button className={`controls__btn ${chat_controls} btn rounded btn--chat`} onClick={this.handleChatClick} title={`${this.context.isOpen ? "Hide" : "Show"} chat`}>
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+							<path d="M 4 3 C 2.9 3 2 3.9 2 5 L 2 17 L 5 14 L 8 14 L 8 17 C 8 18.1 8.9 19 10 19 L 19 19 L 22 22 L 22 10 C 22 8.9 21.1 8 20 8 L 16 8 L 16 5 C 16 3.9 15.1 3 14 3 L 4 3 z M 4 5 L 14 5 L 14 12 L 4 12 L 4 5 z M 16 10 L 20 10 L 20 17 L 10 17 L 10 14 L 14 14 C 15.1 14 16 13.1 16 12 L 16 10 z">
+							</path>
+						</svg>
+					</button>
+					{!this.context.isOpen && this.props.unreadMessages.length > 0 && <span className="controls__btn btn--chat--unreadTag">{this.props.unreadMessages.length > 99 ? "99+" : this.props.unreadMessages.length}</span>}
+				</div>
 			</div>
 		)
 	}
@@ -184,4 +188,10 @@ Controls.propTypes = {
 	myVideoElement: PropTypes.object
 };
 
-export default Controls;
+const mapStateToProps = state => {
+	return {
+		unreadMessages: state.chatMessageReducer.filter(x => !x.seen) ?? [],
+	}
+};
+
+export default connect(mapStateToProps)(Controls);
