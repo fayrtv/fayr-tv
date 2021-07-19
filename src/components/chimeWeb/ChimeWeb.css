@@ -116,6 +116,11 @@ input:disabled {
 		flex-direction: column;
 		overflow: hidden;
 	}
+
+	.form-grid {
+		display: flex;
+		flex-direction: row;
+	}
 }
 
 @media (max-width:480px) {
