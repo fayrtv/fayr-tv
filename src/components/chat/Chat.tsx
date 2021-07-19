@@ -9,6 +9,13 @@ import ChatLine from "./subcomponents/ChatLine";
 import ChatInput from "./subcomponents/ChatInput";
 import * as config from '../../config';
 import { ChatOpenContext } from "../contexts/ChatOpenContext";
+import { connect } from 'react-redux';
+import { ReduxStore } from '../../redux/store';
+import { Action, Dispatch } from 'redux';
+
+// Functionality
+import { addMessage, markAsSeen } from "redux/reducers/chatMessageReducer";
+import { CouldBeArray } from '../../util/collectionUtil';
 
 // Types
 import { Message } from "./types";
@@ -24,9 +31,17 @@ type Props = {
 	title: string;
 }
 
-export const Chat: React.FC<Props> = ({ joinInfo, userName, title }) => {
+type ReduxProps = {
+	messages: Array<Message>;
+}
 
-	const [messages, setMessages] = React.useState<Array<Message>>([]);
+type ReduxDispatches = {
+	addMessages(messages: CouldBeArray<Message>): void;
+	markAsSeen(messages: CouldBeArray<Message>): void;
+}
+
+export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({ joinInfo, userName, title, messages, addMessages, markAsSeen }) => {
+
 	const [connection, setConnection] = React.useState<ReconnectingPromisedWebSocket>();
 
 	const chatRef = React.useRef<HTMLInputElement>(null);
@@ -61,10 +76,11 @@ export const Chat: React.FC<Props> = ({ joinInfo, userName, title }) => {
 			const newMessage: Message = {
 				timestamp: Date.now(),
 				username,
-				message
+				message,
+				seen: false,
 			};
 
-			setMessages(currentMsg => ([...currentMsg, newMessage]));
+			addMessages(newMessage);
 		});
 
 		setConnection(socketConnection);
@@ -77,8 +93,15 @@ export const Chat: React.FC<Props> = ({ joinInfo, userName, title }) => {
 	}, []);
 
 	React.useEffect(() => {
-		messagesEndRef.current!.scrollIntoView({ behavior: 'smooth' })
-	}, [messages]);
+		if (isOpen) {
+			messagesEndRef.current!.scrollIntoView({ behavior: 'smooth' });
+
+			const unseenMessages = messages.filter(x => !x.seen);
+			if (unseenMessages.length > 0) {
+				markAsSeen(unseenMessages);
+			}
+		}
+	}, [messages, isOpen, markAsSeen]);
 
 	const handleRoomClick = async (event: any) => {
 		event.stopPropagation();
@@ -114,4 +137,13 @@ export const Chat: React.FC<Props> = ({ joinInfo, userName, title }) => {
 	)
 }
 
-export default Chat;
+const mapStateToProps = (state: ReduxStore): ReduxProps => ({
+	messages: state.chatMessageReducer,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<Action>): ReduxDispatches => ({
+	addMessages: (messages: CouldBeArray<Message>) => dispatch(addMessage(messages)),
+	markAsSeen: (messages: CouldBeArray<Message>) => dispatch(markAsSeen(messages)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Chat);

@@ -4,11 +4,13 @@ import {
   Switch,
   Route
 } from "react-router-dom";
+import { Provider } from 'react-redux';
 import * as config from '../config';
 import ChatOpenContextProvider from "./contexts/ChatOpenContext";
 // import './App.css';
 
 import ChimeSdkWrapper from './chime/ChimeSdkWrapper';
+import store from "redux/store";
 
 import Home from './chimeWeb/Welcome';
 import Join from './chimeWeb/Join';
@@ -27,10 +29,12 @@ function App() {
             <End />
           </Route>
           <Route path={`${baseHref}/meeting`}>
-            <ChatOpenContextProvider>
-                <Meeting
-                    chime={chime}/>
-            </ChatOpenContextProvider>
+			  <Provider store={store}>
+					<ChatOpenContextProvider>
+						<Meeting
+							chime={chime}/>
+					</ChatOpenContextProvider>				  
+				</Provider>
           </Route>
           <Route path={`${baseHref}/join`}>
             <Join

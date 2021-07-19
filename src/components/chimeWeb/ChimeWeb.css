@@ -295,6 +295,25 @@ input:disabled {
   display: none;
 }
 
+.controls .btn--chat--container {
+	position: relative;
+}
+
+.controls .btn--chat--unreadTag {
+	position: absolute;
+	top: -5px;
+	left: 40px;
+	margin: 0;
+	height: auto;
+	width: 24px;
+
+	color: black;
+
+	border-radius: 15px;
+
+	background: lightgrey;
+}
+
 .controls .controls__btn--cam_on,
 .controls .controls__btn--mic_on,
 .controls .controls__btn--chat_on {
