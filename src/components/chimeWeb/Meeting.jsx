@@ -15,11 +15,15 @@ import Settings from './Settings';
 import LocalVideo from './LocalVideo';
 import RemoteVideoGroup from './RemoteVideoGroup';
 import Error from './Error';
+import { Desktop, Mobile } from '../mediaQueries';
+import { ChatOpenContext } from "../contexts/ChatOpenContext";
 
 // Styles
 import './ChimeWeb.css';
 
 class Meeting extends Component {
+
+  static contextType = ChatOpenContext;
 
   state = {
     meetingStatus: null, // Loading, Success or Failed
@@ -147,35 +151,52 @@ class Meeting extends Component {
   }
 
   layout = () => {
-    if(this.state.meetingStatus !== 'Success') {
+    if (this.state.meetingStatus !== 'Success') {
       return;
     }
 
     return (
       <div className="app-grid" onClick={this.handleClick}>
         <div className="main-stage">
-          <div className="cams pos-relative">
-          {/* <VideoPlayer
-            setMetadataId={this.setMetadataId}
-            videoStream={this.playbackURL}
-          /> */}
-          </div>
-          {/* <LocalVideo
-            chime={this.props.chime}
-            joinInfo={this.joinInfo}
-          /> */}
+		  <Mobile>
+		  	<div style={{flexGrow: 1, height: "100%"}} />
+		  </Mobile>
+		  <Desktop>
+		  	<div style={{height: "100%"}} />
+		  </Desktop>
           <VideoPlayer
             setMetadataId={this.setMetadataId}
             videoStream={this.playbackURL}
           />
-          <LocalVideo
-            chime={this.props.chime}
-            joinInfo={this.joinInfo}
-          />
-          <RemoteVideoGroup
-            chime={this.props.chime}
-            joinInfo={this.joinInfo}
-          />
+		  {/* <Mobile 
+		  	additionalCondition={!this.context.isOpen}>
+			<LocalVideo
+				chime={this.props.chime}
+				joinInfo={this.joinInfo}
+			/>
+			<RemoteVideoGroup
+				chime={this.props.chime}
+				joinInfo={this.joinInfo}
+			/>
+		  </Mobile>
+		  <Desktop>
+			<LocalVideo
+				chime={this.props.chime}
+				joinInfo={this.joinInfo}
+			/>
+			<RemoteVideoGroup
+				chime={this.props.chime}
+				joinInfo={this.joinInfo}
+			/>
+		  </Desktop> */}
+			<LocalVideo
+				chime={this.props.chime}
+				joinInfo={this.joinInfo}
+			/>
+			<RemoteVideoGroup
+				chime={this.props.chime}
+				joinInfo={this.joinInfo}
+			/>
           <Controls
             chime={this.props.chime}
             baseHref={this.baseHref}

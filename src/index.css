@@ -87,7 +87,7 @@ select {
   --section-max-width: 800px;
   --input-height: 42px;
   --radius: 10px;
-  --radius-small: 0px;
+  --radius-small: 4px;
   --header-height: 50px;
   --btn-floating-size: 56px;
   --btn-floating-icon-size: 40px;

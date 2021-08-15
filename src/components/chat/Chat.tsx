@@ -120,7 +120,7 @@ export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({ joinInfo,
 	}
 
 	return (
-		<div className={`chat ${!isOpen ? 'closed' : ''} full-height pos-relative`}>
+		<div className={`chat ${!isOpen ? 'closed' : ''} full-height`}>
 			<div className="chat__wrapper full-width pos-relative">
 				<div className="messages pd-x-1 pos-absolute">
 					{messages.map(x => <ChatLine
