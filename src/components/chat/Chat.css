@@ -35,9 +35,8 @@
 	/* border-radius: 0.6rem; */
 	padding: 0.8rem 0;
 	position: absolute;
-	z-index: 1;
-	bottom: 0rem;
-	margin-left: 30rem;
+	z-index: 50;
+	bottom: 50px;
 }
 
 .popup .show {
@@ -54,6 +53,8 @@
 	grid-template-rows: var(--chat-row-template);
 
 	transition: transform 0.5s ease-in-out;
+
+	position: relative;
 }
 
 .closed {
@@ -87,7 +88,7 @@
 
 @media (max-width: 960px) {
 	.chat::before {
-		opacity: .4;
+		opacity: 0.4;
 	}
 }
 
