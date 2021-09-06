@@ -21,7 +21,7 @@ import { CouldBeArray } from '../../util/collectionUtil';
 import { Message } from "./types";
 
 // Styles
-import './Chat.css';
+import './Chat.scss';
 
 const WEB_SOCKET_TIMEOUT_MS = 10000;
 
@@ -45,7 +45,7 @@ export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({ joinInfo,
 	const [connection, setConnection] = React.useState<ReconnectingPromisedWebSocket>();
 
 	const chatRef = React.useRef<HTMLInputElement>(null);
-	const messagesEndRef = React.useRef<HTMLDivElement>(null);
+	const messageRef = React.useRef<HTMLDivElement>(null);
 
 	const { isOpen } = React.useContext(ChatOpenContext);
 
@@ -93,9 +93,20 @@ export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({ joinInfo,
 	}, []);
 
 	React.useEffect(() => {
-		if (isOpen) {
-			messagesEndRef.current!.scrollIntoView({ behavior: 'smooth' });
 
+		if (!isOpen) {
+			return;
+		}
+
+		const ref = messageRef.current;
+
+		if (ref && (ref.scrollTop + ref.clientHeight < ref.scrollHeight)) {
+			messageRef.current!.scrollTo({ top: ref.scrollHeight, behavior: "smooth" });
+		}
+	}, [isOpen, messages]);
+
+	React.useEffect(() => {
+		if (isOpen) {
 			const unseenMessages = messages.filter(x => !x.seen);
 			if (unseenMessages.length > 0) {
 				markAsSeen(unseenMessages);
@@ -120,13 +131,14 @@ export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({ joinInfo,
 	}
 
 	return (
-		<div className={`chat ${!isOpen ? 'closed' : ''} full-height`}>
-			<div className="chat__wrapper full-width pos-relative">
-				<div className="messages pd-x-1 pos-absolute">
+		<div className={`Chat ${!isOpen ? 'Closed' : ''}`}>
+			<div className="ChatWrapper pos-relative">
+				<div
+					className="Messages pd-x-1"
+					ref={messageRef}>
 					{messages.map(x => <ChatLine
 						messageInfo={x} key={x.timestamp}
 						personalUserName={userName} />)}
-					<div ref={messagesEndRef} />
 				</div>
 			</div>
 			<ChatInput
