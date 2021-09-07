@@ -126,7 +126,7 @@ class VideoPlayer extends Component {
 
   render() {
     return (
-      <div className="player-wrapper pos-relative">
+      <div className="player-wrapper">
         <div className="aspect-spacer"></div>
         <div className="pos-absolute full-width full-height top-0">
           <div id="overlay" className="overlay">

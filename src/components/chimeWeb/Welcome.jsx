@@ -74,7 +74,7 @@ class Welcome extends Component {
     const { username, title, playbackURL, } = this.state;
     const createRoomDisabled = !username || !title || !playbackURL;
     return (
-      <React.Fragment>
+      <>
         <div className="welcome form-grid">
 
           <div className="welcome__intro">
@@ -110,7 +110,7 @@ class Welcome extends Component {
             errorMsg={this.state.errorMsg}
           />
         )}
-      </React.Fragment>
+      </>
     )
   }
 }

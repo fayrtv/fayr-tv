@@ -1,14 +1,21 @@
 // Framework
 import React, { useMemo } from 'react';
 import moment from "moment";
-import PropTypes from 'prop-types';
+
+// Types
+import { Message } from '../types';
 
 // Styles
-import "./ChatLine.css";
+import "./ChatLine.scss";
 
 const urlRegExp = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_.~#?&//=]*)/g;
 
-export const ChatLine = ({ personalUserName, messageInfo: { message, timestamp, username } }) => {
+type Props = {
+	personalUserName: string;
+	messageInfo: Message;
+}
+
+export const ChatLine = ({ personalUserName, messageInfo: { message, timestamp, username } }: Props) => {
 
 	const parsedMessage = useMemo(() => message.replace(urlRegExp, (match) => {
 		let formattedMatch = match;
@@ -30,16 +37,11 @@ export const ChatLine = ({ personalUserName, messageInfo: { message, timestamp, 
 				</span>
 				<span dangerouslySetInnerHTML={{ __html: parsedMessage }} />
 			</div>
-			<span className="chat-line_timestamp">
+			<span className="chat-line_timestamp" title={moment(timestamp).format('HH:MM:ss')}>
 				{moment(timestamp).format('HH:MM')}
 			</span>
 		</div>
 	)
 }
-
-ChatLine.propTypes = {
-	personalUserName: PropTypes.string,
-	messageInfo: PropTypes.object,
-};
 
 export default ChatLine;

@@ -1,0 +1,54 @@
+.cam {
+	background: transparent;
+	height: 135px;
+	/* background: var(--color--tertiary); */
+	margin: 0 0.5rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	overflow: hidden;
+	position: relative;
+	border-radius: var(--radius-small);
+	width: 100px;
+
+	@media (max-width: 960px) {
+		width: 65px;
+		height: 90px;
+	}
+
+	.preview {
+		flex-grow: 1;
+		width: 100%;
+		height: calc(100% - 35px);
+
+		.video-container,
+		.attendee_cam {
+			width: 100%;
+			height: 100%;
+			border-radius: 50px;
+			object-fit: cover;
+		}
+	}
+
+	.cam__meta {
+		position: relative;
+		display: inline-flex;
+		place-items: center;
+		font-size: 1.5rem;
+		font-weight: var(--font-weight-bold);
+		background: rgba(0, 0, 0, 1);
+		padding: 0.5rem 1.5rem;
+		border-radius: var(--radius-small);
+		z-index: 2;
+
+		@media (max-width: 960px) {
+			padding: 0rem 1.5rem;
+		}
+	}
+
+	.cam__meta--hide {
+		opacity: 0;
+		transform: translate(0, 1rem);
+		transition: opacity 0.25s ease, transform 0.25s ease;
+	}
+}
