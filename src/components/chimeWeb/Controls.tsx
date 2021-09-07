@@ -125,9 +125,11 @@ const Controls: React.FC<Props & ReduxProps> = ({ chime, title, openSettings, un
 	React.useEffect(() => {
 		if (chime.audioVideo) {
 
-			chime.audioVideo.realtimeSubscribeToMuteAndUnmuteLocalAudio(setLocalMuted);
+			const localChimeCopy = chime.audioVideo;
 
-			return () => chime.audioVideo.realtimeUnsubscribeToMuteAndUnmuteLocalAudio(setLocalMuted);
+			localChimeCopy.realtimeSubscribeToMuteAndUnmuteLocalAudio(setLocalMuted);
+
+			return () => localChimeCopy.realtimeUnsubscribeToMuteAndUnmuteLocalAudio(setLocalMuted);
 		}
 	}, [chime.audioVideo]);
 

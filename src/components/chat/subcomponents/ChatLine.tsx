@@ -37,7 +37,7 @@ export const ChatLine = ({ personalUserName, messageInfo: { message, timestamp, 
 				</span>
 				<span dangerouslySetInnerHTML={{ __html: parsedMessage }} />
 			</div>
-			<span className="chat-line_timestamp" title={moment(timestamp).format('HH:MM:SS')}>
+			<span className="chat-line_timestamp" title={moment(timestamp).format('HH:MM:ss')}>
 				{moment(timestamp).format('HH:MM')}
 			</span>
 		</div>
