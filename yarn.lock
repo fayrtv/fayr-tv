@@ -5053,6 +5053,11 @@
   dependencies:
     "bser" "2.1.1"
 
+"ffplay@^1.1.0":
+  "integrity" "sha512-1/VIkRKz2QpAmJGomA+8MJsBU6KUGDtp29vtJPDNoov/7X30tR+jloC11ouXO0jNDYlX0A29irDjcShndV8uRA=="
+  "resolved" "https://registry.npmjs.org/ffplay/-/ffplay-1.1.0.tgz"
+  "version" "1.1.0"
+
 "figgy-pudding@^3.5.1":
   "integrity" "sha512-0btnI/H8f2pavGMN8w40mlSKOfTK2SVJmBfBeVIj3kNw0swwgzyRq0d5TJVOwodFmtvpPeWPN/MCcfuWF0Ezbw=="
   "resolved" "https://registry.npmjs.org/figgy-pudding/-/figgy-pudding-3.5.2.tgz"
