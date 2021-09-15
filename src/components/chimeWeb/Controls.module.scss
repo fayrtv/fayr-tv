@@ -1,0 +1,117 @@
+.Controls {
+	display: flex;
+
+	position: relative;
+	padding: 2rem;
+	max-width: 100vw;
+
+	top: 0px;
+	left: 0px;
+
+	overflow-x: clip;
+	
+	left: -50%;
+	transform: translateX(50%);
+
+	transition: transform 0.5s ease-in-out;
+
+	.ControlsMinified{
+		left: 0%;
+		transform: none;
+	}
+
+	@media (max-width: 960px) {
+		
+		justify-content: space-between;
+		
+		padding: 0 1rem 1rem 1rem;
+
+		&.Minified {
+			left: 0%;
+			transform: none;
+
+			.ControlsMinified {
+				display: grid;
+				grid-template-columns: 35px 35px;
+				grid-template-rows: 35px 35px;
+				place-items: center;
+				
+				background: #505050;
+				border-radius: 5px;
+
+				padding: 5px;
+
+				&:hover {
+					background: #7e7e7e;
+				}
+			}
+
+			.Button {
+				height: 30px;
+				width: 30px;
+
+				pointer-events: none;
+
+				margin: 0;
+			}
+		}
+	}
+
+	.Button {
+		margin: 0 1rem;
+		display: flex;	
+
+		flex-grow: 1;
+		flex-basis: 30px;
+		align-items: center;
+		align-content: center;
+		justify-content: center;
+
+		max-width: var(--input-height);
+		
+		@media (max-width: 480px) {
+			margin: 0 0.5rem;
+		}
+		
+		@media (max-width: 365px) {
+			max-height: 10vw;
+			max-width: 10vw;
+		}
+
+		.BtnSvg {
+			fill: var(--color-text-base);
+		}
+
+		&.MicOn, &.CamOn, &.ChatOn {
+			background-color: var(--color--destructive);
+		}
+	}
+
+	.ChatButtonContainer {
+		.Container {
+			position: relative;
+		}
+
+		.UnreadTag {
+			position: absolute;
+			top: -5px;
+			left: 40px;
+			margin: 0;
+			height: auto;
+			width: 24px;
+		
+			color: black;
+		
+			border-radius: 15px;
+		
+			background: lightgrey;
+		}
+	}
+}
+    
+  .btn__svg--sm {
+	height: 16px;
+	width: 16px;
+	position: relative;
+	top: 2px;
+  }
