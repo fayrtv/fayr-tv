@@ -24,7 +24,7 @@ const LocalVideo = ({ chime, joinInfo }: Props) => {
 	const [muted, setMuted] = React.useState(false);
 	const [showMeta, setShowMeta] = React.useState(true);
 
-	const rosterCallback = (newRoster: any) => {
+	const rosterCallback = React.useCallback((newRoster: any) => {
 
 		let attendeeId;
 		for (attendeeId in newRoster) {
@@ -36,7 +36,7 @@ const LocalVideo = ({ chime, joinInfo }: Props) => {
 
 			setMuted(newRoster[attendeeId].muted);
 		}
-	};
+	}, [joinInfo.Attendee.AttendeeId]);
 
 	React.useEffect(() => {
 		// Hide meta info after 2 seconds
@@ -64,7 +64,7 @@ const LocalVideo = ({ chime, joinInfo }: Props) => {
 		chime.subscribeToRosterUpdate(rosterCallback);
 
 		return () => chime.unsubscribeFromRosterUpdate(rosterCallback);
-	}, []);
+	}, [chime, rosterCallback]);
 
 	const handleMouseEnter = React.useCallback(() => setShowMeta(true), []);
 

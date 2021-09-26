@@ -19,7 +19,7 @@ const RemoteVideo = ({ muted, attendeeId, videoEnabled, name, videoElement }: Pr
 			// Hide meta info after 2 seconds
 			setTimeout(() => setShowMeta(false), 2000);
 		}
-	}, []);
+	}, [muted]);
 
 	const handleMouseEnter = () => setShowMeta(true);
 	const handleMouseLeave = () => setShowMeta(false);
