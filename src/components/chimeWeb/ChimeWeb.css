@@ -59,7 +59,7 @@ input:disabled {
 		flex-direction: column;
 		overflow: hidden;
 	}
-  }
+}
 
 .form-grid {
   height: 100vh;
@@ -349,6 +349,17 @@ a.btn {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.FullScreenCams {
+  position: fixed;
+  z-index: 5000;
+  bottom: 0px;
+  left: 0px;
+}
+
+.FullScreenCams .RemoteVideoGroup {
+  height: 135px;
 }
 
 .overlay--hover #player-controls {

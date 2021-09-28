@@ -1,15 +1,9 @@
 import React from 'react';
 
+import { JoinInfo } from "./types";
+
 import "./Cam.scss";
 import "./LocalVideo.scss";
-
-type Attendee = {
-	AttendeeId: string;
-}
-
-type JoinInfo = {
-	Attendee: Attendee;
-}
 
 type Props = {
 	chime: any;
@@ -24,7 +18,7 @@ const LocalVideo = ({ chime, joinInfo }: Props) => {
 	const [muted, setMuted] = React.useState(false);
 	const [showMeta, setShowMeta] = React.useState(true);
 
-	const rosterCallback = (newRoster: any) => {
+	const rosterCallback = React.useCallback((newRoster: any) => {
 
 		let attendeeId;
 		for (attendeeId in newRoster) {
@@ -36,35 +30,45 @@ const LocalVideo = ({ chime, joinInfo }: Props) => {
 
 			setMuted(newRoster[attendeeId].muted);
 		}
-	};
+	}, [joinInfo.Attendee.AttendeeId]);
 
 	React.useEffect(() => {
 		// Hide meta info after 2 seconds
 		setTimeout(() => setShowMeta(false), 2500);
 
-		chime.audioVideo.addObserver({
-			videoTileDidUpdate: (tileState: any) => {
-				if (
-					!tileState.boundAttendeeId ||
-					!tileState.localTile ||
-					!tileState.tileId ||
-					!videoElement.current
-				) {
-					return;
+		if (!chime.audioVideo.videoTileController.currentLocalTile) {
+			chime.audioVideo.addObserver({
+				videoTileDidUpdate: (tileState: any) => {
+					if (!tileState.boundAttendeeId ||
+						!tileState.localTile ||
+						!tileState.tileId ||
+						!videoElement.current) {
+						return;
+					}
+	
+					chime.audioVideo.bindVideoElement(
+						tileState.tileId,
+						videoElement.current
+					);
+	
+					setEnabled(tileState.active);
 				}
-				chime.audioVideo.bindVideoElement(
-					tileState.tileId,
-					videoElement.current
-				);
+			});
+		} else {
+			const currentTile = chime.audioVideo.videoTileController.currentLocalTile.tileState;
 
-				setEnabled(tileState.active);
-			}
-		});
+			chime.audioVideo.bindVideoElement(
+				currentTile.tileId,
+				videoElement.current
+			);
+
+			setEnabled(currentTile.active);
+		}
 
 		chime.subscribeToRosterUpdate(rosterCallback);
 
 		return () => chime.unsubscribeFromRosterUpdate(rosterCallback);
-	}, []);
+	}, [chime, rosterCallback]);
 
 	const handleMouseEnter = React.useCallback(() => setShowMeta(true), []);
 
@@ -75,6 +79,7 @@ const LocalVideo = ({ chime, joinInfo }: Props) => {
 
 	const micMuteCls = muted ? 'controls__btn--mic_on' : 'controls__btn--mic_off';
 	const metaCls = showMetaCombined ? '' : ' cam__meta--hide';
+
 	return (
 		<div className="LocalVideo" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
 			<div className="cam">

@@ -49,7 +49,7 @@ export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({ joinInfo,
 
 	const { isOpen } = React.useContext(ChatOpenContext);
 
-	const initChatConnection = async () => {
+	const initChatConnection = React.useCallback(async () => {
 		const { Meeting, Attendee } = joinInfo;
 
 		const messagingUrl = `${config.CHAT_WEBSOCKET}?MeetingId=${Meeting.MeetingId}&AttendeeId=${Attendee.AttendeeId}&JoinToken=${Attendee.JoinToken}`
@@ -86,11 +86,11 @@ export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({ joinInfo,
 		setConnection(socketConnection);
 
 		chatRef.current!.focus();
-	}
+	}, [joinInfo, addMessages]);
 
 	React.useEffect(() => {
 		initChatConnection();
-	}, []);
+	}, [initChatConnection]);
 
 	React.useEffect(() => {
 
@@ -114,6 +114,7 @@ export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({ joinInfo,
 		}
 	}, [messages, isOpen, markAsSeen]);
 
+	// eslint-disable-next-line
 	const handleRoomClick = async (event: any) => {
 		event.stopPropagation();
 		event.preventDefault();
@@ -129,6 +130,7 @@ export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({ joinInfo,
 			navigator.clipboard.writeText(encodeURI(link));
 		}
 	}
+	
 
 	return (
 		<div className={`Chat ${!isOpen ? 'Closed' : ''}`}>

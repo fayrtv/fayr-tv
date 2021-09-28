@@ -8,18 +8,35 @@ type Props = {
 	videoEnabled: boolean;
 	name: string;
 	videoElement: any;
+	chime: any;
+	tileIndex: number;
 }
 
-const RemoteVideo = ({ muted, attendeeId, videoEnabled, name, videoElement }: Props) => {
+const RemoteVideo = ({ muted, attendeeId, videoEnabled, name, videoElement, chime, tileIndex }: Props) => {
 
 	const [showMeta, setShowMeta] = React.useState(true);
+
+	React.useEffect(() => {
+		const tile = chime.audioVideo.videoTileController.tileMap.get(tileIndex);
+
+		if (!tile || !tile.tileState.active) {
+			return;
+		}
+
+		if (videoElement.current) {
+			chime.audioVideo.bindVideoElement(
+				tileIndex,
+				videoElement.current
+			);
+		}
+	}, []);
 
 	React.useEffect(() => {
 		if (muted) {
 			// Hide meta info after 2 seconds
 			setTimeout(() => setShowMeta(false), 2000);
 		}
-	}, []);
+	}, [muted]);
 
 	const handleMouseEnter = () => setShowMeta(true);
 	const handleMouseLeave = () => setShowMeta(false);

@@ -84,7 +84,14 @@
 	}
 
 	@media (max-width: 960px) {
-		height: 40vh;
+
+		@media (orientation: portrait) {
+			height: 40vh;
+		}
+
+		@media (orientation: landscape) {
+			height: 80vh;
+		}
 
 		/* Large Screens and below */
 		&.Closed {
