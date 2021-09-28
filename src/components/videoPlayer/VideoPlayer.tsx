@@ -4,11 +4,12 @@ import * as config from "../../config";
 
 type Props = {
 	videoStream: string;
+	fullScreenCamSection: React.ReactNode;
 }
 
-const VideoPlayer = ({ videoStream }: Props) => {
+const VideoPlayer = ({ videoStream, fullScreenCamSection }: Props) => {
 
-	const videoElement = React.useRef<HTMLVideoElement>(null);
+	const videoElement = React.useRef<HTMLDivElement>(null);
 	const player = React.useRef<MediaPlayer>();
 
 	const [paused, setPaused] = React.useState(false);
@@ -87,7 +88,7 @@ const VideoPlayer = ({ videoStream }: Props) => {
 	}, [muted]);
 
 	const onFullScreenClick = React.useCallback(() => {
-		videoElement.current!.requestFullscreen();
+		fullScreen ?  document.exitFullscreen() : videoElement.current!.requestFullscreen();
 	}, [fullScreen]);
 
 	React.useEffect(() => {        
@@ -97,12 +98,29 @@ const VideoPlayer = ({ videoStream }: Props) => {
 		mediaPlayerScript.async = true;
 		mediaPlayerScript.onload = () => mediaPlayerScriptLoaded();
 		document.body.appendChild(mediaPlayerScript);
-	})
+	});
+
+	React.useEffect(() => {
+		if (!videoElement.current) {
+			return;
+		}
+
+		const cb = (_: Event) => setFullScreen(x => !x);
+
+		videoElement.current.onfullscreenchange = cb;
+
+		return () => videoElement.current?.removeEventListener("fullscreenchange", cb);
+	}, [videoElement])
 
 	return (
 		<div className="player-wrapper">
 			<div className="aspect-spacer"></div>
-			<div className="pos-absolute full-width full-height top-0">
+			<div ref={videoElement} className="pos-absolute full-width full-height top-0">
+				{ fullScreen && (
+					<div className="FullScreenCams">
+						{ fullScreenCamSection }
+					</div>
+				)}
 				<div id="overlay" className="overlay">
 					<div id="player-controls">
 					<div className="player-controls__inner">
@@ -154,52 +172,15 @@ const VideoPlayer = ({ videoStream }: Props) => {
 								/>
 							</svg>
 						</button>
-						<button id="fullscreen" className="mg-x-1 player-btn player-btn--icon player-btn--unmute" onClick={onFullScreenClick}>
-							<svg
-								className="player-icon player-icon--volume_up"
-								xmlns="http://www.w3.org/2000/svg"
-								height="24"
-								viewBox="0 0 24 24"
-								width="24"
-							>
-								<path d="M384.97,12.03c0-6.713-5.317-12.03-12.03-12.03H264.847c-6.833,0-11.922,5.39-11.934,12.223
-									c0,6.821,5.101,11.838,11.934,11.838h96.062l-0.193,96.519c0,6.833,5.197,12.03,12.03,12.03c6.833-0.012,12.03-5.197,12.03-12.03
-									l0.193-108.369c0-0.036-0.012-0.06-0.012-0.084C384.958,12.09,384.97,12.066,384.97,12.03z"/>
-								<path d="M120.496,0H12.403c-0.036,0-0.06,0.012-0.096,0.012C12.283,0.012,12.247,0,12.223,0C5.51,0,0.192,5.317,0.192,12.03
-									L0,120.399c0,6.833,5.39,11.934,12.223,11.934c6.821,0,11.838-5.101,11.838-11.934l0.192-96.339h96.242
-									c6.833,0,12.03-5.197,12.03-12.03C132.514,5.197,127.317,0,120.496,0z"/>
-								<path d="M120.123,360.909H24.061v-96.242c0-6.833-5.197-12.03-12.03-12.03S0,257.833,0,264.667v108.092
-									c0,0.036,0.012,0.06,0.012,0.084c0,0.036-0.012,0.06-0.012,0.096c0,6.713,5.317,12.03,12.03,12.03h108.092
-									c6.833,0,11.922-5.39,11.934-12.223C132.057,365.926,126.956,360.909,120.123,360.909z"/>
-								<path d="M372.747,252.913c-6.833,0-11.85,5.101-11.838,11.934v96.062h-96.242c-6.833,0-12.03,5.197-12.03,12.03
-									s5.197,12.03,12.03,12.03h108.092c0.036,0,0.06-0.012,0.084-0.012c0.036-0.012,0.06,0.012,0.096,0.012
-									c6.713,0,12.03-5.317,12.03-12.03V264.847C384.97,258.014,379.58,252.913,372.747,252.913z"/>
-							</svg>
-							<svg
-								className="player-icon player-icon--volume_off"
-								xmlns="http://www.w3.org/2000/svg"
-								height="24"
-								viewBox="0 0 24 24"
-								width="24"
-							>
-								<path d="M384.97,12.03c0-6.713-5.317-12.03-12.03-12.03H264.847c-6.833,0-11.922,5.39-11.934,12.223
-									c0,6.821,5.101,11.838,11.934,11.838h96.062l-0.193,96.519c0,6.833,5.197,12.03,12.03,12.03c6.833-0.012,12.03-5.197,12.03-12.03
-									l0.193-108.369c0-0.036-0.012-0.06-0.012-0.084C384.958,12.09,384.97,12.066,384.97,12.03z"/>
-								<path d="M120.496,0H12.403c-0.036,0-0.06,0.012-0.096,0.012C12.283,0.012,12.247,0,12.223,0C5.51,0,0.192,5.317,0.192,12.03
-									L0,120.399c0,6.833,5.39,11.934,12.223,11.934c6.821,0,11.838-5.101,11.838-11.934l0.192-96.339h96.242
-									c6.833,0,12.03-5.197,12.03-12.03C132.514,5.197,127.317,0,120.496,0z"/>
-								<path d="M120.123,360.909H24.061v-96.242c0-6.833-5.197-12.03-12.03-12.03S0,257.833,0,264.667v108.092
-									c0,0.036,0.012,0.06,0.012,0.084c0,0.036-0.012,0.06-0.012,0.096c0,6.713,5.317,12.03,12.03,12.03h108.092
-									c6.833,0,11.922-5.39,11.934-12.223C132.057,365.926,126.956,360.909,120.123,360.909z"/>
-								<path d="M372.747,252.913c-6.833,0-11.85,5.101-11.838,11.934v96.062h-96.242c-6.833,0-12.03,5.197-12.03,12.03
-									s5.197,12.03,12.03,12.03h108.092c0.036,0,0.06-0.012,0.084-0.012c0.036-0.012,0.06,0.012,0.096,0.012
-									c6.713,0,12.03-5.317,12.03-12.03V264.847C384.97,258.014,379.58,252.913,372.747,252.913z"/>
+						<button id="fullscreen" className="mg-x-1 player-btn player-btn--icon" onClick={onFullScreenClick}>
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" height="24" width="24">
+								<path fill="none" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="32" d="M432 320v112H320M421.8 421.77L304 304M80 192V80h112M90.2 90.23L208 208M320 80h112v112M421.77 90.2L304 208M192 432H80V320M90.23 421.8L208 304"/>
 							</svg>
 						</button>
 					</div>
 					</div>
 				</div>
-				<video id="video-player" className="el-player" ref={videoElement} playsInline></video>
+				<video id="video-player" className="el-player" playsInline></video>
 			</div>
 		</div>
 	  );

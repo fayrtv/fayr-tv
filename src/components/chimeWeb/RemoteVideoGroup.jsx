@@ -108,8 +108,12 @@ class RemoteVideoGroup extends Component {
 		this.setState({ roster });
 
 		setTimeout(() => {
-			if (config.DEBUG) console.log(roster[index]);
+			if (config.DEBUG) {
+				console.log(roster[index]);
+			}
+
 			const videoElement = document.getElementById(`video_${tileState.boundAttendeeId}`);
+
 			if (videoElement) {
 				this.props.chime.audioVideo.bindVideoElement(
 					tileState.tileId,
@@ -135,8 +139,7 @@ class RemoteVideoGroup extends Component {
 
 	componentDidMount() {
 		const roster = [];
-		// eslint-disable-next-line
-		Array.from(Array(MAX_REMOTE_VIDEOS).keys()).map((key, index) => {
+		[...Array(MAX_REMOTE_VIDEOS).keys()].map((_, index) => {
 			roster[index] = {
 				videoElement: React.createRef()
 			};
@@ -157,23 +160,22 @@ class RemoteVideoGroup extends Component {
 
 	render() {
 		return (
-			<React.Fragment>
-				<div className="RemoteVideoGroup">
-					{this.state.roster.map((attendee, index) => {
-						return (
-							<RemoteVideo
-								chime={this.props.chime}
-								key={index}
-								attendeeId={attendee.attendeeId}
-								videoEnabled={attendee.videoEnabled}
-								name={attendee.name}
-								muted={attendee.muted}
-								videoElement={attendee.videoElement}
-							/>
-						);
-					})}
-				</div>
-			</React.Fragment>
+			<div className="RemoteVideoGroup">
+				{this.state.roster.map((attendee, index) => {
+					return (
+						<RemoteVideo
+							chime={this.props.chime}
+							tileIndex={index}
+							key={index}
+							attendeeId={attendee.attendeeId}
+							videoEnabled={attendee.videoEnabled}
+							name={attendee.name}
+							muted={attendee.muted}
+							videoElement={attendee.videoElement}
+						/>
+					);
+				})}
+			</div>
 		)
 	}
 }
