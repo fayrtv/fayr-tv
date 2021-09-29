@@ -107,9 +107,10 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection }: Props) => {
 
 		const cb = (_: Event) => setFullScreen(x => !x);
 
+		const currentVideoElement = videoElement.current;
 		videoElement.current.onfullscreenchange = cb;
 
-		return () => videoElement.current?.removeEventListener("fullscreenchange", cb);
+		return () => currentVideoElement?.removeEventListener("fullscreenchange", cb);
 	}, [videoElement])
 
 	return (

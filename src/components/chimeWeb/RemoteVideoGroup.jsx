@@ -139,7 +139,7 @@ class RemoteVideoGroup extends Component {
 
 	componentDidMount() {
 		const roster = [];
-		[...Array(MAX_REMOTE_VIDEOS).keys()].map((_, index) => {
+		[...Array(MAX_REMOTE_VIDEOS).keys()].forEach((_, index) => {
 			roster[index] = {
 				videoElement: React.createRef()
 			};
