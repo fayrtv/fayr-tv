@@ -28,9 +28,9 @@ export const Settings = ({ chime, closeSettings, joinInfo, saveSettings }: Props
 	const availableCams = chime.videoInputDevices;
 
 	const [playbackUrl, setPlaybackUrl] = React.useState<string>(joinInfo.PlaybackURL);
-	const [microphone, setMicrophone] = React.useState<string>(currentMic.value);
-	const [speaker, setSpeaker] = React.useState<string>(currentSpeaker.value);
-	const [camera, setCamera] = React.useState<string>(currentCam.value);
+	const [microphone, setMicrophone] = React.useState<string>(currentMic?.value);
+	const [speaker, setSpeaker] = React.useState<string>(currentSpeaker?.value);
+	const [camera, setCamera] = React.useState<string>(currentCam?.value);
 
 	const handleKeyDown = ({ key }: KeyboardEvent) => {
 		if (key === "Escape") { // keyCode 27 is Escape key
