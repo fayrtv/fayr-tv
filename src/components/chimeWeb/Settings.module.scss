@@ -1,0 +1,13 @@
+@import "../../styles/animations";
+
+.SettingsContainer {
+	@media (max-width: 960px) {
+		width: 95%;
+	}
+	
+	animation: fadeIn 0.5s;
+
+	option {
+		color: black;
+	}
+}
