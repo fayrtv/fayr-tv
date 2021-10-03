@@ -4,4 +4,5 @@ export type Attendee = {
 
 export type JoinInfo = {
 	Attendee: Attendee;
+	PlaybackURL: string;
 }
