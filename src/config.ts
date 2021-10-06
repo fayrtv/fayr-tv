@@ -21,16 +21,15 @@ export const CHIME_LOG_LEVEL = 'DEBUG';
 export const DEBUG = false;
 
 
-function makeid(length) {
-    var result           = [];
-    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var charactersLength = characters.length;
-    for ( var i = 0; i < length; i++ ) {
-      result.push(characters.charAt(Math.floor(Math.random() * 
- charactersLength)));
-   }
-   return result.join('');
+function makeid(length: number) {
+	const result = [];
+	const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	const charactersLength = characters.length;
+
+	for (let i = 0; i < length; i++ ) {
+		result.push(characters.charAt(Math.floor(Math.random() * charactersLength)));
+	}
+	return result.join('');
 }
 
 export const RANDOM = makeid(8);
-
