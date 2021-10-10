@@ -262,6 +262,7 @@ export default class ChimeSdkWrapper implements IChimeSdkWrapper{
 								signalStrength * 100
 							);
 						}
+
 						if (this.title && attendeeId && !this.roster[attendeeId].name) {
 							const response = await fetch(
 								`${config.CHIME_ROOM_API}/attendee?title=${encodeURIComponent(

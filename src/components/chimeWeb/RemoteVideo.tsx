@@ -11,11 +11,15 @@ type Props = {
 	videoElement: React.RefObject<HTMLVideoElement>;
 	chime: IChimeSdkWrapper;
 	tileIndex: number;
+	volume: number;
 }
 
-const RemoteVideo = ({ muted, attendeeId, videoEnabled, name, videoElement, chime, tileIndex }: Props) => {
+const RemoteVideo = ({ muted, attendeeId, videoEnabled, name, videoElement, chime, tileIndex, volume }: Props) => {
 
 	const [showMeta, setShowMeta] = React.useState(true);
+	const [talking, setTalking] = React.useState(false);
+
+	const talkingTimeout = React.useRef<number>(-1);
 
 	React.useEffect(() => {
 		const tile = chime.audioVideo.getVideoTile(tileIndex);
@@ -33,6 +37,18 @@ const RemoteVideo = ({ muted, attendeeId, videoEnabled, name, videoElement, chim
 	}, []);
 
 	React.useEffect(() => {
+		if (volume > 0) {
+			setTalking(true);
+
+			// Give this some time to timeout, so the indicator does not constantly blink off and on due to the
+			// surrounding throttled updated
+			talkingTimeout.current = window.setTimeout(() => {
+				setTalking(false);
+			}, 1500);
+		}
+	}, [volume]);
+
+	React.useEffect(() => {
 		if (muted) {
 			// Hide meta info after 2 seconds
 			setTimeout(() => setShowMeta(false), 2000);
@@ -44,6 +60,7 @@ const RemoteVideo = ({ muted, attendeeId, videoEnabled, name, videoElement, chim
 
 	const showMetaCombined = showMeta || muted || !videoEnabled;
 	const micMuteCls = muted ? 'controls__btn--mic_on' : 'controls__btn--mic_off';
+	const micTalkingIndicator = talking ? 'controls__btn--talking' : '';
 	const metaCls = showMetaCombined ? '' : ' cam__meta--hide';
 	const videoId = `video_${attendeeId}`;
 
@@ -54,7 +71,7 @@ const RemoteVideo = ({ muted, attendeeId, videoEnabled, name, videoElement, chim
 					<video ref={videoElement} className="attendee_cam" id={videoId} />
 				</div>
 			</div>
-			<span className={`cam__meta${metaCls}`}>
+			<span className={`cam__meta${metaCls} ${micTalkingIndicator}`}>
 				{name}
 				<span className={`${micMuteCls} btn--mic`} data-id={attendeeId}>
 					<svg className="attendee mg-l-1 btn__svg btn__svg--sm btn__svg--mic_on" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 14C13.66 14 14.99 12.66 14.99 11L15 5C15 3.34 13.66 2 12 2C10.34 2 9 3.34 9 5V11C9 12.66 10.34 14 12 14ZM17.3 11C17.3 14 14.76 16.1 12 16.1C9.24 16.1 6.7 14 6.7 11H5C5 14.41 7.72 17.23 11 17.72V21H13V17.72C16.28 17.24 19 14.42 19 11H17.3Z" fill="white" /></svg>
