@@ -196,6 +196,7 @@ export const RemoteVideoGroup = ({ chime, joinInfo, storedRoster }: Props) => {
 						videoEnabled={attendee.videoEnabled}
 						name={attendee.name}
 						muted={attendee.muted}
+						volume={attendee.volume}
 						videoElement={attendee.videoElement}
 					/>
 				);
