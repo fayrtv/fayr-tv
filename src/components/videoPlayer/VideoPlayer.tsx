@@ -153,9 +153,9 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection }: Props) => {
 							<svg
 								className="player-icon player-icon--volume_up"
 								xmlns="http://www.w3.org/2000/svg"
-								height="24"
+								height="36"
 								viewBox="0 0 24 24"
-								width="24"
+								width="36"
 							>
 								<path
 									d="M3 10v4c0 .55.45 1 1 1h3l3.29 3.29c.63.63 1.71.18 1.71-.71V6.41c0-.89-1.08-1.34-1.71-.71L7 9H4c-.55 0-1 .45-1 1zm13.5 2c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 4.45v.2c0 .38.25.71.6.85C17.18 6.53 19 9.06 19 12s-1.82 5.47-4.4 6.5c-.36.14-.6.47-.6.85v.2c0 .63.63 1.07 1.21.85C18.6 19.11 21 15.84 21 12s-2.4-7.11-5.79-8.4c-.58-.23-1.21.22-1.21.85z"
@@ -164,9 +164,9 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection }: Props) => {
 							<svg
 								className="player-icon player-icon--volume_off"
 								xmlns="http://www.w3.org/2000/svg"
-								height="24"
+								height="36"
 								viewBox="0 0 24 24"
-								width="24"
+								width="36"
 							>
 								<path
 									d="M3.63 3.63c-.39.39-.39 1.02 0 1.41L7.29 8.7 7 9H4c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1h3l3.29 3.29c.63.63 1.71.18 1.71-.71v-4.17l4.18 4.18c-.49.37-1.02.68-1.6.91-.36.15-.58.53-.58.92 0 .72.73 1.18 1.39.91.8-.33 1.55-.77 2.22-1.31l1.34 1.34c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L5.05 3.63c-.39-.39-1.02-.39-1.42 0zM19 12c0 .82-.15 1.61-.41 2.34l1.53 1.53c.56-1.17.88-2.48.88-3.87 0-3.83-2.4-7.11-5.78-8.4-.59-.23-1.22.23-1.22.86v.19c0 .38.25.71.61.85C17.18 6.54 19 9.06 19 12zm-8.71-6.29l-.17.17L12 7.76V6.41c0-.89-1.08-1.33-1.71-.7zM16.5 12c0-1.77-1.02-3.29-2.5-4.03v1.79l2.48 2.48c.01-.08.02-.16.02-.24z"
@@ -174,8 +174,15 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection }: Props) => {
 							</svg>
 						</button>
 						<button id="fullscreen" className="mg-x-1 player-btn player-btn--icon" onClick={onFullScreenClick}>
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" height="24" width="24">
-								<path fill="none" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="32" d="M432 320v112H320M421.8 421.77L304 304M80 192V80h112M90.2 90.23L208 208M320 80h112v112M421.77 90.2L304 208M192 432H80V320M90.23 421.8L208 304"/>
+							<svg 
+								className="player-icon"
+								xmlns="http://www.w3.org/2000/svg" 
+								viewBox="0 0 512 512" 
+								height="36" 
+								width="36" >
+								<path fill="none" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="32" 
+									d="M432 320v112H320M421.8 421.77L304 304M80 192V80h112M90.2 90.23L208 208M320 80h112v112M421.77 90.2L304 208M192 432H80V320M90.23 421.8L208 304"
+								/>
 							</svg>
 						</button>
 					</div>
