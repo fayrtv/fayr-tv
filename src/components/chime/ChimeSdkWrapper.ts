@@ -33,15 +33,19 @@ type DeviceUpdatePayload = {
 
 export type DeviceUpdateCallback = (deviceInfo: DeviceUpdatePayload) => void;
 
-type Participant = {
+export type Attendee = {
+	attendeeId: string;
 	muted: boolean;
 	name: string;
 	signalStrength: number;
+	tileId: number;
+	videoEnabled: boolean;
+	videoElement: React.RefObject<HTMLVideoElement>;
 	volume: number;
 }
 
-type RosterMap = {
-	[key: string]: Participant;
+export type RosterMap = {
+	[key: string]: Attendee;
 }
 
 type RosterUpdateCallback = Callback<RosterMap>;
@@ -55,12 +59,28 @@ type MessageUpdate = {
 
 type MessageUpdateCallback = Callback<MessageUpdate>;
 
-export default class ChimeSdkWrapper {
+export interface IChimeSdkWrapper {
+	audioVideo: AudioVideoFacade;
+	meetingSession: Nullable<DefaultMeetingSession>;
+
+	subscribeToRosterUpdate(callback: RosterUpdateCallback): number;
+	unsubscribeFromRosterUpdate(callback: RosterUpdateCallback): void;
+}
+
+export default class ChimeSdkWrapper implements IChimeSdkWrapper{
 	private static WEB_SOCKET_TIMEOUT_MS = 10000;
 	private static ROSTER_THROTTLE_MS = 400;
 
-	private meetingSession: Nullable<DefaultMeetingSession> = null;
-	private audioVideo: Nullable<AudioVideoFacade> = null;
+	private _meetingSession: Nullable<DefaultMeetingSession> = null;
+	public get meetingSession() {
+		return this._meetingSession;
+	}
+
+	private _audioVideo: Nullable<AudioVideoFacade> = null;
+	public get audioVideo() {
+		return this._audioVideo!;
+	}
+
 	private title: Nullable<string> = null;
 	private name: Nullable<string> = null;
 	private region: Nullable<string> = null;
@@ -80,8 +100,8 @@ export default class ChimeSdkWrapper {
 	private messageUpdateCallbacks: Array<MessageUpdateCallback> = [];
 
 	resetFields() {
-		this.meetingSession = null;
-		this.audioVideo = null;
+		this._meetingSession = null;
+		this._audioVideo = null;
 		this.title = null;
 		this.name = null;
 		this.region = null;
@@ -161,15 +181,15 @@ export default class ChimeSdkWrapper {
 
 		const logger = new ConsoleLogger('SDK', LogLevel.ERROR);
 		const deviceController = new DefaultDeviceController(logger);
-		this.meetingSession = new DefaultMeetingSession(
+		this._meetingSession = new DefaultMeetingSession(
 			configuration,
 			logger,
 			deviceController
 		);
-		this.audioVideo = this.meetingSession.audioVideo;
+		this._audioVideo = this._meetingSession.audioVideo;
 
 		this.audioInputDevices = [];
-		(await this.audioVideo.listAudioInputDevices()).forEach(
+		(await this._audioVideo.listAudioInputDevices()).forEach(
 			(mediaDeviceInfo) => {
 				this.audioInputDevices.push({
 					label: mediaDeviceInfo.label,
@@ -178,7 +198,7 @@ export default class ChimeSdkWrapper {
 			}
 		);
 		this.audioOutputDevices = [];
-		(await this.audioVideo.listAudioOutputDevices()).forEach(
+		(await this._audioVideo.listAudioOutputDevices()).forEach(
 			(mediaDeviceInfo) => {
 				this.audioOutputDevices.push({
 					label: mediaDeviceInfo.label,
@@ -187,7 +207,7 @@ export default class ChimeSdkWrapper {
 			}
 		);
 		this.videoInputDevices = [];
-		(await this.audioVideo.listVideoInputDevices()).forEach(
+		(await this._audioVideo.listVideoInputDevices()).forEach(
 			(mediaDeviceInfo) => {
 				this.videoInputDevices.push({
 					label: mediaDeviceInfo.label,
@@ -196,9 +216,9 @@ export default class ChimeSdkWrapper {
 			}
 		);
 		this.publishDevicesUpdated();
-		this.audioVideo.addDeviceChangeObserver(this);
+		this._audioVideo.addDeviceChangeObserver(this);
 
-		this.audioVideo.realtimeSubscribeToAttendeeIdPresence(
+		this._audioVideo.realtimeSubscribeToAttendeeIdPresence(
 			(presentAttendeeId, present) => {
 				if (!present) {
 					delete this.roster[presentAttendeeId];
@@ -207,7 +227,7 @@ export default class ChimeSdkWrapper {
 					return;
 				}
 
-				this.audioVideo?.realtimeSubscribeToVolumeIndicator(presentAttendeeId, async (
+				this._audioVideo?.realtimeSubscribeToVolumeIndicator(presentAttendeeId, async (
 						attendeeId,
 						volume,
 						muted,
@@ -229,7 +249,7 @@ export default class ChimeSdkWrapper {
 						let shouldPublishImmediately = false;
 
 						if (!this.roster[attendeeId]) {
-							this.roster[attendeeId] = { name: '' } as Participant;
+							this.roster[attendeeId] = { name: '' } as Attendee;
 						}
 						if (volume !== null) {
 							this.roster[attendeeId].volume = Math.round(volume * 100);
@@ -279,37 +299,37 @@ export default class ChimeSdkWrapper {
 			}
 		);
 
-		const audioInputs = await this.audioVideo?.listAudioInputDevices();
+		const audioInputs = await this._audioVideo?.listAudioInputDevices();
 		if (audioInputs && audioInputs.length > 0 && audioInputs[0].deviceId) {
 			this.currentAudioInputDevice = {
 				label: audioInputs[0].label,
 				value: audioInputs[0].deviceId
 			};
-			await this.audioVideo?.chooseAudioInputDevice(audioInputs[0].deviceId);
+			await this._audioVideo?.chooseAudioInputDevice(audioInputs[0].deviceId);
 		}
 
-		const audioOutputs = await this.audioVideo?.listAudioOutputDevices();
+		const audioOutputs = await this._audioVideo?.listAudioOutputDevices();
 		if (audioOutputs && audioOutputs.length > 0 && audioOutputs[0].deviceId) {
 			this.currentAudioOutputDevice = {
 				label: audioOutputs[0].label,
 				value: audioOutputs[0].deviceId
 			};
-			await this.audioVideo?.chooseAudioOutputDevice(audioOutputs[0].deviceId);
+			await this._audioVideo?.chooseAudioOutputDevice(audioOutputs[0].deviceId);
 		}
 
-		const videoInputs = await this.audioVideo?.listVideoInputDevices();
+		const videoInputs = await this._audioVideo?.listVideoInputDevices();
 		if (videoInputs && videoInputs.length > 0 && videoInputs[0].deviceId) {
 			this.currentVideoInputDevice = {
 				label: videoInputs[0].label,
 				value: videoInputs[0].deviceId
 			};
-			await this.audioVideo?.chooseVideoInputDevice(null);
+			await this._audioVideo?.chooseVideoInputDevice(null);
 		}
 
 		this.publishDevicesUpdated();
 
-		this.audioVideo?.bindAudioElement(element);
-		this.audioVideo?.start();
+		this._audioVideo?.bindAudioElement(element);
+		this._audioVideo?.start();
 	}
 
 	async joinRoomMessaging() {
@@ -371,7 +391,7 @@ export default class ChimeSdkWrapper {
 
 	async leaveRoom(end: boolean) {
 		try {
-			this.audioVideo?.stop();
+			this._audioVideo?.stop();
 		} catch (error) {
 			this.logError(error);
 		}
@@ -402,7 +422,7 @@ export default class ChimeSdkWrapper {
 
 	async chooseAudioInputDevice(device: DeviceInfo) {
 		try {
-			await this.audioVideo?.chooseAudioInputDevice(device.value);
+			await this._audioVideo?.chooseAudioInputDevice(device.value);
 			this.currentAudioInputDevice = device;
 		} catch (error) {
 			this.logError(error);
@@ -411,7 +431,7 @@ export default class ChimeSdkWrapper {
 
 	async chooseAudioOutputDevice(device: DeviceInfo) {
 		try {
-			await this.audioVideo?.chooseAudioOutputDevice(device.value);
+			await this._audioVideo?.chooseAudioOutputDevice(device.value);
 			this.currentAudioOutputDevice = device;
 		} catch (error) {
 			this.logError(error);
@@ -420,7 +440,7 @@ export default class ChimeSdkWrapper {
 
 	async chooseVideoInputDevice(device: DeviceInfo) {
 		try {
-			await this.audioVideo?.chooseVideoInputDevice(device.value);
+			await this._audioVideo?.chooseVideoInputDevice(device.value);
 			this.currentVideoInputDevice = device;
 		} catch (error) {
 			this.logError(error);

@@ -1,3 +1,4 @@
+import { IChimeSdkWrapper } from 'components/chime/ChimeSdkWrapper';
 import React from 'react';
 
 import "./Cam.scss"
@@ -7,8 +8,8 @@ type Props = {
 	attendeeId: string;
 	videoEnabled: boolean;
 	name: string;
-	videoElement: any;
-	chime: any;
+	videoElement: React.RefObject<HTMLVideoElement>;
+	chime: IChimeSdkWrapper;
 	tileIndex: number;
 }
 
@@ -17,9 +18,9 @@ const RemoteVideo = ({ muted, attendeeId, videoEnabled, name, videoElement, chim
 	const [showMeta, setShowMeta] = React.useState(true);
 
 	React.useEffect(() => {
-		const tile = chime.audioVideo.videoTileController.tileMap.get(tileIndex);
+		const tile = chime.audioVideo.getVideoTile(tileIndex);
 
-		if (!tile || !tile.tileState.active) {
+		if (!tile || !tile.state().active) {
 			return;
 		}
 
