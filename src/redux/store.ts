@@ -12,6 +12,10 @@ export type Reducers = {
 
 export type ReduxStore = redux.Store & Reducers
 
+export const GlobalResetAction = () => ({
+	type: "RESET",
+});
+
 export const store: ReduxStore = redux.createStore(
 	redux.combineReducers<Reducers>({
 		chatMessageReducer,
