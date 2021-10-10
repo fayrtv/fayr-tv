@@ -2,13 +2,13 @@ import React from 'react';
 import { connect } from "react-redux";
 import * as config from '../../config';
 import { ChatOpenContext } from "../contexts/ChatOpenContext";
-import { ReduxStore } from 'redux/store';
+import { GlobalResetAction, ReduxStore } from 'redux/store';
 import { Message } from 'components/chat/types';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { Desktop, Mobile } from 'components/mediaQueries';
 
 import styles from "./Controls.module.scss";
 import { useMediaQuery } from 'react-responsive';
+import store from '../../redux/store';
 
 enum VideoStatus {
 	Loading,
@@ -131,6 +131,7 @@ const Controls: React.FC<Props & ReduxProps> = ({ chime, title, openSettings, un
 
 	const endButtonOnClick = async () => {
 		await chime.leaveRoom(role === 'host');
+		store.dispatch(GlobalResetAction());
 		sessionStorage.removeItem(ssName);
 		const whereTo = `${baseHref}/${role === 'host' ? '' : 'join?room=' + title}`;
 		history.push(whereTo);

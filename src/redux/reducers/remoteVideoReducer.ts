@@ -20,6 +20,8 @@ export const reducer = (state = initialState, action: ReducerAction<Array<Attend
 	switch (action.type) {
 		case REMOTEVIDEOROSTER_UPDATED:
 			return action.payload;
+		case "RESET":
+			return [];
 		default:
 			return state;
 	}

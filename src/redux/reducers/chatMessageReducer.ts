@@ -36,6 +36,8 @@ export const reducer = (state = initialState, action: ReducerAction<Message>): C
 				}
 			});
 			return newState;
+		case "RESET":
+			return [];
 		default:
 			return state;
 	}
