@@ -1,8 +1,12 @@
 // Framework
 import React, { useState } from "react";
+import Picker from 'emoji-picker-react';
 import { ReconnectingPromisedWebSocket } from 'amazon-chime-sdk-js';
+import Emoji from "react-emoji-render";
 
-import "./ChatInput.scss"
+import styles from "./ChatInput.module.scss";
+import useGlobalClickHandler from "hooks/useGlobalClickHandler";
+import { isInRect } from "util/coordinateUtil";
 
 type Props = {
 	connection: ReconnectingPromisedWebSocket | undefined;
@@ -13,6 +17,9 @@ type Props = {
 export const ChatInput = ({ connection, inputRef, userName }: Props) => {
 
 	const [message, setMessage] = useState("");
+	const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
+
+	const emojiPickerRef = React.useRef<HTMLDivElement>(null);
 
 	const sendMessage = () => {
 		if (message) {
@@ -34,20 +41,61 @@ export const ChatInput = ({ connection, inputRef, userName }: Props) => {
 
 		sendMessage();
 	}
+	
 
 	const onInput: React.ChangeEventHandler<HTMLInputElement> = event => setMessage(event.target.value);
 
+	useGlobalClickHandler(clickEvent => {
+		if (!emojiPickerOpen && !emojiPickerRef.current) {
+			return;
+		}
+		
+		if (!isInRect(emojiPickerRef.current!.getBoundingClientRect(), clickEvent.x, clickEvent.y)) {
+			setEmojiPickerOpen(false);
+		}
+	});
+
+	React.useEffect(() => {
+		if (inputRef.current === document.activeElement) {
+			inputRef.current!.selectionStart = 500000;
+			inputRef.current!.selectionEnd = 500000;
+		}
+	}, [message]);
+
 	return (
-		<div className="composer chime-web-composer full-width chat-input">
-			<input
-				ref={inputRef}
-				type="text"
-				placeholder="Hier tippen ..."
-				value={message}
-				maxLength={510}
-				onChange={onInput}
-				onKeyDown={onKeyDown}
-			/>
+		<div className={`composer chime-web-composer full-width ${styles.ChatInput}`}>
+			<div className={styles.InputSection}>
+				<input
+					ref={inputRef}
+					type="text"
+					placeholder="Hier tippen ..."
+					value={message}
+					maxLength={510}
+					onChange={onInput}
+					onKeyDown={onKeyDown}
+				/>
+				<div 
+					className={styles.EmojiIconContainer}
+					onClick={() => setEmojiPickerOpen(!emojiPickerOpen)}>
+					<div 
+						className={styles.EmojiIcon}>
+						<Emoji
+							text=":)"/>
+					</div>
+				</div>
+				{ emojiPickerOpen && 
+					<div
+						ref={emojiPickerRef}
+						className={styles.EmojiPicker}
+						onClick={() => setEmojiPickerOpen(!emojiPickerOpen)}>
+						<Picker
+							onEmojiClick={(_, data) => {
+								setMessage(`${message}${data.emoji}`);
+								inputRef.current!.focus();
+							}} />
+					</div>
+				}
+			</div>
 			<button
 				disabled={!connection}
 				className="btn btn--primary"

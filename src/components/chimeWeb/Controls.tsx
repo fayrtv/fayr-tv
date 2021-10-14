@@ -5,7 +5,6 @@ import { ChatOpenContext } from "../contexts/ChatOpenContext";
 import { ReduxStore } from 'redux/store';
 import { Message } from 'components/chat/types';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { Desktop, Mobile } from 'components/mediaQueries';
 
 import styles from "./Controls.module.scss";
 import { useMediaQuery } from 'react-responsive';

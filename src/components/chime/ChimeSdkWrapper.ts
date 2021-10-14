@@ -67,7 +67,11 @@ export interface IChimeSdkWrapper {
 	unsubscribeFromRosterUpdate(callback: RosterUpdateCallback): void;
 }
 
-export default class ChimeSdkWrapper implements IChimeSdkWrapper{
+export interface IChimeSocket {
+	joinRoomSocket(): Promise<Nullable<ReconnectingPromisedWebSocket>>;
+}
+
+export default class ChimeSdkWrapper implements IChimeSdkWrapper, IChimeSocket {
 	private static WEB_SOCKET_TIMEOUT_MS = 10000;
 	private static ROSTER_THROTTLE_MS = 400;
 
@@ -147,7 +151,7 @@ export default class ChimeSdkWrapper implements IChimeSdkWrapper{
 			throw new Error(json.error);
 		}
 
-		const { JoinInfo }: { JoinInfo: JoinInfo } = json;
+		const { JoinInfo } = json;
 
 		if (!JoinInfo) {
 			throw new Error('CreateOrJoin.classRoomDoesNotExist');
@@ -333,10 +337,11 @@ export default class ChimeSdkWrapper implements IChimeSdkWrapper{
 		this._audioVideo?.start();
 	}
 
-	async joinRoomMessaging() {
+	async joinRoomSocket() {
+
 		if (!this.configuration) {
 			this.logError(new Error('configuration does not exist'));
-			return;
+			return null;
 		}
 
 		const messagingUrl = `${config.CHAT_WEBSOCKET}?MeetingId=${this.configuration.meetingId}&AttendeeId=${this.configuration.credentials!.attendeeId}&JoinToken=${this.configuration.credentials!.joinToken}`;
@@ -351,26 +356,11 @@ export default class ChimeSdkWrapper implements IChimeSdkWrapper{
 
 		await this.messagingSocket.open(ChimeSdkWrapper.WEB_SOCKET_TIMEOUT_MS);
 
-		this.messagingSocket.addEventListener('message', (event: any) => {
-			try {
-				const data = JSON.parse(event.data);
-				const { attendeeId } = data.payload;
+		if (config.DEBUG) {
+			console.log(this.messagingSocket);
+		}
 
-				let name: Nullable<string> = null;
-				if (this.roster[attendeeId]) {
-					name = this.roster[attendeeId].name;
-				}
-
-				this.publishMessageUpdate({
-					type: data.type,
-					payload: data.payload,
-					timestampMs: Date.now(),
-					name
-				});
-			} catch (error) {
-				this.logError(error);
-			}
-		});
+		return this.messagingSocket;
 	}
 
 	sendMessage(type: any, payload: any) {

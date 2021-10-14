@@ -1,5 +1,6 @@
 export type Attendee = {
 	AttendeeId: string;
+	JoinToken: string;
 }
 
 export type JoinInfo = {
