@@ -1,13 +1,7 @@
 import React from 'react';
-import {
-	DefaultPromisedWebSocketFactory,
-	DefaultDOMWebSocketFactory,
-	FullJitterBackoff,
-	ReconnectingPromisedWebSocket
-} from 'amazon-chime-sdk-js';
+import { ReconnectingPromisedWebSocket } from 'amazon-chime-sdk-js';
 import ChatLine from "./subcomponents/ChatLine";
 import ChatInput from "./subcomponents/ChatInput";
-import * as config from '../../config';
 import { ChatOpenContext } from "../contexts/ChatOpenContext";
 import { connect } from 'react-redux';
 import { ReduxStore } from '../../redux/store';
@@ -15,6 +9,7 @@ import { Action, Dispatch } from 'redux';
 
 // Functionality
 import { addMessage, markAsSeen } from "redux/reducers/chatMessageReducer";
+import { IChimeSocket } from '../chime/ChimeSdkWrapper';
 import { CouldBeArray } from '../../util/collectionUtil';
 
 // Types
@@ -23,10 +18,8 @@ import { Message } from "./types";
 // Styles
 import './Chat.scss';
 
-const WEB_SOCKET_TIMEOUT_MS = 10000;
-
 type Props = {
-	joinInfo: any;
+	chimeSocket: IChimeSocket;
 	userName: string;
 	title: string;
 }
@@ -40,7 +33,7 @@ type ReduxDispatches = {
 	markAsSeen(messages: CouldBeArray<Message>): void;
 }
 
-export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({ joinInfo, userName, title, messages, addMessages, markAsSeen }) => {
+export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({ chimeSocket, userName, title, messages, addMessages, markAsSeen }) => {
 
 	const [connection, setConnection] = React.useState<ReconnectingPromisedWebSocket>();
 
@@ -50,25 +43,14 @@ export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({ joinInfo,
 	const { isOpen } = React.useContext(ChatOpenContext);
 
 	const initChatConnection = React.useCallback(async () => {
-		const { Meeting, Attendee } = joinInfo;
 
-		const messagingUrl = `${config.CHAT_WEBSOCKET}?MeetingId=${Meeting.MeetingId}&AttendeeId=${Attendee.AttendeeId}&JoinToken=${Attendee.JoinToken}`
+		const socket = await chimeSocket.joinRoomSocket();
 
-		const socketConnection = new ReconnectingPromisedWebSocket(
-			messagingUrl,
-			[],
-			'arraybuffer',
-			new DefaultPromisedWebSocketFactory(new DefaultDOMWebSocketFactory()),
-			new FullJitterBackoff(1000, 0, 10000)
-		);
-
-		if (config.DEBUG) {
-			console.log(socketConnection);
+		if (socket === null) {
+			return;
 		}
 
-		await socketConnection.open(WEB_SOCKET_TIMEOUT_MS);
-
-		socketConnection.addEventListener('message', event => {
+		socket.addEventListener('message', event => {
 			const data = (event as any).data.split('::');
 			const username = data[0];
 			const message = data.slice(1).join('::'); // in case the message contains the separator '::'
@@ -83,17 +65,18 @@ export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({ joinInfo,
 			addMessages(newMessage);
 		});
 
-		setConnection(socketConnection);
+		setConnection(socket);
 
 		chatRef.current!.focus();
-	}, [joinInfo, addMessages]);
+
+		return () => socket.close(5000);
+	}, [chimeSocket, addMessages]);
 
 	React.useEffect(() => {
 		initChatConnection();
 	}, [initChatConnection]);
 
 	React.useEffect(() => {
-
 		if (!isOpen) {
 			return;
 		}

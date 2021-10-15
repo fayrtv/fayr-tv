@@ -197,19 +197,18 @@ class Meeting extends Component {
 			/>
 		</div>
 		<Chat
-			chime={this.props.chime}
-					title={this.title}
-					userName={this.username}
+			chimeSocket={this.props.chime}
+			title={this.title}
+			userName={this.username}
+		/>
+			{this.state.showSettings && (
+				<Settings
+					chime={this.props.chime}
 					joinInfo={this.joinInfo}
+					saveSettings={this.saveSettings}
 				/>
-				{this.state.showSettings && (
-					<Settings
-						chime={this.props.chime}
-						joinInfo={this.joinInfo}
-						saveSettings={this.saveSettings}
-					/>
-				)}
-			</div>
+			)}
+		</div>
 		)
 	}
 
