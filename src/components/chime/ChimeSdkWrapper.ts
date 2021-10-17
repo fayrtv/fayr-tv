@@ -16,6 +16,8 @@ import throttle from "lodash/throttle";
 import { Nullable, Callback } from "../../types/global";
 import * as config from "../../config";
 import { JoinInfo } from "../chimeWeb/types";
+import { ISocketProvider } from "./types";
+import SocketProvider from './SocketProvider';
 
 export type DeviceInfo = {
 	label: string;
@@ -68,7 +70,7 @@ export interface IChimeSdkWrapper {
 }
 
 export interface IChimeSocket {
-	joinRoomSocket(): Promise<Nullable<ReconnectingPromisedWebSocket>>;
+	joinRoomSocket(): Promise<Nullable<ISocketProvider>>;
 }
 
 export default class ChimeSdkWrapper implements IChimeSdkWrapper, IChimeSocket {
@@ -360,7 +362,7 @@ export default class ChimeSdkWrapper implements IChimeSdkWrapper, IChimeSocket {
 			console.log(this.messagingSocket);
 		}
 
-		return this.messagingSocket;
+		return new SocketProvider(this.messagingSocket);
 	}
 
 	sendMessage(type: any, payload: any) {

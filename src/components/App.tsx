@@ -16,6 +16,7 @@ import Home from './chimeWeb/Welcome';
 import Join from './chimeWeb/Join';
 import Meeting from './chimeWeb/Meeting';
 import End from './chimeWeb/End';
+import SocketContextProvider from './chime/SocketContextProvider';
 
 function App() {
   const chime = new ChimeSdkWrapper();
@@ -31,8 +32,10 @@ function App() {
           <Route path={`${baseHref}/meeting`}>
 			  <Provider store={store}>
 					<ChatOpenContextProvider>
-						<Meeting
-							chime={chime}/>
+						<SocketContextProvider>
+							<Meeting
+								chime={chime}/>
+						</SocketContextProvider>
 					</ChatOpenContextProvider>				  
 				</Provider>
           </Route>

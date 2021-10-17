@@ -36,7 +36,7 @@ const LocalVideo = ({ chime, joinInfo }: Props) => {
 		// Hide meta info after 2 seconds
 		setTimeout(() => setShowMeta(false), 2500);
 
-		if (!chime.audioVideo.videoTileController.currentLocalTile) {
+		if (!chime.audioVideo?.videoTileController.currentLocalTile) {
 			chime.audioVideo.addObserver({
 				videoTileDidUpdate: (tileState: any) => {
 					if (!tileState.boundAttendeeId ||
