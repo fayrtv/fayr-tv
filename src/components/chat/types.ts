@@ -4,3 +4,8 @@ export type Message = {
 	message: string;
 	seen: boolean;
 }
+
+export type MessageTransferObject = {
+	username: string;
+	message: string;
+}

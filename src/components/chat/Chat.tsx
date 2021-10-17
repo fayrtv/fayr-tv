@@ -11,9 +11,11 @@ import { Action, Dispatch } from 'redux';
 import { addMessage, markAsSeen } from "redux/reducers/chatMessageReducer";
 import { IChimeSocket } from '../chime/ChimeSdkWrapper';
 import { CouldBeArray } from '../../util/collectionUtil';
+import { useSocket } from 'hooks/useSocket';
 
 // Types
-import { Message } from "./types";
+import { Message, MessageTransferObject } from "./types";
+import { SocketEventType } from '../chime/types';
 
 // Styles
 import './Chat.scss';
@@ -35,25 +37,28 @@ type ReduxDispatches = {
 
 export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({ chimeSocket, userName, title, messages, addMessages, markAsSeen }) => {
 
-	const [connection, setConnection] = React.useState<ReconnectingPromisedWebSocket>();
-
 	const chatRef = React.useRef<HTMLInputElement>(null);
 	const messageRef = React.useRef<HTMLDivElement>(null);
 
 	const { isOpen } = React.useContext(ChatOpenContext);
 
-	const initChatConnection = React.useCallback(async () => {
+	const { socket, setSocket } = useSocket();
 
-		const socket = await chimeSocket.joinRoomSocket();
+	React.useEffect(() => {
+		chimeSocket.joinRoomSocket()
+			.then(createdSocket => {
+				setSocket(createdSocket);
+			});
+	}, []);
 
-		if (socket === null) {
+	React.useEffect(() => {
+
+		if (!socket) {
 			return;
 		}
 
-		socket.addEventListener('message', event => {
-			const data = (event as any).data.split('::');
-			const username = data[0];
-			const message = data.slice(1).join('::'); // in case the message contains the separator '::'
+		socket.addListener<MessageTransferObject>(SocketEventType.ChatMessage, event => {
+			const { username, message } = event;
 
 			const newMessage: Message = {
 				timestamp: Date.now(),
@@ -63,18 +68,14 @@ export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({ chimeSock
 			};
 
 			addMessages(newMessage);
-		});
 
-		setConnection(socket);
+			return Promise.resolve();
+		});
 
 		chatRef.current!.focus();
 
 		return () => socket.close(5000);
-	}, [chimeSocket, addMessages]);
-
-	React.useEffect(() => {
-		initChatConnection();
-	}, [initChatConnection]);
+	}, [socket]);
 
 	React.useEffect(() => {
 		if (!isOpen) {
@@ -127,7 +128,6 @@ export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({ chimeSock
 				</div>
 			</div>
 			<ChatInput
-				connection={connection}
 				inputRef={chatRef}
 				userName={userName} />
 		</div>

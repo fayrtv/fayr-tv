@@ -1,34 +1,40 @@
 // Framework
 import React, { useState } from "react";
 import Picker from 'emoji-picker-react';
-import { ReconnectingPromisedWebSocket } from 'amazon-chime-sdk-js';
 import Emoji from "react-emoji-render";
 
 import styles from "./ChatInput.module.scss";
 import useGlobalClickHandler from "hooks/useGlobalClickHandler";
 import { isInRect } from "util/coordinateUtil";
+import { useSocket } from "hooks/useSocket";
+import { MessageTransferObject } from "../types";
+import { SocketEventType } from '../../chime/types';
 
 type Props = {
-	connection: ReconnectingPromisedWebSocket | undefined;
 	inputRef: React.RefObject<HTMLInputElement>;
 	userName: string;
 }
 
-export const ChatInput = ({ connection, inputRef, userName }: Props) => {
+export const ChatInput = ({ inputRef, userName }: Props) => {
 
 	const [message, setMessage] = useState("");
 	const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
+	const { socket } = useSocket();
 
 	const emojiPickerRef = React.useRef<HTMLDivElement>(null);
 
 	const sendMessage = () => {
 		if (message) {
-			const data = `{
-				"message": "sendmessage",
-				"data": "${userName}::${message.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"
-			}`;
 
-			connection!.send(data);
+			const data: MessageTransferObject = {
+				message: message.replace(/\\/g, '\\\\').replace(/"/g, '\\"'),
+				username: userName,
+			};
+
+			socket?.send({
+				messageType: SocketEventType.ChatMessage,
+				payload: data,
+			});
 
 			setMessage("");
 		}
@@ -97,7 +103,7 @@ export const ChatInput = ({ connection, inputRef, userName }: Props) => {
 				}
 			</div>
 			<button
-				disabled={!connection}
+				disabled={!socket}
 				className="btn btn--primary"
 				onClick={sendMessage}>
 				Senden
