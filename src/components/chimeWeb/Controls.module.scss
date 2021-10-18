@@ -67,11 +67,9 @@
 		align-items: center;
 		align-content: center;
 		justify-content: center;
-
-		max-width: var(--input-height);
 		
 		@media (max-width: 480px) {
-			margin: 0 0.5rem;
+			margin: 0;
 		}
 		
 		@media (max-width: 365px) {
@@ -79,33 +77,33 @@
 			max-width: 10vw;
 		}
 
-		.BtnSvg {
-			fill: var(--color-text-base);
+		svg {
+			height: calc(100% - 1rem);
+			width: 100%;
 		}
 
 		&.MicOn, &.CamOn, &.ChatOn {
 			background-color: var(--color--destructive);
 		}
-	}
 
-	.ChatButtonContainer {
-		.Container {
+		&.ChatContainer {
 			position: relative;
-		}
 
-		.UnreadTag {
-			position: absolute;
-			top: -5px;
-			left: 40px;
-			margin: 0;
-			height: auto;
-			width: 24px;
-		
-			color: black;
-		
-			border-radius: 15px;
-		
-			background: lightgrey;
+			.UnreadTag {
+				position: absolute;
+				top: -5px;
+				left: calc(100% - 1rem - 5px);
+				margin: 0;
+				height: auto;
+				width: 24px;
+			
+				color: black;
+			
+				border-radius: 15px;
+			
+				background: lightgrey;
+				z-index: 5;
+			}
 		}
 	}
 }
