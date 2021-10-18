@@ -1,7 +1,13 @@
 import { IChimeSdkWrapper } from 'components/chime/ChimeSdkWrapper';
+import { SocketEventType } from 'components/chime/types';
+import useSocket from 'hooks/useSocket';
 import React from 'react';
+import { EmojiReactionTransferObject } from "../chimeWeb/types";
 
 import "./Cam.scss"
+import { Nullable } from '../../types/global';
+import Emoji from 'react-emoji-render';
+import Flex from 'components/common/Flex';
 
 type Props = {
 	muted: boolean;
@@ -18,6 +24,9 @@ const RemoteVideo = ({ muted, attendeeId, videoEnabled, name, videoElement, chim
 
 	const [showMeta, setShowMeta] = React.useState(true);
 	const [talking, setTalking] = React.useState(false);
+	const [emojiReaction, setEmojiReaction] = React.useState<Nullable<string>>(null);
+
+	const { socket } = useSocket();
 
 	const talkingTimeout = React.useRef<number>(-1);
 
@@ -35,6 +44,23 @@ const RemoteVideo = ({ muted, attendeeId, videoEnabled, name, videoElement, chim
 			);
 		}
 	}, []);
+
+	React.useEffect(() => {
+
+		if (!socket) {
+			return;
+		}
+
+		return socket.addListener<EmojiReactionTransferObject>(SocketEventType.EmojiReaction, (event: EmojiReactionTransferObject) => {
+			if (attendeeId === event.attendeeId) {
+				setEmojiReaction(event.emoji);
+
+				setTimeout(() => setEmojiReaction(null), 2500);
+			}
+			
+			return Promise.resolve();
+		});
+	}, [attendeeId, socket])
 
 	React.useEffect(() => {
 		if (volume > 0) {
@@ -69,6 +95,20 @@ const RemoteVideo = ({ muted, attendeeId, videoEnabled, name, videoElement, chim
 			<div className="preview">
 				<div className="video-container pos-relative">
 					<video ref={videoElement} className="attendee_cam" id={videoId} />
+					{ emojiReaction !== null && 
+						(
+							<>
+								<div className="video-container-fade"></div>
+								<Flex 
+									className="emoji-reaction"
+									mainAlign="Center"
+									crossAlign="Center">
+									<Emoji 
+										text={emojiReaction}/>
+								</Flex>
+							</>
+						)
+					}
 				</div>
 			</div>
 			<span className={`cam__meta${metaCls} ${micTalkingIndicator}`}>

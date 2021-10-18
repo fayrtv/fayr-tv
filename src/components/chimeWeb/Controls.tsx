@@ -9,6 +9,8 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styles from "./Controls.module.scss";
 import { useMediaQuery } from 'react-responsive';
 import store from '../../redux/store';
+import ReactionButtonSelection from './Controls/ReactionButtonSelection';
+import Emoji from 'react-emoji-render';
 
 enum VideoStatus {
 	Loading,
@@ -39,6 +41,7 @@ const Controls: React.FC<Props & ReduxProps> = ({ chime, title, openSettings, un
 
 	const isMobile = useMediaQuery({ maxWidth: 960 });
 	const [minified, setMinified] = React.useState(false);
+	const [reactionsOpen, setReactionsOpen] = React.useState(false);
 
 	const controlsRef = React.useRef<HTMLDivElement>(null);
 
@@ -56,6 +59,11 @@ const Controls: React.FC<Props & ReduxProps> = ({ chime, title, openSettings, un
 			chime.audioVideo.realtimeMuteLocalAudio();
 		}
 
+		return Promise.resolve();
+	}
+
+	const reactionButtonOnClick = () => {
+		setReactionsOpen(!reactionsOpen);
 		return Promise.resolve();
 	}
 
@@ -289,26 +297,16 @@ const Controls: React.FC<Props & ReduxProps> = ({ chime, title, openSettings, un
 		),
 		(
 			<div
-				key="ChatButton" 
-				className={`${styles.Button} ${chat_controls} ${styles.ChatContainer} btn rounded`}
-				title={`${isChatOpen ? "Hide" : "Show"} chat`}
-				onClick={withSuppressedBubble(handleChatClick)}>
-				<svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24">
-					<path d="M 4 3 C 2.9 3 2 3.9 2 5 L 2 17 L 5 14 L 8 14 L 8 17 C 8 18.1 8.9 19 10 19 L 19 19 L 22 22 L 22 10 C 22 8.9 21.1 8 20 8 L 16 8 L 16 5 C 16 3.9 15.1 3 14 3 L 4 3 z M 4 5 L 14 5 L 14 12 L 4 12 L 4 5 z M 16 10 L 20 10 L 20 17 L 10 17 L 10 14 L 14 14 C 15.1 14 16 13.1 16 12 L 16 10 z" />
-				</svg>
-				{!isChatOpen && unreadMessages.length > 0 && <span className={`${styles.Button} ${styles.UnreadTag}`}>{unreadMessages.length > 99 ? "99+" : unreadMessages.length}</span>}
-			</div>
-		),
-		(
-			<div
-				key="ChatButton" 
-				className={`${styles.Button} ${chat_controls} ${styles.ChatContainer} btn rounded`}
-				title={`${isChatOpen ? "Hide" : "Show"} chat`}
-				onClick={withSuppressedBubble(handleChatClick)}>
-				<svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24">
-					<path d="M 4 3 C 2.9 3 2 3.9 2 5 L 2 17 L 5 14 L 8 14 L 8 17 C 8 18.1 8.9 19 10 19 L 19 19 L 22 22 L 22 10 C 22 8.9 21.1 8 20 8 L 16 8 L 16 5 C 16 3.9 15.1 3 14 3 L 4 3 z M 4 5 L 14 5 L 14 12 L 4 12 L 4 5 z M 16 10 L 20 10 L 20 17 L 10 17 L 10 14 L 14 14 C 15.1 14 16 13.1 16 12 L 16 10 z" />
-				</svg>
-				{!isChatOpen && unreadMessages.length > 0 && <span className={`${styles.Button} ${styles.UnreadTag}`}>{unreadMessages.length > 99 ? "99+" : unreadMessages.length}</span>}
+				key="ReactionButton" 
+				className={`${styles.Button} ${styles.ReactionButton} btn rounded`}
+				onClick={withSuppressedBubble(reactionButtonOnClick)}>
+				<Emoji text=":heart:" />
+				{reactionsOpen && (
+					<div className={styles.ReactionRow}>
+						<ReactionButtonSelection 
+							attendeeId={chime.attendeeId}/>
+					</div>
+				)}
 			</div>
 		),
 	];
