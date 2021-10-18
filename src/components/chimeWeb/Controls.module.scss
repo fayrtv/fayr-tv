@@ -60,17 +60,17 @@
 
 	.Button {
 		margin: 0 1rem;
-		display: flex;	
+		display: flex;
 
 		flex-grow: 1;
-		flex-basis: 30px;
 		align-items: center;
 		align-content: center;
 		justify-content: center;
-		
-		@media (max-width: 480px) {
-			margin: 0;
-		}
+
+		max-width: 42px;
+
+		cursor: pointer;
+		margin: 0;
 		
 		@media (max-width: 365px) {
 			max-height: 10vw;
@@ -78,11 +78,11 @@
 		}
 
 		svg {
-			height: calc(100% - 1rem);
-			width: 100%;
+			height: calc(100% - 2rem);
+			width: calc(100% - 2rem);
 		}
 
-		&.MicOn, &.CamOn, &.ChatOn {
+		&.Active {
 			background-color: var(--color--destructive);
 		}
 

@@ -41,7 +41,7 @@ export type FlexProps = {
 	crossAlignSelf?: keyof typeof FlexAlign;
 	space?: keyof typeof FlexSpace;
 	children?: React.ReactNode;
-	onClick?: () => void;
+	onClick?: React.MouseEventHandler<HTMLDivElement>;
 	onScroll?: (event: React.UIEvent<HTMLDivElement>) => void;
 	title?: string;
 }
