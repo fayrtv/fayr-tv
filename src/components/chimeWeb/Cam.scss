@@ -28,6 +28,30 @@
 			border-radius: 50px;
 			object-fit: cover;
 		}
+
+		.video-container {
+			position: relative;
+			user-select: none;
+
+			.emoji-reaction {
+				position: absolute;
+				height: 100%;
+				width: 100%;
+				font-size: 3em;
+				left: 0px;
+				top: 0px;
+			}
+		}
+
+		.video-container-fade {
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			left: 0px;
+			top: 0px;
+			border-radius: 50px;
+			background: rgb(42 37 37 / 50%);
+		}
 	}
 
 	.cam__meta {

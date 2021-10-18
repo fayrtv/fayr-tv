@@ -61,16 +61,17 @@ type MessageUpdate = {
 
 type MessageUpdateCallback = Callback<MessageUpdate>;
 
-export interface IChimeSdkWrapper {
+export interface IChimeSocket {
+	joinRoomSocket(): Promise<Nullable<ISocketProvider>>;
+}
+
+export interface IChimeSdkWrapper extends IChimeSocket {
 	audioVideo: AudioVideoFacade;
 	meetingSession: Nullable<DefaultMeetingSession>;
+	attendeeId?: Nullable<string>;
 
 	subscribeToRosterUpdate(callback: RosterUpdateCallback): number;
 	unsubscribeFromRosterUpdate(callback: RosterUpdateCallback): void;
-}
-
-export interface IChimeSocket {
-	joinRoomSocket(): Promise<Nullable<ISocketProvider>>;
 }
 
 export default class ChimeSdkWrapper implements IChimeSdkWrapper, IChimeSocket {
@@ -85,6 +86,10 @@ export default class ChimeSdkWrapper implements IChimeSdkWrapper, IChimeSocket {
 	private _audioVideo: Nullable<AudioVideoFacade> = null;
 	public get audioVideo() {
 		return this._audioVideo!;
+	}
+
+	public get attendeeId() {
+		return this.configuration?.credentials?.attendeeId;
 	}
 
 	private title: Nullable<string> = null;

@@ -9,3 +9,8 @@ export type JoinInfo = {
 	Meeting: any;
 	Title: string;
 }
+
+export type EmojiReactionTransferObject = {
+	attendeeId: string;
+	emoji: string;
+}

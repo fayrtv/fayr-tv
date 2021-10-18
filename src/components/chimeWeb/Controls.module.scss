@@ -60,17 +60,19 @@
 
 	.Button {
 		margin: 0 1rem;
-		display: flex;	
+		display: flex;
 
 		flex-grow: 1;
-		flex-basis: 30px;
 		align-items: center;
 		align-content: center;
 		justify-content: center;
 
-		max-width: var(--input-height);
+		max-width: 42px;
+
+		cursor: pointer;
+		margin: 0;	
 		
-		@media (max-width: 480px) {
+		@media (min-width: 960px) {
 			margin: 0 0.5rem;
 		}
 		
@@ -79,33 +81,56 @@
 			max-width: 10vw;
 		}
 
-		.BtnSvg {
-			fill: var(--color-text-base);
+		svg {
+			height: calc(100% - 2rem);
+			width: calc(100% - 2rem);
 		}
 
-		&.MicOn, &.CamOn, &.ChatOn {
+		&.Active {
 			background-color: var(--color--destructive);
 		}
-	}
 
-	.ChatButtonContainer {
-		.Container {
+		&.ChatContainer {
 			position: relative;
+
+			.UnreadTag {
+				position: absolute;
+				top: -5px;
+				left: calc(100% - 1rem - 5px);
+				margin: 0;
+				height: auto;
+				width: 24px;
+			
+				color: black;
+			
+				border-radius: 15px;
+			
+				background: lightgrey;
+				z-index: 5;
+			}
 		}
 
-		.UnreadTag {
-			position: absolute;
-			top: -5px;
-			left: 40px;
-			margin: 0;
-			height: auto;
-			width: 24px;
-		
-			color: black;
-		
-			border-radius: 15px;
-		
-			background: lightgrey;
+		&.ReactionButton {
+			position: relative;
+
+			> span {
+				font-size: 1.5em;
+			}
+
+			&:active {
+				.ReactionRow {
+					top: -47px;
+					right: -2px;
+				}
+			}
+			
+			.ReactionRow {
+				position: absolute;
+
+				top: -45px;
+				right: 0px;
+				height: 42px;
+			}
 		}
 	}
 }

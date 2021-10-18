@@ -38,7 +38,7 @@ export class SocketProvider implements ISocketProvider {
 			data: rawAwsSocketMessage.data,
 		}
 
-		const { eventType, data } = awsSocketMessage;
+		const { eventType } = awsSocketMessage;
 
 		const listeners = this._listeners.get(eventType);
 

@@ -12,4 +12,5 @@ export type SocketMessage<T = string> = {
 export enum SocketEventType {
 	Unspecified = 0,
 	ChatMessage = 1,
+	EmojiReaction = 2,
 }
