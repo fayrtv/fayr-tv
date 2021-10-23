@@ -7,44 +7,37 @@ import Flex from "../../common/Flex";
 // Styles
 import styles from "./styles/ReactionButtonSelection.module.scss";
 import Emoji from "react-emoji-render";
-import useSocket from "hooks/useSocket";
-import { SocketEventType } from '../../chime/types';
-import { EmojiReactionTransferObject } from "../types";
+import { SelectedReactionContext } from "components/contexts/SelectedReactionContext";
 
-const emojis = [":smile:", ":heart:", ":clap:", ":tada:"];
+const emojis = [":smile:", ":heart:", ":clap:", ":tada:", ":joy:"];
 
-type Props = {
-	attendeeId: string;
-}
-
-export const ReactionButtonSelection = ({ attendeeId }: Props) => {
-
-	const { socket } = useSocket();
+export const ReactionButtonSelection = () => {
+	const { setSelectedEmoji } = React.useContext(SelectedReactionContext);
 
 	const onEmojiClick = (emoji: string) => {
-		console.log(emoji);
-
-		socket?.send<EmojiReactionTransferObject>({
-			messageType: SocketEventType.EmojiReaction,
-			payload: {
-				attendeeId,
-				emoji,
-			},
-		});
+		setSelectedEmoji(emoji);
 	}
 
 	return (
-		<Flex 
-			className={styles.ReactionButtonSelection}
-			crossAlign="Center"
-			direction="Row">
-			{ emojis.map(emoji => (
-				<div
-					onClick={() => onEmojiClick(emoji)}
-					key={emoji}>
-					<Emoji text={emoji}/>
-				</div>
-			))}
+		<Flex
+			className={styles.ReactionButtonContainer}
+			direction="Column">
+			{/* <span className={styles.ReactionButtonInfo}>
+				Tippe auf den Bildschirm, um eine Reaktion zu senden
+			</span> */}
+			<Flex 
+				className={styles.ReactionButtonSelection}
+				crossAlign="Center"
+				mainAlign="Center"
+				direction="Row">
+				{ emojis.map(emoji => (
+					<div
+						onClick={() => onEmojiClick(emoji)}
+						key={emoji}>
+						<Emoji text={emoji}/>
+					</div>
+				))}
+			</Flex>
 		</Flex>
 	);
 }

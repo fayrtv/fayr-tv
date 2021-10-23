@@ -11,6 +11,7 @@ import { useMediaQuery } from 'react-responsive';
 import store from '../../redux/store';
 import ReactionButtonSelection from './Controls/ReactionButtonSelection';
 import Emoji from 'react-emoji-render';
+import { SelectedReactionContext } from 'components/contexts/SelectedReactionContext';
 
 enum VideoStatus {
 	Loading,
@@ -38,6 +39,8 @@ const Controls: React.FC<Props & ReduxProps> = ({ chime, title, openSettings, un
 	const [localMuted, setLocalMuted] = React.useState(false);
 	const [videoStatus, setVideoStatus] = React.useState(VideoStatus.Disabled);
 	const [showPopUp, setShowPopUp] = React.useState(false);
+
+	const { selectedEmoji } = React.useContext(SelectedReactionContext);
 
 	const isMobile = useMediaQuery({ maxWidth: 960 });
 	const [minified, setMinified] = React.useState(false);
@@ -300,11 +303,10 @@ const Controls: React.FC<Props & ReduxProps> = ({ chime, title, openSettings, un
 				key="ReactionButton" 
 				className={`${styles.Button} ${styles.ReactionButton} btn rounded`}
 				onClick={withSuppressedBubble(reactionButtonOnClick)}>
-				<Emoji text=":heart:" />
+				<Emoji text={selectedEmoji} />
 				{reactionsOpen && (
 					<div className={styles.ReactionRow}>
-						<ReactionButtonSelection 
-							attendeeId={chime.attendeeId}/>
+						<ReactionButtonSelection />
 					</div>
 				)}
 			</div>

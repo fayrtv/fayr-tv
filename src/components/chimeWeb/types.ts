@@ -13,4 +13,8 @@ export type JoinInfo = {
 export type EmojiReactionTransferObject = {
 	attendeeId: string;
 	emoji: string;
+	clickPosition?: {
+		relativeX: number;
+		relativeY: number;
+	}
 }

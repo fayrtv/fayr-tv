@@ -1,13 +1,21 @@
 import React from "react";
 import { MediaPlayer, PlayerState, PlayerEventType, isPlayerSupported } from 'amazon-ivs-player';
 import * as config from "../../config";
+import { SelectedReactionContext } from 'components/contexts/SelectedReactionContext';
+import { SocketEventType } from '../chime/types';
+import { EmojiReactionTransferObject } from "../chimeWeb/types";
+import useSocket from "hooks/useSocket";
+
+import styles from "./VideoPlayer.module.scss";
+import Emoji from "react-emoji-render";
 
 type Props = {
 	videoStream: string;
 	fullScreenCamSection: React.ReactNode;
+	attendeeId: string;
 }
 
-const VideoPlayer = ({ videoStream, fullScreenCamSection }: Props) => {
+const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) => {
 
 	const videoElement = React.useRef<HTMLDivElement>(null);
 	const player = React.useRef<MediaPlayer>();
@@ -15,6 +23,8 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection }: Props) => {
 	const [paused, setPaused] = React.useState(false);
 	const [muted, setMuted] = React.useState(false);
 	const [fullScreen, setFullScreen] = React.useState(false);
+
+	const [reactions, setReactions] = React.useState<Array<React.ReactNode>>([]);
 
 	const mediaPlayerScriptLoaded = React.useCallback(() => {
 		const mediaPlayerPackage = (window as any).IVSPlayer;
@@ -70,6 +80,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection }: Props) => {
 			},
 			false
 		);
+		
 		playerOverlay.addEventListener("mouseout", function (e) {
 			playerOverlay.classList.remove("overlay--hover");
 		});
@@ -111,8 +122,82 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection }: Props) => {
 		videoElement.current.onfullscreenchange = cb;
 
 		return () => currentVideoElement?.removeEventListener("fullscreenchange", cb);
-	}, [videoElement])
+	}, [videoElement]);
 
+	const { selectedEmoji } = React.useContext(SelectedReactionContext);
+	const { socket } = useSocket();
+
+	const onVideoClick = React.useCallback((event: MouseEvent) => {
+		if (!socket || !videoElement.current) {
+			return;
+		}
+
+		const { height, width } = videoElement.current.getBoundingClientRect();
+		const { clientX, clientY } = event;
+
+		const relativeXClick = Number((clientX / width).toFixed(3));
+		const relativeYClick = Number((clientY / height).toFixed(3));
+
+		socket.send<EmojiReactionTransferObject>({
+			messageType: SocketEventType.EmojiReaction,
+			payload: {
+				attendeeId,
+				emoji: selectedEmoji,
+				clickPosition: {
+					relativeX: relativeXClick,
+					relativeY: relativeYClick,
+				}
+			},
+		});
+	}, [socket, selectedEmoji]);
+	
+	React.useEffect(() => {
+		if (!videoElement.current) {
+			return;
+		}
+
+		videoElement.current!.addEventListener("click", onVideoClick);
+
+		return () => videoElement.current!.removeEventListener("click", onVideoClick);
+	}, [onVideoClick]);
+	
+	React.useEffect(() => {
+		if (!socket || !videoElement.current) {
+			return;
+		}
+
+		return socket.addListener<EmojiReactionTransferObject>(SocketEventType.EmojiReaction, ({ emoji, clickPosition}) => {
+
+			const { relativeX, relativeY } = clickPosition!;
+			const { height, width } = videoElement.current!.getBoundingClientRect();
+
+			const actualTop = (height * relativeY) - 15;
+			const actualLeft = (width * relativeX) - 15;
+
+			setReactions(currentReactions => {
+				const newReactions = [ ...currentReactions ];
+
+				const newReaction = (
+					<div 
+						className={styles.Reaction}
+						style={{ top: `${actualTop}px`, left: `${actualLeft}px`}}>
+						<Emoji 
+							text={emoji}/>
+					</div>
+				);
+				
+				newReactions.push(newReaction);
+
+				setTimeout(() => {
+					setReactions(reactions => reactions.filter(x => x !== newReaction));
+				}, 2000);
+
+				return newReactions;
+			})
+
+			return Promise.resolve();
+		})
+	}, [socket]);
 	return (
 		<div className="player-wrapper">
 			<div className="aspect-spacer"></div>
@@ -189,6 +274,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection }: Props) => {
 					</div>
 				</div>
 				<video id="video-player" className="el-player" playsInline></video>
+				{ reactions }
 			</div>
 		</div>
 	  );
