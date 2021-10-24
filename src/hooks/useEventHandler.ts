@@ -8,7 +8,7 @@ export const useEventHandler = <TEvent extends Event>(eventKey: string, handler:
 		element.addEventListener(eventKey, typedHandler);
 
 		return () => element.removeEventListener(eventKey, typedHandler);
-	})
+	}, [eventKey, handler, element]);
 }
 
 export default useEventHandler;

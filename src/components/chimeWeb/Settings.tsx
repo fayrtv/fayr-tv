@@ -32,11 +32,11 @@ export const Settings = ({ chime, closeSettings, joinInfo, saveSettings }: Props
 	const [speaker, setSpeaker] = React.useState<string>(currentSpeaker?.value);
 	const [camera, setCamera] = React.useState<string>(currentCam?.value);
 
-	const handleKeyDown = ({ key }: KeyboardEvent) => {
+	const handleKeyDown = React.useCallback(({ key }: KeyboardEvent) => {
 		if (key === "Escape") { // keyCode 27 is Escape key
 			closeSettings();
 		}
-	}
+	}, [closeSettings]);
 
 	useEventHandler("keydown", handleKeyDown);
 

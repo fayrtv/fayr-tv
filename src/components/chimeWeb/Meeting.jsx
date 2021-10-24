@@ -183,6 +183,7 @@ class Meeting extends Component {
 				setMetadataId={this.setMetadataId}
 				videoStream={this.playbackURL}
 				fullScreenCamSection={camSection}
+				attendeeId={this.props.chime.attendeeId}
 			/>
 			{ camSection }
 			<Controls
@@ -206,6 +207,7 @@ class Meeting extends Component {
 					chime={this.props.chime}
 					joinInfo={this.joinInfo}
 					saveSettings={this.saveSettings}
+					closeSettings={this.closeSettings}
 				/>
 			)}
 		</div>

@@ -3,11 +3,13 @@ import { SocketEventType } from 'components/chime/types';
 import useSocket from 'hooks/useSocket';
 import React from 'react';
 import { EmojiReactionTransferObject } from "../chimeWeb/types";
-
-import "./Cam.scss"
+import { CSSTransition } from "react-transition-group";
 import { Nullable } from '../../types/global';
 import Emoji from 'react-emoji-render';
 import Flex from 'components/common/Flex';
+
+import "./Cam.scss"
+import styles from "./RemoteVideo.module.scss";
 
 type Props = {
 	muted: boolean;
@@ -54,9 +56,9 @@ const RemoteVideo = ({ muted, attendeeId, videoEnabled, name, videoElement, chim
 		return socket.addListener<EmojiReactionTransferObject>(SocketEventType.EmojiReaction, (event: EmojiReactionTransferObject) => {
 			if (attendeeId === event.attendeeId) {
 				setEmojiReaction(event.emoji);
-
-				setTimeout(() => setEmojiReaction(null), 2500);
 			}
+
+			setTimeout(() => setEmojiReaction(null), 2000);
 			
 			return Promise.resolve();
 		});
@@ -95,20 +97,29 @@ const RemoteVideo = ({ muted, attendeeId, videoEnabled, name, videoElement, chim
 			<div className="preview">
 				<div className="video-container pos-relative">
 					<video ref={videoElement} className="attendee_cam" id={videoId} />
-					{ emojiReaction !== null && 
-						(
-							<>
+					<CSSTransition
+						in={emojiReaction !== null}
+						timeout={3000}
+						classNames={{
+							appear: styles.RemoteVideoEmojiEnter,
+							enter: styles.RemoteVideoEmojiEnter,
+							appearActive: styles.RemoteVideoEmojiEnterActive,
+							enterActive: styles.RemoteVideoEmojiEnterActive,
+							exitActive: styles.RemoteVideoEmojiExitActive,
+							exit: styles.RemoteVideoEmojiExit,
+						}}
+						unmountOnExit>
+							<div>
 								<div className="video-container-fade"></div>
 								<Flex 
 									className="emoji-reaction"
 									mainAlign="Center"
 									crossAlign="Center">
 									<Emoji 
-										text={emojiReaction}/>
+										text={emojiReaction ?? ""}/>
 								</Flex>
-							</>
-						)
-					}
+							</div>
+					</CSSTransition>
 				</div>
 			</div>
 			<span className={`cam__meta${metaCls} ${micTalkingIndicator}`}>

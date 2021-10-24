@@ -1,13 +1,22 @@
-.ReactionButtonSelection {
-	height: 100%;
+.ReactionButtonContainer {
+	// height: 70px;
+
+	// width: 150%;
 
 	border: 1px solid black;
 	border-radius: 10px;
 	background-color: lightgrey;
 
-	span {
+	.ReactionButtonInfo {
+		margin: 0 5px;
+		color: black;
+	}
+
+	.ReactionButtonSelection {
 		span {
-			font-size: 1.75em;
+			span {
+				font-size: 1.75em;
+			}
 		}
 	}
 }
