@@ -17,6 +17,7 @@ import RemoteVideoGroup from './RemoteVideoGroup';
 import Error from './Error';
 import { Desktop, Mobile } from '../mediaQueries';
 import { ChatOpenContext } from "../contexts/ChatOpenContext";
+import VotingContainer from "./Voting/VotingContainer";
 
 // Styles
 import './ChimeWeb.css';
@@ -185,6 +186,7 @@ class Meeting extends Component {
 				fullScreenCamSection={camSection}
 				attendeeId={this.props.chime.attendeeId}
 			/>
+			<VotingContainer />
 			{ camSection }
 			<Controls
 				chime={this.props.chime}
