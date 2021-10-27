@@ -1,0 +1,49 @@
+.VotingWrapper {
+	height: 600px;
+	width: 700px;
+
+	.Voting {
+
+		height: 100%;
+		width: 100%;
+
+		.TeamIcon {
+			display: grid;
+			place-items: center;
+
+			background-color: white;
+		}
+
+		.VotingSectionContainer {
+			display: grid;
+			place-items: center;
+
+			background: black;
+
+			.VotingSection {
+				height: 80%;
+				width: 80%;
+
+				> div {
+					height: 100%;
+				}
+			}
+		}
+	}
+
+	.TipButton {
+		height: 50px;
+		width: 300px;
+		background: #4081c7;
+
+		cursor: pointer;
+
+		display: grid;
+		place-items: center;
+		font-size: 3rem;
+
+		border-radius: 10px;
+
+		box-shadow: 0 0 10px grey;
+	}
+}

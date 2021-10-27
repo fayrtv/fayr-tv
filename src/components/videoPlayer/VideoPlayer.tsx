@@ -179,6 +179,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 
 				const newReaction = (
 					<div 
+						key={`${actualTop}_${actualLeft}_${emoji}`}
 						className={styles.Reaction}
 						style={{ top: `${actualTop}px`, left: `${actualLeft}px`}}>
 						<Emoji 

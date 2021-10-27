@@ -1,0 +1,33 @@
+.VotingContainer {
+	position: absolute;
+
+	display: grid;
+	place-items: center;
+
+	height: 100vh;
+	width: 100vw;
+
+	z-index: 99999;
+
+	&.VotingActive {
+		background-color:rgba(255, 255, 255, 0.3);
+		backdrop-filter: blur(6px);
+	}
+
+	.CloseButton {
+		height: 35px;
+		width: 35px;
+		background-color:rgba(0, 0, 0, 0.3);
+		border-radius: 5px;
+		margin-left: 10px;
+
+		display: grid;
+		place-items: center;
+
+		cursor: pointer;
+
+		> span {
+			cursor: pointer !important;
+		}
+	}
+}
