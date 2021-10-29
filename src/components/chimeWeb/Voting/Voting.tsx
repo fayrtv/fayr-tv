@@ -23,21 +23,26 @@ export const Voting = ({ votingRef, votingData: { hostTeam, guestTeam} }: Props)
 	const [hostTip, setHostTip] = React.useState(0);
 	const [guestTip, setGuestTip] = React.useState(0);
 
+	const onTip = () => {
+		console.log(`Tip: ${hostTeam.identifier}:${hostTip} vs  ${guestTeam.identifier}:${guestTip}`)
+	}
+
 	return (
 		<Flex
 			direction="Column"
 			crossAlign="Center"
 			className={styles.VotingWrapper}
 			ref={votingRef}>
-			<Grid 
+			<Grid
 				className={styles.Voting}
 				gridProperties={{
 					gridTemplateAreas: `
-						'HostTeamIcon Counter' 
-						'GuestTeamIcon Counter'
+						'HostTeamIcon HostTeamCounter' 
+						'GuestTeamIcon GuestTeamCounter'
 					`,
-					gridTemplateColumns: "250px 1fr",
-					gridTemplateRows: "250px 250px",
+					gap: "1rem",
+					gridTemplateColumns: "minmax(100px, 1fr) 2fr",
+					gridTemplateRows: "minmax(100px, 1fr) minmax(100px, 1fr)"
 				}}>
 				<Cell
 					className={styles.TeamIcon}
@@ -76,11 +81,7 @@ export const Voting = ({ votingRef, votingData: { hostTeam, guestTeam} }: Props)
 				</Cell>
 			</Grid>
 			<div
-				onClick={event => {
-					event.preventDefault();
-					event.stopPropagation();
-					console.log(`Tip: ${hostTeam.identifier}:${hostTip} vs  ${guestTeam.identifier}:${guestTip}`)
-				}}
+				onClick={onTip}
 				className={styles.TipButton}>
 				<span>
 					TIP SETZEN

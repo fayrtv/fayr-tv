@@ -84,7 +84,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 		playerOverlay.addEventListener("mouseout", function (e) {
 			playerOverlay.classList.remove("overlay--hover");
 		});
-	}, []);
+	}, [videoStream]);
 
 	const onPauseClick = React.useCallback(() => {
 		const currentPlayer = player.current!;
@@ -149,7 +149,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 				}
 			},
 		});
-	}, [socket, selectedEmoji]);
+	}, [socket, selectedEmoji, attendeeId]);
 	
 	React.useEffect(() => {
 		if (!videoElement.current) {

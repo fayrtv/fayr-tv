@@ -14,20 +14,25 @@
 		backdrop-filter: blur(6px);
 	}
 
-	.CloseButton {
-		height: 35px;
-		width: 35px;
-		background-color:rgba(0, 0, 0, 0.3);
-		border-radius: 5px;
-		margin-left: 10px;
-
-		display: grid;
-		place-items: center;
-
-		cursor: pointer;
-
-		> span {
-			cursor: pointer !important;
+	.VotingWrapper {
+		height: 60%;
+		width: 40%;
+	
+		.CloseButton {
+			height: 35px;
+			width: 35px;
+			background-color:rgba(0, 0, 0, 0.3);
+			border-radius: 5px;
+			margin-left: 10px;
+	
+			display: grid;
+			place-items: center;
+	
+			cursor: pointer;
+	
+			> span {
+				cursor: pointer !important;
+			}
 		}
 	}
 }

@@ -49,11 +49,10 @@ export const VotingContainer = ({ }: Props) => {
 	return (
 		<>
 			{ !!currentVoting && 
-				<Flex 
-					className={`${styles.VotingContainer} ${styles.VotingActive}`}
-					direction={"Column"}
-					space="Around">
-					<Flex>
+				<div className={`${styles.VotingContainer} ${styles.VotingActive}`}>
+					<Flex
+						className={styles.VotingWrapper}
+						direction="Row">
 						<Voting 
 							votingData={currentVoting!}
 							votingRef={votingRef}/>
@@ -66,7 +65,7 @@ export const VotingContainer = ({ }: Props) => {
 								iconName="close"/>
 						</div>
 					</Flex>
-				</Flex>
+				</div>
 			}
 		</>
 	);

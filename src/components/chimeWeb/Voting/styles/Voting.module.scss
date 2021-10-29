@@ -1,17 +1,21 @@
 .VotingWrapper {
-	height: 600px;
-	width: 700px;
-
+	height: 100%;
+	width: 100%;
 	.Voting {
 
 		height: 100%;
 		width: 100%;
 
 		.TeamIcon {
-			display: grid;
-			place-items: center;
+			display: flex;
+			align-content: center;
+			justify-content: center;
 
 			background-color: white;
+
+			> img {
+				object-fit: scale-down;
+			}
 		}
 
 		.VotingSectionContainer {
