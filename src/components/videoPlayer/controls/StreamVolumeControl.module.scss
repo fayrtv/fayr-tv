@@ -1,0 +1,55 @@
+.StreamVolumeControl {
+
+	position: relative;
+
+	bottom: 0px !important;
+
+	&:hover {
+		.SliderContainer {
+			opacity: 1;
+		}
+	}
+
+	.SliderContainer {
+
+		transition: opacity 0.25s ease-in-out;
+		opacity: 0;
+
+		position: absolute;
+		width: 80%;
+		height: 350%;
+		background-color: var(--color-bg-button);
+		border-radius: 4px;
+		box-shadow: 0 0 7px grey;
+		bottom: 36px;
+
+		display: grid;
+		place-items: center;
+
+		.SliderRail {
+			background-color: red;
+
+			width: 25%;
+			height: 85%;
+
+			position: relative;
+
+			display: grid;
+			place-items: center;
+
+			.SliderPin {
+				position: absolute;
+
+				bottom: 0px;
+
+				border-radius: 10px;
+
+				background-color: white;
+				height: 15px;
+				width: 15px;
+
+				cursor: pointer;
+			}
+		}
+	}
+}

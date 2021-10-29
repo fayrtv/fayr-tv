@@ -26,15 +26,11 @@ const voting: VotingData = {
 	}
 };
 
-type Props = {
-	
-}
-
-export const VotingContainer = ({ }: Props) => {
+export const VotingContainer = () => {
 
 	const votingRef = React.createRef<HTMLDivElement>();
 
-	const [currentVoting, setCurrentVoting] = React.useState<Nullable<VotingData>>(voting);
+	const [currentVoting, setCurrentVoting] = React.useState<Nullable<VotingData>>(null);
 
 	useGlobalClickHandler(clickEvent => {
 		if (!currentVoting && !votingRef.current) {

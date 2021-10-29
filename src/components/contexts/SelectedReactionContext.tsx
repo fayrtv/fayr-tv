@@ -1,5 +1,5 @@
 // Framework
-import React, { createContext, useState } from "react";
+import React, { createContext } from "react";
 
 type Context = {
 	selectedEmoji: string;
