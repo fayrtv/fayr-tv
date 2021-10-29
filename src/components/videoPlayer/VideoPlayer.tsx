@@ -1,13 +1,15 @@
-import React from "react";
+import React, { MouseEventHandler } from "react";
 import { MediaPlayer, PlayerState, PlayerEventType, isPlayerSupported } from 'amazon-ivs-player';
 import * as config from "../../config";
 import { SelectedReactionContext } from 'components/contexts/SelectedReactionContext';
 import { SocketEventType } from '../chime/types';
 import { EmojiReactionTransferObject } from "../chimeWeb/types";
 import useSocket from "hooks/useSocket";
+import StreamVolumeControl from "./controls/StreamVolumeControl";
 
 import styles from "./VideoPlayer.module.scss";
 import Emoji from "react-emoji-render";
+import { makeid } from '../../util/guidHelper';
 
 type Props = {
 	videoStream: string;
@@ -21,10 +23,24 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 	const player = React.useRef<MediaPlayer>();
 
 	const [paused, setPaused] = React.useState(false);
-	const [muted, setMuted] = React.useState(false);
 	const [fullScreen, setFullScreen] = React.useState(false);
 
 	const [reactions, setReactions] = React.useState<Array<React.ReactNode>>([]);
+
+	const onPauseClick: React.MouseEventHandler = React.useCallback(event => {
+		event.stopPropagation();
+		event.preventDefault();
+
+		const currentPlayer = player.current!;
+		paused ? currentPlayer.play() : currentPlayer.pause();
+		setPaused(!paused);
+	}, [paused]);
+
+	const onFullScreenClick: React.MouseEventHandler = React.useCallback(event => {
+		event.stopPropagation();
+
+		fullScreen ?  document.exitFullscreen() : videoElement.current!.requestFullscreen();
+	}, [fullScreen]);
 
 	const mediaPlayerScriptLoaded = React.useCallback(() => {
 		const mediaPlayerPackage = (window as any).IVSPlayer;
@@ -44,7 +60,6 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 
 		// Attach event listeners
 		initializedPlayer.addEventListener(PlayerState.PLAYING, function () {
-			debugger;
 			if (config.DEBUG) console.log("Player State - PLAYING");
 		});
 		initializedPlayer.addEventListener(PlayerState.ENDED, function () {
@@ -86,30 +101,15 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 		});
 	}, []);
 
-	const onPauseClick = React.useCallback(() => {
-		const currentPlayer = player.current!;
-		paused ? currentPlayer.play() : currentPlayer.pause();
-		setPaused(!paused);
-	}, [paused]);
-
-	const onMuteClick = React.useCallback(() => {
-		const newMuteState = !muted;
-		player.current!.setMuted(newMuteState);
-		setMuted(newMuteState);
-	}, [muted]);
-
-	const onFullScreenClick = React.useCallback(() => {
-		fullScreen ?  document.exitFullscreen() : videoElement.current!.requestFullscreen();
-	}, [fullScreen]);
-
-	React.useEffect(() => {        
+	React.useEffect(() => {
 		const mediaPlayerScript = document.createElement("script");
 		mediaPlayerScript.src = "https://player.live-video.net/1.3.1/amazon-ivs-player.min.js";
 		// mediaPlayerScript.src = "https://cdnjs.cloudflare.com/ajax/libs/video.js/7.6.6/video.min.js";
 		mediaPlayerScript.async = true;
-		mediaPlayerScript.onload = () => mediaPlayerScriptLoaded();
+		mediaPlayerScript.onload = mediaPlayerScriptLoaded;
+
 		document.body.appendChild(mediaPlayerScript);
-	});
+	}, []);
 
 	React.useEffect(() => {
 		if (!videoElement.current) {
@@ -127,7 +127,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 	const { selectedEmoji } = React.useContext(SelectedReactionContext);
 	const { socket } = useSocket();
 
-	const onVideoClick = React.useCallback((event: MouseEvent) => {
+	const onVideoClick: MouseEventHandler = React.useCallback(event => {
 		if (!socket || !videoElement.current) {
 			return;
 		}
@@ -149,17 +149,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 				}
 			},
 		});
-	}, [socket, selectedEmoji]);
-	
-	React.useEffect(() => {
-		if (!videoElement.current) {
-			return;
-		}
-
-		videoElement.current!.addEventListener("click", onVideoClick);
-
-		return () => videoElement.current!.removeEventListener("click", onVideoClick);
-	}, [onVideoClick]);
+	}, [socket, selectedEmoji, attendeeId]);
 	
 	React.useEffect(() => {
 		if (!socket || !videoElement.current) {
@@ -177,9 +167,10 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 			setReactions(currentReactions => {
 				const newReactions = [ ...currentReactions ];
 
+				const key = makeid(8);
 				const newReaction = (
 					<div 
-						key={`${actualTop}_${actualLeft}_${emoji}`}
+						key={`${emoji}_${key}`}
 						className={styles.Reaction}
 						style={{ top: `${actualTop}px`, left: `${actualLeft}px`}}>
 						<Emoji 
@@ -202,7 +193,10 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 	return (
 		<div className="player-wrapper">
 			<div className="aspect-spacer"></div>
-			<div ref={videoElement} className="pos-absolute full-width full-height top-0">
+			<div 
+				ref={videoElement} 
+				className="pos-absolute full-width full-height top-0"
+				onClick={onVideoClick}>
 				{ fullScreen && (
 					<div className="FullScreenCams">
 						{ fullScreenCamSection }
@@ -235,30 +229,8 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 								/>
 							</svg>
 						</button>
-						<button id="mute" className={`mg-x-1 player-btn player-btn--icon ${muted ? "player-btn--mute" : "player-btn--unmute"}`} onClick={onMuteClick}>
-							<svg
-								className="player-icon player-icon--volume_up"
-								xmlns="http://www.w3.org/2000/svg"
-								height="36"
-								viewBox="0 0 24 24"
-								width="36"
-							>
-								<path
-									d="M3 10v4c0 .55.45 1 1 1h3l3.29 3.29c.63.63 1.71.18 1.71-.71V6.41c0-.89-1.08-1.34-1.71-.71L7 9H4c-.55 0-1 .45-1 1zm13.5 2c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 4.45v.2c0 .38.25.71.6.85C17.18 6.53 19 9.06 19 12s-1.82 5.47-4.4 6.5c-.36.14-.6.47-.6.85v.2c0 .63.63 1.07 1.21.85C18.6 19.11 21 15.84 21 12s-2.4-7.11-5.79-8.4c-.58-.23-1.21.22-1.21.85z"
-								/>
-							</svg>
-							<svg
-								className="player-icon player-icon--volume_off"
-								xmlns="http://www.w3.org/2000/svg"
-								height="36"
-								viewBox="0 0 24 24"
-								width="36"
-							>
-								<path
-									d="M3.63 3.63c-.39.39-.39 1.02 0 1.41L7.29 8.7 7 9H4c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1h3l3.29 3.29c.63.63 1.71.18 1.71-.71v-4.17l4.18 4.18c-.49.37-1.02.68-1.6.91-.36.15-.58.53-.58.92 0 .72.73 1.18 1.39.91.8-.33 1.55-.77 2.22-1.31l1.34 1.34c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L5.05 3.63c-.39-.39-1.02-.39-1.42 0zM19 12c0 .82-.15 1.61-.41 2.34l1.53 1.53c.56-1.17.88-2.48.88-3.87 0-3.83-2.4-7.11-5.78-8.4-.59-.23-1.22.23-1.22.86v.19c0 .38.25.71.61.85C17.18 6.54 19 9.06 19 12zm-8.71-6.29l-.17.17L12 7.76V6.41c0-.89-1.08-1.33-1.71-.7zM16.5 12c0-1.77-1.02-3.29-2.5-4.03v1.79l2.48 2.48c.01-.08.02-.16.02-.24z"
-								/>
-							</svg>
-						</button>
+						<StreamVolumeControl 
+							player={player.current}/>
 						<button id="fullscreen" className="mg-x-1 player-btn player-btn--icon" onClick={onFullScreenClick}>
 							<svg 
 								className="player-icon"
