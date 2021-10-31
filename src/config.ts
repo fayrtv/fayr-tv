@@ -9,9 +9,9 @@ export const CHIME_ROOM_API = "https://vl8fth0307.execute-api.eu-central-1.amazo
 export const CHIME_ROOM_MAX_ATTENDEE = 16;
 
 // Default video stream to play inside the video player
-// export const DEFAULT_VIDEO_STREAM = "https://3d26876b73d7.us-west-2.playback.live-video.net/api/video/v1/us-west-2.913157848533.channel.rkCBS9iD1eyd.m3u8";
+export const DEFAULT_VIDEO_STREAM = "https://3d26876b73d7.us-west-2.playback.live-video.net/api/video/v1/us-west-2.913157848533.channel.rkCBS9iD1eyd.m3u8";
 // export const DEFAULT_VIDEO_STREAM = "https://zdf-hls-15.akamaized.net/hls/live/2016498/de/9531e2f112356ae334dd74853c766bd7/4/4.m3u8";
-export const DEFAULT_VIDEO_STREAM = "https://d4729bb054b0.eu-west-1.playback.live-video.net/api/video/v1/eu-west-1.015196193568.channel.aggYUgDSxw8e.m3u8";
+// export const DEFAULT_VIDEO_STREAM = "https://d4729bb054b0.eu-west-1.playback.live-video.net/api/video/v1/eu-west-1.015196193568.channel.aggYUgDSxw8e.m3u8";
 
 // Default Chat websocket link
 export const CHAT_WEBSOCKET = "wss://fml0rdsl83.execute-api.eu-central-1.amazonaws.com/Prod";
