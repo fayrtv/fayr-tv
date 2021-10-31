@@ -12,13 +12,17 @@ import styles from "./styles/Voting.module.scss";
 import Cell from "components/common/GridLayout/Cell";
 import Flex from 'components/common/Flex';
 import VoteCounter from './VoteCounter';
+import MaterialIcon from "components/common/MaterialIcon";
+import { Nullable } from "types/global";
 
 type Props = {
 	votingRef: React.RefObject<HTMLDivElement>;
 	votingData: VotingData;
+
+	setVoting: React.Dispatch<Nullable<VotingData>>;
 }
 
-export const Voting = ({ votingRef, votingData: { hostTeam, guestTeam} }: Props) => {
+export const Voting = ({ votingRef, setVoting, votingData: { hostTeam, guestTeam} }: Props) => {
 
 	const [hostTip, setHostTip] = React.useState(0);
 	const [guestTip, setGuestTip] = React.useState(0);
@@ -37,8 +41,9 @@ export const Voting = ({ votingRef, votingData: { hostTeam, guestTeam} }: Props)
 				className={styles.Voting}
 				gridProperties={{
 					gridTemplateAreas: `
-						'HostTeamIcon HostTeamCounter' 
-						'GuestTeamIcon GuestTeamCounter'
+						'HostTeamIcon TeamCounter' 
+						'GuestTeamIcon TeamCounter'
+						'ButtonSection ButtonSection'
 					`,
 					gap: "1rem",
 					gridTemplateColumns: "minmax(100px, 1fr) 2fr",
@@ -65,7 +70,7 @@ export const Voting = ({ votingRef, votingData: { hostTeam, guestTeam} }: Props)
 				<Cell
 					className={styles.VotingSectionContainer}
 					cellStyles={{
-						gridArea: "Counter"
+						gridArea: "TeamCounter"
 					}}>
 					<Flex 
 						className={styles.VotingSection}
@@ -79,14 +84,32 @@ export const Voting = ({ votingRef, votingData: { hostTeam, guestTeam} }: Props)
 							setValue={setGuestTip}/>
 					</Flex>
 				</Cell>
+				<Cell
+					cellStyles={{
+						gridArea: "ButtonSection"
+					}}>
+					<Flex
+						direction="Row"
+						mainAlign="Center"
+						crossAlign="Center">
+						<div
+							onClick={onTip}
+							className={styles.TipButton}>
+							<span>
+								TIP SETZEN
+							</span>
+						</div>
+						<div
+							className={styles.CloseButton}
+							onClick={() => setVoting(null)}>
+							<MaterialIcon
+								size={30}
+								color="white"
+								iconName="close"/>
+						</div>
+					</Flex>
+				</Cell>
 			</Grid>
-			<div
-				onClick={onTip}
-				className={styles.TipButton}>
-				<span>
-					TIP SETZEN
-				</span>
-			</div>
 		</Flex>
 	);
 }

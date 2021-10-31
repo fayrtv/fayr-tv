@@ -26,15 +26,11 @@ const voting: VotingData = {
 	}
 };
 
-type Props = {
-	
-}
-
-export const VotingContainer = ({ }: Props) => {
+export const VotingContainer = () => {
 
 	const votingRef = React.createRef<HTMLDivElement>();
 
-	const [currentVoting, setCurrentVoting] = React.useState<Nullable<VotingData>>(voting);
+	const [currentVoting, setCurrentVoting] = React.useState<Nullable<VotingData>>(null);
 
 	useGlobalClickHandler(clickEvent => {
 		if (!currentVoting && !votingRef.current) {
@@ -52,18 +48,12 @@ export const VotingContainer = ({ }: Props) => {
 				<div className={`${styles.VotingContainer} ${styles.VotingActive}`}>
 					<Flex
 						className={styles.VotingWrapper}
-						direction="Row">
+						direction="Row"
+						mainAlign="Center">
 						<Voting 
 							votingData={currentVoting!}
-							votingRef={votingRef}/>
-						<div
-							className={styles.CloseButton}
-							onClick={() => setCurrentVoting(null)}>
-							<MaterialIcon
-								size={30}
-								color="white"
-								iconName="close"/>
-						</div>
+							votingRef={votingRef}
+							setVoting={setCurrentVoting}/>
 					</Flex>
 				</div>
 			}

@@ -11,12 +11,26 @@
 		place-items: center;
 
 		span {
-			font-size: 10rem;
+			font-size: 5rem;
+
+			@media (min-width: 960px) {
+				font-size: 10rem;
+			}
+			
 			font-weight: bolder;
 		}
 	}
 
 	.CountButton {
+
+		text-align: center;
+		
+		font-size: 64px !important;
+
+		@media (max-width: 960px) {
+			font-size: 32px !important;
+		}
+		
 		width: 20%;
 	}
 }
