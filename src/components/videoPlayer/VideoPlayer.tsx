@@ -99,7 +99,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 		playerOverlay.addEventListener("mouseout", function (e) {
 			playerOverlay.classList.remove("overlay--hover");
 		});
-	}, [videoStream]);
+	}, []);
 
 	React.useEffect(() => {
 		const mediaPlayerScript = document.createElement("script");
@@ -150,17 +150,6 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 			},
 		});
 	}, [socket, selectedEmoji, attendeeId]);
-
-  React.useEffect(() => {
-		if (!videoElement.current) {
-			return;
-		}
-
-		videoElement.current!.addEventListener("click", onVideoClick);
-
-		return () => videoElement.current!.removeEventListener("click", onVideoClick);
-	}, [onVideoClick]);
-
 	
 	React.useEffect(() => {
 		if (!socket || !videoElement.current) {

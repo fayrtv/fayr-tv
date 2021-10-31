@@ -36,6 +36,7 @@ export const VoteCounter = ({ value, setValue }: Props) => {
 			<MaterialIcon
 				color="white"
 				className={styles.CountButton}
+				size={64}
 				iconName="remove_circle_outline"
 				onClick={decreaseValue} />
 			<div className={styles.CountDisplay}>
@@ -46,6 +47,7 @@ export const VoteCounter = ({ value, setValue }: Props) => {
 			<MaterialIcon
 				color="white"
 				className={styles.CountButton}
+				size={64}
 				iconName="add_circle_outline" 
 				onClick={increaseValue}/>
 		</Flex>
