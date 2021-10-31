@@ -182,7 +182,7 @@ export const RemoteVideoGroup = ({ chime, joinInfo, storedRoster }: Props) => {
 		return () => {
 			chime.unsubscribeFromRosterUpdate(rosterCallback);
 		}
-	}, [])
+	}, [chime])
 
 	return (
 		<div className="RemoteVideoGroup">

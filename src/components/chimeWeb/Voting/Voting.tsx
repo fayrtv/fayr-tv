@@ -55,6 +55,7 @@ export const Voting = ({ votingRef, setVoting, votingData: { hostTeam, guestTeam
 						gridArea: "HostTeamIcon"
 					}}>
 					<img
+						alt="Heimmannschaft"
 						src={hostTeam.teamIconSource}>
 					</img>
 				</Cell>
@@ -64,6 +65,7 @@ export const Voting = ({ votingRef, setVoting, votingData: { hostTeam, guestTeam
 						gridArea: "GuestTeamIcon"
 					}}>
 					<img
+						alt="Gastmannschaft"
 						src={guestTeam.teamIconSource}>
 					</img>
 				</Cell>

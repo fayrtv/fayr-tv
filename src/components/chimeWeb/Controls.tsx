@@ -185,18 +185,20 @@ const Controls: React.FC<Props & ReduxProps> = ({ chime, title, openSettings, un
 						setMinified(true);
 					} 
 			}
+
+			const controlRef = controlsRef.current;
 		
-			controlsRef.current.ontouchstart = handleTouchStart;
-			controlsRef.current.ontouchmove = handleTouchMove;
+			controlRef.ontouchstart = handleTouchStart;
+			controlRef.ontouchmove = handleTouchMove;
 
 			return () => {
-				controlsRef.current!.removeEventListener("touchstart", handleTouchStart);
-				controlsRef.current!.removeEventListener("touchmove", handleTouchMove);
+				controlRef.removeEventListener("touchstart", handleTouchStart);
+				controlRef.removeEventListener("touchmove", handleTouchMove);
 			}
 		}
 
 
-	}, [minified, isMobile, controlsRef.current])
+	}, [minified, isMobile])
 
 	const mic_controls = localMuted ? "" : `${styles.Active}`;
 	const cam_controls = videoStatus === VideoStatus.Enabled ? `${styles.Active}` : "";

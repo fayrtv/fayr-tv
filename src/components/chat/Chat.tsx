@@ -1,5 +1,4 @@
 import React from 'react';
-import { ReconnectingPromisedWebSocket } from 'amazon-chime-sdk-js';
 import ChatLine from "./subcomponents/ChatLine";
 import ChatInput from "./subcomponents/ChatInput";
 import { ChatOpenContext } from "../contexts/ChatOpenContext";
@@ -49,7 +48,7 @@ export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({ chimeSock
 			.then(createdSocket => {
 				setSocket(createdSocket);
 			});
-	}, []);
+	}, [chimeSocket, setSocket]);
 
 	React.useEffect(() => {
 
@@ -75,7 +74,7 @@ export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({ chimeSock
 		chatRef.current!.focus();
 
 		return () => socket.close(5000);
-	}, [socket]);
+	}, [socket, addMessages]);
 
 	React.useEffect(() => {
 		if (!isOpen) {
