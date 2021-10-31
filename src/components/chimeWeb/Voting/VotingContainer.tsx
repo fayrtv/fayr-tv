@@ -45,17 +45,24 @@ export const VotingContainer = () => {
 	return (
 		<>
 			{ !!currentVoting && 
-				<div className={`${styles.VotingContainer} ${styles.VotingActive}`}>
-					<Flex
-						className={styles.VotingWrapper}
-						direction="Row"
-						mainAlign="Center">
+				<Flex 
+					className={`${styles.VotingContainer} ${styles.VotingActive}`}
+					direction={"Column"}
+					space="Around">
+					<Flex>
 						<Voting 
 							votingData={currentVoting!}
-							votingRef={votingRef}
-							setVoting={setCurrentVoting}/>
+							votingRef={votingRef}/>
+						<div
+							className={styles.CloseButton}
+							onClick={() => setCurrentVoting(null)}>
+							<MaterialIcon
+								size={30}
+								color="white"
+								iconName="close"/>
+						</div>
 					</Flex>
-				</div>
+				</Flex>
 			}
 		</>
 	);
