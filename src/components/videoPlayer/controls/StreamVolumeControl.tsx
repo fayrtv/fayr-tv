@@ -2,6 +2,9 @@
 import * as React from "react";
 import { MediaPlayer } from "amazon-ivs-player";
 
+// Functionality
+import { useMediaQuery } from "react-responsive";
+
 // Styles
 import styles from "./StreamVolumeControl.module.scss";
 
@@ -17,6 +20,8 @@ export const StreamVolumeControl = ({ player }: Props) => {
 
 	const [muted, setMuted] = React.useState(false);
 	const [volumePercentage, setVolumePercentage] = React.useState(0);
+	
+	const isMobile = useMediaQuery({ maxWidth: 960 });
 
 	React.useEffect(() => {
 		if (!player) {
@@ -43,11 +48,11 @@ export const StreamVolumeControl = ({ player }: Props) => {
 		}
 	}, [muted, player]);
 
-	const convertClickToVolume = (event: MouseEvent, railRef: HTMLDivElement) => {
+	const convertClickToVolume = (y: number, railRef: HTMLDivElement) => {
 
 			const { height,  top } = railRef.getBoundingClientRect();
 
-			let percentage = 1 - ((event.y - top) / height);
+			let percentage = 1 - ((y - top) / height);
 
 			if (percentage < 0) {
 				percentage = 0;
@@ -74,46 +79,64 @@ export const StreamVolumeControl = ({ player }: Props) => {
 
 		let trackMouseMove = false;
 
-		const onMouseDown = (event: MouseEvent) => {
+		const onMouseDown = (event: MouseEvent | TouchEvent) => {
 			event.stopPropagation();
 			event.preventDefault();
 			trackMouseMove = true;
 		}
 		
 		const onMouseMove = (event: MouseEvent) => {
-			
 			if (!trackMouseMove) {
 				return;
 			}
 
-			convertClickToVolume(event, localRailRef);
+			convertClickToVolume(event.y, localRailRef);
+		}
+
+		const onTouchMove = (event: TouchEvent) => {
+			if (!trackMouseMove) {
+				return;
+			}
+
+			convertClickToVolume(event.touches[0].clientY, localRailRef);
 		}
 
 		const onMouseUp = () => trackMouseMove = false;
 		const onMouseLeave = () => trackMouseMove = false;
 
 		// Only listen when the pin is dragged
-		localPinRef.addEventListener("mousedown", onMouseDown);
-		localPinRef.addEventListener("mouseup", onMouseUp);
+		localPinRef.addEventListener(isMobile ? "touchstart" : "mousedown", onMouseDown);
+		localPinRef.addEventListener(isMobile ? "touchend" : "mouseup", onMouseUp);
 
 		// Mouse moves should not only be registered on the slider, but also the container.
 		// Still, we only apply the rail position. This feels nicer
-		localContainerRef.addEventListener("mousemove", onMouseMove);
+		if (isMobile) {
+			localContainerRef.addEventListener("touchmove", onTouchMove);
+		} else {
+			localContainerRef.addEventListener("mousemove", onMouseMove);
+		}
 
 		// The event should persist until the container is left
 		localContainerRef.addEventListener("mouseleave", onMouseLeave);
 
 		// Allow direct clicks on the rail
-		const onRailMouseDown = (event: MouseEvent) => convertClickToVolume(event, localRailRef);
+		const onRailMouseDown = (event: MouseEvent) => convertClickToVolume(event.y, localRailRef);
 		localRailRef.addEventListener("mousedown", onRailMouseDown);
 
 		return () => {
-			localPinRef.removeEventListener("mousedown", onMouseMove);
-			localContainerRef.removeEventListener("mousemove", onMouseMove);
-			localPinRef.removeEventListener("mouseup", onMouseMove);
+			localPinRef.removeEventListener(isMobile ? "touchstart" : "mousedown", onMouseDown);
+			localPinRef.removeEventListener(isMobile ? "touchend" : "mouseup", onMouseUp);
 			localContainerRef.removeEventListener("mouseleave", onMouseLeave);
+
+			if (isMobile) {
+				localContainerRef.removeEventListener("touchmove", onTouchMove);
+			} else {
+				localContainerRef.removeEventListener("mousemove", onMouseMove);
+			}
+
+			localRailRef.removeEventListener("mousedown", onRailMouseDown);
 		}
-	}, [muted, player, railRef, pinRef ]);
+	}, [muted, player, railRef, pinRef, isMobile]);
 
 	const { height } = railRef.current?.getBoundingClientRect() ?? { height: 0 };
 
