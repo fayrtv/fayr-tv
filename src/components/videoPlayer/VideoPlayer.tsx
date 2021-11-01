@@ -99,7 +99,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 		playerOverlay.addEventListener("mouseout", function (e) {
 			playerOverlay.classList.remove("overlay--hover");
 		});
-	}, []);
+	}, [videoStream]);
 
 	React.useEffect(() => {
 		const mediaPlayerScript = document.createElement("script");
