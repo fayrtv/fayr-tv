@@ -13,7 +13,6 @@ import styles from "./styles/VotingContainer.module.scss";
 import { Nullable } from '../../../types/global';
 import useGlobalClickHandler from "hooks/useGlobalClickHandler";
 import { isInRect } from "util/coordinateUtil";
-import MaterialIcon from "components/common/MaterialIcon";
 
 const voting: VotingData = {
 	hostTeam: {
