@@ -5,6 +5,13 @@ export type Team = {
 
 export type AttendeeVote = {
 	votingId: string;
+	name: string;
+	hostTeam: number;
+	guestTeam: number;
+}
+
+export type AttendeeVoteDto = {
+	votingId: string;
 	attendeeId: string;
 	hostTeam: number;
 	guestTeam: number;

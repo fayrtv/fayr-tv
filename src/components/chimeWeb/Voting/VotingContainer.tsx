@@ -16,18 +16,20 @@ import { VotingOpenContext } from '../../contexts/VotingOpenContext';
 // Types
 import { Nullable } from '../../../types/global';
 import { ReduxStore } from 'redux/store';
-import { AttendeeVote, VotingData } from './types';
+import { AttendeeVote, AttendeeVoteDto, VotingData } from './types';
+import { SocketEventType } from 'components/chime/types';
 
 // Styles
 import styles from "./styles/VotingContainer.module.scss";
-import { SocketEventType } from 'components/chime/types';
+import ChimeSdkWrapper from '../../chime/ChimeSdkWrapper';
 
 type Props = {
 	attendeeId: string;
+	chime: ChimeSdkWrapper;
 	votings: Array<VotingData>;
 }
 
-export const VotingContainer = ({ attendeeId, votings }: Props) => {
+export const VotingContainer = ({ attendeeId, chime, votings }: Props) => {
 	const votingRef = React.createRef<HTMLDivElement>();
 
 	const dispatch = useDispatch();
@@ -38,17 +40,29 @@ export const VotingContainer = ({ attendeeId, votings }: Props) => {
 
 	const { isOpen, set: setIsOpen } = React.useContext(VotingOpenContext);
 
+	const [idNameMapping, setIdNameMapping] = React.useState<Map<string, string>>(new Map<string, string>());
+
+	React.useEffect(() => {		
+		chime.subscribeToRosterUpdate(x => {
+			setIdNameMapping(new Map<string, string>(Object.entries(x).map(([key, val]) => [key, val.name])));
+		});
+	}, [chime, setIdNameMapping])
+
 	React.useEffect(() => {
 		if (!socket) {
 			return;
 		}
 		
-		return socket.addListener<AttendeeVote>(SocketEventType.AttendeeVote, event => {
-			dispatch(updateVote(event));
+		return socket.addListener<AttendeeVoteDto>(SocketEventType.AttendeeVote, event => {
+			const nameOfAttendee = idNameMapping.has(event.attendeeId) ? idNameMapping.get(event.attendeeId)! : event.attendeeId;
+			dispatch(updateVote({
+				...event,
+				name: nameOfAttendee,
+			}));
 			return Promise.resolve();
 		});
 
-	}, [socket, dispatch]);
+	}, [socket, dispatch, idNameMapping]);
 
 	React.useEffect(() => {
 		if (!votings) {
@@ -69,17 +83,20 @@ export const VotingContainer = ({ attendeeId, votings }: Props) => {
 	});
 
 	const updateTip = (hostTip: number, guestTip: number) => {
-
-		const attendeeVote: AttendeeVote = {
+		const nameOfAttendee = idNameMapping.has(attendeeId) ? idNameMapping.get(attendeeId)! : attendeeId;
+		const attendeeVote: AttendeeVoteDto = {
 			attendeeId,
 			guestTeam: guestTip,
 			hostTeam: hostTip,
 			votingId: currentVoting!.votingId,
 		};
 
-		dispatch(updateVote(attendeeVote));
+		dispatch(updateVote({
+			...attendeeVote,
+			name: nameOfAttendee,
+		}));
 
-		socket?.send<AttendeeVote>({
+		socket?.send<AttendeeVoteDto>({
 			messageType: SocketEventType.AttendeeVote,
 			payload: attendeeVote,
 		});
@@ -87,7 +104,7 @@ export const VotingContainer = ({ attendeeId, votings }: Props) => {
 
 	return (
 		<>
-			{ !!currentVoting && isOpen && 
+		;	{ !!currentVoting && isOpen && 
 				<div className={`${styles.VotingContainer} ${styles.VotingActive}`}>
 					<Flex
 						className={styles.VotingWrapper}

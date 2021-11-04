@@ -9,6 +9,7 @@
 	.OverviewPage {
 		width: 70%;
 		height: 80%;
+		overflow-y: auto;
 
 		.RankSection {
 			height: 100%;
@@ -40,7 +41,7 @@
 		.RankGrid {
 			height: 100%;
 			> div {
-				min-height: 8.5%;
+				min-height: 30px;
 				width: 100%;
 
 				&:not(:last-child) {	

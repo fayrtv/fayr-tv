@@ -42,7 +42,7 @@ export const reducer = (state = initialState, action: ReducerAction<VotingData |
 			}
 
 			const newVotingInfo: VotingData = { ...state[correspondingVoteIndex] };
-			const existingVoteIndex = newVotingInfo.votes.findIndex(x => x.attendeeId === attendeeVote.attendeeId);
+			const existingVoteIndex = newVotingInfo.votes.findIndex(x => x.name === attendeeVote.name);
 			
 			if (existingVoteIndex === -1) {
 				newVotingInfo.votes = [ ...newVotingInfo.votes, attendeeVote ];

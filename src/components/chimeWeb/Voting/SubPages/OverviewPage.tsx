@@ -18,7 +18,7 @@ type Props = {
 
 export const OverviewPage = ({ voting: { guestTeam, hostTeam, votes } }: Props) => {
 
-	const sortedVotes = React.useMemo(() => votes.sort((left, right) => left.attendeeId.localeCompare(right.attendeeId)), [votes]);
+	const sortedVotes = React.useMemo(() => votes.sort((left, right) => left.name.localeCompare(right.name)), [votes]);
 
 	return (
 		<div className={styles.OverviewPageContainer}>
@@ -65,12 +65,12 @@ export const OverviewPage = ({ voting: { guestTeam, hostTeam, votes } }: Props) 
 								<Flex 
 									direction="Row"
 									crossAlign="Center"
-									key={vote.attendeeId}>
+									key={vote.name}>
 									<span className={styles.Rank}>
 										{index + 1}
 									</span>
 									<span className={styles.Attendee}>
-										{vote.attendeeId}
+										{vote.name}
 									</span>
 									<span className={styles.Host}>
 										{vote.hostTeam}
