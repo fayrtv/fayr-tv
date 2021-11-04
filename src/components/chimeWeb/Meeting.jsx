@@ -186,7 +186,9 @@ class Meeting extends Component {
 				fullScreenCamSection={camSection}
 				attendeeId={this.props.chime.attendeeId}
 			/>
-			<VotingContainer />
+			<VotingContainer
+				chime={this.props.chime}
+				attendeeId={this.props.chime.attendeeId}/>
 			{ camSection }
 			<Controls
 				chime={this.props.chime}

@@ -1,35 +1,93 @@
 // Framework
+import { useMediaQuery } from "react-responsive";
 import * as React from "react";
 
 // Components
 import Grid from "components/common/GridLayout/Grid";
+import Cell from "components/common/GridLayout/Cell";
+import Flex from 'components/common/Flex';
+import MaterialIcon from "components/common/MaterialIcon";
+import VotePage from "./SubPages/VotePage";
+import VotingMenuEntry from './VotingMenuEntry';
+import OverviewPage from "./SubPages/OverviewPage";
+import SurveyPage from "./SubPages/SurveyPage";
 
 // Types
-import { VotingData } from "./types";
+import { VotingData, VotingPage } from "./types";
 
 // Styles
 import styles from "./styles/Voting.module.scss";
-import Cell from "components/common/GridLayout/Cell";
-import Flex from 'components/common/Flex';
-import VoteCounter from './VoteCounter';
-import MaterialIcon from "components/common/MaterialIcon";
-import { Nullable } from "types/global";
 
 type Props = {
 	votingRef: React.RefObject<HTMLDivElement>;
-	votingData: VotingData;
+	voting: VotingData;
 
-	setVoting: React.Dispatch<Nullable<VotingData>>;
+	updateTip(hostTeam: number, guestTeam: number): void;
+	closeVoting(): void;
 }
 
-export const Voting = ({ votingRef, setVoting, votingData: { hostTeam, guestTeam} }: Props) => {
+type MenuEntry = {
+	content: React.ReactNode;
+	page: VotingPage;
+}
+
+export const Voting = ({ votingRef, closeVoting, voting, updateTip }: Props) => {
 
 	const [hostTip, setHostTip] = React.useState(0);
 	const [guestTip, setGuestTip] = React.useState(0);
+	const [votingPage, setVotingPage] = React.useState(VotingPage.Vote);
+	const isDesktop = useMediaQuery({ minWidth: 961 });
 
 	const onTip = () => {
-		console.log(`Tip: ${hostTeam.identifier}:${hostTip} vs  ${guestTeam.identifier}:${guestTip}`)
+		if (votingPage !== VotingPage.Vote) {
+			setVotingPage(VotingPage.Vote);
+			return;
+		}
+
+		updateTip(hostTip, guestTip);
 	}
+
+	const menuEntries = React.useMemo(() => new Array<MenuEntry>(
+		{
+			content: isDesktop ? (
+				<span>
+					Tippen
+				</span>
+			) : (
+				<MaterialIcon
+					type="Outlined"
+					color="white"
+					iconName="ballot"/>
+			),
+			page: VotingPage.Vote,
+		},
+		{
+			content: isDesktop ? (
+				<span>
+					Übersicht
+				</span>
+			) : (
+				<MaterialIcon
+					type="Outlined"
+					color="white"
+					iconName="menu"/>
+			),
+			page: VotingPage.Overview,
+		},
+		{
+			content: isDesktop ? (
+				<span>
+					Umfrage
+				</span>
+			) : (
+				<MaterialIcon
+					type="Outlined"
+					color="white"
+					iconName="poll"/>
+			),
+			page: VotingPage.Survey,
+		}
+	), []);
 
 	return (
 		<Flex
@@ -41,50 +99,54 @@ export const Voting = ({ votingRef, setVoting, votingData: { hostTeam, guestTeam
 				className={styles.Voting}
 				gridProperties={{
 					gridTemplateAreas: `
-						'HostTeamIcon TeamCounter' 
-						'GuestTeamIcon TeamCounter'
-						'ButtonSection ButtonSection'
+						'MenuSection Content Content' 
+						'MenuSection Content Content'
+						'ButtonSection ButtonSection ButtonSection'
 					`,
 					gap: "1rem",
-					gridTemplateColumns: "minmax(100px, 1fr) 2fr",
+					gridTemplateColumns: `${isDesktop ? "2fr" : "35px"} 3fr minmax(100px, 2fr)`,
 					gridTemplateRows: "minmax(100px, 1fr) minmax(100px, 1fr)"
 				}}>
 				<Cell
-					className={styles.TeamIcon}
 					cellStyles={{
-						gridArea: "HostTeamIcon"
-					}}>
-					<img
-						alt="Heimmannschaft"
-						src={hostTeam.teamIconSource}>
-					</img>
-				</Cell>
-				<Cell
-					className={styles.TeamIcon}
-					cellStyles={{
-						gridArea: "GuestTeamIcon"
-					}}>
-					<img
-						alt="Gastmannschaft"
-						src={guestTeam.teamIconSource}>
-					</img>
-				</Cell>
-				<Cell
-					className={styles.VotingSectionContainer}
-					cellStyles={{
-						gridArea: "TeamCounter"
+						gridArea: "MenuSection"
 					}}>
 					<Flex 
-						className={styles.VotingSection}
-						space="Between"
-						direction="Column">
-						<VoteCounter 
-							value={hostTip}
-							setValue={setHostTip}/>
-						<VoteCounter 
-							value={guestTip}
-							setValue={setGuestTip}/>
+						direction="Column"
+						className={styles.VotingMenuEntryContainer}>
+						{ menuEntries.map((x, i) => (
+							<VotingMenuEntry
+								{...x}
+								key={i}
+								selectedPage={votingPage}
+								setVotingPage={setVotingPage}/>
+						))}
 					</Flex>
+				</Cell>
+				<Cell
+					cellStyles={{
+						gridArea: "Content"
+					}}>
+					{ votingPage === VotingPage.Vote ? 
+						(					
+							<VotePage
+								guestTip={guestTip}
+								hostTip={hostTip}
+								setGuestTip={setGuestTip}
+								setHostTip={setHostTip}
+								voting={voting}
+							/>
+						)
+					: votingPage === VotingPage.Overview ?
+						(
+							<OverviewPage
+								voting={voting}
+								/>
+						)
+					: 	(
+							<SurveyPage />
+						)
+					}
 				</Cell>
 				<Cell
 					cellStyles={{
@@ -103,7 +165,7 @@ export const Voting = ({ votingRef, setVoting, votingData: { hostTeam, guestTeam
 						</div>
 						<div
 							className={styles.CloseButton}
-							onClick={() => setVoting(null)}>
+							onClick={closeVoting}>
 							<MaterialIcon
 								size={30}
 								color="white"

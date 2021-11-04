@@ -6,28 +6,8 @@
 		height: 100%;
 		width: 100%;
 
-		.TeamIcon {
-			display: flex;
-			align-content: center;
-			justify-content: center;
-
-			background-color: white;
-
-			> img {
-				object-fit: scale-down;
-			}
-		}
-
-		.VotingSectionContainer {
-			display: grid;
-			place-items: center;
-
-			background: black;
-
-			.VotingSection {
-				height: 100%;
-				width: 80%;
-			}
+		.VotingMenuEntryContainer {
+			height: 100%;			
 		}
 	}
 

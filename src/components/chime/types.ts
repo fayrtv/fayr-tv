@@ -13,4 +13,5 @@ export enum SocketEventType {
 	Unspecified = 0,
 	ChatMessage = 1,
 	EmojiReaction = 2,
+	AttendeeVote = 3,
 }
