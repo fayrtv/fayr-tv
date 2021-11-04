@@ -1,0 +1,30 @@
+.VotingMenuEntry {
+	display: grid;
+	place-items: center;
+
+	height: 15%;
+	background-color: rgba(0, 0, 0, 0.4);
+
+	cursor: pointer;
+
+	&.Selected {
+		margin-right: -1rem;
+		padding-right: 1rem;
+		background-color: black;
+
+		> span {
+			color: #fa7751;
+		}
+	}
+
+	&:not(:last-child) {
+		margin-bottom: 1rem;
+	}
+	
+	> span {		
+		font-size: 3rem;
+
+		font-weight: 800;
+		color: white;
+	}
+}

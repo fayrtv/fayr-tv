@@ -18,6 +18,7 @@ import Meeting from './chimeWeb/Meeting';
 import End from './chimeWeb/End';
 import SocketContextProvider from './chime/SocketContextProvider';
 import SelectedReactionContextProvider from './contexts/SelectedReactionContext';
+import VotingOpenContextProvider from './contexts/VotingOpenContext';
 
 function App() {
   const chime = new ChimeSdkWrapper();
@@ -33,12 +34,14 @@ function App() {
           <Route path={`${baseHref}/meeting`}>
 			<Provider store={store}>
 				<ChatOpenContextProvider>
-					<SocketContextProvider>
-						<SelectedReactionContextProvider>
-							<Meeting
-								chime={chime}/>
-						</SelectedReactionContextProvider>
-					</SocketContextProvider>
+					<VotingOpenContextProvider>
+						<SocketContextProvider>
+							<SelectedReactionContextProvider>
+								<Meeting
+									chime={chime}/>
+							</SelectedReactionContextProvider>
+						</SocketContextProvider>
+					</VotingOpenContextProvider>
 				</ChatOpenContextProvider>
 			</Provider>
           </Route>
