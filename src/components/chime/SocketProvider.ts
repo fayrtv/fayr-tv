@@ -91,7 +91,9 @@ export class SocketProvider implements ISocketProvider {
 	}
 
 	close(timeoutMs: number, code?: number | undefined, reason?: string | undefined) {
-		this._socket.close(timeoutMs, code, reason);
+		this._socket.close(timeoutMs, code, reason).catch((err) => {
+			// Socket was probably already closed
+		});
 	}
 
 	private removeListener(eventType: SocketEventType, callback: ListenerCallback): void {				

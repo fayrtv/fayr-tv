@@ -14,6 +14,7 @@ import Controls from './Controls';
 import Settings from './Settings';
 import LocalVideo from './LocalVideo';
 import RemoteVideoGroup from './RemoteVideoGroup';
+import Flex from "components/common/Flex"
 import Error from './Error';
 import { Desktop, Mobile } from '../mediaQueries';
 import { ChatOpenContext } from "../contexts/ChatOpenContext";
@@ -21,6 +22,7 @@ import VotingContainer from "./Voting/VotingContainer";
 
 // Styles
 import './ChimeWeb.css';
+import styles from "./Meeting.module.scss";
 
 class Meeting extends Component {
 
@@ -172,8 +174,8 @@ class Meeting extends Component {
 		)
 
 		return (
-			<div className="app-grid" onClick={this.handleClick}>
-				<div className="main-stage">
+			<div className={`app-grid ${styles.Meeting}`} onClick={this.handleClick}>
+				<div className={`main-stage ${styles.MainStage}`}>
 
 					<VideoPlayer
 						setMetadataId={this.setMetadataId}
@@ -182,53 +184,50 @@ class Meeting extends Component {
 						attendeeId={this.props.chime.attendeeId}
 					/>
 
-			<Mobile>
-				<div style={{flexGrow: 1, height: "100%"}} />
-			</Mobile>
+					<Mobile>
+						<div style={{flexGrow: 1, height: "100%"}} />
+					</Mobile>
+					
+					<VotingContainer
+						chime={this.props.chime}
+						attendeeId={this.props.chime.attendeeId}
+					/>
 
-			<Desktop>
-				<div style={{height: "100%"}} />
-			</Desktop>
+					<Controls
+						chime={this.props.chime}
+						baseHref={this.baseHref}
+						ssName={this.ssName}
+						title={this.title}
+						openSettings={this.openSettings}
+						role={this.role}
+						history={this.props.history}
+						myVideoElement={this.myVideoElement}
+					/>
 
-			
+					<Flex 
+						className={styles.Chat}
+						direction="ColumnReverse">
+						<Chat
+							chimeSocket={this.props.chime}
+							title={this.title}
+							userName={this.username}
+						/>
+					</Flex>
+				</div>
 
-			<VotingContainer
-				chime={this.props.chime}
-				attendeeId={this.props.chime.attendeeId}
-			/>
-
-			<Controls
-				chime={this.props.chime}
-				baseHref={this.baseHref}
-				ssName={this.ssName}
-				title={this.title}
-				openSettings={this.openSettings}
-				role={this.role}
-				history={this.props.history}
-				myVideoElement={this.myVideoElement}
-			/>
-
-		</div>
-
-		<div className="chat full-height pos-relative">
-			{ camSection }
-		</div>
+				<div className="full-height pos-relative">
+					{ camSection }
+				</div>
 		
-		{/* <Chat
-			chimeSocket={this.props.chime}
-			title={this.title}
-			userName={this.username}
-		/> */}
-		
-			{this.state.showSettings && (
-				<Settings
-					chime={this.props.chime}
-					joinInfo={this.joinInfo}
-					saveSettings={this.saveSettings}
-					closeSettings={this.closeSettings}
-				/>
-			)}
-		</div>
+				{this.state.showSettings && (
+					<Settings
+						chime={this.props.chime}
+						joinInfo={this.joinInfo}
+						saveSettings={this.saveSettings}
+						closeSettings={this.closeSettings}
+					/>
+				)}
+			</div>
 		)
 	}
 

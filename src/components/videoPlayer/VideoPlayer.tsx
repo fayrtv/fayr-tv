@@ -192,6 +192,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 			return Promise.resolve();
 		})
 	}, [socket]);
+	
 	return (
 		<div className="player-wrapper">
 			<video id="video-player" className="el-player" playsInline></video>
