@@ -1,39 +1,22 @@
 .VotingWrapper {
-	height: 600px;
-	width: 700px;
-
+	height: 100%;
+	width: 100%;
 	.Voting {
 
 		height: 100%;
 		width: 100%;
 
-		.TeamIcon {
-			display: grid;
-			place-items: center;
-
-			background-color: white;
-		}
-
-		.VotingSectionContainer {
-			display: grid;
-			place-items: center;
-
-			background: black;
-
-			.VotingSection {
-				height: 80%;
-				width: 80%;
-
-				> div {
-					height: 100%;
-				}
-			}
+		.VotingMenuEntryContainer {
+			height: 100%;			
 		}
 	}
 
 	.TipButton {
 		height: 50px;
 		width: 300px;
+
+		margin-left: 50px;
+
 		background: #4081c7;
 
 		cursor: pointer;
@@ -45,5 +28,22 @@
 		border-radius: 10px;
 
 		box-shadow: 0 0 10px grey;
+	}
+	
+	.CloseButton {
+		height: 50px;
+		width: 50px;
+		background-color:rgba(0, 0, 0, 0.3);
+		border-radius: 5px;
+		margin-left: 10px;
+
+		display: grid;
+		place-items: center;
+
+		cursor: pointer;
+
+		> span {
+			cursor: pointer !important;
+		}
 	}
 }

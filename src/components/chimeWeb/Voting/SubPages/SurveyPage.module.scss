@@ -1,0 +1,14 @@
+.SurveyPage {
+	width: 100%;
+	height: 100%;
+	background-color: black;
+
+	display: grid;
+	place-items: center;
+
+	> span {
+		color: #fa7751;
+		font-weight: 800;
+		font-size: 5rem;
+	}
+}

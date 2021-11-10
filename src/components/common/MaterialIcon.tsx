@@ -18,17 +18,17 @@ export type MaterialIconProps<T> = {
 	size?: number;
 	onClick?(event: React.MouseEvent<HTMLSpanElement, MouseEvent>): T;
 	className?: string;
-	type?: MaterialIconType;
+	type?: keyof typeof MaterialIconType;
 }
 
-export const MaterialIcon: React.FC<MaterialIconProps<void>> = ({ className, iconName, color, size, onClick, type = MaterialIconType.Filled }) => {
+export const MaterialIcon: React.FC<MaterialIconProps<void>> = ({ className, iconName, color, size, onClick, type = "Filled" }) => {
 
 	const classes = classNames({
-		"material-icons": type === MaterialIconType.Filled,
-		"material-icons-outlined": type === MaterialIconType.Outlined,
-		"material-icons-round": type === MaterialIconType.Rounded,
-		"material-icons-sharp": type === MaterialIconType.Sharp,
-		"material-icons-two-tone": type === MaterialIconType.TwoTone,
+		"material-icons": type === "Filled",
+		"material-icons-outlined": type === "Outlined",
+		"material-icons-round": type === "Rounded",
+		"material-icons-sharp": type === "Rounded",
+		"material-icons-two-tone": type === "TwoTone",
 	}, className ?? "");
 
 	if (!size) {

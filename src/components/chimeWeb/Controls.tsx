@@ -11,7 +11,9 @@ import { useMediaQuery } from 'react-responsive';
 import store from '../../redux/store';
 import ReactionButtonSelection from './Controls/ReactionButtonSelection';
 import Emoji from 'react-emoji-render';
+import { VotingOpenContext } from '../contexts/VotingOpenContext';
 import { SelectedReactionContext } from 'components/contexts/SelectedReactionContext';
+import MaterialIcon from '../common/MaterialIcon';
 
 enum VideoStatus {
 	Loading,
@@ -35,6 +37,7 @@ type ReduxProps = {
 const Controls: React.FC<Props & ReduxProps> = ({ chime, title, openSettings, unreadMessages, role, ssName, baseHref, history }) => {
 
 	const { isOpen: isChatOpen, set: setChatOpen } = React.useContext(ChatOpenContext);
+	const { isOpen: isVotingOpen, set: setVotingOpen } = React.useContext(VotingOpenContext);
 
 	const [localMuted, setLocalMuted] = React.useState(false);
 	const [videoStatus, setVideoStatus] = React.useState(VideoStatus.Disabled);
@@ -315,6 +318,19 @@ const Controls: React.FC<Props & ReduxProps> = ({ chime, title, openSettings, un
 					{/* <line x1="18" y1="6" x2="6" y2="18" />
 					<line x1="6" y1="6" x2="18" y2="18" /> */}
 				</svg>
+			</div>
+		),
+
+		// Voting Button
+		(
+			<div
+				key="VotingButton" 
+				className={`${styles.Button} ${styles.VotingButton} ${isVotingOpen ? `${styles.Active}` : ""} btn rounded`}
+				onClick={() => setVotingOpen(!isVotingOpen)}>
+				<MaterialIcon
+					color="white"
+					type="Outlined"
+					iconName="poll"/>
 			</div>
 		),
 	];

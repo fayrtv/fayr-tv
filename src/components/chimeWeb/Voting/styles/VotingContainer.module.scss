@@ -14,20 +14,11 @@
 		backdrop-filter: blur(6px);
 	}
 
-	.CloseButton {
-		height: 35px;
-		width: 35px;
-		background-color:rgba(0, 0, 0, 0.3);
-		border-radius: 5px;
-		margin-left: 10px;
+	.VotingWrapper {
+		height: 60vh;
+		width: 90vw;
+		max-width: 1000px;
 
-		display: grid;
-		place-items: center;
-
-		cursor: pointer;
-
-		> span {
-			cursor: pointer !important;
-		}
+		position: relative;
 	}
 }

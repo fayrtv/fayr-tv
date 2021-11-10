@@ -185,12 +185,18 @@ class Meeting extends Component {
 			<Mobile>
 				<div style={{flexGrow: 1, height: "100%"}} />
 			</Mobile>
+
 			<Desktop>
 				<div style={{height: "100%"}} />
 			</Desktop>
+
 			
-			<VotingContainer />
-			
+
+			<VotingContainer
+				chime={this.props.chime}
+				attendeeId={this.props.chime.attendeeId}
+			/>
+
 			<Controls
 				chime={this.props.chime}
 				baseHref={this.baseHref}
@@ -201,6 +207,7 @@ class Meeting extends Component {
 				history={this.props.history}
 				myVideoElement={this.myVideoElement}
 			/>
+
 		</div>
 
 		<div className="chat full-height pos-relative">
@@ -212,8 +219,6 @@ class Meeting extends Component {
 			title={this.title}
 			userName={this.username}
 		/> */}
-
-		{/* { camSection } */}
 		
 			{this.state.showSettings && (
 				<Settings

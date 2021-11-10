@@ -135,6 +135,14 @@
 				height: 42px;
 			}
 		}
+
+		&.VotingButton {
+			cursor: pointer;
+
+			> span {
+				cursor: pointer !important;
+			}
+		}
 	}
 }
     
