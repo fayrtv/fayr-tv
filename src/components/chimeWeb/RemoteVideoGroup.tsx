@@ -9,6 +9,8 @@ import { VideoTileState } from 'amazon-chime-sdk-js';
 import { ReduxStore } from '../../redux/store';
 import { connect, useDispatch } from 'react-redux';
 import { replaceRemoteVideoRoster } from "./../../redux/reducers/remoteVideoReducer";
+import Cell from 'components/common/GridLayout/Cell';
+import Grid from 'components/common/GridLayout/Grid';
 
 const MAX_REMOTE_VIDEOS = config.CHIME_ROOM_MAX_ATTENDEE;
 
@@ -185,23 +187,31 @@ export const RemoteVideoGroup = ({ chime, joinInfo, storedRoster }: Props) => {
 	}, [chime])
 
 	return (
-		<div className="RemoteVideoGroup">
-			{roster.map((attendee, index) => {
+		<Grid
+			gridProperties={{
+				gap: 0,
+				gridTemplateRows: "repeat(4, 1fr)",
+				gridTemplateColumns: "repeat(2, 1fr)"
+			}}>
+			{roster.slice(0, 10).map((attendee, index) => {
 				return (
-					<RemoteVideo
-						chime={chime}
-						tileIndex={index}
-						key={index}
-						attendeeId={attendee.attendeeId}
-						videoEnabled={attendee.videoEnabled}
-						name={attendee.name}
-						muted={attendee.muted}
-						volume={attendee.volume}
-						videoElement={attendee.videoElement}
-					/>
+					<Cell 
+						key={index}>
+						<RemoteVideo
+							chime={chime}
+							tileIndex={index}
+							key={index}
+							attendeeId={attendee.attendeeId}
+							videoEnabled={attendee.videoEnabled}
+							name={attendee.name}
+							muted={attendee.muted}
+							volume={attendee.volume}
+							videoElement={attendee.videoElement}
+						/>
+					</Cell>
 				);
 			})}
-		</div>
+		</Grid>
 	)
 }
 

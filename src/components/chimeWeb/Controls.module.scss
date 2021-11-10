@@ -115,6 +115,7 @@
 
 		&.ReactionButton {
 			position: relative;
+			z-index: 500;
 
 			> span {
 				font-size: 1.5em;

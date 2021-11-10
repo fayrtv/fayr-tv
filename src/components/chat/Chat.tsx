@@ -97,26 +97,8 @@ export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({ chimeSock
 		}
 	}, [messages, isOpen, markAsSeen]);
 
-	// eslint-disable-next-line
-	// const handleRoomClick = async (event: any) => {
-	// 	event.stopPropagation();
-	// 	event.preventDefault();
-
-	// 	const link = `${window.location.origin}${window.location.pathname.replace('meeting', 'index.html')}?action=join&room=${title}`;
-	// 	if (config.DEBUG) {
-	// 		console.log(link);
-	// 	}
-
-	// 	const result = await navigator.permissions.query({ name: "clipboard-write" });
-
-	// 	if (result.state !== "denied") {
-	// 		navigator.clipboard.writeText(encodeURI(link));
-	// 	}
-	// }
-	
-
 	return (
-		<div className={`Chat ${!isOpen ? 'Closed' : ''}`}>
+		<div className={`Chat ${!isOpen ? 'Closed' : ''} ${messages.length === 0 ? 'NoMessages' : ''}`}>
 			<div className="ChatWrapper pos-relative">
 				<div
 					className="Messages pd-x-1"

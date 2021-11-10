@@ -104,7 +104,7 @@ export const VotingContainer = ({ attendeeId, chime, votings }: Props) => {
 
 	return (
 		<>
-		;	{ !!currentVoting && isOpen && 
+			{ !!currentVoting && isOpen && 
 				<div className={`${styles.VotingContainer} ${styles.VotingActive}`}>
 					<Flex
 						className={styles.VotingWrapper}

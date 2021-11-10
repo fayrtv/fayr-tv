@@ -9,6 +9,7 @@
     "@types/react-dom": "^17.0.9",
     "amazon-chime-sdk-js": "^1.14.0",
     "amazon-ivs-player": "^1.5.0",
+    "bowser": "^2.11.0",
     "emoji-picker-react": "^3.4.8",
     "ffplay": "^1.1.0",
     "moment": "^2.29.1",

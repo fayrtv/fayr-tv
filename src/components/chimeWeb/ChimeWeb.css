@@ -186,10 +186,6 @@ input:disabled {
   overflow: hidden;
 }
 
-.aspect-spacer {
-  padding-bottom: 56.25%;
-}
-
 .el-player {
   width: 100%;
   height: 100%;
@@ -197,6 +193,10 @@ input:disabled {
   /* position: fixed; */
   top: 0;
   background: #000;
+}
+
+.el-player.fullscreen {
+	width: 80%;
 }
 
 /* Controls */
@@ -334,6 +334,10 @@ a.btn {
   z-index: 1;
 }
 
+.overlay.fullscreen {
+	width: 80%;
+}
+
 #player-controls {
   position: absolute;
   top: 0;
@@ -357,9 +361,10 @@ a.btn {
 
 .FullScreenCams {
   position: fixed;
+  height: 100%;
+  width: 20%;
   z-index: 5000;
-  bottom: 0px;
-  left: 0px;
+  right: 0;
 }
 
 .FullScreenCams .RemoteVideoGroup {
