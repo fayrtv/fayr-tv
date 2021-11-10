@@ -196,7 +196,7 @@ export const RemoteVideoGroup = ({ chime, joinInfo, storedRoster }: Props) => {
 			{roster.slice(0, 10).map((attendee, index) => {
 				return (
 					<Cell 
-						key={attendee.attendeeId}>
+						key={index}>
 						<RemoteVideo
 							chime={chime}
 							tileIndex={index}

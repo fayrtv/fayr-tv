@@ -98,7 +98,7 @@ export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({ chimeSock
 	}, [messages, isOpen, markAsSeen]);
 
 	return (
-		<div className={`Chat ${!isOpen ? 'Closed' : ''}`}>
+		<div className={`Chat ${!isOpen ? 'Closed' : ''} ${messages.length === 0 ? 'NoMessages' : ''}`}>
 			<div className="ChatWrapper pos-relative">
 				<div
 					className="Messages pd-x-1"
