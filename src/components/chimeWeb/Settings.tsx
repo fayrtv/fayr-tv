@@ -124,10 +124,10 @@ export const Settings = ({ chime, closeSettings, joinInfo, saveSettings }: Props
 	return (
 		<div className="modal pos-absolute top-0 bottom-0">
 			<div className={`${styles.SettingsContainer} modal__el`}>
-				<h1 className="mg-b-2">Settings</h1>
+				<h1 className="mg-b-2">Einstellungen</h1>
 				<form>
 					<fieldset>
-						<input 
+						{/* <input 
 							className="mg-b-2"
 							name="" 
 							id="" 
@@ -136,8 +136,10 @@ export const Settings = ({ chime, closeSettings, joinInfo, saveSettings }: Props
 							placeholder="Playback URL" 
 							onChange={handlePlaybackURLChange} 
 							value={playbackUrl} 
-							disabled />
+							disabled /> */}
+						<h2 className="mg-b-2">Mikrofon</h2>
 						<select
+							title="Mikrofon"
 							name="microphone"
 							className="select__field"
 							onChange={handleMicrophoneChange}
@@ -146,7 +148,9 @@ export const Settings = ({ chime, closeSettings, joinInfo, saveSettings }: Props
 						>
 							{renderDevices(availableMics, 'microphone')}
 						</select>
+						<h2 className="mg-b-2">Lautsprecher</h2>
 						<select
+							title="Lautsprecher"
 							name="speaker"
 							className="select__field"
 							onChange={handleSpeakerChange}
@@ -155,7 +159,9 @@ export const Settings = ({ chime, closeSettings, joinInfo, saveSettings }: Props
 						>
 							{renderDevices(availableSpeakers, 'speaker')}
 						</select>
+						<h2 className="mg-b-2">Kamera</h2>
 						<select
+							title="Kamera"
 							name="camera"
 							className="select__field"
 							onChange={handleCameraChange}
@@ -165,7 +171,7 @@ export const Settings = ({ chime, closeSettings, joinInfo, saveSettings }: Props
 							{renderDevices(availableCams, 'camera')}
 						</select>
 						<button className="btn btn--primary mg-t-2" onClick={handleSave}>
-							Save
+							Speichern
 						</button>
 					</fieldset>
 				</form>

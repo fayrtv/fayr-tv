@@ -29,8 +29,10 @@
 	/* visibility: fixed; */
 	visibility: hidden;
 	width: 200px;
-	background-color: #fa7751;
-	color: #1c202a;
+	// background-color: #fa7751;
+	background: rgba(0, 0, 0, 0.5);
+	backdrop-filter: blur(10px);
+	// color: #1c202a;
 	text-align: center;
 	/* border-radius: 0.6rem; */
 	padding: 0.8rem 0;
@@ -47,7 +49,8 @@
 
 /* Chat */
 .Chat {
-	background: transparent;
+	background: rgba(0, 0, 0, 0.5);
+	backdrop-filter: blur(10px);
 	/* background: var(--color--tertiary); */
 	display: grid;
 	grid-template-rows: var(--chat-row-template);

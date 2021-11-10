@@ -46,6 +46,8 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 		const mediaPlayerPackage = (window as any).IVSPlayer;
 
 		const playerOverlay = document.getElementById("overlay")!;
+		const btnSettings = document.getElementById("settings");
+    	const settingsMenu = document.getElementById("settings-menu");
 
 		// First, check if the browser supports the Amazon IVS player.
 		if (!isPlayerSupported) {
@@ -103,7 +105,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 
 	React.useEffect(() => {
 		const mediaPlayerScript = document.createElement("script");
-		mediaPlayerScript.src = "https://player.live-video.net/1.3.1/amazon-ivs-player.min.js";
+		mediaPlayerScript.src = "https://player.live-video.net/1.5.0/amazon-ivs-player.min.js";
 		// mediaPlayerScript.src = "https://cdnjs.cloudflare.com/ajax/libs/video.js/7.6.6/video.min.js";
 		mediaPlayerScript.async = true;
 		mediaPlayerScript.onload = mediaPlayerScriptLoaded;
@@ -192,6 +194,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 	}, [socket]);
 	return (
 		<div className="player-wrapper">
+			<video id="video-player" className="el-player" playsInline></video>
 			<div className="aspect-spacer"></div>
 			<div 
 				ref={videoElement} 
@@ -203,6 +206,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 					</div>
 				)}
 				<div id="overlay" className="overlay">
+					
 					<div id="player-controls">
 					<div className="player-controls__inner">
 						<button id="play" className={`mg-x-1 player-btn player-btn--icon ${paused ? "player-btn--pause" : "player-btn--play"}`} onClick={onPauseClick}>
@@ -245,8 +249,9 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 						</button>
 					</div>
 					</div>
+					
 				</div>
-				<video id="video-player" className="el-player" playsInline></video>
+				{/* <video id="video-player" className="el-player" playsInline></video> */}
 				{ reactions }
 			</div>
 		</div>

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-	"baseUrl": "src",
+    "baseUrl": "src",
     "target": "es5",
     "lib": [
       "dom",
@@ -15,18 +15,18 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",
-	"noImplicitAny": true,
+    "noImplicitAny": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-	"sourceMap": true,
-    "jsx": "react"
+    "sourceMap": true,
+    "jsx": "react-jsx"
   },
   "include": [
     "src"
   ],
   "exclude": [
-	  "node_modules",
+    "node_modules"
   ]
 }

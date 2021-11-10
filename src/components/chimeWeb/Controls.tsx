@@ -210,7 +210,7 @@ const Controls: React.FC<Props & ReduxProps> = ({ chime, title, openSettings, un
 		// {/* Microfon button */}
 		// {/* <!-- on click, toggle this control between .${styles.Button}--mic_on and .${styles.Button}--mic_off --> */}
 		(
-			<div key="MicButton" className={`${styles.Button} ${mic_controls} btn rounded`} onClick={withSuppressedBubble(muteButtonOnClick)}>
+			<div key="MicButton" className={`${styles.Button} ${mic_controls} btn rounded`} onClick={withSuppressedBubble(muteButtonOnClick)} title="Mikrofon einschalten">
 				{localMuted
 					? (
 						<svg className={styles.BtnSvg} fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -227,7 +227,7 @@ const Controls: React.FC<Props & ReduxProps> = ({ chime, title, openSettings, un
 		// {/* Camera button */}
 		// {/* <!-- on click, toggle this control between .${styles.Button}--cam_on and .${styles.Button}--cam_off --> */}
 		(
-			<div key="CamButton" className={`${styles.Button} ${cam_controls} btn rounded`} onClick={withSuppressedBubble(videoButtonOnClick)}>
+			<div key="CamButton" className={`${styles.Button} ${cam_controls} btn rounded`} onClick={withSuppressedBubble(videoButtonOnClick)} title="Kamera einschalten">
 				{videoStatus === VideoStatus.Enabled
 					? (
 						<svg className={styles.BtnSvg} width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -243,7 +243,7 @@ const Controls: React.FC<Props & ReduxProps> = ({ chime, title, openSettings, un
 		),
 		// {/* Setting button */}
 		(
-			<div key="SettingsButton" className={`${styles.Button} btn rounded`} onClick={withSuppressedBubble(() => {
+			<div key="SettingsButton" className={`${styles.Button} btn rounded`} title="Nimm Änderungen an deinen Einstellungen vor" onClick={withSuppressedBubble(() => {
 				openSettings();
 				return Promise.resolve();
 			})}>
@@ -252,40 +252,29 @@ const Controls: React.FC<Props & ReduxProps> = ({ chime, title, openSettings, un
 				</svg>
 			</div>
 		),
-		// {/* End button */}
-		(
-			<div
-				key="EndButton" 
-				className={`${styles.Button} btn rounded btn--destruct`}
-				onClick={withSuppressedBubble(endButtonOnClick)}>
-				<svg className={styles.BtnSvg} xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="square" strokeLinejoin="round" viewBox="0 0 24 24">
-					<line x1="18" y1="6" x2="6" y2="18" />
-					<line x1="6" y1="6" x2="18" y2="18" />
-				</svg>
-			</div>
-		),
+		
 		// {/* Noise Cancelling button */}
-		(
-			<div
-				key="NoiseCancellingButton" 
-				className={`${styles.Button} ${mic_controls} btn rounded`}
-				onClick={withSuppressedBubble(muteButtonOnClick)}>
-				<svg className="" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" fill="none" strokeWidth="2" strokeLinecap="butt" strokeLinejoin="round" viewBox="0 0 24 24">
-					<circle cx="12" cy="12" r="2" />
-					<path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14" />
-				</svg>
-			</div>
-		),
+		// (
+		// 	<div
+		// 		key="NoiseCancellingButton" 
+		// 		className={`${styles.Button} ${mic_controls} btn rounded`}
+		// 		onClick={withSuppressedBubble(muteButtonOnClick)}>
+		// 		<svg className="" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" fill="none" strokeWidth="2" strokeLinecap="butt" strokeLinejoin="round" viewBox="0 0 24 24">
+		// 			<circle cx="12" cy="12" r="2" />
+		// 			<path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14" />
+		// 		</svg>
+		// 	</div>
+		// ),
 		// {/* Watch Party button */}
 		(
-			<div key="SharePartyButton" className={`${styles.Button} btn rounded popup`} onClick={withSuppressedBubble(handleRoomClick)}>
+			<div key="SharePartyButton" className={`${styles.Button} btn rounded popup`} onClick={withSuppressedBubble(handleRoomClick)} title="Leite den abgespeicherten Link an deine Freunde weiter">
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
 					<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
 					<circle cx="9" cy="7" r="4" />
 					<path d="M23 21v-2a4 4 0 0 0-3-3.87" />
 					<path d="M16 3.13a4 4 0 0 1 0 7.75" />
 				</svg>
-				<span className={`popuptext ${popup}`} id="myPopup">WatchParty-Link gespeichert</span>
+				<span className={`popuptext ${popup}`} id="myPopup">Link gespeichert</span>
 			</div>
 		),
 		(
@@ -311,6 +300,21 @@ const Controls: React.FC<Props & ReduxProps> = ({ chime, title, openSettings, un
 						<ReactionButtonSelection />
 					</div>
 				)}
+			</div>
+		),
+
+		// End button
+		(
+			<div
+				key="EndButton" 
+				className={`${styles.Button} btn rounded btn--destruct btn--leave`}
+				onClick={withSuppressedBubble(endButtonOnClick)}
+				title="Verlasse die Watch Party">
+				<svg className={styles.BtnSvg} xmlns="http://www.w3.org/2000/svg" fill="white" stroke="#ffffff" strokeWidth="2" strokeLinecap="square" strokeLinejoin="round" viewBox="0 0 24 24">
+					<path d="M12 9C10.4 9 8.85 9.25 7.4 9.72V12.82C7.4 13.21 7.17 13.56 6.84 13.72C5.86 14.21 4.97 14.84 4.18 15.57C4 15.75 3.75 15.85 3.48 15.85C3.2 15.85 2.95 15.74 2.77 15.56L0.29 13.08C0.11 12.91 0 12.66 0 12.38C0 12.1 0.11 11.85 0.29 11.67C3.34 8.78 7.46 7 12 7C16.54 7 20.66 8.78 23.71 11.67C23.89 11.85 24 12.1 24 12.38C24 12.66 23.89 12.91 23.71 13.09L21.23 15.57C21.05 15.75 20.8 15.86 20.52 15.86C20.25 15.86 20 15.75 19.82 15.58C19.03 14.84 18.13 14.22 17.15 13.73C16.82 13.57 16.59 13.23 16.59 12.83V9.73C15.15 9.25 13.6 9 12 9Z"/>
+					{/* <line x1="18" y1="6" x2="6" y2="18" />
+					<line x1="6" y1="6" x2="18" y2="18" /> */}
+				</svg>
 			</div>
 		),
 	];

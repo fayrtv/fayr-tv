@@ -174,20 +174,23 @@ class Meeting extends Component {
 		return (
 			<div className="app-grid" onClick={this.handleClick}>
 				<div className="main-stage">
+
+					<VideoPlayer
+						setMetadataId={this.setMetadataId}
+						videoStream={this.playbackURL}
+						fullScreenCamSection={camSection}
+						attendeeId={this.props.chime.attendeeId}
+					/>
+
 			<Mobile>
 				<div style={{flexGrow: 1, height: "100%"}} />
 			</Mobile>
 			<Desktop>
 				<div style={{height: "100%"}} />
 			</Desktop>
-			<VideoPlayer
-				setMetadataId={this.setMetadataId}
-				videoStream={this.playbackURL}
-				fullScreenCamSection={camSection}
-				attendeeId={this.props.chime.attendeeId}
-			/>
+			
 			<VotingContainer />
-			{ camSection }
+			
 			<Controls
 				chime={this.props.chime}
 				baseHref={this.baseHref}
@@ -199,11 +202,19 @@ class Meeting extends Component {
 				myVideoElement={this.myVideoElement}
 			/>
 		</div>
-		<Chat
+
+		<div className="chat full-height pos-relative">
+			{ camSection }
+		</div>
+		
+		{/* <Chat
 			chimeSocket={this.props.chime}
 			title={this.title}
 			userName={this.username}
-		/>
+		/> */}
+
+		{/* { camSection } */}
+		
 			{this.state.showSettings && (
 				<Settings
 					chime={this.props.chime}
