@@ -159,7 +159,7 @@ class Meeting extends Component {
 		}
 
 		const camSection = (
-			<>
+			<div className={styles.CamSection}>
 				<LocalVideo
 					key="LocalVideo"
 					chime={this.props.chime}
@@ -170,7 +170,7 @@ class Meeting extends Component {
 					chime={this.props.chime}
 					joinInfo={this.joinInfo}
 				/>
-			</>
+			</div>
 		)
 
 		return (
