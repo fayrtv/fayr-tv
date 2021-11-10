@@ -46,8 +46,6 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 		const mediaPlayerPackage = (window as any).IVSPlayer;
 
 		const playerOverlay = document.getElementById("overlay")!;
-		const btnSettings = document.getElementById("settings");
-    	const settingsMenu = document.getElementById("settings-menu");
 
 		// First, check if the browser supports the Amazon IVS player.
 		if (!isPlayerSupported) {
@@ -192,23 +190,20 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 			return Promise.resolve();
 		})
 	}, [socket]);
-	
+
 	return (
-		<div className="player-wrapper">
-			<video id="video-player" className="el-player" playsInline></video>
-			<div className="aspect-spacer"></div>
-			<div 
-				ref={videoElement} 
-				className="pos-absolute full-width full-height top-0"
-				onClick={onVideoClick}>
-				{ fullScreen && (
-					<div className="FullScreenCams">
-						{ fullScreenCamSection }
-					</div>
-				)}
-				<div id="overlay" className="overlay">
-					
-					<div id="player-controls">
+		<div 
+			ref={videoElement} 
+			className="player-wrapper">
+			{ fullScreen && (
+				<div className="FullScreenCams">
+					{ fullScreenCamSection }
+				</div>
+			)}
+			<div
+				id="overlay" className={`overlay ${fullScreen ? "fullscreen" : ""}`}
+				onClick={onVideoClick}>				
+				<div id="player-controls">
 					<div className="player-controls__inner">
 						<button id="play" className={`mg-x-1 player-btn player-btn--icon ${paused ? "player-btn--pause" : "player-btn--play"}`} onClick={onPauseClick}>
 							<svg
@@ -249,12 +244,10 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 							</svg>
 						</button>
 					</div>
-					</div>
-					
-				</div>
-				{/* <video id="video-player" className="el-player" playsInline></video> */}
-				{ reactions }
+				</div>				
 			</div>
+			<video id="video-player" className={`el-player ${fullScreen ? "fullscreen" : ""}`} playsInline></video>
+			{ reactions }
 		</div>
 	  );
 }

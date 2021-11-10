@@ -1,3 +1,5 @@
+@import "../../../../styles/animations";
+
 .VotingContainer {
 	position: absolute;
 
@@ -8,6 +10,8 @@
 	width: 100vw;
 
 	z-index: 99999;
+
+	animation: fadeIn 0.5s;	
 
 	&.VotingActive {
 		background-color:rgba(255, 255, 255, 0.3);
