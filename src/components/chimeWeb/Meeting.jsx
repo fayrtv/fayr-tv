@@ -16,12 +16,11 @@ import LocalVideo from './LocalVideo';
 import RemoteVideoGroup from './RemoteVideoGroup';
 import Flex from "components/common/Flex"
 import Error from './Error';
-import { Desktop, Mobile } from '../mediaQueries';
 import { ChatOpenContext } from "../contexts/ChatOpenContext";
 import VotingContainer from "./Voting/VotingContainer";
 
 // Styles
-import './ChimeWeb.css';
+import './ChimeWeb.scss';
 import styles from "./Meeting.module.scss";
 
 class Meeting extends Component {
@@ -183,10 +182,6 @@ class Meeting extends Component {
 						fullScreenCamSection={camSection}
 						attendeeId={this.props.chime.attendeeId}
 					/>
-
-					<Mobile>
-						<div style={{flexGrow: 1, height: "100%"}} />
-					</Mobile>
 					
 					<VotingContainer
 						chime={this.props.chime}
@@ -215,7 +210,7 @@ class Meeting extends Component {
 					</Flex>
 				</div>
 
-				<div className="full-height pos-relative">
+				<div className={`full-height pos-relative ${styles.CamContainer}`}>
 					{ camSection }
 				</div>
 		

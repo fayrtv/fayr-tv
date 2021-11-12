@@ -13,7 +13,7 @@ import ChimeSdkWrapper from './chime/ChimeSdkWrapper';
 import store from "redux/store";
 
 import Home from './chimeWeb/Welcome';
-import Join from './chimeWeb/Join';
+import Join from './chimeWeb/Intro/Join';
 import Meeting from './chimeWeb/Meeting';
 import End from './chimeWeb/End';
 import SocketContextProvider from './chime/SocketContextProvider';
@@ -46,9 +46,7 @@ function App() {
 			</Provider>
           </Route>
           <Route path={`${baseHref}/join`}>
-            <Join
-              chime={chime}
-            />
+            <Join />
           </Route>
           <Route path={`${baseHref}`}>
             <Home

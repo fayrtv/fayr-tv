@@ -3,25 +3,44 @@ import * as React from "react";
 
 // Components
 import Flex from "../../common/Flex";
+import Emoji from "react-emoji-render";
+
+// Functionality
+import useGlobalClickHandler from "hooks/useGlobalClickHandler";
+
+// Types
+import { SelectedReactionContext } from "components/contexts/SelectedReactionContext";
 
 // Styles
 import styles from "./styles/ReactionButtonSelection.module.scss";
-import Emoji from "react-emoji-render";
-import { SelectedReactionContext } from "components/contexts/SelectedReactionContext";
+import { isInRect } from "util/coordinateUtil";
 
 const emojis = [":smile:", ":heart:", ":clap:", ":tada:", ":joy:"];
 
-export const ReactionButtonSelection = () => {
+type Props = {
+	onClose(): void;
+}
+
+export const ReactionButtonSelection = ({ onClose }: Props) => {
+
+	const buttonContainerRef = React.useRef<HTMLDivElement>(null);
 	const { setSelectedEmoji } = React.useContext(SelectedReactionContext);
 
 	const onEmojiClick = (emoji: string) => {
 		setSelectedEmoji(emoji);
 	}
+	
+	useGlobalClickHandler(clickEvent => {	
+		if (!isInRect(buttonContainerRef.current!.getBoundingClientRect(), clickEvent.x, clickEvent.y)) {
+			onClose();
+		}
+	}, [ onClose ]);
 
 	return (
 		<Flex
 			className={styles.ReactionButtonContainer}
-			direction="Column">
+			direction="Column"
+			ref={buttonContainerRef}>
 			{/* <span className={styles.ReactionButtonInfo}>
 				Tippe auf den Bildschirm, um eine Reaktion zu senden
 			</span> */}

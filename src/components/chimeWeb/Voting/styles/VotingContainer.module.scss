@@ -11,7 +11,11 @@
 
 	z-index: 99999;
 
-	animation: fadeIn 0.5s;	
+	animation: fadeIn 0.5s;
+
+	* span, img {
+		user-select: none;
+	}
 
 	&.VotingActive {
 		background-color:rgba(255, 255, 255, 0.3);
