@@ -42,7 +42,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 		fullScreen ?  document.exitFullscreen() : videoElement.current!.requestFullscreen();
 	}, [fullScreen]);
 
-	const mediaPlayerScriptLoaded = React.useCallback(() => {
+	const onMediaPlayerScriptLoaded = React.useCallback(() => {
 		const mediaPlayerPackage = (window as any).IVSPlayer;
 
 		const playerOverlay = document.getElementById("overlay")!;
@@ -95,7 +95,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 			},
 			false
 		);
-		
+
 		playerOverlay.addEventListener("mouseout", function (e) {
 			playerOverlay.classList.remove("overlay--hover");
 		});
@@ -106,10 +106,10 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 		mediaPlayerScript.src = "https://player.live-video.net/1.5.0/amazon-ivs-player.min.js";
 		// mediaPlayerScript.src = "https://cdnjs.cloudflare.com/ajax/libs/video.js/7.6.6/video.min.js";
 		mediaPlayerScript.async = true;
-		mediaPlayerScript.onload = mediaPlayerScriptLoaded;
+		mediaPlayerScript.onload = onMediaPlayerScriptLoaded;
 
 		document.body.appendChild(mediaPlayerScript);
-	}, []);
+	}, [onMediaPlayerScriptLoaded]);
 
 	React.useEffect(() => {
 		if (!videoElement.current) {
@@ -150,7 +150,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 			},
 		});
 	}, [socket, selectedEmoji, attendeeId]);
-	
+
 	React.useEffect(() => {
 		if (!socket || !videoElement.current) {
 			return;
@@ -169,15 +169,15 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 
 				const key = makeid(8);
 				const newReaction = (
-					<div 
+					<div
 						key={`${emoji}_${key}`}
 						className={styles.Reaction}
 						style={{ top: `${actualTop}px`, left: `${actualLeft}px`}}>
-						<Emoji 
+						<Emoji
 							text={emoji}/>
 					</div>
 				);
-				
+
 				newReactions.push(newReaction);
 
 				setTimeout(() => {
@@ -192,8 +192,8 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 	}, [socket]);
 
 	return (
-		<div 
-			ref={videoElement} 
+		<div
+			ref={videoElement}
 			className="player-wrapper">
 			{ fullScreen && (
 				<div className="FullScreenCams">
@@ -202,7 +202,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 			)}
 			<div
 				id="overlay" className={`overlay ${fullScreen ? "fullscreen" : ""}`}
-				onClick={onVideoClick}>				
+				onClick={onVideoClick}>
 				<div id="player-controls">
 					<div className="player-controls__inner">
 						<button id="play" className={`mg-x-1 player-btn player-btn--icon ${paused ? "player-btn--pause" : "player-btn--play"}`} onClick={onPauseClick}>
@@ -229,22 +229,22 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 								/>
 							</svg>
 						</button>
-						<StreamVolumeControl 
+						<StreamVolumeControl
 							player={player.current}/>
 						<button id="fullscreen" className="mg-x-1 player-btn player-btn--icon" onClick={onFullScreenClick}>
-							<svg 
+							<svg
 								className="player-icon"
-								xmlns="http://www.w3.org/2000/svg" 
-								viewBox="0 0 512 512" 
-								height="36" 
+								xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 512 512"
+								height="36"
 								width="36" >
-								<path fill="none" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="32" 
+								<path fill="none" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="32"
 									d="M432 320v112H320M421.8 421.77L304 304M80 192V80h112M90.2 90.23L208 208M320 80h112v112M421.77 90.2L304 208M192 432H80V320M90.23 421.8L208 304"
 								/>
 							</svg>
 						</button>
 					</div>
-				</div>				
+				</div>
 			</div>
 			<video id="video-player" className={`el-player ${fullScreen ? "fullscreen" : ""}`} playsInline></video>
 			{ reactions }

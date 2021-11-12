@@ -47,7 +47,7 @@ export const ChatInput = ({ inputRef, userName }: Props) => {
 
 		sendMessage();
 	}
-	
+
 
 	const onInput: React.ChangeEventHandler<HTMLInputElement> = event => setMessage(event.target.value);
 
@@ -55,7 +55,7 @@ export const ChatInput = ({ inputRef, userName }: Props) => {
 		if (!emojiPickerOpen && !emojiPickerRef.current) {
 			return;
 		}
-		
+
 		if (!isInRect(emojiPickerRef.current!.getBoundingClientRect(), clickEvent.x, clickEvent.y)) {
 			setEmojiPickerOpen(false);
 		}
@@ -66,7 +66,7 @@ export const ChatInput = ({ inputRef, userName }: Props) => {
 			inputRef.current!.selectionStart = 500000;
 			inputRef.current!.selectionEnd = 500000;
 		}
-	}, [message]);
+	}, [message, inputRef]);
 
 	return (
 		<div className={`composer chime-web-composer full-width ${styles.ChatInput}`}>
@@ -80,16 +80,16 @@ export const ChatInput = ({ inputRef, userName }: Props) => {
 					onChange={onInput}
 					onKeyDown={onKeyDown}
 				/>
-				<div 
+				<div
 					className={styles.EmojiIconContainer}
 					onClick={() => setEmojiPickerOpen(!emojiPickerOpen)}>
-					<div 
+					<div
 						className={styles.EmojiIcon}>
 						<Emoji
 							text=":)"/>
 					</div>
 				</div>
-				{ emojiPickerOpen && 
+				{ emojiPickerOpen &&
 					<div
 						ref={emojiPickerRef}
 						className={styles.EmojiPicker}

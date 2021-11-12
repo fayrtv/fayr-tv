@@ -16,7 +16,7 @@ import { VotingOpenContext } from '../../contexts/VotingOpenContext';
 // Types
 import { Nullable } from '../../../types/global';
 import { ReduxStore } from 'redux/store';
-import { AttendeeVote, AttendeeVoteDto, VotingData } from './types';
+import { AttendeeVoteDto, VotingData } from './types';
 import { SocketEventType } from 'components/chime/types';
 
 // Styles
@@ -42,7 +42,7 @@ export const VotingContainer = ({ attendeeId, chime, votings }: Props) => {
 
 	const [idNameMapping, setIdNameMapping] = React.useState<Map<string, string>>(new Map<string, string>());
 
-	React.useEffect(() => {		
+	React.useEffect(() => {
 		chime.subscribeToRosterUpdate(x => {
 			setIdNameMapping(new Map<string, string>(Object.entries(x).map(([key, val]) => [key, val.name])));
 		});
@@ -52,7 +52,7 @@ export const VotingContainer = ({ attendeeId, chime, votings }: Props) => {
 		if (!socket) {
 			return;
 		}
-		
+
 		return socket.addListener<AttendeeVoteDto>(SocketEventType.AttendeeVote, event => {
 			const nameOfAttendee = idNameMapping.has(event.attendeeId) ? idNameMapping.get(event.attendeeId)! : event.attendeeId;
 			dispatch(updateVote({
@@ -76,7 +76,7 @@ export const VotingContainer = ({ attendeeId, chime, votings }: Props) => {
 		if (!currentVoting || !votingRef.current || !isOpen) {
 			return;
 		}
-		
+
 		if (!isInRect(votingRef.current!.getBoundingClientRect(), clickEvent.x, clickEvent.y)) {
 			setIsOpen(false);
 		}
@@ -104,13 +104,13 @@ export const VotingContainer = ({ attendeeId, chime, votings }: Props) => {
 
 	return (
 		<>
-			{ !!currentVoting && isOpen && 
+			{ !!currentVoting && isOpen &&
 				<div className={`${styles.VotingContainer} ${styles.VotingActive}`}>
 					<Flex
 						className={styles.VotingWrapper}
 						direction="Row"
 						mainAlign="Center">
-						<Voting 
+						<Voting
 							voting={currentVoting!}
 							votingRef={votingRef}
 							updateTip={updateTip}
