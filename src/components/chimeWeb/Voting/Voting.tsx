@@ -87,7 +87,7 @@ export const Voting = ({ votingRef, closeVoting, voting, updateTip }: Props) => 
 			),
 			page: VotingPage.Survey,
 		}
-	), []);
+	), [isDesktop]);
 
 	return (
 		<Flex
@@ -111,7 +111,7 @@ export const Voting = ({ votingRef, closeVoting, voting, updateTip }: Props) => 
 					cellStyles={{
 						gridArea: "MenuSection"
 					}}>
-					<Flex 
+					<Flex
 						direction="Column"
 						className={styles.VotingMenuEntryContainer}>
 						{ menuEntries.map((x, i) => (
@@ -127,8 +127,8 @@ export const Voting = ({ votingRef, closeVoting, voting, updateTip }: Props) => 
 					cellStyles={{
 						gridArea: "Content"
 					}}>
-					{ votingPage === VotingPage.Vote ? 
-						(					
+					{ votingPage === VotingPage.Vote ?
+						(
 							<VotePage
 								guestTip={guestTip}
 								hostTip={hostTip}

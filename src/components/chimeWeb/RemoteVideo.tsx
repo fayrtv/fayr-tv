@@ -45,7 +45,7 @@ const RemoteVideo = ({ muted, attendeeId, videoEnabled, name, videoElement, chim
 				videoElement.current
 			);
 		}
-	}, []);
+	}, [chime.audioVideo, tileIndex, videoElement]);
 
 	React.useEffect(() => {
 
@@ -59,7 +59,7 @@ const RemoteVideo = ({ muted, attendeeId, videoEnabled, name, videoElement, chim
 			}
 
 			setTimeout(() => setEmojiReaction(null), 2000);
-			
+
 			return Promise.resolve();
 		});
 	}, [attendeeId, socket])
@@ -111,18 +111,18 @@ const RemoteVideo = ({ muted, attendeeId, videoEnabled, name, videoElement, chim
 						unmountOnExit>
 							<div>
 								<div className="video-container-fade"></div>
-								<Flex 
+								<Flex
 									className="emoji-reaction"
 									mainAlign="Center"
 									crossAlign="Center">
-									<Emoji 
+									<Emoji
 										text={emojiReaction ?? ""}/>
 								</Flex>
 							</div>
 					</CSSTransition>
 				</div>
 			</div>
-			<Flex 
+			<Flex
 				className={`cam__meta${metaCls} ${micTalkingIndicator}`}
 				direction="Row"
 				space="Between">

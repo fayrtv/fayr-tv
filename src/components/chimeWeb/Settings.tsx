@@ -27,7 +27,9 @@ export const Settings = ({ chime, closeSettings, joinInfo, saveSettings }: Props
 	const availableSpeakers = chime.audioOutputDevices;
 	const availableCams = chime.videoInputDevices;
 
-	const [playbackUrl, setPlaybackUrl] = React.useState<string>(joinInfo.PlaybackURL);
+    const playbackUrl = joinInfo.PlaybackURL;
+	// const [playbackUrl, setPlaybackUrl] = React.useState<string>(joinInfo.PlaybackURL);
+
 	const [microphone, setMicrophone] = React.useState<string>(currentMic?.value);
 	const [speaker, setSpeaker] = React.useState<string>(currentSpeaker?.value);
 	const [camera, setCamera] = React.useState<string>(currentCam?.value);
@@ -51,7 +53,7 @@ export const Settings = ({ chime, closeSettings, joinInfo, saveSettings }: Props
 		return () => chime.unsubscribeFromDevicesUpdated(devicesUpdatedCallback);
 	})
 
-	const handlePlaybackURLChange: React.ChangeEventHandler<HTMLInputElement> = (e) => setPlaybackUrl(e.target.value);
+	// const handlePlaybackURLChange: React.ChangeEventHandler<HTMLInputElement> = (e) => setPlaybackUrl(e.target.value);
 
 	const handleMicrophoneChange: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
 		const value = e.target.value;
@@ -105,15 +107,15 @@ export const Settings = ({ chime, closeSettings, joinInfo, saveSettings }: Props
 	const renderDevices = (devices: any[], label: string) => {
 		if (devices && devices.length) {
 			return devices.map(device => (
-				<option 
-					key={device.value} 
+				<option
+					key={device.value}
 					value={device.value}>
 					{`${device.label}`}
 				</option>
 			));
 		} else {
 			return (
-				<option 
+				<option
 					value="no-permission">
 						{`Permission not granted to access ${label} devices`}
 				</option>
@@ -127,15 +129,15 @@ export const Settings = ({ chime, closeSettings, joinInfo, saveSettings }: Props
 				<h1 className="mg-b-2">Einstellungen</h1>
 				<form>
 					<fieldset>
-						{/* <input 
+						{/* <input
 							className="mg-b-2"
-							name="" 
-							id="" 
-							type="text" 
-							readOnly={true} 
-							placeholder="Playback URL" 
-							onChange={handlePlaybackURLChange} 
-							value={playbackUrl} 
+							name=""
+							id=""
+							type="text"
+							readOnly={true}
+							placeholder="Playback URL"
+							onChange={handlePlaybackURLChange}
+							value={playbackUrl}
 							disabled /> */}
 						<h2 className="mg-b-2">Mikrofon</h2>
 						<select
