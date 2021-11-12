@@ -1,6 +1,5 @@
 // Framework
 import React, { createContext, useState } from "react";
-import { useMediaQuery } from "react-responsive";
 
 type Context = {
 	isOpen: boolean;
@@ -13,10 +12,7 @@ export const ChatOpenContext = createContext<Context>({
 });
 
 export const ChatOpenContextProvider: React.FC = ({ children }) => {
-	
-	const isDesktop = useMediaQuery({ minWidth: 961 });
-
-	const [isOpen, setIsOpen] = useState(isDesktop);
+	const [isOpen, setIsOpen] = useState(true);
 
 	return (
 		<ChatOpenContext.Provider value={{

@@ -56,9 +56,17 @@
 	transition: transform 0.5s ease-in-out;
 
 	height: 50%;
-	position: relative;
 
 	z-index: 50;
+	
+	width: 22%;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+
+	@media (max-width: 1024px) {
+		width: 40%;
+	}
 
 	&.Closed {
 		transform: translateX(100%);

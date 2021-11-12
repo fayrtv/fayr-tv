@@ -2,18 +2,6 @@
 	.MainStage {
 		overflow-x: hidden;
 		position: relative;
-
-		.Chat {
-			height: 100%;
-			width: 22%;
-			position: absolute;
-			right: 0;
-			bottom: 0;
-
-			@media (max-width: 1024px) {
-				width: 40%;
-			}
-		}
 	}
 
 	.CamContainer {

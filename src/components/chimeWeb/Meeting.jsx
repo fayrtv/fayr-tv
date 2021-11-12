@@ -199,15 +199,11 @@ class Meeting extends Component {
 						myVideoElement={this.myVideoElement}
 					/>
 
-					<Flex 
-						className={styles.Chat}
-						direction="ColumnReverse">
-						<Chat
-							chimeSocket={this.props.chime}
-							title={this.title}
-							userName={this.username}
-						/>
-					</Flex>
+					<Chat
+						chimeSocket={this.props.chime}
+						title={this.title}
+						userName={this.username}
+					/>
 				</div>
 
 				<div className={`full-height pos-relative ${styles.CamContainer}`}>
