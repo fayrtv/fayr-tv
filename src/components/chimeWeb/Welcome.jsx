@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import React, {Component} from 'react';
+import {withRouter} from 'react-router-dom';
 import * as config from '../../config';
 import Error from './Error';
+import QRCodeView from "./QRCode";
 
 
 class Welcome extends Component {
@@ -9,7 +10,7 @@ class Welcome extends Component {
   state = {
     role: 'host',
     username: '',
-    title: config.RANDOM,
+    roomCode: config.RANDOM,
     playbackURL: config.DEFAULT_VIDEO_STREAM,
     errorMsg: '',
     showError: false,
@@ -36,7 +37,7 @@ class Welcome extends Component {
   }
 
   handleRoomChange = e => {
-    this.setState({ title: e.target.value })
+    this.setState({ roomCode: e.target.value })
   }
 
   handlePlaybackURLChange = e => {
@@ -58,31 +59,41 @@ class Welcome extends Component {
     this.setState({ showError: false });
   }
 
+  get roomUrlRelative() {
+    return `${this.baseHref}/meeting?room=${this.state.roomCode}`;
+  }
+
+  get roomUrlAbsolute() {
+    // TODO: Is there a better way to get the base URL?
+    const baseUrl = document.baseURI.replace('/chime-web', '');
+    return `${baseUrl}/meeting?room=${this.state.roomCode}`;
+  }
+
   async createRoom() {
-    const { title, username, playbackURL } = this.state;
+    const { roomCode, username, playbackURL } = this.state;
     const data = {
       username,
-      title,
+      title: roomCode,
       playbackURL,
       role: this.state.role
     }
-    sessionStorage.setItem(`chime[${title}]`, JSON.stringify(data));
-    this.props.history.push(`${this.baseHref}/meeting?room=${title}`);
+    sessionStorage.setItem(`chime[${roomCode}]`, JSON.stringify(data));
+    this.props.history.push(this.roomUrlRelative);
   }
 
   render() {
-    const { username, title, playbackURL, } = this.state;
-    const createRoomDisabled = !username || !title || !playbackURL;
+    const { username, roomCode, playbackURL, } = this.state;
+    const createRoomDisabled = !username || !roomCode || !playbackURL;
     return (
       <>
         <div className="welcome form-grid">
 
           <div className="welcome__intro">
             <div className="intro__inner formatted-text">
-              <img src="https://i.ibb.co/jGzKGYw/fayrtv-logo.png" alt="fayrtv-logo" border="0" height="200"></img>
+              <img src="https://i.ibb.co/jGzKGYw/fayrtv-logo.png" alt="fayrtv-logo" border="0" height="200"/>
               {/* <h1>FAYR TV</h1> */}
               <h2>  </h2>
-              <b></b>
+              <b/>
               <h2>Erlebe Live- und Sportevents wie noch nie zuvor!</h2>
               <h3>Erstelle eine Watch Party oder trete einer bei und verbringe mit deinen Freunden eine geile Zeit!</h3>
             </div>
@@ -95,8 +106,9 @@ class Welcome extends Component {
               <form action="">
                 <fieldset className="mg-b-2">
                   <input className="mg-b-2" type="text" placeholder="Dein Name" value={username} ref={this.inputRef} onChange={this.handleNameChange} />
-                  <input type="text" placeholder="Code" value={title} onChange={this.handleRoomChange} />
+                  <input type="text" placeholder="Code" value={roomCode} onChange={this.handleRoomChange} />
                   {/* <input type="text" placeholder="Playback URL" value={playbackURL} onChange={this.handlePlaybackURLChange} /> */}
+                  {roomCode && <QRCodeView content={this.roomUrlAbsolute} width={150} height={150} padding={1} /> }
                   <button className="mg-t-2 btn btn--primary" disabled={createRoomDisabled} onClick={this.handleCreateRoom} >Watch Party</button>
                 </fieldset>
               </form>
