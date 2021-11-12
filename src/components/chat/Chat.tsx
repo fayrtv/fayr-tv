@@ -41,7 +41,17 @@ export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({ chimeSock
 
 	const { isOpen } = React.useContext(ChatOpenContext);
 
+	const initialOpenState = React.useRef(isOpen);
+
 	const { socket, setSocket } = useSocket();
+	
+	const [ canTransition, setCanTransition ] = React.useState(false);
+
+	React.useEffect(() => {
+		if (initialOpenState.current != isOpen) {
+			setCanTransition(true);		
+		}
+	}, [isOpen]);
 
 	React.useEffect(() => {
 		chimeSocket.joinRoomSocket()
@@ -52,7 +62,7 @@ export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({ chimeSock
 
 	React.useEffect(() => {
 
-		if (!socket) {
+		if (!socket || !chatRef.current) {
 			return;
 		}
 
@@ -98,20 +108,24 @@ export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({ chimeSock
 	}, [messages, isOpen, markAsSeen]);
 
 	return (
-		<div className={`Chat ${!isOpen ? 'Closed' : ''} ${messages.length === 0 ? 'NoMessages' : ''}`}>
-			<div className="ChatWrapper pos-relative">
-				<div
-					className="Messages pd-x-1"
-					ref={messageRef}>
-					{messages.map(x => <ChatLine
-						messageInfo={x} key={x.timestamp}
-						personalUserName={userName} />)}
+		<>
+		{canTransition &&
+			<div className={`Chat ${(!isOpen && canTransition) ? 'Closed' : ''} ${messages.length === 0 ? 'NoMessages' : ''}`}>
+				<div className="ChatWrapper pos-relative">
+					<div
+						className="Messages pd-x-1"
+						ref={messageRef}>
+						{messages.map(x => <ChatLine
+							messageInfo={x} key={x.timestamp}
+							personalUserName={userName} />)}
+					</div>
 				</div>
+				<ChatInput
+					inputRef={chatRef}
+					userName={userName} />
 			</div>
-			<ChatInput
-				inputRef={chatRef}
-				userName={userName} />
-		</div>
+					}
+					</>
 	)
 }
 
