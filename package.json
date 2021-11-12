@@ -33,7 +33,7 @@
         "prepare": "husky install",
         "start": "react-scripts start",
         "build": "react-scripts build",
-        "test": "react-scripts test",
+        "test": "react-scripts test --passWithNoTests",
         "format": "prettier --write ."
     },
     "eslintConfig": {
