@@ -20,7 +20,7 @@ export const Join = ({ location, history }: RouteComponentProps) => {
 		}
 	}, [location]);
 
-	const joinRoom = async () => {
+	const joinRoom = () => {
 		const data = {
 			username: userName,
 			title,
@@ -57,6 +57,7 @@ export const Join = ({ location, history }: RouteComponentProps) => {
 	}
 
 	const joinRoomDisabled = !userName;
+	
 	return (
 		<div className="welcome form-grid" onClick={handleClick}>
 
