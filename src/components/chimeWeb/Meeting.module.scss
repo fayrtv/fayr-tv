@@ -1,26 +1,26 @@
 .Meeting {
-	.MainStage {
-		overflow-x: hidden;
-		position: relative;
-	}
+    .MainStage {
+        overflow-x: hidden;
+        position: relative;
+    }
 
-	.CamContainer {
-		max-width: 355px;
+    .CamContainer {
+        max-width: 355px;
 
-		@media (max-width: 960px) {
-			width: 200px;
-		}
+        @media (max-width: 960px) {
+            width: 200px;
+        }
 
-		.CamSection {
-			height: 100%;
-	
-			> div:first-of-type {
-				height: 20%;
-			}
-			
-			> div:nth-of-type(2) {
-				height: 80%;
-			}
-		}
-	}
+        .CamSection {
+            height: 100%;
+
+            > div:first-of-type {
+                height: 20%;
+            }
+
+            > div:nth-of-type(2) {
+                height: 80%;
+            }
+        }
+    }
 }

@@ -1,55 +1,53 @@
 .StreamVolumeControl {
+    position: relative;
 
-	position: relative;
+    bottom: 0px !important;
 
-	bottom: 0px !important;
+    &:hover {
+        .SliderContainer {
+            opacity: 1;
+        }
+    }
 
-	&:hover {
-		.SliderContainer {
-			opacity: 1;
-		}
-	}
+    .SliderContainer {
+        transition: opacity 0.25s ease-in-out;
+        opacity: 0;
 
-	.SliderContainer {
+        position: absolute;
+        width: 80%;
+        height: 350%;
+        background-color: var(--color-bg-button);
+        border-radius: 4px;
+        box-shadow: 0 0 7px grey;
+        bottom: 36px;
 
-		transition: opacity 0.25s ease-in-out;
-		opacity: 0;
+        display: grid;
+        place-items: center;
 
-		position: absolute;
-		width: 80%;
-		height: 350%;
-		background-color: var(--color-bg-button);
-		border-radius: 4px;
-		box-shadow: 0 0 7px grey;
-		bottom: 36px;
+        .SliderRail {
+            background-color: black;
 
-		display: grid;
-		place-items: center;
+            width: 25%;
+            height: 85%;
 
-		.SliderRail {
-			background-color: black;
+            position: relative;
 
-			width: 25%;
-			height: 85%;
+            display: grid;
+            place-items: center;
 
-			position: relative;
+            .SliderPin {
+                position: absolute;
 
-			display: grid;
-			place-items: center;
+                bottom: 0px;
 
-			.SliderPin {
-				position: absolute;
+                border-radius: 10px;
 
-				bottom: 0px;
+                background-color: white;
+                height: 15px;
+                width: 15px;
 
-				border-radius: 10px;
-
-				background-color: white;
-				height: 15px;
-				width: 15px;
-
-				cursor: pointer;
-			}
-		}
-	}
+                cursor: pointer;
+            }
+        }
+    }
 }
