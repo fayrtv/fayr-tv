@@ -8,6 +8,5 @@ export default function QRCodeView(props: Props) {
         return new QRCode(props).svg();
     }, [props]);
 
-    return <div dangerouslySetInnerHTML={{__html: qrCodeHtml}} />;
+    return <div dangerouslySetInnerHTML={{ __html: qrCodeHtml }} />;
 }
-
