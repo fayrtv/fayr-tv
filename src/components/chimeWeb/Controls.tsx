@@ -162,46 +162,46 @@ const Controls: React.FC<Props & ReduxProps> = ({ chime, title, openSettings, un
 		}
 	}, [chime.audioVideo]);
 
-	React.useEffect(() => {
-		if (isMobile && controlsRef.current) {
+	// React.useEffect(() => {
+	// 	if (isMobile && controlsRef.current) {
 
-			let touchDownX: number | null = null;
+	// 		let touchDownX: number | null = null;
 
-			const handleTouchStart = (event: TouchEvent) => {
-				const { clientX } = event.touches[0];
-				touchDownX = clientX;
-			}
+	// 		const handleTouchStart = (event: TouchEvent) => {
+	// 			const { clientX } = event.touches[0];
+	// 			touchDownX = clientX;
+	// 		}
 
-			const handleTouchMove = (event: TouchEvent) => {
-				if (!touchDownX) {
-					return;
-				}
+	// 		const handleTouchMove = (event: TouchEvent) => {
+	// 			if (!touchDownX) {
+	// 				return;
+	// 			}
 
-				const { clientX: xUp } = event.touches[0];
+	// 			const { clientX: xUp } = event.touches[0];
 
-				var xDiff = touchDownX - xUp;
+	// 			var xDiff = touchDownX - xUp;
 
-				if (Math.abs(xDiff) > 30)		
-					if ( minified && xUp > touchDownX ) {
-						setMinified(false);
-					} else if (!minified && xUp < touchDownX) {
-						setMinified(true);
-					} 
-			}
+	// 			if (Math.abs(xDiff) > 30)		
+	// 				if ( minified && xUp > touchDownX ) {
+	// 					setMinified(false);
+	// 				} else if (!minified && xUp < touchDownX) {
+	// 					setMinified(true);
+	// 				} 
+	// 		}
 
-			const controlRef = controlsRef.current;
+	// 		const controlRef = controlsRef.current;
 		
-			controlRef.ontouchstart = handleTouchStart;
-			controlRef.ontouchmove = handleTouchMove;
+	// 		controlRef.ontouchstart = handleTouchStart;
+	// 		controlRef.ontouchmove = handleTouchMove;
 
-			return () => {
-				controlRef.removeEventListener("touchstart", handleTouchStart);
-				controlRef.removeEventListener("touchmove", handleTouchMove);
-			}
-		}
+	// 		return () => {
+	// 			controlRef.removeEventListener("touchstart", handleTouchStart);
+	// 			controlRef.removeEventListener("touchmove", handleTouchMove);
+	// 		}
+	// 	}
 
 
-	}, [minified, isMobile])
+	// }, [minified, isMobile])
 
 	const mic_controls = localMuted ? "" : `${styles.Active}`;
 	const cam_controls = videoStatus === VideoStatus.Enabled ? `${styles.Active}` : "";
@@ -300,7 +300,8 @@ const Controls: React.FC<Props & ReduxProps> = ({ chime, title, openSettings, un
 				<Emoji text={selectedEmoji} />
 				{reactionsOpen && (
 					<div className={styles.ReactionRow}>
-						<ReactionButtonSelection />
+						<ReactionButtonSelection 
+							onClose={() => setReactionsOpen(false)}/>
 					</div>
 				)}
 			</div>
@@ -337,14 +338,14 @@ const Controls: React.FC<Props & ReduxProps> = ({ chime, title, openSettings, un
 
 	return (
 			<div 
-				className={`${styles.Controls} ${minified ? styles.Minified : ""}`}
-				onClick={e => {
-					if (isMobile) {
-						e.stopPropagation();
-						e.preventDefault();
-						setMinified(!minified);
-					}
-				}}
+				className={`${styles.Controls} ${minified ? styles.Minified : ""} ${isChatOpen ? styles.ChatOpen : ""}`}
+				// onClick={e => {
+				// 	if (isMobile) {
+				// 		e.stopPropagation();
+				// 		e.preventDefault();
+				// 		setMinified(!minified);
+				// 	}
+				// }}
 				ref={controlsRef}>
 				{ isMobile && minified &&
 					(

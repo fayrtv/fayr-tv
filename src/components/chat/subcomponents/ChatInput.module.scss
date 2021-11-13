@@ -3,6 +3,10 @@
 	flex-direction: row;
 	align-items: center;
 
+	@media (max-width: 1024px) {
+		padding: 0.5rem !important;
+	}
+
 	.InputSection {
 		position: relative;
 

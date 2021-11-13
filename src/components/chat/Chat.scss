@@ -8,7 +8,7 @@
 
 	/* Large Screens and below */
 	:root {
-		--chat-row-template: 1fr 7.5rem;
+		--chat-row-template: 1fr 5rem;
 		--room-link-label-font-size: 1.4rem;
 	}
 }
@@ -56,9 +56,17 @@
 	transition: transform 0.5s ease-in-out;
 
 	height: 50%;
-	position: relative;
 
 	z-index: 50;
+	
+	width: 22%;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+
+	@media (max-width: 1024px) {
+		width: 40%;
+	}
 
 	&.Closed {
 		transform: translateX(100%);
@@ -66,22 +74,6 @@
 
 	&.NoMessages {
 		height: 10%;
-	}
-
-	@media (max-width: 960px) {
-
-		@media (orientation: portrait) {
-			height: 40vh;
-		}
-
-		@media (orientation: landscape) {
-			height: 80vh;
-		}
-
-		/* Large Screens and below */
-		&.Closed {
-			display: none;
-		}
 	}
 
 	.ChatWrapper {

@@ -3,7 +3,7 @@ import React from 'react';
 import { JoinInfo } from "./types";
 
 import "./Cam.scss";
-import "./LocalVideo.scss";
+import "./LocalVideo.module.scss";
 
 type Props = {
 	chime: any;

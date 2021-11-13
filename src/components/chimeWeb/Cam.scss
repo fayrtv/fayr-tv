@@ -12,11 +12,6 @@
 	position: relative;
 	border-radius: var(--radius-small);
 
-	@media (max-width: 960px) {
-		width: 65px;
-		height: 90px;
-	}
-
 	.preview {
 		flex-grow: 1;
 		width: 100%;
