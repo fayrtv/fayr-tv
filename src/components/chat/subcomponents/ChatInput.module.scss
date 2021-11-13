@@ -1,62 +1,61 @@
 .ChatInput {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 
-	.InputSection {
-		position: relative;
+    .InputSection {
+        position: relative;
 
-		margin-right: 5px;
+        margin-right: 5px;
 
-		width: 100%;
+        width: 100%;
 
-		border: var(--btn-border-size) solid transparent;
-		border-radius: var(--radius-small);
-		background-color: rgba(0, 0, 0, 0.25);
+        border: var(--btn-border-size) solid transparent;
+        border-radius: var(--radius-small);
+        background-color: rgba(0, 0, 0, 0.25);
 
-		&:focus-within {
-			border: var(--btn-border-size) solid var(--color--primary);
-		}
+        &:focus-within {
+            border: var(--btn-border-size) solid var(--color--primary);
+        }
 
-		input {
-			border: unset;
-			background-color: unset;
-			max-width: 90%;
-		}
+        input {
+            border: unset;
+            background-color: unset;
+            max-width: 90%;
+        }
 
-		.EmojiIconContainer {
+        .EmojiIconContainer {
+            position: absolute;
 
-			position: absolute;
+            height: 26px;
+            width: 26px;
+            top: calc(50% - 13px);
+            right: 5px;
 
-			height: 26px;
-			width: 26px;
-			top: calc(50% - 13px);
-			right: 5px;
+            cursor: pointer;
 
-			cursor: pointer;
+            background: rgb(49, 49, 49);
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px 0px #918282;
 
-			background: rgb(49, 49, 49);
-			border-radius: 5px;
-			box-shadow: 0px 0px 5px 0px #918282;
+            .EmojiIcon {
+                height: 100%;
+                width: 100%;
+                display: grid;
+                place-items: center;
+            }
+        }
 
-			.EmojiIcon {
-				height: 100%;
-				width: 100%;
-				display: grid;
-				place-items: center;
-			}
-		}
-		
-		.EmojiPicker {
-			position: absolute;
-			bottom: calc(100% + 10px);
+        .EmojiPicker {
+            position: absolute;
+            bottom: calc(100% + 10px);
 
-			z-index: 500;
-		}
+            z-index: 500;
+        }
 
-		& input {
-			width: 100%;
-			margin-right: 10px;
-		}
-	}
+        & input {
+            width: 100%;
+            margin-right: 10px;
+        }
+    }
 }

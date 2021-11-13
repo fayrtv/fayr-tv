@@ -1,18 +1,18 @@
 {
-	"configurations": [
-		{
-			"type": "aws-sam",
-			"request": "direct-invoke",
-			"name": "serverless:ChimeSdkJoinLambda",
-			"invokeTarget": {
-				"target": "template",
-				"templatePath": "${workspaceFolder}/serverless/template.yaml",
-				"logicalId": "ChimeSdkJoinLambda"
-			},
-			"lambda": {
-				"payload": {},
-				"environmentVariables": {}
-			}
-		},
-	]
+    "configurations": [
+        {
+            "type": "aws-sam",
+            "request": "direct-invoke",
+            "name": "serverless:ChimeSdkJoinLambda",
+            "invokeTarget": {
+                "target": "template",
+                "templatePath": "${workspaceFolder}/serverless/template.yaml",
+                "logicalId": "ChimeSdkJoinLambda"
+            },
+            "lambda": {
+                "payload": {},
+                "environmentVariables": {}
+            }
+        }
+    ]
 }
