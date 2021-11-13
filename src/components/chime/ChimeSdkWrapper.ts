@@ -139,7 +139,7 @@ export default class ChimeSdkWrapper implements IChimeSdkWrapper, IChimeSocket {
         name: string,
         title: string,
         playbackURL: string,
-        region: string,
+        region?: string,
     ) {
         if (!name || !title || !role) {
             console.error(`role=${role} name=${name} title=${title} must exist`);
@@ -174,7 +174,7 @@ export default class ChimeSdkWrapper implements IChimeSdkWrapper, IChimeSocket {
 
         this.title = title;
         this.name = name;
-        this.region = region;
+        this.region = region ?? null;
 
         return JoinInfo;
     }
