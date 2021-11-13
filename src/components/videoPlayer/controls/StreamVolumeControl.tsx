@@ -69,8 +69,8 @@ export const StreamVolumeControl = ({ player }: Props) => {
             if (player?.isMuted()) {
                 player.setMuted(false);
             }
-            // eslint-disable-next-line
         },
+        // eslint-disable-next-line
         [railRef, setVolumePercentage, player],
     );
 
