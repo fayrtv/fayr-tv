@@ -4,7 +4,6 @@
     "embeddedLanguageFormatting": "auto",
     "htmlWhitespaceSensitivity": "css",
     "insertPragma": false,
-    "jsxBracketSameLine": false,
     "printWidth": 100,
     "proseWrap": "preserve",
     "tabWidth": 4,

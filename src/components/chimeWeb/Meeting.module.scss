@@ -1,26 +1,26 @@
 .Meeting {
-	.MainStage {
-		overflow-x: hidden;
-		position: relative;
+    .MainStage {
+        overflow-x: hidden;
+        position: relative;
 
-		.Chat {
-			height: 100%;
-			width: 22%;
-			position: absolute;
-			right: 0;
-			bottom: 0;
-		}
-	}
+        .Chat {
+            height: 100%;
+            width: 22%;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+        }
+    }
 
-	.CamSection {
-		height: 100%;
+    .CamSection {
+        height: 100%;
 
-		> div:first-of-type {
-			height: 20%;
-		}
-		
-		> div:nth-of-type(2) {
-			height: 80%;
-		}
-	}
+        > div:first-of-type {
+            height: 20%;
+        }
+
+        > div:nth-of-type(2) {
+            height: 80%;
+        }
+    }
 }
