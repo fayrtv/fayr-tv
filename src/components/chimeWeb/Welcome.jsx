@@ -11,7 +11,7 @@ class Welcome extends Component {
         username: "",
         roomCode: config.RANDOM,
         playbackURL: config.DEFAULT_VIDEO_STREAM,
-        errorMsg: "",
+        message: "",
         showError: false,
     };
 
@@ -141,7 +141,7 @@ class Welcome extends Component {
                     </div>
                 </div>
                 {this.state.showError && (
-                    <Error closeError={this.closeError} errorMsg={this.state.errorMsg} />
+                    <Error closeError={this.closeError} errorMsg={this.state.message} />
                 )}
             </>
         );
