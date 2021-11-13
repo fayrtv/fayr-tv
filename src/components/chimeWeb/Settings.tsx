@@ -54,8 +54,8 @@ export const Settings = ({ chime, closeSettings, joinInfo, saveSettings }: Props
         return () => chime.unsubscribeFromDevicesUpdated(devicesUpdatedCallback);
     });
 
-    const handlePlaybackURLChange: React.ChangeEventHandler<HTMLInputElement> = (e) =>
-        setPlaybackUrl(e.target.value);
+    // const handlePlaybackURLChange: React.ChangeEventHandler<HTMLInputElement> = (e) =>
+    //     setPlaybackUrl(e.target.value);
 
     const handleMicrophoneChange: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
         const value = e.target.value;
@@ -128,15 +128,15 @@ export const Settings = ({ chime, closeSettings, joinInfo, saveSettings }: Props
                 <h1 className="mg-b-2">Einstellungen</h1>
                 <form>
                     <fieldset>
-                        {/* <input 
+                        {/* <input
 							className="mg-b-2"
-							name="" 
-							id="" 
-							type="text" 
-							readOnly={true} 
-							placeholder="Playback URL" 
-							onChange={handlePlaybackURLChange} 
-							value={playbackUrl} 
+							name=""
+							id=""
+							type="text"
+							readOnly={true}
+							placeholder="Playback URL"
+							onChange={handlePlaybackURLChange}
+							value={playbackUrl}
 							disabled /> */}
                         <h2 className="mg-b-2">Mikrofon</h2>
                         <select

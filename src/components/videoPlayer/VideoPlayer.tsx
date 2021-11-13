@@ -119,6 +119,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
         mediaPlayerScript.onload = mediaPlayerScriptLoaded;
 
         document.body.appendChild(mediaPlayerScript);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {

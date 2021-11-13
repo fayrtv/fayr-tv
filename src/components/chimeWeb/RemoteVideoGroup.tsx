@@ -188,6 +188,7 @@ export const RemoteVideoGroup = ({ chime, joinInfo, storedRoster }: Props) => {
         return () => {
             chime.unsubscribeFromRosterUpdate(rosterCallback);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [chime]);
 
     return (

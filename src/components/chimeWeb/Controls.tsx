@@ -54,6 +54,7 @@ const Controls: React.FC<Props & ReduxProps> = ({
     const { selectedEmoji } = React.useContext(SelectedReactionContext);
 
     const isMobile = useMediaQuery({ maxWidth: 960 });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [minified, setMinified] = React.useState(false);
     const [reactionsOpen, setReactionsOpen] = React.useState(false);
 

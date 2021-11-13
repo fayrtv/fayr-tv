@@ -16,7 +16,7 @@ import { VotingOpenContext } from "../../contexts/VotingOpenContext";
 // Types
 import { Nullable } from "../../../types/global";
 import { ReduxStore } from "redux/store";
-import { AttendeeVote, AttendeeVoteDto, VotingData } from "./types";
+import { AttendeeVoteDto, VotingData } from "./types";
 import { SocketEventType } from "components/chime/types";
 
 // Styles

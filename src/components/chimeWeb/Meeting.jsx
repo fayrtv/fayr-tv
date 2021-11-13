@@ -12,7 +12,6 @@ import Controls from "./Controls";
 import Settings from "./Settings";
 import LocalVideo from "./LocalVideo";
 import RemoteVideoGroup from "./RemoteVideoGroup";
-import Flex from "components/common/Flex";
 import Error from "./Error";
 import { ChatOpenContext } from "../contexts/ChatOpenContext";
 import VotingContainer from "./Voting/VotingContainer";

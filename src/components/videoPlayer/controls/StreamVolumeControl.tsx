@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // Framework
 import * as React from "react";
 import { MediaPlayer } from "amazon-ivs-player";

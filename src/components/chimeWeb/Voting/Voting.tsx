@@ -74,6 +74,7 @@ export const Voting = ({ votingRef, closeVoting, voting, updateTip }: Props) => 
                     page: VotingPage.Survey,
                 },
             ),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [],
     );
 
