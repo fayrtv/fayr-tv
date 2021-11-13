@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import * as config from '../../config';
 import Error from './Error';
-import QRCodeView from "./QRCode";
+import QRCodeView from "./QRCodeView";
 
 
 class Welcome extends Component {
