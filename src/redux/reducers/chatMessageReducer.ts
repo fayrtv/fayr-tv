@@ -7,10 +7,12 @@ const CHAT_MARK_MESSAGE_AS_SEEN = "CHAT_MARK_MESSAGE_AS_SEEN";
 
 type MessageAction = ReducerAction<CouldBeArray<Message>>;
 
-const generateAction = (type: string) => (payload: CouldBeArray<Message>): MessageAction => ({
-	type,
-	payload,
-});
+const generateAction =
+    (type: string) =>
+    (payload: CouldBeArray<Message>): MessageAction => ({
+        type,
+        payload,
+    });
 
 export const addMessage = generateAction(CHAT_ADD_MESSAGE);
 
@@ -20,25 +22,29 @@ export type ChatMessageReducerState = Array<Message>;
 
 const initialState: ChatMessageReducerState = [];
 
-export const reducer = (state = initialState, action: ReducerAction<Message>): ChatMessageReducerState => {
+export const reducer = (
+    state = initialState,
+    action: ReducerAction<Message>,
+): ChatMessageReducerState => {
+    const payloadArray = ensureArray(action.payload);
 
-	const payloadArray = ensureArray(action.payload);
-
-	switch (action.type) {
-		case CHAT_ADD_MESSAGE:
-			return state.concat(payloadArray);
-		case CHAT_MARK_MESSAGE_AS_SEEN:
-			const newState = [...state];
-			payloadArray.forEach(x => {
-				const existingMessage = newState.find(y => x.username === y.username && x.timestamp === y.timestamp);
-				if (!!existingMessage) {
-					existingMessage.seen = true;
-				}
-			});
-			return newState;
-		case "RESET":
-			return [];
-		default:
-			return state;
-	}
-}
+    switch (action.type) {
+        case CHAT_ADD_MESSAGE:
+            return state.concat(payloadArray);
+        case CHAT_MARK_MESSAGE_AS_SEEN:
+            const newState = [...state];
+            payloadArray.forEach((x) => {
+                const existingMessage = newState.find(
+                    (y) => x.username === y.username && x.timestamp === y.timestamp,
+                );
+                if (!!existingMessage) {
+                    existingMessage.seen = true;
+                }
+            });
+            return newState;
+        case "RESET":
+            return [];
+        default:
+            return state;
+    }
+};

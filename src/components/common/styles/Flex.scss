@@ -1,87 +1,87 @@
 .flex {
-	display: flex;
+    display: flex;
 }
 
 .flexColumn {
-	flex-direction: column;
+    flex-direction: column;
 }
 
 .flexColumnReverse {
-	flex-direction: column-reverse;
+    flex-direction: column-reverse;
 }
 
 .flexRow {
-	flex-direction: row;
+    flex-direction: row;
 }
 
 .flexRowReverse {
-	flex-direction: row-reverse;
+    flex-direction: row-reverse;
 }
 
 .flexNoWrap {
-	flex-wrap: nowrap;
+    flex-wrap: nowrap;
 }
 
 .flexWrap {
-	flex-wrap: wrap;
+    flex-wrap: wrap;
 }
 
 .flexWrapReverse {
-	flex-wrap: wrap-reverse;
+    flex-wrap: wrap-reverse;
 }
 
 .flexMainCenter {
-	justify-content: center;
+    justify-content: center;
 }
 
 .flexMainStart {
-	justify-content: flex-start;
+    justify-content: flex-start;
 }
 
 .flexMainEnd {
-	justify-content: flex-end;
+    justify-content: flex-end;
 }
 
 .flexMainCenterSelf {
-	justify-self: center;
+    justify-self: center;
 }
 
 .flexMainStartSelf {
-	justify-self: flex-start;
+    justify-self: flex-start;
 }
 
 .flexMainEndSelf {
-	justify-self: flex-end;
+    justify-self: flex-end;
 }
 
 .flexAround {
-	justify-content: space-around;	
+    justify-content: space-around;
 }
 
 .flexBetween {
-	justify-content: space-between;
+    justify-content: space-between;
 }
 
 .flexCrossCenter {
-	align-items: center;
+    align-items: center;
 }
 
 .flexCrossStart {
-	align-items: flex-start;
+    align-items: flex-start;
 }
 
 .flexCrossEnd {
-	align-items: flex-end;
+    align-items: flex-end;
 }
 
 .flexCrossCenterSelf {
-	align-self: center;
+    align-self: center;
 }
 
 .flexCrossStartSelf {
-	align-self: flex-start;
+    align-self: flex-start;
 }
 
 .flexCrossEndSelf {
-	align-self: flex-end;
+    align-self: flex-end;
 }
