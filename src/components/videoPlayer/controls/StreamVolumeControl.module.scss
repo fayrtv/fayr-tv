@@ -1,53 +1,55 @@
 .StreamVolumeControl {
-    position: relative;
 
-    bottom: 0px !important;
+	position: relative;
 
-    &:hover {
-        .SliderContainer {
-            opacity: 1;
-        }
-    }
+	bottom: 0px !important;
 
-    .SliderContainer {
-        transition: opacity 0.25s ease-in-out;
-        opacity: 0;
+	&:hover {
+		.SliderContainer {
+			opacity: 1;
+		}
+	}
 
-        position: absolute;
-        width: 80%;
-        height: 350%;
-        background-color: var(--color-bg-button);
-        border-radius: 4px;
-        box-shadow: 0 0 7px grey;
-        bottom: 36px;
+	.SliderContainer {
 
-        display: grid;
-        place-items: center;
+		transition: opacity 0.25s ease-in-out;
+		opacity: 0;
 
-        .SliderRail {
-            background-color: black;
+		position: absolute;
+		width: 80%;
+		height: 350%;
+		background-color: var(--color-bg-button);
+		border-radius: 4px;
+		box-shadow: 0 0 7px grey;
+		bottom: 36px;
 
-            width: 25%;
-            height: 85%;
+		display: grid;
+		place-items: center;
 
-            position: relative;
+		.SliderRail {
+			background-color: black;
 
-            display: grid;
-            place-items: center;
+			width: 25%;
+			height: 85%;
 
-            .SliderPin {
-                position: absolute;
+			position: relative;
 
-                bottom: 0px;
+			display: grid;
+			place-items: center;
 
-                border-radius: 10px;
+			.SliderPin {
+				position: absolute;
 
-                background-color: white;
-                height: 15px;
-                width: 15px;
+				bottom: 0px;
 
-                cursor: pointer;
-            }
-        }
-    }
+				border-radius: 10px;
+
+				background-color: white;
+				height: 15px;
+				width: 15px;
+
+				cursor: pointer;
+			}
+		}
+	}
 }

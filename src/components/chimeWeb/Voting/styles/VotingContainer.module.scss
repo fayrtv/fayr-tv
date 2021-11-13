@@ -1,28 +1,32 @@
 @import "../../../../styles/animations";
 
 .VotingContainer {
-    position: absolute;
+	position: absolute;
 
-    display: grid;
-    place-items: center;
+	display: grid;
+	place-items: center;
 
-    height: 100vh;
-    width: 100vw;
+	height: 100%;
+	width: 100%;
 
-    z-index: 99999;
+	z-index: 99999;
 
-    animation: fadeIn 0.5s;
+	animation: fadeIn 0.5s;
 
-    &.VotingActive {
-        background-color: rgba(255, 255, 255, 0.3);
-        backdrop-filter: blur(6px);
-    }
+	* span, img {
+		user-select: none;
+	}
 
-    .VotingWrapper {
-        height: 60vh;
-        width: 90vw;
-        max-width: 1000px;
+	&.VotingActive {
+		background-color:rgba(255, 255, 255, 0.3);
+		backdrop-filter: blur(6px);
+	}
 
-        position: relative;
-    }
+	.VotingWrapper {
+		height: 60vh;
+		width: 90%;
+		max-width: 1000px;
+
+		position: relative;
+	}
 }

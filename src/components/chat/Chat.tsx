@@ -1,131 +1,127 @@
-import React from "react";
+import React from 'react';
 import ChatLine from "./subcomponents/ChatLine";
 import ChatInput from "./subcomponents/ChatInput";
 import { ChatOpenContext } from "../contexts/ChatOpenContext";
-import { connect } from "react-redux";
-import { ReduxStore } from "../../redux/store";
-import { Action, Dispatch } from "redux";
+import { connect } from 'react-redux';
+import { ReduxStore } from '../../redux/store';
+import { Action, Dispatch } from 'redux';
 
 // Functionality
 import { addMessage, markAsSeen } from "redux/reducers/chatMessageReducer";
-import { IChimeSocket } from "../chime/ChimeSdkWrapper";
-import { CouldBeArray } from "../../util/collectionUtil";
-import { useSocket } from "hooks/useSocket";
+import { IChimeSocket } from '../chime/ChimeSdkWrapper';
+import { CouldBeArray } from '../../util/collectionUtil';
+import { useSocket } from 'hooks/useSocket';
 
 // Types
 import { Message, MessageTransferObject } from "./types";
-import { SocketEventType } from "../chime/types";
+import { SocketEventType } from '../chime/types';
 
 // Styles
-import "./Chat.scss";
+import './Chat.scss';
 
 type Props = {
-    chimeSocket: IChimeSocket;
-    userName: string;
-    title: string;
-};
+	chimeSocket: IChimeSocket;
+	userName: string;
+	title: string;
+}
 
 type ReduxProps = {
-    messages: Array<Message>;
-};
+	messages: Array<Message>;
+}
 
 type ReduxDispatches = {
-    addMessages(messages: CouldBeArray<Message>): void;
-    markAsSeen(messages: CouldBeArray<Message>): void;
-};
+	addMessages(messages: CouldBeArray<Message>): void;
+	markAsSeen(messages: CouldBeArray<Message>): void;
+}
 
-export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({
-    chimeSocket,
-    userName,
-    title,
-    messages,
-    addMessages,
-    markAsSeen,
-}) => {
-    const chatRef = React.useRef<HTMLInputElement>(null);
-    const messageRef = React.useRef<HTMLDivElement>(null);
+export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({ chimeSocket, userName, title, messages, addMessages, markAsSeen }) => {
 
-    const { isOpen } = React.useContext(ChatOpenContext);
+	const chatRef = React.useRef<HTMLInputElement>(null);
+	const messageRef = React.useRef<HTMLDivElement>(null);
 
-    const { socket, setSocket } = useSocket();
+	const { isOpen } = React.useContext(ChatOpenContext);
 
-    React.useEffect(() => {
-        chimeSocket.joinRoomSocket().then((createdSocket) => {
-            setSocket(createdSocket);
-        });
-    }, [chimeSocket, setSocket]);
+	const { socket, setSocket } = useSocket();
 
-    React.useEffect(() => {
-        if (!socket) {
-            return;
-        }
+	React.useEffect(() => {
+		chimeSocket.joinRoomSocket()
+			.then(createdSocket => {
+				setSocket(createdSocket);
+			});
+	}, [chimeSocket, setSocket]);
 
-        socket.addListener<MessageTransferObject>(SocketEventType.ChatMessage, (event) => {
-            const { username, message } = event;
+	React.useEffect(() => {
 
-            const newMessage: Message = {
-                timestamp: Date.now(),
-                username,
-                message,
-                seen: false,
-            };
+		if (!socket) {
+			return;
+		}
 
-            addMessages(newMessage);
+		socket.addListener<MessageTransferObject>(SocketEventType.ChatMessage, event => {
+			const { username, message } = event;
 
-            return Promise.resolve();
-        });
+			const newMessage: Message = {
+				timestamp: Date.now(),
+				username,
+				message,
+				seen: false,
+			};
 
-        chatRef.current!.focus();
+			addMessages(newMessage);
 
-        return () => socket.close(5000);
-    }, [socket, addMessages]);
+			return Promise.resolve();
+		});
 
-    React.useEffect(() => {
-        if (!isOpen) {
-            return;
-        }
+		chatRef.current!.focus();
 
-        const ref = messageRef.current;
+		return () => socket.close(5000);
+	}, [socket, addMessages]);
 
-        if (ref && ref.scrollTop + ref.clientHeight < ref.scrollHeight) {
-            messageRef.current!.scrollTo({ top: ref.scrollHeight, behavior: "smooth" });
-        }
-    }, [isOpen, messages]);
+	React.useEffect(() => {
+		if (!isOpen) {
+			return;
+		}
 
-    React.useEffect(() => {
-        if (isOpen) {
-            const unseenMessages = messages.filter((x) => !x.seen);
-            if (unseenMessages.length > 0) {
-                markAsSeen(unseenMessages);
-            }
-        }
-    }, [messages, isOpen, markAsSeen]);
+		const ref = messageRef.current;
 
-    return (
-        <div
-            className={`Chat ${!isOpen ? "Closed" : ""} ${
-                messages.length === 0 ? "NoMessages" : ""
-            }`}
-        >
-            <div className="ChatWrapper pos-relative">
-                <div className="Messages pd-x-1" ref={messageRef}>
-                    {messages.map((x) => (
-                        <ChatLine messageInfo={x} key={x.timestamp} personalUserName={userName} />
-                    ))}
-                </div>
-            </div>
-            <ChatInput inputRef={chatRef} userName={userName} />
-        </div>
-    );
-};
+		if (ref && (ref.scrollTop + ref.clientHeight < ref.scrollHeight)) {
+			messageRef.current!.scrollTo({ top: ref.scrollHeight, behavior: "smooth" });
+		}
+	}, [isOpen, messages]);
+
+	React.useEffect(() => {
+		if (isOpen) {
+			const unseenMessages = messages.filter(x => !x.seen);
+			if (unseenMessages.length > 0) {
+				markAsSeen(unseenMessages);
+			}
+		}
+	}, [messages, isOpen, markAsSeen]);
+
+	return (
+		<div className={`Chat ${!isOpen ? 'Closed' : ''} ${messages.length === 0 ? 'NoMessages' : ''}`}>
+			<div className="ChatWrapper pos-relative">
+				<div
+					className="Messages pd-x-1"
+					ref={messageRef}>
+					{messages.map(x => <ChatLine
+						messageInfo={x} key={x.timestamp}
+						personalUserName={userName} />)}
+				</div>
+			</div>
+			<ChatInput
+				inputRef={chatRef}
+				userName={userName} />
+		</div>
+	)
+}
 
 const mapStateToProps = (state: ReduxStore): ReduxProps => ({
-    messages: state.chatMessageReducer,
+	messages: state.chatMessageReducer,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>): ReduxDispatches => ({
-    addMessages: (messages: CouldBeArray<Message>) => dispatch(addMessage(messages)),
-    markAsSeen: (messages: CouldBeArray<Message>) => dispatch(markAsSeen(messages)),
+	addMessages: (messages: CouldBeArray<Message>) => dispatch(addMessage(messages)),
+	markAsSeen: (messages: CouldBeArray<Message>) => dispatch(markAsSeen(messages)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);

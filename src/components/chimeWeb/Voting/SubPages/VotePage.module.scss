@@ -1,32 +1,33 @@
 .Voting {
-    height: 100%;
-    width: 100%;
 
-    .TeamIcon {
-        display: flex;
-        align-content: center;
-        justify-content: center;
+	height: 100%;
+	width: 100%;
 
-        background-color: white;
+	.TeamIcon {
+		display: flex;
+		align-content: center;
+		justify-content: center;
 
-        &.GuestTeamIcon {
-            background-color: red;
-        }
+		background-color: white;
+		
+		&.GuestTeamIcon {
+			background-color: red;
+		}
 
-        > img {
-            object-fit: scale-down;
-        }
-    }
+		> img {
+			object-fit: scale-down;
+		}
+	}
 
-    .VotingSectionContainer {
-        display: grid;
-        place-items: center;
+	.VotingSectionContainer {
+		display: grid;
+		place-items: center;
 
-        background: black;
+		background: black;
 
-        .VotingSection {
-            height: 100%;
-            width: 80%;
-        }
-    }
+		.VotingSection {
+			height: 100%;
+			width: 80%;
+		}
+	}
 }

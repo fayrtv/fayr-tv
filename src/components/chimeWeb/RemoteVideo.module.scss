@@ -1,17 +1,17 @@
 .RemoteVideoEmojiEnter {
-    opacity: 0;
+	opacity: 0;
 }
 
 .RemoteVideoEmojiEnterActive {
-    opacity: 1;
-    transition: all 1s;
+	opacity: 1;
+	transition: all 1s;
 }
 
 .RemoteVideoEmojiExit {
-    opacity: 1;
+	opacity: 1;
 }
 
 .RemoteVideoEmojiExitActive {
-    opacity: 0;
-    transition: all 1s;
+	opacity: 0;
+	transition: all 1s;
 }

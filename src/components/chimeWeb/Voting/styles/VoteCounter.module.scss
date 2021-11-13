@@ -1,35 +1,36 @@
 .VoteCounter {
-    height: 100%;
-    width: 100%;
+	height: 100%;
+	width: 100%;
 
-    .CountDisplay {
-        background: grey;
-        height: 80%;
-        width: 50%;
+	.CountDisplay {
+		background: grey;
+		height: 80%;
+		width: 50%;
 
-        display: grid;
-        place-items: center;
+		display: grid;
+		place-items: center;
 
-        span {
-            font-size: 5rem;
+		span {
+			font-size: 5rem;
 
-            @media (min-width: 960px) {
-                font-size: 10rem;
-            }
+			@media (min-width: 960px) {
+				font-size: 10rem;
+			}
+			
+			font-weight: bolder;
+		}
+	}
 
-            font-weight: bolder;
-        }
-    }
+	.CountButton {
 
-    .CountButton {
-        text-align: center;
+		text-align: center;
+		
+		font-size: 64px !important;
 
-        font-size: 64px !important;
-
-        @media (max-width: 960px) {
-            font-size: 32px !important;
-        }
-
-        width: 20%;
-    }
+		@media (max-width: 960px) {
+			font-size: 32px !important;
+		}
+		
+		width: 20%;
+	}
 }

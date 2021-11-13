@@ -1,78 +1,79 @@
 .OverviewPageContainer {
-    height: 100%;
-    width: 100%;
-    display: grid;
-    place-items: center;
-    background-color: black;
 
-    .OverviewPage {
-        width: 70%;
-        height: 80%;
-        overflow-y: auto;
+	height: 100%;
+	width: 100%;
+	display: grid;
+	place-items: center;
+	background-color: black;
 
-        .RankSection {
-            height: 100%;
-            display: grid;
-            place-items: center start;
+	.OverviewPage {
+		width: 70%;
+		height: 80%;
+		overflow-y: auto;
 
-            > span {
-                font-weight: 500;
-                font-size: 2rem;
-            }
-        }
+		.RankSection {
+			height: 100%;
+			display: grid;
+			place-items: center start;
 
-        .TeamIcon {
-            background-color: white;
+			> span {
+				font-weight: 500;
+				font-size: 2rem;
+			}
+		}
 
-            &.GuestTeamIcon {
-                background-color: red;
-            }
+		.TeamIcon {
+			background-color: white;
 
-            display: grid;
-            place-items: center;
+			&.GuestTeamIcon {
+				background-color: red;
+			}
 
-            > img {
-                width: 50px;
-                height: 50px;
-            }
-        }
+			display: grid;
+			place-items: center;
 
-        .RankGrid {
-            height: 100%;
-            > div {
-                min-height: 30px;
-                width: 100%;
+			> img {
+				width: 50px;
+				height: 50px;
+			}
+		}
 
-                &:not(:last-child) {
-                    border-bottom: 2px groove #fa7751;
-                }
+		.RankGrid {
+			height: 100%;
+			> div {
+				min-height: 30px;
+				width: 100%;
 
-                > span {
-                    color: #fa7751;
-                    font-size: 2rem;
-                    font-weight: 800;
-                }
+				&:not(:last-child) {	
+					border-bottom: 2px groove #fa7751;
+				}
 
-                .Rank {
-                    margin-left: 15px;
-                    flex-grow: 5;
-                }
+				> span {
+					color: #fa7751;
+					font-size: 2rem;
+					font-weight: 800;
+				}
 
-                .Attendee {
-                    flex-grow: 5;
-                }
+				.Rank {
+					margin-left: 15px;
+					flex-grow: 5;
+				}
 
-                .Host {
-                    width: 60px;
-                    margin-right: 2rem;
-                    text-align: center;
-                }
+				.Attendee {
+					flex-grow: 5;
+				}
 
-                .Guest {
-                    width: 60px;
-                    text-align: center;
-                }
-            }
-        }
-    }
+				.Host {
+					width: 60px;
+					margin-right: 2rem;
+					text-align: center
+				}
+
+				.Guest {
+					width: 60px;
+					text-align: center;
+				}
+			}
+		}
+	}
 }

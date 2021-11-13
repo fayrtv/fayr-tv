@@ -6,39 +6,35 @@ import { Nullable } from "types/global";
 import { ISocketProvider } from "./types";
 
 type Context = {
-    socket?: ISocketProvider;
-    setSocket: (provider: Nullable<ISocketProvider>) => void;
-};
+	socket?: ISocketProvider;
+	setSocket: (provider: Nullable<ISocketProvider>) => void;
+}
 
 export const SocketContext = React.createContext<Context>({
-    socket: undefined,
-    setSocket: () => void 0,
+	socket: undefined,
+	setSocket: () => void 0,
 });
 
 export const SocketContextProvider: React.FC = ({ children }) => {
-    const [socket, setSocket] = React.useState<ISocketProvider>();
 
-    const submitNewSocket = React.useCallback(
-        (socket: Nullable<ISocketProvider>) => {
-            if (!socket) {
-                return;
-            }
+	const [socket, setSocket] = React.useState<ISocketProvider>();
 
-            setSocket(socket);
-        },
-        [setSocket],
-    );
+	const submitNewSocket = React.useCallback((socket: Nullable<ISocketProvider>) => {
+		if (!socket) {
+			return;
+		}
 
-    return (
-        <SocketContext.Provider
-            value={{
-                socket,
-                setSocket: submitNewSocket,
-            }}
-        >
-            {children}
-        </SocketContext.Provider>
-    );
-};
+		setSocket(socket);
+	}, [setSocket]);
+	
+	return (
+		<SocketContext.Provider value={{
+			socket,
+			setSocket: submitNewSocket
+		}}>
+			{children}
+		</SocketContext.Provider>
+	);
+}
 
 export default SocketContextProvider;

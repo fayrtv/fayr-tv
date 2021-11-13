@@ -1,147 +1,141 @@
 :root {
-    --chat-row-template: 1fr 8rem;
-    --room-link-label-font-size: 1.6rem;
-    --composer-font-size: var(--room-link-label-font-size);
+	--chat-row-template: 1fr 8rem;
+	--room-link-label-font-size: 1.6rem;
+	--composer-font-size: var(--room-link-label-font-size);
 }
 
 @media (max-width: 960px) {
-    /* Large Screens and below */
-    :root {
-        --chat-row-template: 1fr 7.5rem;
-        --room-link-label-font-size: 1.4rem;
-    }
+
+	/* Large Screens and below */
+	:root {
+		--chat-row-template: 1fr 5rem;
+		--room-link-label-font-size: 1.4rem;
+	}
 }
 
 /* Popup container - to display Room link is copied to clipboard */
 .popup {
-    position: relative;
-    display: inline-block;
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+	position: relative;
+	display: inline-block;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 /* The actual popup */
 .popup .popuptext {
-    /* visibility: fixed; */
-    visibility: hidden;
-    width: 200px;
-    // background-color: #fa7751;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(10px);
-    // color: #1c202a;
-    text-align: center;
-    /* border-radius: 0.6rem; */
-    padding: 0.8rem 0;
-    position: absolute;
-    z-index: 50;
-    bottom: 50px;
+	/* visibility: fixed; */
+	visibility: hidden;
+	width: 200px;
+	// background-color: #fa7751;
+	background: rgba(0, 0, 0, 0.5);
+	backdrop-filter: blur(10px);
+	// color: #1c202a;
+	text-align: center;
+	/* border-radius: 0.6rem; */
+	padding: 0.8rem 0;
+	position: absolute;
+	z-index: 50;
+	bottom: 50px;
 }
 
 .popup .show {
-    visibility: visible;
-    -webkit-animation: fadeIn 1s;
-    animation: fadeIn 1s;
+	visibility: visible;
+	-webkit-animation: fadeIn 1s;
+	animation: fadeIn 1s;
 }
 
 /* Chat */
 .Chat {
-    /* background: var(--color--tertiary); */
-    display: grid;
-    grid-template-rows: var(--chat-row-template);
+	/* background: var(--color--tertiary); */
+	display: grid;
+	grid-template-rows: var(--chat-row-template);
 
-    transition: transform 0.5s ease-in-out;
+	transition: transform 0.5s ease-in-out;
 
-    height: 50%;
-    position: relative;
+	height: 50%;
 
-    z-index: 50;
+	z-index: 50;
+	
+	width: 22%;
+	position: absolute;
+	right: 0;
+	bottom: 0;
 
-    &.Closed {
-        transform: translateX(100%);
-    }
+	@media (max-width: 1024px) {
+		width: 40%;
+	}
 
-    &.NoMessages {
-        height: 10%;
-    }
+	&.Closed {
+		transform: translateX(100%);
+	}
 
-    @media (max-width: 960px) {
-        @media (orientation: portrait) {
-            height: 40vh;
-        }
+	&.NoMessages {
+		height: 10%;
+	}
 
-        @media (orientation: landscape) {
-            height: 80vh;
-        }
+	.ChatWrapper {
+		overflow: hidden;
+		position: absolute;
 
-        /* Large Screens and below */
-        &.Closed {
-            display: none;
-        }
-    }
+		.Messages {
+			position: absolute;
+			overflow-x: hidden;
+			overflow-y: auto;
+			background-color: rgba(0, 0, 0, 0);
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
 
-    .ChatWrapper {
-        overflow: hidden;
-        position: absolute;
+			&::-webkit-scrollbar {
+				border-radius: 15px;
+				width: 11px;
+			}
 
-        .Messages {
-            position: absolute;
-            overflow-x: hidden;
-            overflow-y: auto;
-            background-color: rgba(0, 0, 0, 0);
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+			&::-webkit-scrollbar-track {
+				background: var(--color--redshade);
+			}
 
-            &::-webkit-scrollbar {
-                border-radius: 15px;
-                width: 11px;
-            }
+			&::-webkit-scrollbar-thumb {
+				background: #9b9a9a;
+				border: 1px solid black;
+				box-shadow: 0px 0px 20px 0px #000000;
+				border-radius: 5px;
+			}
 
-            &::-webkit-scrollbar-track {
-                background: var(--color--redshade);
-            }
-
-            &::-webkit-scrollbar-thumb {
-                background: #9b9a9a;
-                border: 1px solid black;
-                box-shadow: 0px 0px 20px 0px #000000;
-                border-radius: 5px;
-            }
-
-            &::-webkit-scrollbar-thumb:hover {
-                background: #636262;
-            }
-        }
-    }
+			&::-webkit-scrollbar-thumb:hover {
+				background: #636262;
+			}
+		}
+	}
 }
 
 .chat__room-link {
-    display: inline-flex;
-    place-content: center;
-    place-items: center;
+	display: inline-flex;
+	place-content: center;
+	place-items: center;
 }
 
 .room-link {
-    background: var(--color-bg-input);
-    padding: 0.5rem 1.5rem;
-    border-radius: 40px;
-    display: inline-flex;
-    place-content: center;
-    place-items: center;
+	background: var(--color-bg-input);
+	padding: 0.5rem 1.5rem;
+	border-radius: 40px;
+	display: inline-flex;
+	place-content: center;
+	place-items: center;
 }
 
 .room-link__label {
-    color: var(--color-text-base);
-    font-size: var(--room-link-label-font-size);
-    padding: 0 1rem 0 0;
+	color: var(--color-text-base);
+	font-size: var(--room-link-label-font-size);
+	padding: 0 1rem 0 0;
 }
 
 .chime-web-composer {
-    font-size: var(--composer-font-size);
-    background: var(--color-bg-chat);
-    padding: 1.5rem;
+	font-size: var(--composer-font-size);
+	background: var(--color-bg-chat);
+	padding: 1.5rem;
 }

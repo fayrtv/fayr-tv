@@ -1,154 +1,160 @@
 .Controls {
-    display: flex;
+	display: flex;
 
-    position: relative;
-    padding: 2rem;
-    // max-width: 100vw;
+	position: relative;
+	padding: 2rem;
+	// max-width: 100vw;
 
-    top: 0px;
-    left: 0px;
+	top: 0px;
+	left: 0px;
 
-    overflow-x: clip;
+	overflow-x: clip;
+	
+	// left: -50%;
+	align-items: center;
+	// transform: translateX(50%);
 
-    // left: -50%;
-    align-items: center;
-    // transform: translateX(50%);
+	justify-content: center;
 
-    justify-content: center;
+	transition: transform 0.5s ease-in-out;
 
-    transition: transform 0.5s ease-in-out;
+	.ControlsMinified{
+		left: 0%;
+		transform: none;
+		position: relative;
+	}
 
-    .ControlsMinified {
-        left: 0%;
-        transform: none;
-        position: relative;
-    }
+	@media (max-width: 1024px) {		
+		padding: 0.5rem;
 
-    @media (max-width: 960px) {
-        justify-content: space-between;
+		&.Minified {
+			left: 0%;
+			transform: none;
 
-        padding: 0 1rem 1rem 1rem;
+			.ControlsMinified {
+				display: grid;
+				grid-template-columns: 35px 35px;
+				grid-template-rows: 35px 35px;
+				place-items: center;
+				
+				background: #505050;
+				border-radius: 5px;
 
-        &.Minified {
-            left: 0%;
-            transform: none;
+				padding: 5px;
 
-            .ControlsMinified {
-                display: grid;
-                grid-template-columns: 35px 35px;
-                grid-template-rows: 35px 35px;
-                place-items: center;
+				&:hover {
+					background: #7e7e7e;
+				}
+			}
 
-                background: #505050;
-                border-radius: 5px;
+			.Button {
+				height: 30px;
+				width: 30px;
 
-                padding: 5px;
+				pointer-events: none;
 
-                &:hover {
-                    background: #7e7e7e;
-                }
-            }
+				margin: 0;
+			}
+		}
 
-            .Button {
-                height: 30px;
-                width: 30px;
+		&.ChatOpen {
+			transform: translateX(-20%);
+		}
+	}
 
-                pointer-events: none;
+	.Button {
+		margin: 0 1rem;
+		display: flex;
 
-                margin: 0;
-            }
-        }
-    }
+		flex-grow: 1;
+		align-items: center;
+		align-content: center;
+		justify-content: center;
 
-    .Button {
-        margin: 0 1rem;
-        display: flex;
+		max-width: 42px;
 
-        flex-grow: 1;
-        align-items: center;
-        align-content: center;
-        justify-content: center;
+		cursor: pointer;
+		margin: 0;	
+		
+		@media (min-width: 960px) {
+			margin: 0 0.5rem;
+		}
+		
+		@media (max-width: 365px) {
+			max-height: 10vw;
+			max-width: 10vw;
+		}
 
-        max-width: 42px;
+		svg {
+			height: calc(100% - 2rem);
+			width: calc(100% - 2rem);
+		}
 
-        cursor: pointer;
-        margin: 0;
+		&.Active {
+			background-color: var(--color--destructive);
+		}
 
-        @media (min-width: 960px) {
-            margin: 0 0.5rem;
-        }
+		&.ChatContainer {
+			position: relative;
 
-        @media (max-width: 365px) {
-            max-height: 10vw;
-            max-width: 10vw;
-        }
+			.UnreadTag {
+				position: absolute;
+				top: -5px;
+				left: calc(100% - 1rem - 5px);
+				margin: 0;
+				height: auto;
+				width: 24px;
+			
+				color: black;
+			
+				border-radius: 15px;
+			
+				background: lightgrey;
+				z-index: 5;
+			}
+		}
 
-        svg {
-            height: calc(100% - 2rem);
-            width: calc(100% - 2rem);
-        }
+		&.ReactionButton {
+			position: relative;
+			z-index: 500;
 
-        &.Active {
-            background-color: var(--color--destructive);
-        }
+			> span {
+				font-size: 1.5em;
+			}
 
-        &.ChatContainer {
-            position: relative;
+			* span {
+				user-select: none;
+			}
 
-            .UnreadTag {
-                position: absolute;
-                top: -5px;
-                left: calc(100% - 1rem - 5px);
-                margin: 0;
-                height: auto;
-                width: 24px;
+			&:active {
+				.ReactionRow {
+					top: -47px;
+					right: -2px;
+				}
+			}
+			
+			.ReactionRow {
+				position: absolute;
 
-                color: black;
+				top: -45px;
+				right: 0px;
+				height: 42px;
+			}
+		}
 
-                border-radius: 15px;
+		&.VotingButton {
+			cursor: pointer;
 
-                background: lightgrey;
-                z-index: 5;
-            }
-        }
-
-        &.ReactionButton {
-            position: relative;
-            z-index: 500;
-
-            > span {
-                font-size: 1.5em;
-            }
-
-            &:active {
-                .ReactionRow {
-                    top: -47px;
-                    right: -2px;
-                }
-            }
-
-            .ReactionRow {
-                position: absolute;
-
-                top: -45px;
-                right: 0px;
-                height: 42px;
-            }
-        }
-
-        &.VotingButton {
-            cursor: pointer;
-
-            > span {
-                cursor: pointer !important;
-            }
-        }
-    }
+			> span {
+				cursor: pointer !important;
+			}
+		}
+	}
 }
-
-.btn__svg--sm {
-    height: 16px;
-    width: 16px;
-    position: relative;
-    top: 2px;
-}
+    
+  .btn__svg--sm {
+	height: 16px;
+	width: 16px;
+	position: relative;
+	top: 2px;
+  }

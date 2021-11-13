@@ -1,84 +1,86 @@
 :root {
-    --chat-line-font-size: var(--room-link-label-font-size);
-    --chat-line-padding: 0.5rem 1rem;
+	--chat-line-font-size: var(--room-link-label-font-size);
+	--chat-line-padding: 0.5rem 1rem;
 }
 
 @media (max-width: 960px) {
-    /* Large Screens and below */
-    :root {
-        --chat-line-padding: 0 1rem;
-    }
+
+	/* Large Screens and below */
+	:root {
+		--chat-line-padding: 0 1rem;
+	}
 }
 
 .chat-line {
-    padding: 12px 15px;
-    background: var(--color-bg-chat-bubble);
-    border-radius: var(--input-height);
-    display: flex;
-    margin: 0 0 5px 0;
+	padding: 12px 15px;
+	background: var(--color-bg-chat-bubble);
+	border-radius: var(--input-height);
+	display: flex;
+	margin: 0 0 5px 0;
 
-    font-size: var(--chat-line-font-size);
-    padding: var(--chat-line-padding);
+	font-size: var(--chat-line-font-size);
+	padding: var(--chat-line-padding);
 
-    display: flex;
-    justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
 
-    p {
-        display: inline;
-        font-weight: normal;
-        overflow-wrap: anywhere;
-    }
+	p {
+		display: inline;
+		font-weight: normal;
+		overflow-wrap: anywhere;
+	}
 
-    .username {
-        font-weight: 800;
-        padding-right: 0.1rem;
+	.username {
+		font-weight: 800;
+		padding-right: 0.1rem;
 
-        &::after {
-            content: " ";
-        }
-    }
+		&::after {
+			content: " ";
+		}
+	}
 
-    .chat-line_timestamp {
-        visibility: hidden;
-    }
+	.chat-line_timestamp {
+		visibility: hidden;
 
-    &:hover {
-        .chat-line_timestamp {
-            visibility: visible;
-        }
-    }
+	}
+
+	&:hover {
+		.chat-line_timestamp {
+			visibility: visible;
+		}
+	}
 }
 
 .chat-line_leftsection {
-    max-width: 85%;
+	max-width: 85%;
 
-    overflow-wrap: break-word;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
+	overflow-wrap: break-word;
+	-webkit-line-clamp: 4;
+	-webkit-box-orient: vertical;
 
-    padding: 5px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.15);
-    background: rgba(0, 0, 0, 0.3);
+	padding: 5px;
+	border-radius: 5px;
+	box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.15);
+	background: rgba(0, 0, 0, 0.3);
 
-    .self {
-        color: lightblue;
-    }
+	.self {
+		color: lightblue;
+	}
 
-    .other {
-        color: #fa7751;
-    }
+	.other {
+		color: #fa7751;
+	}
 }
 
 .outgoing_chat {
-    flex-direction: row-reverse;
+	flex-direction: row-reverse;
 }
 
 .incoming_chat {
-    flex-direction: row;
+	flex-direction: row;
 }
 
 .chat-line__link {
-    color: var(--color-text-link);
-    text-decoration: underline;
+	color: var(--color-text-link);
+	text-decoration: underline;
 }
