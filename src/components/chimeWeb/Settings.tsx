@@ -26,6 +26,7 @@ export const Settings = ({ chime, closeSettings, joinInfo, saveSettings }: Props
     const availableSpeakers = chime.audioOutputDevices;
     const availableCams = chime.videoInputDevices;
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [playbackUrl, setPlaybackUrl] = React.useState<string>(joinInfo.PlaybackURL);
     const [microphone, setMicrophone] = React.useState<string>(currentMic?.value);
     const [speaker, setSpeaker] = React.useState<string>(currentSpeaker?.value);
@@ -177,7 +178,7 @@ export const Settings = ({ chime, closeSettings, joinInfo, saveSettings }: Props
                     </fieldset>
                 </form>
             </div>
-            <div className="modal__overlay" onClick={closeSettings}></div>
+            <div className="modal__overlay" onClick={closeSettings} />
         </div>
     );
 };

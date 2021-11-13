@@ -67,6 +67,7 @@ export const ChatInput = ({ inputRef, userName }: Props) => {
             inputRef.current!.selectionStart = 500000;
             inputRef.current!.selectionEnd = 500000;
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [message]);
 
     return (
