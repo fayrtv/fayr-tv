@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 import * as config from "../../config";
 import Error from "./Error";
 import QRCodeView from "./QRCodeView";
+import { formatJoinRoomUrl } from "./Intro/urls";
 
 class Welcome extends Component {
     state = {
@@ -59,12 +60,6 @@ class Welcome extends Component {
 
     get roomUrlRelative() {
         return `${this.baseHref}/meeting?room=${this.state.roomCode}`;
-    }
-
-    get roomUrlAbsolute() {
-        // TODO: Is there a better way to get the base URL?
-        const baseUrl = document.baseURI.replace("/chime-web", "");
-        return `${baseUrl}/meeting?room=${this.state.roomCode}`;
     }
 
     async createRoom() {
@@ -127,7 +122,7 @@ class Welcome extends Component {
                                     {/* <input type="text" placeholder="Playback URL" value={playbackURL} onChange={this.handlePlaybackURLChange} /> */}
                                     {roomCode && (
                                         <QRCodeView
-                                            content={this.roomUrlAbsolute}
+                                            content={formatJoinRoomUrl(roomCode)}
                                             width={150}
                                             height={150}
                                             padding={1}
