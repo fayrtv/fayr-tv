@@ -93,13 +93,6 @@ class Welcome extends Component {
                                 border="0"
                                 height="200"
                             />
-                            {/* <h1>FAYR TV</h1> */}
-                            <img
-                                src="https://i.ibb.co/jGzKGYw/fayrtv-logo.png"
-                                alt="fayrtv-logo"
-                                border="0"
-                                height="200"
-                            />
                             <h2>Erlebe Live- und Sportevents wie noch nie zuvor!</h2>
                             <h3>
                                 Erstelle eine Watch Party oder trete einer bei und verbringe mit
