@@ -26,8 +26,6 @@ export const Settings = ({ chime, closeSettings, joinInfo, saveSettings }: Props
     const availableSpeakers = chime.audioOutputDevices;
     const availableCams = chime.videoInputDevices;
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [playbackUrl, setPlaybackUrl] = React.useState<string>(joinInfo.PlaybackURL);
     const [microphone, setMicrophone] = React.useState<string>(currentMic?.value);
     const [speaker, setSpeaker] = React.useState<string>(currentSpeaker?.value);
     const [camera, setCamera] = React.useState<string>(currentCam?.value);
@@ -104,7 +102,7 @@ export const Settings = ({ chime, closeSettings, joinInfo, saveSettings }: Props
         e.stopPropagation();
         e.preventDefault();
 
-        saveSettings(playbackUrl, microphone, speaker, camera);
+        saveSettings(joinInfo.PlaybackURL, microphone, speaker, camera);
     };
 
     const renderDevices = (devices: any[], label: string) => {
@@ -137,7 +135,7 @@ export const Settings = ({ chime, closeSettings, joinInfo, saveSettings }: Props
 							readOnly={true}
 							placeholder="Playback URL"
 							onChange={handlePlaybackURLChange}
-							value={playbackUrl}
+							value={joinInfo.PlaybackURL}
 							disabled /> */}
                         <h2 className="mg-b-2">Mikrofon</h2>
                         <select
