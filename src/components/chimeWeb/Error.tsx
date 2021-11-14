@@ -18,7 +18,7 @@ const Error = ({ errorMsg, closeError }: Props) => {
         }
     };
 
-    useEventHandler("keydown", handleKeyDown)
+    useEventHandler("keydown", handleKeyDown);
 
     const handleClick = (ev: any) => {
         let node = ev.target;

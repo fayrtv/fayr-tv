@@ -190,7 +190,9 @@ export const RemoteVideoGroup = ({ chime, joinInfo, storedRoster }: Props) => {
         return () => {
             chime.unsubscribeFromRosterUpdate(rosterCallback);
             try {
-                chime.audioVideo?.removeObserver({ videoTileDidUpdate: videoTileDidUpdateCallback });
+                chime.audioVideo?.removeObserver({
+                    videoTileDidUpdate: videoTileDidUpdateCallback,
+                });
                 chime.audioVideo?.removeObserver({
                     videoTileWasRemoved: videoTileWasRemovedCallback,
                 });

@@ -108,9 +108,13 @@ class Welcome extends Component {
                             <JoinInfoForm
                                 username={username}
                                 usernameInputRef={this.usernameInputRef}
-                                onUsernameChanged={(newName) => this.setState({ username: newName })}
+                                onUsernameChanged={(newName) =>
+                                    this.setState({ username: newName })
+                                }
                                 roomCode={roomCode}
-                                onRoomCodeChanged={(newCode) => this.setState({ roomCode: newCode })}
+                                onRoomCodeChanged={(newCode) =>
+                                    this.setState({ roomCode: newCode })
+                                }
                                 disableSubmit={!playbackURL}
                                 onSubmit={this.handleCreateRoom}
                             />

@@ -22,7 +22,7 @@ export function JoinInfoForm({
     onSubmit,
     usernameInputRef,
     roomCodeInputRef,
-    disableSubmit = false
+    disableSubmit = false,
 }: Props) {
     const isValid = !isFalsyOrWhitespace(roomCode) && !isFalsyOrWhitespace(username);
     return (
@@ -52,7 +52,11 @@ export function JoinInfoForm({
                         padding={1}
                     />
                 )}
-                <button className="mg-t-2 btn btn--primary" disabled={!isValid || disableSubmit} onClick={onSubmit}>
+                <button
+                    className="mg-t-2 btn btn--primary"
+                    disabled={!isValid || disableSubmit}
+                    onClick={onSubmit}
+                >
                     Watch Party
                 </button>
             </fieldset>
