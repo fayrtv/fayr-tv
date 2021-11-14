@@ -180,13 +180,23 @@ export const RemoteVideoGroup = ({ chime, joinInfo, storedRoster }: Props) => {
 
         chime.subscribeToRosterUpdate(rosterCallback);
 
-        chime.audioVideo.addObserver({
-            videoTileDidUpdate: videoTileDidUpdateCallback,
-            videoTileWasRemoved: videoTileWasRemovedCallback,
-        });
+        if (chime.audioVideo) {
+            chime.audioVideo.addObserver({
+                videoTileDidUpdate: videoTileDidUpdateCallback,
+                videoTileWasRemoved: videoTileWasRemovedCallback,
+            });
+        }
 
         return () => {
             chime.unsubscribeFromRosterUpdate(rosterCallback);
+            try {
+                chime.audioVideo?.removeObserver({ videoTileDidUpdate: videoTileDidUpdateCallback });
+                chime.audioVideo?.removeObserver({
+                    videoTileWasRemoved: videoTileWasRemovedCallback,
+                });
+            } catch (ex) {
+                // ok
+            }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [chime]);

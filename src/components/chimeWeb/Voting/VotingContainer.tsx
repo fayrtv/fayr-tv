@@ -14,14 +14,14 @@ import { updateVote } from "redux/reducers/votingReducer";
 import { VotingOpenContext } from "../../contexts/VotingOpenContext";
 
 // Types
-import { Nullable } from "../../../types/global";
+import { Callback, Nullable } from "../../../types/global";
 import { ReduxStore } from "redux/store";
 import { AttendeeVoteDto, VotingData } from "./types";
 import { SocketEventType } from "components/chime/types";
 
 // Styles
 import styles from "./styles/VotingContainer.module.scss";
-import ChimeSdkWrapper from "../../chime/ChimeSdkWrapper";
+import ChimeSdkWrapper, { RosterMap } from "../../chime/ChimeSdkWrapper";
 
 type Props = {
     attendeeId: string;
@@ -45,11 +45,13 @@ export const VotingContainer = ({ attendeeId, chime, votings }: Props) => {
     );
 
     React.useEffect(() => {
-        chime.subscribeToRosterUpdate((x) => {
+        const callback: Callback<RosterMap> = (x) => {
             setIdNameMapping(
                 new Map<string, string>(Object.entries(x).map(([key, val]) => [key, val.name])),
             );
-        });
+        };
+        chime.subscribeToRosterUpdate(callback);
+        return () => chime.unsubscribeFromRosterUpdate(callback);
     }, [chime, setIdNameMapping]);
 
     React.useEffect(() => {

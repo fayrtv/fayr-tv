@@ -2,8 +2,19 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import * as config from "../../config";
 import Error from "./Error";
-import QRCodeView from "./QRCodeView";
-import { formatJoinRoomUrl } from "./Intro/urls";
+import { formatMeetingSsKey } from "./Meeting/storage";
+import * as PropTypes from "prop-types";
+import { JoinInfoForm } from "./JoinInfoForm";
+
+JoinInfoForm.propTypes = {
+    value: PropTypes.string,
+    ref: PropTypes.any,
+    onChange: PropTypes.func,
+    value1: PropTypes.string,
+    onChange1: PropTypes.func,
+    disabled: PropTypes.bool,
+    onClick: PropTypes.func,
+};
 
 class Welcome extends Component {
     state = {
@@ -18,7 +29,7 @@ class Welcome extends Component {
     constructor() {
         super();
         this.baseHref = config.BASE_HREF;
-        this.inputRef = React.createRef();
+        this.usernameInputRef = React.createRef();
     }
 
     componentDidMount() {
@@ -28,16 +39,8 @@ class Welcome extends Component {
             const title = qs.get("room");
             this.props.history.push(`${this.baseHref}/join?room=${title}`);
         }
-        this.inputRef.current.focus();
+        this.usernameInputRef.current.focus();
     }
-
-    handleNameChange = (e) => {
-        this.setState({ username: e.target.value });
-    };
-
-    handleRoomChange = (e) => {
-        this.setState({ roomCode: e.target.value });
-    };
 
     handlePlaybackURLChange = (e) => {
         this.setState({ playbackURL: e.target.value });
@@ -70,13 +73,12 @@ class Welcome extends Component {
             playbackURL,
             role: this.state.role,
         };
-        sessionStorage.setItem(`chime[${roomCode}]`, JSON.stringify(data));
+        sessionStorage.setItem(formatMeetingSsKey(roomCode), JSON.stringify(data));
         this.props.history.push(this.roomUrlRelative);
     }
 
     render() {
         const { username, roomCode, playbackURL } = this.state;
-        const createRoomDisabled = !username || !roomCode || !playbackURL;
         return (
             <>
                 <div className="welcome form-grid">
@@ -103,40 +105,15 @@ class Welcome extends Component {
                                 Fiebere zusammen mit deinen Freunden mit und schaue dir Live- und
                                 Sportevents online an!
                             </h3>
-                            <form action="">
-                                <fieldset className="mg-b-2">
-                                    <input
-                                        className="mg-b-2"
-                                        type="text"
-                                        placeholder="Dein Name"
-                                        value={username}
-                                        ref={this.inputRef}
-                                        onChange={this.handleNameChange}
-                                    />
-                                    <input
-                                        type="text"
-                                        placeholder="Code"
-                                        value={roomCode}
-                                        onChange={this.handleRoomChange}
-                                    />
-                                    {/* <input type="text" placeholder="Playback URL" value={playbackURL} onChange={this.handlePlaybackURLChange} /> */}
-                                    {roomCode && (
-                                        <QRCodeView
-                                            content={formatJoinRoomUrl(roomCode)}
-                                            width={150}
-                                            height={150}
-                                            padding={1}
-                                        />
-                                    )}
-                                    <button
-                                        className="mg-t-2 btn btn--primary"
-                                        disabled={createRoomDisabled}
-                                        onClick={this.handleCreateRoom}
-                                    >
-                                        Watch Party
-                                    </button>
-                                </fieldset>
-                            </form>
+                            <JoinInfoForm
+                                username={username}
+                                usernameInputRef={this.usernameInputRef}
+                                onUsernameChanged={(newName) => this.setState({ username: newName })}
+                                roomCode={roomCode}
+                                onRoomCodeChanged={(newCode) => this.setState({ roomCode: newCode })}
+                                disableSubmit={!playbackURL}
+                                onSubmit={this.handleCreateRoom}
+                            />
                         </div>
                     </div>
                 </div>

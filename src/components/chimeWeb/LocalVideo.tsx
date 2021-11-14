@@ -33,37 +33,41 @@ const LocalVideo = ({ chime, joinInfo }: Props) => {
     );
 
     React.useEffect(() => {
-        // Hide meta info after 2 seconds
-        setTimeout(() => setShowMeta(false), 2500);
-
-        if (!chime.audioVideo?.videoTileController.currentLocalTile) {
-            chime.audioVideo.addObserver({
-                videoTileDidUpdate: (tileState: any) => {
-                    if (
-                        !tileState.boundAttendeeId ||
-                        !tileState.localTile ||
-                        !tileState.tileId ||
-                        !videoElement.current
-                    ) {
-                        return;
-                    }
-
-                    chime.audioVideo.bindVideoElement(tileState.tileId, videoElement.current);
-
-                    setEnabled(tileState.active);
-                },
-            });
-        } else {
-            const currentTile = chime.audioVideo.videoTileController.currentLocalTile.tileState;
-
-            chime.audioVideo.bindVideoElement(currentTile.tileId, videoElement.current);
-
-            setEnabled(currentTile.active);
-        }
+        const hideMetaInfoTimeout = setTimeout(() => setShowMeta(false), 2500);
 
         chime.subscribeToRosterUpdate(rosterCallback);
 
-        return () => chime.unsubscribeFromRosterUpdate(rosterCallback);
+        if (chime.audioVideo) {
+            if (!chime.audioVideo.videoTileController.currentLocalTile) {
+                chime.audioVideo.addObserver({
+                    videoTileDidUpdate: (tileState: any) => {
+                        if (
+                            !tileState.boundAttendeeId ||
+                            !tileState.localTile ||
+                            !tileState.tileId ||
+                            !videoElement.current
+                        ) {
+                            return;
+                        }
+
+                        chime.audioVideo.bindVideoElement(tileState.tileId, videoElement.current);
+
+                        setEnabled(tileState.active);
+                    },
+                });
+            } else {
+                const currentTile = chime.audioVideo.videoTileController.currentLocalTile.tileState;
+
+                chime.audioVideo.bindVideoElement(currentTile.tileId, videoElement.current);
+
+                setEnabled(currentTile.active);
+            }
+        }
+
+        return () => {
+            chime.unsubscribeFromRosterUpdate(rosterCallback);
+            clearTimeout(hideMetaInfoTimeout);
+        };
     }, [chime, rosterCallback]);
 
     const handleMouseEnter = React.useCallback(() => setShowMeta(true), []);

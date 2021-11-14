@@ -41,6 +41,9 @@ const RemoteVideo = ({
     const talkingTimeout = React.useRef<number>(-1);
 
     React.useEffect(() => {
+        if (!chime.audioVideo) {
+            return;
+        }
         const tile = chime.audioVideo.getVideoTile(tileIndex);
 
         if (!tile || !tile.state().active) {

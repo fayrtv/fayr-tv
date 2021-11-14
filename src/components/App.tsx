@@ -10,7 +10,7 @@ import store from "redux/store";
 
 import Home from "./chimeWeb/Welcome";
 import Join from "./chimeWeb/Intro/Join";
-import Meeting from "./chimeWeb/Meeting";
+import MeetingContainer from "./chimeWeb/Meeting/MeetingContainer";
 import End from "./chimeWeb/End";
 import SocketContextProvider from "./chime/SocketContextProvider";
 import SelectedReactionContextProvider from "./contexts/SelectedReactionContext";
@@ -33,7 +33,7 @@ function App() {
                                 <VotingOpenContextProvider>
                                     <SocketContextProvider>
                                         <SelectedReactionContextProvider>
-                                            <Meeting chime={chime} />
+                                            <MeetingContainer chime={chime} />
                                         </SelectedReactionContextProvider>
                                     </SocketContextProvider>
                                 </VotingOpenContextProvider>
