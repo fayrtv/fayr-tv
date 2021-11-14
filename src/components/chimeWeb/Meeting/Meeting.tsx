@@ -8,7 +8,7 @@ import Controls from "../Controls";
 import Settings from "../Settings";
 import LocalVideo from "../LocalVideo";
 import RemoteVideoGroup from "../RemoteVideoGroup";
-import Error from "../Error";
+import Error from "components/chimeWeb/Error";
 import VotingContainer from "../Voting/VotingContainer";
 import ChimeSdkWrapper from "components/chime/ChimeSdkWrapper";
 import { JoinInfo } from "components/chimeWeb/types";
