@@ -2,6 +2,7 @@ import React from "react";
 
 // Styles
 import "./Error.css";
+import useEventHandler from "hooks/useEventHandler";
 
 // Assets
 
@@ -12,15 +13,12 @@ type Props = {
 
 const Error = ({ errorMsg, closeError }: Props) => {
     const handleKeyDown = (ev: KeyboardEvent) => {
-        if (ev.keyCode === 27) {
-            // keyCode 27 is Escape key
+        if (ev.code === "Escape" || ev.keyCode === 27) {
             closeError();
         }
     };
-    React.useEffect(() => {
-        document.addEventListener("keydown", handleKeyDown);
-        return () => document.removeEventListener("keydown", handleKeyDown);
-    });
+
+    useEventHandler("keydown", handleKeyDown)
 
     const handleClick = (ev: any) => {
         let node = ev.target;
