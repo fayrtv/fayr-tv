@@ -8,34 +8,34 @@ import { isFalsyOrWhitespace } from "util/stringUtils";
 import styles from "./JoinInfoForm.module.scss";
 
 type Props = {
-    username: string;
-    onUsernameChanged: React.Dispatch<SetStateAction<string>>;
-    roomCode: string;
-    onRoomCodeChanged: React.Dispatch<SetStateAction<string>>;
-    onSubmit: () => void;
-    disableSubmit?: boolean;
-    usernameInputRef?: React.Ref<HTMLInputElement>;
-    roomCodeInputRef?: React.Ref<HTMLInputElement>;
+	username: string;
+	onUsernameChanged: React.Dispatch<SetStateAction<string>>;
+	roomCode: string;
+	onRoomCodeChanged: React.Dispatch<SetStateAction<string>>;
+	onSubmit: () => void;
+	disableSubmit?: boolean;
+	usernameInputRef?: React.Ref<HTMLInputElement>;
+	roomCodeInputRef?: React.Ref<HTMLInputElement>;
 };
 
 export function JoinInfoForm({
-    username,
-    onUsernameChanged,
-    roomCode,
-    onRoomCodeChanged,
-    onSubmit,
-    usernameInputRef,
-    roomCodeInputRef,
-    disableSubmit = false,
+	username,
+	onUsernameChanged,
+	roomCode,
+	onRoomCodeChanged,
+	onSubmit,
+	usernameInputRef,
+	roomCodeInputRef,
+	disableSubmit = false,
 }: Props) {
-    const isValid = !isFalsyOrWhitespace(roomCode) && !isFalsyOrWhitespace(username);
+	const isValid = !isFalsyOrWhitespace(roomCode) && !isFalsyOrWhitespace(username);
 	const isMobile = useMediaQuery({ maxWidth: 960 });
 
 	const qrSize = isMobile ? 100 : 150;
 
-    return (
-        <form action="">
-            <fieldset className={classNames("mg-b-2", styles.JoinInfoForm, {[styles.Mobile]: isMobile })}>
+	return (
+		<form action="">
+			<fieldset className={classNames("mg-b-2", styles.JoinInfoForm, { [styles.Mobile]: isMobile })}>
 				<div>
 					<input
 						className="mg-b-2"
@@ -60,16 +60,16 @@ export function JoinInfoForm({
 						Watch Party
 					</button>
 				</div>
-                {/* <input type="text" placeholder="Playback URL" value={playbackURL} onChange={this.handlePlaybackURLChange} /> */}
-                {roomCode && (
+				{/* <input type="text" placeholder="Playback URL" value={playbackURL} onChange={this.handlePlaybackURLChange} /> */}
+				{roomCode && (
 					<QRCodeView
 						content={formatJoinRoomUrl(roomCode)}
 						width={qrSize}
 						height={qrSize}
 						padding={1}
 					/>
-                )}
-            </fieldset>
-        </form>
-    );
+				)}
+			</fieldset>
+		</form>
+	);
 }
