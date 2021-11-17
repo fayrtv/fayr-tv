@@ -57,7 +57,7 @@ export const MeetingContainer = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [chime],
     );
-    const { isLoading } = useLoadingGuard(!state?.joinInfo, initializeSession);
+    const { isLoading } = useLoadingGuard(true, initializeSession);
 
     React.useEffect(() => {
         if (meetingStatus === "Success" || meetingStatus === "Loading") {

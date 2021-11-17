@@ -14,6 +14,9 @@ import Emoji from "react-emoji-render";
 import { VotingOpenContext } from "../contexts/VotingOpenContext";
 import { SelectedReactionContext } from "components/contexts/SelectedReactionContext";
 import MaterialIcon from "../common/MaterialIcon";
+import Flex from "components/common/Flex";
+import Grid from "components/common/GridLayout/Grid";
+import Cell from "components/common/GridLayout/Cell";
 
 enum VideoStatus {
     Loading,
@@ -53,9 +56,8 @@ const Controls: React.FC<Props & ReduxProps> = ({
 
     const { selectedEmoji } = React.useContext(SelectedReactionContext);
 
-    const isMobile = useMediaQuery({ maxWidth: 960 });
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [minified, setMinified] = React.useState(false);
+    const isMobile = useMediaQuery({ maxWidth: 1024 });
+	
     const [reactionsOpen, setReactionsOpen] = React.useState(false);
 
     const controlsRef = React.useRef<HTMLDivElement>(null);
@@ -80,7 +82,7 @@ const Controls: React.FC<Props & ReduxProps> = ({
     };
 
     const reactionButtonOnClick = () => {
-        setReactionsOpen(!reactionsOpen);
+        setReactionsOpen(open => !open);
         return Promise.resolve();
     };
 
@@ -173,51 +175,69 @@ const Controls: React.FC<Props & ReduxProps> = ({
         }
     }, [chime.audioVideo]);
 
-    // React.useEffect(() => {
-    // 	if (isMobile && controlsRef.current) {
+    React.useEffect(() => {
+    	if (controlsRef.current) {
 
-    // 		let touchDownX: number | null = null;
+    		let touchDownX: number | null = null;
 
-    // 		const handleTouchStart = (event: TouchEvent) => {
-    // 			const { clientX } = event.touches[0];
-    // 			touchDownX = clientX;
-    // 		}
+    		const handleTouchStart = (event: TouchEvent) => {
+    			const { clientX } = event.touches[0];
+    			touchDownX = clientX;
+    		}
 
-    // 		const handleTouchMove = (event: TouchEvent) => {
-    // 			if (!touchDownX) {
-    // 				return;
-    // 			}
+    		const handleTouchMove = (event: TouchEvent) => {
+    			if (!touchDownX) {
+    				return;
+    			}
 
-    // 			const { clientX: xUp } = event.touches[0];
+    			const { clientX: xUp } = event.touches[0];
 
-    // 			var xDiff = touchDownX - xUp;
+    			var xDiff = touchDownX - xUp;
 
-    // 			if (Math.abs(xDiff) > 30)
-    // 				if ( minified && xUp > touchDownX ) {
-    // 					setMinified(false);
-    // 				} else if (!minified && xUp < touchDownX) {
-    // 					setMinified(true);
-    // 				}
-    // 		}
+    			if (Math.abs(xDiff) > 30)
+    				if (isChatOpen && xUp > touchDownX ) {
+    					setChatOpen(false);
+    				} else if (!isChatOpen && xUp < touchDownX) {
+    					setChatOpen(true);
+    				}
+    		}
 
-    // 		const controlRef = controlsRef.current;
+    		const controlRef = controlsRef.current;
 
-    // 		controlRef.ontouchstart = handleTouchStart;
-    // 		controlRef.ontouchmove = handleTouchMove;
+    		controlRef.ontouchstart = handleTouchStart;
+    		controlRef.ontouchmove = handleTouchMove;
 
-    // 		return () => {
-    // 			controlRef.removeEventListener("touchstart", handleTouchStart);
-    // 			controlRef.removeEventListener("touchmove", handleTouchMove);
-    // 		}
-    // 	}
+    		return () => {
+    			controlRef.removeEventListener("touchstart", handleTouchStart);
+    			controlRef.removeEventListener("touchmove", handleTouchMove);
+    		}
+    	}
 
-    // }, [minified, isMobile])
+    }, [isChatOpen, isMobile])
 
     const mic_controls = localMuted ? "" : `${styles.Active}`;
     const cam_controls = videoStatus === VideoStatus.Enabled ? `${styles.Active}` : "";
     const chat_controls = isChatOpen ? `${styles.Active}` : "";
 
     const popup = showPopUp ? "show" : "";
+
+	const chatButton = (
+        <div
+            key="ChatButton"
+            className={`${styles.Button} ${chat_controls} ${styles.ChatContainer} btn rounded`}
+            title={`${isChatOpen ? "Hide" : "Show"} chat`}
+            onClick={withSuppressedBubble(handleChatClick)}
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24">
+                <path d="M 4 3 C 2.9 3 2 3.9 2 5 L 2 17 L 5 14 L 8 14 L 8 17 C 8 18.1 8.9 19 10 19 L 19 19 L 22 22 L 22 10 C 22 8.9 21.1 8 20 8 L 16 8 L 16 5 C 16 3.9 15.1 3 14 3 L 4 3 z M 4 5 L 14 5 L 14 12 L 4 12 L 4 5 z M 16 10 L 20 10 L 20 17 L 10 17 L 10 14 L 14 14 C 15.1 14 16 13.1 16 12 L 16 10 z" />
+            </svg>
+            {!isChatOpen && unreadMessages.length > 0 && (
+                <span className={`${styles.Button} ${styles.UnreadTag}`}>
+                    {unreadMessages.length > 99 ? "99+" : unreadMessages.length}
+                </span>
+            )}
+        </div>
+	);
 
     const buttons = [
         // {/* Microfon button */}
@@ -311,19 +331,6 @@ const Controls: React.FC<Props & ReduxProps> = ({
                 <path d="M19.1401 12.936C19.1761 12.636 19.2001 12.324 19.2001 12C19.2001 11.676 19.1761 11.364 19.1281 11.064L21.1561 9.48002C21.3361 9.33602 21.3841 9.07202 21.2761 8.86802L19.3561 5.54402C19.2361 5.32802 18.9841 5.25602 18.7681 5.32802L16.3801 6.28802C15.8761 5.90402 15.3481 5.59202 14.7601 5.35202L14.4001 2.80802C14.3641 2.56802 14.1601 2.40002 13.9201 2.40002H10.0801C9.84011 2.40002 9.64811 2.56802 9.61211 2.80802L9.25211 5.35202C8.66411 5.59202 8.12411 5.91602 7.63211 6.28802L5.24411 5.32802C5.02811 5.24402 4.77611 5.32802 4.65611 5.54402L2.73611 8.86802C2.61611 9.08402 2.66411 9.33602 2.85611 9.48002L4.88411 11.064C4.83611 11.364 4.80011 11.688 4.80011 12C4.80011 12.312 4.82411 12.636 4.87211 12.936L2.84411 14.52C2.66411 14.664 2.61611 14.928 2.72411 15.132L4.64411 18.456C4.76411 18.672 5.01611 18.744 5.23211 18.672L7.62011 17.712C8.12411 18.096 8.65211 18.408 9.24011 18.648L9.60011 21.192C9.64811 21.432 9.84011 21.6 10.0801 21.6H13.9201C14.1601 21.6 14.3641 21.432 14.3881 21.192L14.7481 18.648C15.3361 18.408 15.8761 18.084 16.3681 17.712L18.7561 18.672C18.9721 18.756 19.2241 18.672 19.3441 18.456L21.2641 15.132C21.3841 14.916 21.3361 14.664 21.1441 14.52L19.1401 12.936ZM12.0001 15.6C10.0201 15.6 8.40011 13.98 8.40011 12C8.40011 10.02 10.0201 8.40002 12.0001 8.40002C13.9801 8.40002 15.6001 10.02 15.6001 12C15.6001 13.98 13.9801 15.6 12.0001 15.6Z" />
             </svg>
         </div>,
-        // {/* Noise Cancelling button */}
-        // (
-        // 	<div
-        // 		key="NoiseCancellingButton"
-        // 		className={`${styles.Button} ${mic_controls} btn rounded`}
-        // 		onClick={withSuppressedBubble(muteButtonOnClick)}>
-        // 		<svg className="" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" fill="none" strokeWidth="2" strokeLinecap="butt" strokeLinejoin="round" viewBox="0 0 24 24">
-        // 			<circle cx="12" cy="12" r="2" />
-        // 			<path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14" />
-        // 		</svg>
-        // 	</div>
-        // ),
-        // {/* Watch Party button */}
         <div
             key="SharePartyButton"
             className={`${styles.Button} btn rounded popup`}
@@ -348,21 +355,7 @@ const Controls: React.FC<Props & ReduxProps> = ({
                 Link gespeichert
             </span>
         </div>,
-        <div
-            key="ChatButton"
-            className={`${styles.Button} ${chat_controls} ${styles.ChatContainer} btn rounded`}
-            title={`${isChatOpen ? "Hide" : "Show"} chat`}
-            onClick={withSuppressedBubble(handleChatClick)}
-        >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24">
-                <path d="M 4 3 C 2.9 3 2 3.9 2 5 L 2 17 L 5 14 L 8 14 L 8 17 C 8 18.1 8.9 19 10 19 L 19 19 L 22 22 L 22 10 C 22 8.9 21.1 8 20 8 L 16 8 L 16 5 C 16 3.9 15.1 3 14 3 L 4 3 z M 4 5 L 14 5 L 14 12 L 4 12 L 4 5 z M 16 10 L 20 10 L 20 17 L 10 17 L 10 14 L 14 14 C 15.1 14 16 13.1 16 12 L 16 10 z" />
-            </svg>
-            {!isChatOpen && unreadMessages.length > 0 && (
-                <span className={`${styles.Button} ${styles.UnreadTag}`}>
-                    {unreadMessages.length > 99 ? "99+" : unreadMessages.length}
-                </span>
-            )}
-        </div>,
+		chatButton,
         <div
             key="ReactionButton"
             className={`${styles.Button} ${styles.ReactionButton} btn rounded`}
@@ -403,31 +396,45 @@ const Controls: React.FC<Props & ReduxProps> = ({
             className={`${styles.Button} ${styles.VotingButton} ${
                 isVotingOpen ? `${styles.Active}` : ""
             } btn rounded`}
-            onClick={() => setVotingOpen(!isVotingOpen)}
+            onClick={withSuppressedBubble(() => {
+				setVotingOpen(!isVotingOpen)
+				return Promise.resolve();
+			})}
         >
             <MaterialIcon color="white" type="Outlined" iconName="poll" />
         </div>,
     ];
 
     return (
-        <div
-            className={`${styles.Controls} ${minified ? styles.Minified : ""} ${
-                isChatOpen ? styles.ChatOpen : ""
-            }`}
-            // onClick={e => {
-            // 	if (isMobile) {
-            // 		e.stopPropagation();
-            // 		e.preventDefault();
-            // 		setMinified(!minified);
-            // 	}
-            // }}
+        <Flex
+			direction="Row"
+			mainAlign="Center"
+            className={styles.Controls}
+			onClick={e => {
+				if (isMobile) {
+					e.stopPropagation();
+					e.preventDefault();
+					setChatOpen(!isChatOpen);
+				}
+			}}
             ref={controlsRef}
         >
-            {isMobile && minified && (
-                <div className={styles.ControlsMinified}>{buttons.slice(0, 4)}</div>
+            {isMobile && isChatOpen && (
+				<Flex direction="Row" mainAlign="Start" className={styles.ControlsMinified}>
+					<Grid
+						className={styles.ControlsMinifiedBlock}
+						gridProperties={{
+							gridTemplateRows: "1fr 1fr",
+							gridTemplateColumns: "1fr 1fr",
+							gap: 0,
+						}}>
+						{buttons.slice(0, 4).map(x => <Cell className={styles.MinifiedControlButtonCell}>{x}</Cell>)}
+					</Grid>
+					{chatButton}
+				</Flex>
             )}
-            {(!isMobile || (isMobile && !minified)) && buttons}
-        </div>
+            {(!isMobile || (isMobile && !isChatOpen)) && buttons}
+        </Flex>
     );
 };
 

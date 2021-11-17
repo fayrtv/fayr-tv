@@ -8,7 +8,8 @@
         max-width: 355px;
 
         @media (max-width: 960px) {
-            width: 200px;
+            width: 25%;
+			min-width: none;
         }
 
         .CamSection {

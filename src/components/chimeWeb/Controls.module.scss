@@ -1,66 +1,42 @@
 .Controls {
-    display: flex;
-
     position: relative;
     padding: 2rem;
-    // max-width: 100vw;
+
+	@media (max-width: 1024px) {
+		padding: 0.5rem;
+	}
 
     top: 0px;
     left: 0px;
 
     overflow-x: clip;
 
-    // left: -50%;
-    align-items: center;
-    // transform: translateX(50%);
-
-    justify-content: center;
-
     transition: transform 0.5s ease-in-out;
 
-    .ControlsMinified {
-        left: 0%;
-        transform: none;
-        position: relative;
-    }
+	.ControlsMinified {
+		height: 100%;
+		width: 100%;
+		
+		.ControlsMinifiedBlock {
+			left: 0%;
+			transform: none;
+			position: relative;
 
-    @media (max-width: 1024px) {
-        padding: 0.5rem;
+			min-height: 100%;
+			width: auto;
 
-        &.Minified {
-            left: 0%;
-            transform: none;
+			max-height: 30px;
 
-            .ControlsMinified {
-                display: grid;
-                grid-template-columns: 35px 35px;
-                grid-template-rows: 35px 35px;
-                place-items: center;
+			.MinifiedControlButtonCell {
+				.Button {
+					height: 100%;
+					pointer-events: none;
 
-                background: #505050;
-                border-radius: 5px;
-
-                padding: 5px;
-
-                &:hover {
-                    background: #7e7e7e;
-                }
-            }
-
-            .Button {
-                height: 30px;
-                width: 30px;
-
-                pointer-events: none;
-
-                margin: 0;
-            }
-        }
-
-        &.ChatOpen {
-            transform: translateX(-20%);
-        }
-    }
+					margin: 0;
+				}
+			}
+		}
+	}
 
     .Button {
         margin: 0 1rem;
@@ -76,7 +52,7 @@
         cursor: pointer;
         margin: 0;
 
-        @media (min-width: 960px) {
+        @media (min-width: 1025px) {
             margin: 0 0.5rem;
         }
 
@@ -88,6 +64,15 @@
         svg {
             height: calc(100% - 2rem);
             width: calc(100% - 2rem);
+        }
+		
+        @media (max-width: 1024px) {
+            margin: 0 0.5rem;
+
+			svg {
+				height: calc(100% - 1rem);
+				width: calc(100% - 1rem);
+			}
         }
 
         &.Active {
@@ -116,7 +101,7 @@
 
         &.ReactionButton {
             position: relative;
-            z-index: 500;
+            z-index: 2;
 
             > span {
                 font-size: 1.5em;

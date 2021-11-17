@@ -208,7 +208,7 @@ export const RemoteVideoGroup = ({ chime, joinInfo, storedRoster }: Props) => {
             gridProperties={{
                 gap: 0,
                 gridTemplateRows: "repeat(4, 1fr)",
-                gridTemplateColumns: "repeat(2, 1fr)",
+                gridTemplateColumns: "repeat(2, 50%)",
             }}
         >
             {roster.slice(0, 10).map((attendee, index) => {
