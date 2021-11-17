@@ -2,9 +2,9 @@
     position: relative;
     padding: 2rem;
 
-	@media (max-width: 1024px) {
-		padding: 0.5rem;
-	}
+    @media (max-width: 1024px) {
+        padding: 0.5rem;
+    }
 
     top: 0px;
     left: 0px;
@@ -13,30 +13,30 @@
 
     transition: transform 0.5s ease-in-out;
 
-	.ControlsMinified {
-		height: 100%;
-		width: 100%;
-		
-		.ControlsMinifiedBlock {
-			left: 0%;
-			transform: none;
-			position: relative;
+    .ControlsMinified {
+        height: 100%;
+        width: 100%;
 
-			min-height: 100%;
-			width: auto;
+        .ControlsMinifiedBlock {
+            left: 0%;
+            transform: none;
+            position: relative;
 
-			max-height: 30px;
+            min-height: 100%;
+            width: auto;
 
-			.MinifiedControlButtonCell {
-				.Button {
-					height: 100%;
-					pointer-events: none;
+            max-height: 30px;
 
-					margin: 0;
-				}
-			}
-		}
-	}
+            .MinifiedControlButtonCell {
+                .Button {
+                    height: 100%;
+                    pointer-events: none;
+
+                    margin: 0;
+                }
+            }
+        }
+    }
 
     .Button {
         margin: 0 1rem;
@@ -65,14 +65,14 @@
             height: calc(100% - 2rem);
             width: calc(100% - 2rem);
         }
-		
+
         @media (max-width: 1024px) {
             margin: 0 0.5rem;
 
-			svg {
-				height: calc(100% - 1rem);
-				width: calc(100% - 1rem);
-			}
+            svg {
+                height: calc(100% - 1rem);
+                width: calc(100% - 1rem);
+            }
         }
 
         &.Active {

@@ -1,16 +1,15 @@
 .JoinInfoForm {
+    &.Mobile {
+        display: flex;
+        flex-direction: row;
+    }
 
-	&.Mobile {
-		display: flex;
-		flex-direction: row;
-	}
+    > div {
+        display: grid;
+        place-items: center;
 
-	> div {
-		display: grid;
-		place-items: center;
-
-		&:last-child {
-			margin-left: 10px;
-		}
-	}
+        &:last-child {
+            margin-left: 10px;
+        }
+    }
 }

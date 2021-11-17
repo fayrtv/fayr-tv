@@ -26,7 +26,7 @@
         .CamSection {
             height: 100%;
 
-            >div:first-of-type {
+            > div:first-of-type {
                 height: 20%;
 
                 @media (max-width: 480px) {
@@ -35,7 +35,7 @@
                 }
             }
 
-            >div:nth-of-type(2) {
+            > div:nth-of-type(2) {
                 height: 80%;
 
                 @media (max-width: 480px) {
