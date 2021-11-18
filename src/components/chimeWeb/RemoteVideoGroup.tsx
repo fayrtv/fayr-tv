@@ -2,7 +2,6 @@ import React from "react";
 import RemoteVideo from "./RemoteVideo";
 import * as config from "../../config";
 
-import "./RemoteVideoGroup.scss";
 import { IChimeSdkWrapper, RosterMap, Attendee } from "../chime/ChimeSdkWrapper";
 import { JoinInfo } from "./types";
 import { VideoTileState } from "amazon-chime-sdk-js";
@@ -208,8 +207,9 @@ export const RemoteVideoGroup = ({ chime, joinInfo, storedRoster }: Props) => {
             gridProperties={{
                 gap: 0,
                 gridTemplateRows: "repeat(4, 1fr)",
-                gridTemplateColumns: "repeat(2, 1fr)",
+                gridTemplateColumns: "repeat(2, 50%)",
             }}
+            className="RemoteVideoGroup"
         >
             {roster.slice(0, 10).map((attendee, index) => {
                 return (

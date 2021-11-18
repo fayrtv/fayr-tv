@@ -2,7 +2,7 @@
 
 .SettingsContainer {
     @media (max-width: 960px) {
-        width: 95%;
+        overflow-y: auto;
     }
 
     animation: fadeIn 0.5s;
