@@ -209,6 +209,7 @@ input:disabled {
     background: #000;
 
     &.fullscreen {
+        width: 80%;
         @media (max-width: 480px) {
             position: relative;
             width: 100%;
