@@ -112,7 +112,7 @@ const RemoteVideo = ({
         >
             <div className="preview">
                 <div className="video-container pos-relative">
-                    <video ref={videoElement} className="attendee_cam" id={videoId} />
+                    <video ref={videoElement} className="attendee_cam remote-attendee" id={videoId} />
                     <CSSTransition
                         in={emojiReaction !== null}
                         timeout={3000}
