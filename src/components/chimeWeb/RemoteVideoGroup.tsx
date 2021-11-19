@@ -34,7 +34,7 @@ export const RemoteVideoGroup = ({ chime, joinInfo, storedRoster }: Props) => {
                 return index;
             }
         }
-        return 0;
+        return roster.length;
     };
 
     const videoTileDidUpdateCallback = (tileState: VideoTileState) => {
