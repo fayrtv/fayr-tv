@@ -47,10 +47,10 @@ const RemoteVideo = ({
         const tile = chime.audioVideo.getVideoTile(tileIndex);
 
         if (!tile || !tile.state().active) {
-            return;
+            //return;
         }
 
-        if (videoElement.current) {
+        if (videoElement?.current) {
             chime.audioVideo.bindVideoElement(tileIndex, videoElement.current);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
