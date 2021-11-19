@@ -191,6 +191,13 @@ input:disabled {
     background: black;
     position: relative;
     overflow: hidden;
+
+    display: flex;
+    flex-direction: row;
+
+    @media (max-width: 480px) {
+        flex-direction: column;
+    }
 }
 
 .el-player {
@@ -200,10 +207,14 @@ input:disabled {
     /* position: fixed; */
     top: 0;
     background: #000;
-}
 
-.el-player.fullscreen {
-    width: 80%;
+    &.fullscreen {
+        @media (max-width: 480px) {
+            position: relative;
+            width: 100%;
+            height: 50%;
+        }
+    }
 }
 
 /* Controls */
@@ -335,7 +346,6 @@ a.btn {
 /* Player Overwrites */
 
 #overlay {
-    position: absolute;
     top: 0;
     left: 0;
     right: 0;
@@ -345,6 +355,10 @@ a.btn {
 
 .overlay.fullscreen {
     width: 80%;
+
+    @media (max-width: 480px) {
+        width: 100%;
+    }
 }
 
 #player-controls {
@@ -366,18 +380,49 @@ a.btn {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    &.fullscreen {
+        @media (max-width: 480px) {
+            position: relative;
+            height: 50%;
+        }
+    }
 }
 
 .FullScreenCams {
-    position: fixed;
-    height: 100%;
     width: 20%;
     z-index: 5000;
-    right: 0;
+
+    @media (max-width: 480px) {
+        height: 50%;
+        width: 100%;
+    }
 }
 
 .FullScreenCams .RemoteVideoGroup {
     height: 135px;
+}
+
+@media (max-width: 480px) {
+    .RemoteVideoGroup {
+        .cam {
+            display: flex;
+            flex-direction: row;
+
+            .cam__meta {
+                display: flex;
+                flex-direction: column;
+
+                max-width: 30%;
+
+                .cam__meta_name {
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    max-width: 100%;
+                }
+            }
+        }
+    }
 }
 
 .overlay--hover #player-controls {

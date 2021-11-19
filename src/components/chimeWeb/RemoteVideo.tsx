@@ -140,7 +140,7 @@ const RemoteVideo = ({
                 direction="Row"
                 space="Between"
             >
-                {name}
+                <span className="cam__meta_name">{name}</span>
                 <span className={`${micMuteCls} btn--mic`} data-id={attendeeId}>
                     <svg
                         className="attendee mg-l-1 btn__svg btn__svg--sm btn__svg--mic_on"

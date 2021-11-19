@@ -209,14 +209,13 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 
     return (
         <div ref={videoElement} className="player-wrapper">
-            {fullScreen && <div className="FullScreenCams">{fullScreenCamSection}</div>}
             <div
                 id="overlay"
                 className={`overlay ${fullScreen ? "fullscreen" : ""}`}
                 onClick={onVideoClick}
             >
                 <div id="player-controls">
-                    <div className="player-controls__inner">
+                    <div className={`player-controls__inner ${fullScreen ? "fullscreen" : ""}`}>
                         <button
                             id="play"
                             className={`mg-x-1 player-btn player-btn--icon ${
@@ -275,6 +274,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
                 playsInline
             ></video>
             {reactions}
+            {fullScreen && <div className="FullScreenCams">{fullScreenCamSection}</div>}
         </div>
     );
 };
