@@ -219,7 +219,7 @@ export const RemoteVideoGroup = ({ chime, joinInfo, storedRoster }: Props) => {
         <Grid
             gridProperties={{
                 gap: 0,
-                gridTemplateRows: "repeat(4, 25%)",
+                gridTemplateRows: "repeat(5, 1fr)",
                 gridTemplateColumns: "repeat(2, 50%)",
             }}
             className="RemoteVideoGroup"

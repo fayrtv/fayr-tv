@@ -181,7 +181,7 @@ input:disabled {
     background-position: center center;
     background-repeat: no-repeat;
     /* background-size: 48px 48px; */
-    background-size: 40% 40%;
+    background-size: 20%;
 }
 
 /* Player */
@@ -242,7 +242,7 @@ input:disabled {
     align-content: center;
     justify-content: center;
     background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(5px);
 }
 
 @media (max-width: 480px) {
@@ -374,10 +374,9 @@ a.btn {
 
 .player-controls__inner {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    // top: 0;
+    bottom: 5%;
+    left: 10%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -462,9 +461,12 @@ a.btn {
 }
 
 .player-icon {
-    fill: #fff;
-    background-color: rgba(0, 0, 0, 0.3);
+    fill: #D9D9D9;
+    // background-color: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
     border-radius: 5px;
+    size: 50%;
 }
 
 .player-btn--pause .player-icon--pause {
