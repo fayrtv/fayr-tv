@@ -29,7 +29,7 @@ export const StreamVolumeControl = ({ player }: Props) => {
         }
 
         setVolumePercentage(player.getVolume());
-    }, [player, railRef.current]);
+    }, [player?.getVolume() ?? undefined, railRef.current]);
 
     const onMuteClick: React.MouseEventHandler = React.useCallback(
         (event) => {
@@ -145,7 +145,7 @@ export const StreamVolumeControl = ({ player }: Props) => {
     return (
         <div
             className={`mg-x-1 player-btn player-btn--icon ${
-                muted ? "player-btn--mute" : "player-btn--unmute"
+                muted || volumePercentage === 0 ? "player-btn--mute" : "player-btn--unmute"
             } ${styles.StreamVolumeControl}`}
             onClick={onMuteClick}
         >

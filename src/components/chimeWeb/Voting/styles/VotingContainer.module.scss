@@ -29,5 +29,9 @@
         max-width: 1000px;
 
         position: relative;
+
+        @media (max-width: 480px) {
+            height: 45vh;
+        }
     }
 }

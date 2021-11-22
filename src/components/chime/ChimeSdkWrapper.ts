@@ -215,6 +215,7 @@ export default class ChimeSdkWrapper implements IChimeSdkWrapper, IChimeSocket {
                 value: mediaDeviceInfo.deviceId,
             });
         });
+
         this.publishDevicesUpdated();
         this._audioVideo.addDeviceChangeObserver(this);
 

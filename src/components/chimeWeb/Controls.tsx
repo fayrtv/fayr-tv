@@ -427,8 +427,10 @@ const Controls: React.FC<Props & ReduxProps> = ({
                             gap: 0,
                         }}
                     >
-                        {buttons.slice(0, 4).map((x) => (
-                            <Cell className={styles.MinifiedControlButtonCell}>{x}</Cell>
+                        {buttons.slice(0, 4).map((x, index) => (
+                            <Cell key={index} className={styles.MinifiedControlButtonCell}>
+                                {x}
+                            </Cell>
                         ))}
                     </Grid>
                     {chatButton}

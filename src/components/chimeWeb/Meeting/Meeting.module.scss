@@ -10,7 +10,7 @@
     }
 
     .CamContainer {
-        max-width: 355px;
+        width: 355px;
 
         @media (max-width: 960px) {
             width: 25%;
@@ -41,6 +41,27 @@
                 @media (max-width: 480px) {
                     height: 65%;
                 }
+            }
+        }
+    }
+
+    .CamSection {
+        height: 100%;
+
+        > div:first-of-type {
+            height: 20%;
+
+            @media (max-width: 480px) {
+                height: 35%;
+                width: auto;
+            }
+        }
+
+        > div:nth-of-type(2) {
+            height: 80%;
+
+            @media (max-width: 480px) {
+                height: 65%;
             }
         }
     }

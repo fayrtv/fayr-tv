@@ -50,11 +50,11 @@ const RemoteVideo = ({
             return;
         }
 
-        if (videoElement.current) {
+        if (videoElement?.current) {
             chime.audioVideo.bindVideoElement(tileIndex, videoElement.current);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [chime.audioVideo]);
 
     React.useEffect(() => {
         if (!socket) {
@@ -140,7 +140,7 @@ const RemoteVideo = ({
                 direction="Row"
                 space="Between"
             >
-                {name}
+                <span className="cam__meta_name">{name}</span>
                 <span className={`${micMuteCls} btn--mic`} data-id={attendeeId}>
                     <svg
                         className="attendee mg-l-1 btn__svg btn__svg--sm btn__svg--mic_on"

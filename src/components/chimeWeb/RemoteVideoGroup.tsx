@@ -23,161 +23,168 @@ type Props = {
 
 export const RemoteVideoGroup = ({ chime, joinInfo, storedRoster }: Props) => {
     const [roster, setRoster] = React.useState<Roster>([]);
-
     const previousRoster = React.useRef<Roster>([]);
-
     const dispatch = useDispatch();
 
-    const findRosterSlot = (attendeeId: string) => {
-        for (let index = 0; index < roster.length; index++) {
-            if (roster[index].attendeeId === attendeeId || !roster[index].attendeeId) {
+    const findRosterSlot = React.useCallback((attendeeId: string, localRoster: Roster) => {
+        for (let index = 0; index < localRoster.length; index++) {
+            if (localRoster[index].attendeeId === attendeeId || !localRoster[index].attendeeId) {
                 return index;
             }
         }
-        return 0;
-    };
+        return localRoster.length;
+    }, []);
 
-    const videoTileDidUpdateCallback = (tileState: VideoTileState) => {
-        if (
-            !tileState.boundAttendeeId ||
-            tileState.localTile ||
-            tileState.isContent ||
-            !tileState.tileId
-        ) {
-            return;
-        }
-
-        let index = findRosterSlot(tileState.boundAttendeeId);
-
-        const newRoster = [...roster];
-
-        const attendee =
-            newRoster[index] ??
-            previousRoster.current.find((x) => x.attendeeId === tileState.boundAttendeeId);
-
-        newRoster[index] = {
-            ...attendee,
-            videoEnabled: tileState.active,
-            attendeeId: tileState.boundAttendeeId,
-            tileId: tileState.tileId,
-        } as Attendee;
-
-        setRoster(newRoster);
-
-        setTimeout(() => {
-            if (config.DEBUG) {
-                console.log(roster[index]);
+    const videoTileDidUpdateCallback = React.useCallback(
+        (tileState: VideoTileState) => {
+            if (
+                !tileState.boundAttendeeId ||
+                tileState.localTile ||
+                tileState.isContent ||
+                !tileState.tileId
+            ) {
+                return;
             }
 
-            const videoElement = document.getElementById(`video_${tileState.boundAttendeeId}`);
+            setRoster((currentRoster) => {
+                const newRoster = [...currentRoster];
 
-            if (videoElement) {
-                chime.audioVideo.bindVideoElement(
-                    tileState.tileId!,
-                    videoElement as HTMLVideoElement,
+                let index = findRosterSlot(tileState.boundAttendeeId!, newRoster);
+
+                if (config.DEBUG) {
+                    console.log(newRoster[index]);
+                }
+
+                const attendee =
+                    newRoster[index] ??
+                    previousRoster.current.find((x) => x.attendeeId === tileState.boundAttendeeId);
+
+                newRoster[index] = {
+                    ...attendee,
+                    videoEnabled: tileState.active,
+                    attendeeId: tileState.boundAttendeeId,
+                    tileId: tileState.tileId,
+                } as Attendee;
+
+                return newRoster;
+            });
+
+            setTimeout(() => {
+                const videoElement = document.getElementById(`video_${tileState.boundAttendeeId}`);
+
+                if (videoElement) {
+                    chime.audioVideo.bindVideoElement(
+                        tileState.tileId!,
+                        videoElement as HTMLVideoElement,
+                    );
+                }
+            }, 1000);
+        },
+        [chime.audioVideo, findRosterSlot],
+    );
+
+    const videoTileWasRemovedCallback = React.useCallback(
+        (tileId: number) => {
+            // Find the removed tileId in the roster and mark the video as disabled.
+            // eslint-disable-next-line
+            const index = roster.findIndex((o) => o.tileId === tileId);
+
+            if (index === -1) {
+                return;
+            }
+
+            setRoster((currentRoster) => {
+                const newRoster = [...currentRoster];
+                newRoster[index].videoEnabled = false;
+                return newRoster;
+            });
+
+            if (config.DEBUG) {
+                console.log(`Tile was removed ${tileId}`);
+            }
+        },
+        [roster],
+    );
+
+    const onRosterUpdate = React.useCallback(
+        (newRoster: RosterMap) => {
+            if (Object.keys(newRoster).length < previousRoster.current.length) {
+                if (config.DEBUG) {
+                    console.log("Attendee(s) left");
+                }
+
+                const differ = previousRoster.current.filter(
+                    (_, k) => previousRoster.current[k] !== newRoster[k],
                 );
-            }
-        }, 1000);
-    };
 
-    const videoTileWasRemovedCallback = (tileId: number) => {
-        // Find the removed tileId in the roster and mark the video as disabled.
-        // eslint-disable-next-line
-        const index = roster.findIndex((o) => o.tileId === tileId);
+                if (config.DEBUG) {
+                    console.log(differ);
+                }
 
-        if (index === -1) {
-            return;
-        }
+                if (differ.length) {
+                    for (let attendee of differ) {
+                        const index = findRosterSlot(attendee.attendeeId, roster);
 
-        const newRoster = [...roster];
-        newRoster[index].videoEnabled = false;
-        setRoster(newRoster);
-
-        if (config.DEBUG) {
-            console.log(`Tile was removed ${tileId}`);
-        }
-    };
-
-    const rosterCallback = (newRoster: RosterMap) => {
-        if (Object.keys(newRoster).length > 2) {
-            if (config.DEBUG) {
-                console.log("More than 2");
-            }
-        }
-
-        if (Object.keys(newRoster).length < previousRoster.current.length) {
-            if (config.DEBUG) {
-                console.log("Attendee(s) left");
-            }
-
-            const differ = previousRoster.current.filter(
-                (_, k) => previousRoster.current[k] !== newRoster[k],
-            );
-
-            if (config.DEBUG) {
-                console.log(differ);
-            }
-
-            if (differ.length) {
-                for (let attendee of differ) {
-                    const index = findRosterSlot(attendee.attendeeId);
-
-                    const newRoster = [...roster];
-                    newRoster[index] = {
-                        ...roster[index],
-                        videoElement: roster[index].videoElement,
-                    } as Attendee;
-                    setRoster(newRoster);
+                        setRoster((currentRoster) => {
+                            const newRoster = [...currentRoster];
+                            newRoster[index] = {
+                                ...roster[index],
+                                videoElement: roster[index].videoElement,
+                            } as Attendee;
+                            return newRoster;
+                        });
+                    }
                 }
             }
-        }
 
-        previousRoster.current = Object.entries(newRoster).map(([attendeeId, attendee]) => ({
-            ...attendee,
-            attendeeId,
-        }));
+            previousRoster.current = Object.entries(newRoster).map(([attendeeId, attendee]) => ({
+                ...attendee,
+                attendeeId,
+            }));
 
-        dispatch(replaceRemoteVideoRoster(previousRoster.current));
+            dispatch(replaceRemoteVideoRoster(previousRoster.current));
 
-        let attendeeId;
-        for (attendeeId in newRoster) {
-            // Exclude self
-            if (attendeeId === joinInfo.Attendee.AttendeeId) {
-                continue;
+            for (let attendeeId in newRoster) {
+                // Exclude self & empty names
+                if (attendeeId === joinInfo.Attendee.AttendeeId || !newRoster[attendeeId].name) {
+                    continue;
+                }
+
+                const index = findRosterSlot(attendeeId, roster);
+
+                const attendee = {
+                    ...roster[index],
+                    ...newRoster[attendeeId],
+                    attendeeId: attendeeId,
+                };
+
+                setRoster((currentRoster) => {
+                    const newRoster = [...currentRoster];
+                    newRoster[index] = attendee;
+                    return newRoster;
+                });
             }
-
-            // exclude empty name
-            if (!newRoster[attendeeId].name) {
-                continue;
-            }
-
-            const index = findRosterSlot(attendeeId);
-
-            const attendee = {
-                ...roster[index],
-                ...newRoster[attendeeId],
-            };
-
-            attendee.attendeeId = attendeeId;
-
-            roster[index] = attendee;
-            setRoster(roster);
-        }
-    };
+        },
+        [dispatch, roster, findRosterSlot, joinInfo.Attendee.AttendeeId],
+    );
 
     React.useEffect(() => {
-        const roster: Roster = [];
+        const localRoster: Roster = [];
         previousRoster.current = storedRoster;
 
         for (let i = 0; i < MAX_REMOTE_VIDEOS; ++i) {
-            roster[i] = {
-                videoElement: React.createRef(),
-            } as Attendee;
+            localRoster[i] =
+                storedRoster[i + 1] ??
+                ({
+                    videoElement: React.createRef(),
+                } as Attendee);
         }
 
-        setRoster(roster);
+        setRoster(localRoster);
+    }, [chime]);
 
-        chime.subscribeToRosterUpdate(rosterCallback);
+    React.useEffect(() => {
+        chime.subscribeToRosterUpdate(onRosterUpdate);
 
         if (chime.audioVideo) {
             chime.audioVideo.addObserver({
@@ -187,7 +194,7 @@ export const RemoteVideoGroup = ({ chime, joinInfo, storedRoster }: Props) => {
         }
 
         return () => {
-            chime.unsubscribeFromRosterUpdate(rosterCallback);
+            chime.unsubscribeFromRosterUpdate(onRosterUpdate);
             try {
                 chime.audioVideo?.removeObserver({
                     videoTileDidUpdate: videoTileDidUpdateCallback,
@@ -200,7 +207,13 @@ export const RemoteVideoGroup = ({ chime, joinInfo, storedRoster }: Props) => {
             }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [chime]);
+    }, [
+        chime,
+        onRosterUpdate,
+        videoTileDidUpdateCallback,
+        videoTileWasRemovedCallback,
+        previousRoster.current,
+    ]);
 
     return (
         <Grid
