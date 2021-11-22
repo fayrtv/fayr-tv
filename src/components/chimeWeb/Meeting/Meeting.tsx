@@ -72,10 +72,31 @@ const Meeting = ({
         }
     };
 
+    const localVideo = (
+        <div className={styles.LocalVideoWrapper}>
+            <LocalVideo key="LocalVideo" chime={chime} joinInfo={joinInfo} />
+        </div>
+    );
+
+    const remoteVideo = (
+        <div className={styles.RemoteVideoWrapper}>
+            <RemoteVideoGroup key="RemoteVideoGroup" chime={chime} joinInfo={joinInfo} />
+        </div>
+    );
+
     const camSection = (
         <div className={styles.CamSection}>
-            <LocalVideo key="LocalVideo" chime={chime} joinInfo={joinInfo} />
-            <RemoteVideoGroup key="RemoteVideoGroup" chime={chime} joinInfo={joinInfo} />
+            {config.LocalVideoAlignment === "Top" ? (
+                <>
+                    {localVideo}
+                    {remoteVideo}
+                </>
+            ) : (
+                <>
+                    {remoteVideo}
+                    {localVideo}
+                </>
+            )}
         </div>
     );
 

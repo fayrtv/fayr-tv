@@ -1,4 +1,26 @@
+@mixin CamSection {
+    height: 100vh;
+
+    .LocalVideoWrapper {
+        height: 20%;
+
+        @media (max-width: 480px) {
+            height: 35%;
+            width: auto;
+        }
+    }
+
+    .RemoteVideoWrapper {
+        height: 80%;
+
+        @media (max-width: 480px) {
+            height: 65%;
+        }
+    }
+}
+
 .Meeting {
+    height: 100vh;
     .MainStage {
         overflow-x: hidden;
         position: relative;
@@ -10,7 +32,14 @@
     }
 
     .CamContainer {
+        @include CamSection();
+
+        height: 100vh;
         width: 355px;
+
+        > div {
+            height: 100%;
+        }
 
         @media (max-width: 960px) {
             width: 25%;
@@ -22,47 +51,7 @@
             width: 100%;
             max-width: unset;
         }
-
-        .CamSection {
-            height: 100%;
-
-            > div:first-of-type {
-                height: 20%;
-
-                @media (max-width: 480px) {
-                    height: 35%;
-                    width: auto;
-                }
-            }
-
-            > div:nth-of-type(2) {
-                height: 80%;
-
-                @media (max-width: 480px) {
-                    height: 65%;
-                }
-            }
-        }
     }
 
-    .CamSection {
-        height: 100%;
-
-        > div:first-of-type {
-            height: 20%;
-
-            @media (max-width: 480px) {
-                height: 35%;
-                width: auto;
-            }
-        }
-
-        > div:nth-of-type(2) {
-            height: 80%;
-
-            @media (max-width: 480px) {
-                height: 65%;
-            }
-        }
-    }
+    @include CamSection();
 }
