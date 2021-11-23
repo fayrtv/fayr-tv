@@ -374,9 +374,8 @@ a.btn {
 
 .player-controls__inner {
     position: absolute;
-    // top: 0;
-    bottom: 5%;
-    left: 10%;
+    height: 100%;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -393,6 +392,10 @@ a.btn {
     width: 20%;
     z-index: 5000;
 
+    > div {
+        height: 100%;
+    }
+
     @media (max-width: 480px) {
         height: 50%;
         width: 100%;
@@ -403,8 +406,9 @@ a.btn {
     height: 100%;
 }
 
-@media (max-width: 480px) {
-    .RemoteVideoGroup {
+.RemoteVideoGroup {
+    height: 100%;
+    @media (max-width: 480px) {
         .cam {
             display: flex;
             flex-direction: row;
@@ -461,7 +465,7 @@ a.btn {
 }
 
 .player-icon {
-    fill: #D9D9D9;
+    fill: #d9d9d9;
     // background-color: rgba(0, 0, 0, 0.3);
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(5px);

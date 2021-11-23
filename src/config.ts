@@ -26,3 +26,5 @@ export const CHIME_LOG_LEVEL = "DEBUG";
 // Chime-Web UI debugging logging: true / false
 export const DEBUG = false;
 export const RANDOM = makeid(8);
+
+export const LocalVideoAlignment: "Top" | "Bottom" = "Top";
