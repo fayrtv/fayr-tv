@@ -12,7 +12,8 @@ export const CHIME_ROOM_MAX_ATTENDEE = 16;
 
 // Default video stream to play inside the video player
 export const DEFAULT_VIDEO_STREAM =
-    "https://3d26876b73d7.us-west-2.playback.live-video.net/api/video/v1/us-west-2.913157848533.channel.rkCBS9iD1eyd.m3u8"; // Bunny stream
+    // "https://3d26876b73d7.us-west-2.playback.live-video.net/api/video/v1/us-west-2.913157848533.channel.rkCBS9iD1eyd.m3u8"; // Bunny stream
+    "https://derste247liveut.akamaized.net/hls/live/662734/daserste_ut_de/profile1/1.m3u8"
     // "https://d28sview69mbeg.cloudfront.net/out/v1/fb897095f5694811aafc46559c73eb92/06e44b4ba491459eb00225489144f254/e5b56f6d2c7a491d9786cfdc86a2c5e5/index.m3u8"; // Inter Milan vs. Man United
     // "https://ea6f7e87fe3e.eu-west-1.playback.live-video.net/api/video/v1/eu-west-1.676057042583.channel.KeSLVW8GAv39.m3u8"; // Elgato stream
 
