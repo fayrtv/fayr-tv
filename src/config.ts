@@ -27,4 +27,4 @@ export const CHIME_LOG_LEVEL = "DEBUG";
 export const DEBUG = false;
 export const RANDOM = makeid(8);
 
-export const LocalVideoAlignment: "Top" | "Bottom" = "Top";
+export const LocalVideoAlignment: "Top" | "Bottom" = "Bottom";
