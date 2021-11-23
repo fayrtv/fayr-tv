@@ -181,6 +181,7 @@ export const RemoteVideoGroup = ({ chime, joinInfo, storedRoster }: Props) => {
         }
 
         setRoster(localRoster);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [chime]);
 
     React.useEffect(() => {
