@@ -17,6 +17,7 @@ import { IChimeSdkWrapper } from "components/chime/ChimeSdkWrapper";
 
 import "../Cam.scss";
 import styles from "./ParticipantVideo.module.scss";
+import MaterialIcon from "components/common/MaterialIcon";
 
 type Props = {
     muted: boolean;
@@ -27,6 +28,7 @@ type Props = {
     chime: IChimeSdkWrapper;
     tileIndex: number;
     volume: number;
+    pin(id: string): void;
 };
 
 const ParticipantVideo = ({
@@ -38,6 +40,7 @@ const ParticipantVideo = ({
     chime,
     tileIndex,
     volume,
+    pin,
 }: Props) => {
     const [showMeta, setShowMeta] = React.useState(true);
     const [talking, setTalking] = React.useState(false);
@@ -179,6 +182,13 @@ const ParticipantVideo = ({
                             fill="white"
                         />
                     </svg>
+                </span>
+                <span>
+                    <MaterialIcon
+                        color="white"
+                        iconName="push_pin"
+                        onClick={() => pin(attendeeId)}
+                    />
                 </span>
             </Flex>
         </div>
