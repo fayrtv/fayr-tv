@@ -370,6 +370,9 @@ a.btn {
     bottom: 0;
     z-index: 1;
     /* transition: background 0.1s ease-in-out; */
+
+    display: grid;
+    place-items: center;
 }
 
 .player-controls__inner {
@@ -379,9 +382,6 @@ a.btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    bottom: 5%;
-    left: 10%;
-    // right: 10%;
 
     &.fullscreen {
         @media (max-width: 480px) {
