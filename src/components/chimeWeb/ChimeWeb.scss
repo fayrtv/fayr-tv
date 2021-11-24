@@ -409,29 +409,6 @@ a.btn {
     height: 100%;
 }
 
-.RemoteVideoGroup {
-    height: 100%;
-    @media (max-width: 480px) {
-        .cam {
-            display: flex;
-            flex-direction: row;
-
-            .cam__meta {
-                display: flex;
-                flex-direction: column;
-
-                max-width: 30%;
-
-                .cam__meta_name {
-                    text-overflow: ellipsis;
-                    overflow: hidden;
-                    max-width: 100%;
-                }
-            }
-        }
-    }
-}
-
 .overlay--hover #player-controls {
     background: rgba(0, 0, 0, 0);
 }

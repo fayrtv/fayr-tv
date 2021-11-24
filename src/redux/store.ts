@@ -7,14 +7,14 @@ import {
     ChatMessageReducerState,
 } from "redux/reducers/chatMessageReducer";
 import {
-    reducer as remoteVideoReducer,
-    RemoteVideoReducerState,
-} from "redux/reducers/remoteVideoReducer";
+    reducer as participantVideoReducer,
+    ParticipantVideoReducerState,
+} from "redux/reducers/participantVideoReducer";
 import { reducer as votingReducer, VotingReducerState } from "redux/reducers/votingReducer";
 
 export type Reducers = {
     chatMessageReducer: ChatMessageReducerState;
-    remoteVideoReducer: RemoteVideoReducerState;
+    participantVideoReducer: ParticipantVideoReducerState;
     votingReducer: VotingReducerState;
 };
 
@@ -27,7 +27,7 @@ export const GlobalResetAction = () => ({
 export const store: ReduxStore = redux.createStore(
     redux.combineReducers<Reducers>({
         chatMessageReducer,
-        remoteVideoReducer,
+        participantVideoReducer,
         votingReducer,
     }),
 );

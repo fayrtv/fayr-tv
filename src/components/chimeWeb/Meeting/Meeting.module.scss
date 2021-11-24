@@ -1,7 +1,7 @@
 @mixin CamSection {
     height: 100vh;
 
-    .LocalVideoWrapper {
+    .HighlightVideoWrapper {
         height: 20%;
 
         @media (max-width: 480px) {
@@ -10,7 +10,7 @@
         }
     }
 
-    .RemoteVideoWrapper {
+    .ParticipantVideoWrapper {
         height: 80%;
 
         @media (max-width: 480px) {

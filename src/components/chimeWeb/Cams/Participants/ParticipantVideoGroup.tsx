@@ -1,15 +1,21 @@
+// Framework
 import React from "react";
-import RemoteVideo from "./RemoteVideo";
-import * as config from "../../config";
-
-import { IChimeSdkWrapper, RosterMap, Attendee } from "../chime/ChimeSdkWrapper";
-import { JoinInfo } from "./types";
 import { VideoTileState } from "amazon-chime-sdk-js";
-import { ReduxStore } from "../../redux/store";
 import { connect, useDispatch } from "react-redux";
-import { replaceRemoteVideoRoster } from "./../../redux/reducers/remoteVideoReducer";
+
+// Components
+import ParticipantVideo from "./ParticipantVideo";
 import Cell from "components/common/GridLayout/Cell";
 import Grid from "components/common/GridLayout/Grid";
+
+// Functionality
+import { replaceParticipantVideoRoster } from "redux/reducers/participantVideoReducer";
+
+// Types
+import { ReduxStore } from "redux/store";
+import { JoinInfo } from "components/chimeWeb/types";
+import * as config from "config";
+import { IChimeSdkWrapper, RosterMap, Attendee } from "components/chime/ChimeSdkWrapper";
 
 const MAX_REMOTE_VIDEOS = config.CHIME_ROOM_MAX_ATTENDEE;
 
@@ -21,7 +27,7 @@ type Props = {
     storedRoster: Roster;
 };
 
-export const RemoteVideoGroup = ({ chime, joinInfo, storedRoster }: Props) => {
+export const ParticipantVideoGroup = ({ chime, joinInfo, storedRoster }: Props) => {
     const [roster, setRoster] = React.useState<Roster>([]);
     const previousRoster = React.useRef<Roster>([]);
     const dispatch = useDispatch();
@@ -142,7 +148,7 @@ export const RemoteVideoGroup = ({ chime, joinInfo, storedRoster }: Props) => {
                 attendeeId,
             }));
 
-            dispatch(replaceRemoteVideoRoster(previousRoster.current));
+            dispatch(replaceParticipantVideoRoster(previousRoster.current));
 
             for (let attendeeId in newRoster) {
                 // Exclude self & empty names
@@ -222,12 +228,12 @@ export const RemoteVideoGroup = ({ chime, joinInfo, storedRoster }: Props) => {
                 gridTemplateRows: "repeat(5, 1fr)",
                 gridTemplateColumns: "repeat(2, 50%)",
             }}
-            className="RemoteVideoGroup"
+            className="ParticipantVideoGroup"
         >
             {roster.slice(0, 10).map((attendee, index) => {
                 return (
                     <Cell key={index}>
-                        <RemoteVideo
+                        <ParticipantVideo
                             chime={chime}
                             tileIndex={index}
                             key={index}
@@ -246,7 +252,7 @@ export const RemoteVideoGroup = ({ chime, joinInfo, storedRoster }: Props) => {
 };
 
 const mapStateToProps = (store: ReduxStore): Pick<Props, "storedRoster"> => ({
-    storedRoster: store.remoteVideoReducer,
+    storedRoster: store.participantVideoReducer,
 });
 
-export default connect(mapStateToProps)(RemoteVideoGroup);
+export default connect(mapStateToProps)(ParticipantVideoGroup);

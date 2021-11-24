@@ -1,16 +1,18 @@
+// Framework
 import React from "react";
 
-import { JoinInfo } from "./types";
+// Types
+import { JoinInfo } from "components/chimeWeb/types";
 
-import "./Cam.scss";
-import "./LocalVideo.module.scss";
+import "../Cam.scss";
+import styles from "./HighlightVideo.module.scss";
 
 type Props = {
     chime: any;
     joinInfo: JoinInfo;
 };
 
-const LocalVideo = ({ chime, joinInfo }: Props) => {
+const HighlightVideo = ({ chime, joinInfo }: Props) => {
     const videoElement = React.useRef<HTMLVideoElement>(null);
 
     const [enabled, setEnabled] = React.useState(false);
@@ -81,7 +83,11 @@ const LocalVideo = ({ chime, joinInfo }: Props) => {
     const metaCls = showMetaCombined ? "" : " cam__meta--hide";
 
     return (
-        <div className="LocalVideo" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        <div
+            className={styles.HighlightVideo}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+        >
             <div className="cam">
                 <div className="preview">
                     {/* <div className="cam__meta pos-relative"> */}
@@ -131,4 +137,4 @@ const LocalVideo = ({ chime, joinInfo }: Props) => {
     );
 };
 
-export default LocalVideo;
+export default HighlightVideo;

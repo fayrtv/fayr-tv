@@ -1,15 +1,22 @@
-import { IChimeSdkWrapper } from "components/chime/ChimeSdkWrapper";
-import { SocketEventType } from "components/chime/types";
-import useSocket from "hooks/useSocket";
+// Framework
 import React from "react";
-import { EmojiReactionTransferObject } from "../chimeWeb/types";
 import { CSSTransition } from "react-transition-group";
-import { Nullable } from "../../types/global";
 import Emoji from "react-emoji-render";
+
+// Functionality
+import useSocket from "hooks/useSocket";
+
+// Components
 import Flex from "components/common/Flex";
 
-import "./Cam.scss";
-import styles from "./RemoteVideo.module.scss";
+// Types
+import { SocketEventType } from "components/chime/types";
+import { Nullable } from "types/global";
+import { EmojiReactionTransferObject } from "components/chimeWeb/types";
+import { IChimeSdkWrapper } from "components/chime/ChimeSdkWrapper";
+
+import "../Cam.scss";
+import styles from "./ParticipantVideo.module.scss";
 
 type Props = {
     muted: boolean;
@@ -22,7 +29,7 @@ type Props = {
     volume: number;
 };
 
-const RemoteVideo = ({
+const ParticipantVideo = ({
     muted,
     attendeeId,
     videoEnabled,
@@ -121,12 +128,12 @@ const RemoteVideo = ({
                         in={emojiReaction !== null}
                         timeout={3000}
                         classNames={{
-                            appear: styles.RemoteVideoEmojiEnter,
-                            enter: styles.RemoteVideoEmojiEnter,
-                            appearActive: styles.RemoteVideoEmojiEnterActive,
-                            enterActive: styles.RemoteVideoEmojiEnterActive,
-                            exitActive: styles.RemoteVideoEmojiExitActive,
-                            exit: styles.RemoteVideoEmojiExit,
+                            appear: styles.ParticipantVideoEmojiEnter,
+                            enter: styles.ParticipantVideoEmojiEnter,
+                            appearActive: styles.ParticipantVideoEmojiEnterActive,
+                            enterActive: styles.ParticipantVideoEmojiEnterActive,
+                            exitActive: styles.ParticipantVideoEmojiExitActive,
+                            exit: styles.ParticipantVideoEmojiExit,
                         }}
                         unmountOnExit
                     >
@@ -178,4 +185,4 @@ const RemoteVideo = ({
     );
 };
 
-export default RemoteVideo;
+export default ParticipantVideo;
