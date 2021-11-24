@@ -1,9 +1,8 @@
 // Framework
-import * as React from "react";
+import React from "react";
 
 // Components
-import Flex from "components/common/Flex";
-import HighlightVideo from "./HighlightVideo/HighlightVideo";
+import LocalVideo from "./LocalVideo/LocalVideo";
 import ParticipantVideoGroup from "./Participants/ParticipantVideoGroup";
 
 // Functionality
@@ -19,9 +18,9 @@ type Props = {
 };
 
 export const CamSection = ({ chime, joinInfo }: Props) => {
-    const highlightVideo = (
+    const localVideo = (
         <div className={styles.HighlightVideoWrapper}>
-            <HighlightVideo key="HighlightVideo" chime={chime} joinInfo={joinInfo} />
+            <LocalVideo key="HighlightVideo" chime={chime} joinInfo={joinInfo} />
         </div>
     );
 
@@ -35,13 +34,13 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
         <div className={styles.CamSection}>
             {config.HighlightVideoAlignment === "Top" ? (
                 <>
-                    {highlightVideo}
+                    {localVideo}
                     {participantVideo}
                 </>
             ) : (
                 <>
                     {participantVideo}
-                    {highlightVideo}
+                    {localVideo}
                 </>
             )}
         </div>

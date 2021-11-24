@@ -5,14 +5,14 @@ import React from "react";
 import { JoinInfo } from "components/chimeWeb/types";
 
 import "../Cam.scss";
-import styles from "./HighlightVideo.module.scss";
+import styles from "./LocalVideo.module.scss";
 
 type Props = {
     chime: any;
     joinInfo: JoinInfo;
 };
 
-const HighlightVideo = ({ chime, joinInfo }: Props) => {
+const LocalVideo = ({ chime, joinInfo }: Props) => {
     const videoElement = React.useRef<HTMLVideoElement>(null);
 
     const [enabled, setEnabled] = React.useState(false);
@@ -84,21 +84,17 @@ const HighlightVideo = ({ chime, joinInfo }: Props) => {
 
     return (
         <div
-            className={styles.HighlightVideo}
+            className={styles.LocalVideo}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
             <div className="cam">
                 <div className="preview">
-                    {/* <div className="cam__meta pos-relative"> */}
                     <div className="video-container pos-relative">
                         <video className="attendee_cam" ref={videoElement} />
                     </div>
                 </div>
-                <span
-                    className={`cam__meta cam__meta--hide${metaCls}`}
-                    id={`${joinInfo.Attendee.AttendeeId}`}
-                >
+                <span className={`cam__meta ${metaCls}`} id={`${joinInfo.Attendee.AttendeeId}`}>
                     ich
                     <span
                         className={`${micMuteCls} btn--mic`}
@@ -137,4 +133,4 @@ const HighlightVideo = ({ chime, joinInfo }: Props) => {
     );
 };
 
-export default HighlightVideo;
+export default LocalVideo;

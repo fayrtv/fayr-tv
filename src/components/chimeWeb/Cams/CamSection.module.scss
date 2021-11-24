@@ -2,7 +2,7 @@
     height: 100vh;
 
     .HighlightVideoWrapper {
-        height: 20%;
+        height: 25%;
 
         @media (max-width: 480px) {
             height: 35%;
@@ -11,7 +11,7 @@
     }
 
     .ParticipantVideoWrapper {
-        height: 80%;
+        height: 75%;
 
         @media (max-width: 480px) {
             height: 65%;
