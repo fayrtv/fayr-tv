@@ -187,22 +187,21 @@ export const RemoteVideoGroup = ({ chime, joinInfo, storedRoster }: Props) => {
     React.useEffect(() => {
         chime.subscribeToRosterUpdate(onRosterUpdate);
 
-        if (chime.audioVideo) {
-            chime.audioVideo.addObserver({
-                videoTileDidUpdate: videoTileDidUpdateCallback,
-                videoTileWasRemoved: videoTileWasRemovedCallback,
-            });
+		const audioVideo = chime.audioVideo;
+
+		const observer = {
+			videoTileDidUpdate: videoTileDidUpdateCallback,
+			videoTileWasRemoved: videoTileWasRemovedCallback,
+		};
+
+        if (audioVideo) {
+            audioVideo.addObserver(observer);
         }
 
         return () => {
             chime.unsubscribeFromRosterUpdate(onRosterUpdate);
             try {
-                chime.audioVideo?.removeObserver({
-                    videoTileDidUpdate: videoTileDidUpdateCallback,
-                });
-                chime.audioVideo?.removeObserver({
-                    videoTileWasRemoved: videoTileWasRemovedCallback,
-                });
+                audioVideo.removeObserver(observer);
             } catch (ex) {
                 // ok
             }
