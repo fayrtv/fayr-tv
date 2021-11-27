@@ -15,7 +15,7 @@ type Props = {
     onSubmit: () => void;
     disableSubmit?: boolean;
     usernameInputRef?: React.Ref<HTMLInputElement>;
-    roomCodeInputRef?: React.Ref<HTMLInputElement>;
+    roomTitleInputRef?: React.Ref<HTMLInputElement>;
 };
 
 export function JoinInfoForm({
@@ -25,7 +25,7 @@ export function JoinInfoForm({
     onRoomCodeChanged,
     onSubmit,
     usernameInputRef,
-    roomCodeInputRef,
+    roomTitleInputRef,
     disableSubmit = false,
 }: Props) {
     const isValid = !isFalsyOrWhitespace(roomCode) && !isFalsyOrWhitespace(username);
@@ -48,9 +48,9 @@ export function JoinInfoForm({
                         onChange={(ev) => onUsernameChanged(ev.target.value)}
                     />
                     <input
-                        ref={roomCodeInputRef}
+                        ref={roomTitleInputRef}
                         type="text"
-                        placeholder="Code"
+                        placeholder="Code / Titel"
                         value={roomCode}
                         onChange={(ev) => onRoomCodeChanged(ev.target.value)}
                     />
