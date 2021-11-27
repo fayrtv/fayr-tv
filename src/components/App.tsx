@@ -11,7 +11,7 @@ import store from "redux/store";
 import Welcome from "components/chimeWeb/Welcome";
 import Join from "./chimeWeb/Intro/Join";
 import MeetingContainer from "./chimeWeb/Meeting/MeetingContainer";
-import End from "./chimeWeb/End";
+import End from "components/chimeWeb/End";
 import SocketContextProvider from "./chime/SocketContextProvider";
 import SelectedReactionContextProvider from "./contexts/SelectedReactionContext";
 import VotingOpenContextProvider from "./contexts/VotingOpenContext";

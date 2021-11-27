@@ -1,12 +1,11 @@
 import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import * as config from "../../config";
 
-class End extends Component {
-    constructor() {
-        super();
-        this.baseHref = config.BASE_HREF;
-    }
+type Props = RouteComponentProps & {};
+
+class End extends Component<Props, {}> {
+    baseHref = config.BASE_HREF;
 
     render() {
         return (
