@@ -10,6 +10,7 @@ import { useSocket } from "hooks/useSocket";
 import { MessageTransferObject } from "../types";
 import { SocketEventType } from "../../chime/types";
 import { isFalsyOrWhitespace } from "util/stringUtils";
+import LoadingAnimation from "components/common/interactivity/LoadingAnimation";
 
 type Props = {
     inputRef: React.RefObject<HTMLInputElement>;
@@ -76,34 +77,44 @@ export const ChatInput = ({ inputRef, userName }: Props) => {
     return (
         <div className={`composer chime-web-composer full-width ${styles.ChatInput}`}>
             <div className={styles.InputSection}>
-                <input
-                    ref={inputRef}
-                    type="text"
-                    placeholder="Hier tippen ..."
-                    value={message}
-                    maxLength={510}
-                    onChange={onInput}
-                    onKeyDown={onKeyDown}
-                />
-                <div
-                    className={styles.EmojiIconContainer}
-                    onClick={() => setEmojiPickerOpen(!emojiPickerOpen)}
-                >
-                    <div className={styles.EmojiIcon}>
-                        <Emoji text=":)" />
-                    </div>
-                </div>
-                {emojiPickerOpen && (
-                    <div ref={emojiPickerRef} className={styles.EmojiPicker}>
-                        <Picker
-                            onEmojiClick={(_, data) => {
-                                setMessage(`${message}${data.emoji}`);
-                                inputRef.current!.focus();
-                            }}
+                {socket ? (
+                    <>
+                        <input
+                            ref={inputRef}
+                            type="text"
+                            placeholder="Hier tippen ..."
+                            value={message}
+                            maxLength={510}
+                            onChange={onInput}
+                            onKeyDown={onKeyDown}
                         />
+                        <div
+                            className={styles.EmojiIconContainer}
+                            onClick={() => setEmojiPickerOpen(!emojiPickerOpen)}
+                        >
+                            <div className={styles.EmojiIcon}>
+                                <Emoji text=":)" />
+                            </div>
+                        </div>
+                        {emojiPickerOpen && (
+                            <div ref={emojiPickerRef} className={styles.EmojiPicker}>
+                                <Picker
+                                    onEmojiClick={(_, data) => {
+                                        setMessage(`${message}${data.emoji}`);
+                                        inputRef.current!.focus();
+                                    }}
+                                />
+                            </div>
+                        )}
+                    </>
+                ) : (
+                    // Replicate padding of the <input> component
+                    <div style={{ padding: "1rem" }}>
+                        <LoadingAnimation fullScreen={false} content="Verbinde zum Chat..." />
                     </div>
                 )}
             </div>
+
             <button
                 disabled={sendButtonDisabled}
                 className="btn btn--primary"
