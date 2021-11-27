@@ -9,7 +9,8 @@ import StreamVolumeControl from "./controls/StreamVolumeControl";
 
 import styles from "./VideoPlayer.module.scss";
 import Emoji from "react-emoji-render";
-import { makeid } from "../../util/guidHelper";
+import { makeid } from "util/guidHelper";
+import useManyClickHandlers from "hooks/useManyClickHandlers";
 
 type Props = {
     videoStream: string;
@@ -38,7 +39,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
         [paused],
     );
 
-    const onFullScreenClick: React.MouseEventHandler = React.useCallback(
+    const toggleFullScreen: React.MouseEventHandler = React.useCallback(
         (event) => {
             event.stopPropagation();
 
@@ -100,13 +101,13 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
         // Show/Hide player controls
         playerOverlay.addEventListener(
             "mouseover",
-            function (e) {
+            function () {
                 playerOverlay.classList.add("overlay--hover");
             },
             false,
         );
 
-        playerOverlay.addEventListener("mouseout", function (e) {
+        playerOverlay.addEventListener("mouseout", function () {
             playerOverlay.classList.remove("overlay--hover");
         });
     }, [videoStream]);
@@ -138,7 +139,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
     const { selectedEmoji } = React.useContext(SelectedReactionContext);
     const { socket } = useSocket();
 
-    const onVideoClick: MouseEventHandler = React.useCallback(
+    const onVideoClicked: MouseEventHandler = React.useCallback(
         (event) => {
             if (!socket || !videoElement.current) {
                 return;
@@ -164,6 +165,9 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
         },
         [socket, selectedEmoji, attendeeId],
     );
+
+    const onVideoDoubleClicked: MouseEventHandler = toggleFullScreen;
+    const videoClickHandler = useManyClickHandlers(onVideoClicked, onVideoDoubleClicked);
 
     React.useEffect(() => {
         if (!socket || !videoElement.current) {
@@ -212,7 +216,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
             <div
                 id="overlay"
                 className={`overlay ${fullScreen ? "fullscreen" : ""}`}
-                onClick={onVideoClick}
+                onClick={videoClickHandler}
             >
                 <div id="player-controls">
                     <div className={`player-controls__inner ${fullScreen ? "fullscreen" : ""}`}>
@@ -246,7 +250,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
                         <button
                             id="fullscreen"
                             className="mg-x-1 player-btn player-btn--icon"
-                            onClick={onFullScreenClick}
+                            onClick={toggleFullScreen}
                         >
                             <svg
                                 className="player-icon"
