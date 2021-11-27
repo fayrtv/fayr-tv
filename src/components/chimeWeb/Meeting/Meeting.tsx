@@ -21,7 +21,7 @@ import { MeetingStatus, SSData } from "components/chimeWeb/Meeting/meetingTypes"
 
 type PublicProps = {
     chime: ChimeSdkWrapper;
-    roomCode: string;
+    roomTitle: string;
 };
 
 type Props = SSData &
@@ -40,7 +40,7 @@ const Meeting = ({
     playbackURL,
     meetingStatus,
     setMeetingStatus,
-    roomCode,
+    roomTitle,
 }: Props) => {
     const [showSettings, setShowSettings] = React.useState(false);
 
@@ -116,7 +116,7 @@ const Meeting = ({
                         <Controls
                             chime={chime}
                             baseHref={config.BASE_HREF}
-                            ssName={formatMeetingSsKey(roomCode)}
+                            ssName={formatMeetingSsKey(roomTitle)}
                             title={title}
                             openSettings={() => setShowSettings(true)}
                             role={role}

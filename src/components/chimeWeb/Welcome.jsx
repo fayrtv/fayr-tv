@@ -20,7 +20,7 @@ class Welcome extends Component {
     state = {
         role: "host",
         username: "",
-        roomCode: config.RANDOM,
+        roomTitle: config.RANDOM,
         playbackURL: config.DEFAULT_VIDEO_STREAM,
         message: "",
         showError: false,
@@ -62,23 +62,23 @@ class Welcome extends Component {
     };
 
     get roomUrlRelative() {
-        return `${this.baseHref}/meeting?room=${this.state.roomCode}`;
+        return `${this.baseHref}/meeting?room=${this.state.roomTitle}`;
     }
 
     async createRoom() {
-        const { roomCode, username, playbackURL } = this.state;
+        const { roomTitle, username, playbackURL } = this.state;
         const data = {
             username,
-            title: roomCode,
+            title: roomTitle,
             playbackURL,
             role: this.state.role,
         };
-        sessionStorage.setItem(formatMeetingSsKey(roomCode), JSON.stringify(data));
+        sessionStorage.setItem(formatMeetingSsKey(roomTitle), JSON.stringify(data));
         this.props.history.push(this.roomUrlRelative);
     }
 
     render() {
-        const { username, roomCode, playbackURL } = this.state;
+        const { username, roomTitle, playbackURL } = this.state;
         return (
             <>
                 <div className="welcome form-grid">
@@ -111,9 +111,9 @@ class Welcome extends Component {
                                 onUsernameChanged={(newName) =>
                                     this.setState({ username: newName })
                                 }
-                                roomCode={roomCode}
-                                onRoomCodeChanged={(newCode) =>
-                                    this.setState({ roomCode: newCode })
+                                roomTitle={roomTitle}
+                                onRoomTitleChanged={(newCode) =>
+                                    this.setState({ roomTitle: newCode })
                                 }
                                 disableSubmit={!playbackURL}
                                 onSubmit={this.handleCreateRoom}
