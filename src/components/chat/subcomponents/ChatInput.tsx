@@ -9,6 +9,7 @@ import { isInRect } from "util/coordinateUtil";
 import { useSocket } from "hooks/useSocket";
 import { MessageTransferObject } from "../types";
 import { SocketEventType } from "../../chime/types";
+import { isFalsyOrWhitespace } from "util/stringUtils";
 
 type Props = {
     inputRef: React.RefObject<HTMLInputElement>;
@@ -70,6 +71,8 @@ export const ChatInput = ({ inputRef, userName }: Props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [message]);
 
+    const sendButtonDisabled = !socket || isFalsyOrWhitespace(message);
+
     return (
         <div className={`composer chime-web-composer full-width ${styles.ChatInput}`}>
             <div className={styles.InputSection}>
@@ -101,7 +104,11 @@ export const ChatInput = ({ inputRef, userName }: Props) => {
                     </div>
                 )}
             </div>
-            <button disabled={!socket} className="btn btn--primary" onClick={sendMessage}>
+            <button
+                disabled={sendButtonDisabled}
+                className="btn btn--primary"
+                onClick={sendMessage}
+            >
                 Senden
             </button>
         </div>
