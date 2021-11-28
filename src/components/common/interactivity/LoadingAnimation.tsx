@@ -1,7 +1,8 @@
+import React from "react";
 import styled from "styled-components";
 
 type Props = {
-    content?: JSX.Element;
+    content?: string | JSX.Element;
     fullScreen?: boolean;
 };
 
@@ -10,7 +11,7 @@ const CenteredFullScreen = styled.div`
     z-index: 999;
     height: 2em;
     width: 2em;
-    overflow: show;
+    overflow: unset;
     margin: auto;
     top: 0;
     left: 0;
@@ -31,14 +32,11 @@ const CenteredFullScreen = styled.div`
     }
 `;
 
-export default function LoadingAnimation({
-    content = <>{"Lade..."}</>,
-    fullScreen = false,
-}: Props) {
+export default function LoadingAnimation({ content = "Lade...", fullScreen = false }: Props) {
     return fullScreen ? (
         <CenteredFullScreen className="loading">{content}</CenteredFullScreen>
     ) : (
-        // TODO: Create the inline representation
+        // TODO: Improve the inline representation
         <>{content}</>
     );
 }

@@ -2,8 +2,9 @@ import { makeid } from "util/guidHelper";
 
 export const BASE_HREF = "";
 
-// API endpoint for retrieving the attendees list, joining the room, and ending the room
-export const CHIME_ROOM_API = "https://enb885lh75.execute-api.eu-central-1.amazonaws.com/Prod/";
+// API endpoint for retrieving the attendees list, joining the room, and ending the room.
+// Value without trailing slash.
+export const CHIME_ROOM_API = "https://enb885lh75.execute-api.eu-central-1.amazonaws.com/Prod";
 // For local AWS SAM container:
 //export const CHIME_ROOM_API = "http://127.0.0.1:5859";
 

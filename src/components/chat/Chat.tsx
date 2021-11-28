@@ -75,10 +75,12 @@ export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({
             return Promise.resolve();
         });
 
-        chatRef.current!.focus();
-
         return () => socket.close(5000);
     }, [socket, addMessages]);
+
+    React.useLayoutEffect(() => {
+        chatRef.current?.focus();
+    }, [chatRef]);
 
     React.useEffect(() => {
         if (!isOpen) {
