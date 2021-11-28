@@ -1,34 +1,40 @@
 import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import * as config from "../../config";
 import Error from "./Error";
 import { formatMeetingSsKey } from "./Meeting/storage";
-import * as PropTypes from "prop-types";
 import { JoinInfoForm } from "./JoinInfoForm";
+import { RoomMemberRole } from "types/Room";
+import { IChimeSdkWrapper } from "components/chime/ChimeSdkWrapper";
 
-JoinInfoForm.propTypes = {
-    value: PropTypes.string,
-    ref: PropTypes.any,
-    onChange: PropTypes.func,
-    value1: PropTypes.string,
-    onChange1: PropTypes.func,
-    disabled: PropTypes.bool,
-    onClick: PropTypes.func,
+type Props = RouteComponentProps & {
+    chime: IChimeSdkWrapper;
 };
 
-class Welcome extends Component {
-    state = {
+type State = {
+    role: RoomMemberRole;
+    username: string;
+    roomTitle: string;
+    playbackURL: string;
+    errorMsg?: string;
+    showError: boolean;
+};
+
+class Welcome extends Component<Props, State> {
+    baseHref = config.BASE_HREF;
+    usernameInputRef: React.RefObject<HTMLInputElement>;
+
+    state: State = {
         role: "host",
         username: "",
-        roomCode: config.RANDOM,
+        roomTitle: config.RANDOM,
         playbackURL: config.DEFAULT_VIDEO_STREAM,
-        message: "",
+        errorMsg: "",
         showError: false,
     };
 
-    constructor() {
-        super();
-        this.baseHref = config.BASE_HREF;
+    constructor(props: Props) {
+        super(props);
         this.usernameInputRef = React.createRef();
     }
 
@@ -39,21 +45,20 @@ class Welcome extends Component {
             const title = qs.get("room");
             this.props.history.push(`${this.baseHref}/join?room=${title}`);
         }
-        this.usernameInputRef.current.focus();
+
+        if (this.usernameInputRef.current) {
+            this.usernameInputRef.current.focus();
+        }
     }
 
-    handlePlaybackURLChange = (e) => {
-        this.setState({ playbackURL: e.target.value });
-    };
-
-    handleCreateRoom = (e) => {
+    handleCreateRoom = (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
 
         this.createRoom();
     };
 
-    setErrorMsg = (errorMsg) => {
+    setErrorMsg = (errorMsg: string) => {
         this.setState({ errorMsg, showError: true });
     };
 
@@ -62,23 +67,23 @@ class Welcome extends Component {
     };
 
     get roomUrlRelative() {
-        return `${this.baseHref}/meeting?room=${this.state.roomCode}`;
+        return `${this.baseHref}/meeting?room=${this.state.roomTitle}`;
     }
 
-    async createRoom() {
-        const { roomCode, username, playbackURL } = this.state;
+    createRoom() {
+        const { roomTitle, username, playbackURL } = this.state;
         const data = {
             username,
-            title: roomCode,
+            title: roomTitle,
             playbackURL,
             role: this.state.role,
         };
-        sessionStorage.setItem(formatMeetingSsKey(roomCode), JSON.stringify(data));
+        sessionStorage.setItem(formatMeetingSsKey(roomTitle), JSON.stringify(data));
         this.props.history.push(this.roomUrlRelative);
     }
 
     render() {
-        const { username, roomCode, playbackURL } = this.state;
+        const { username, roomTitle, playbackURL } = this.state;
         return (
             <>
                 <div className="welcome form-grid">
@@ -87,8 +92,8 @@ class Welcome extends Component {
                             <img
                                 src="https://i.ibb.co/jGzKGYw/fayrtv-logo.png"
                                 alt="fayrtv-logo"
-                                border="0"
                                 height="200"
+                                style={{ border: "none" }}
                             />
                             <h2>Erlebe Live- und Sportevents wie noch nie zuvor!</h2>
                             <h3>
@@ -111,9 +116,9 @@ class Welcome extends Component {
                                 onUsernameChanged={(newName) =>
                                     this.setState({ username: newName })
                                 }
-                                roomCode={roomCode}
-                                onRoomCodeChanged={(newCode) =>
-                                    this.setState({ roomCode: newCode })
+                                roomTitle={roomTitle}
+                                onRoomTitleChanged={(newTitle) =>
+                                    this.setState({ roomTitle: newTitle })
                                 }
                                 disableSubmit={!playbackURL}
                                 onSubmit={this.handleCreateRoom}
@@ -122,7 +127,7 @@ class Welcome extends Component {
                     </div>
                 </div>
                 {this.state.showError && (
-                    <Error closeError={this.closeError} errorMsg={this.state.message} />
+                    <Error closeError={this.closeError} errorMsg={this.state.errorMsg} />
                 )}
             </>
         );

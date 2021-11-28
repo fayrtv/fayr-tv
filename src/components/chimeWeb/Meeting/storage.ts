@@ -1,1 +1,1 @@
-export const formatMeetingSsKey = (roomCode: string) => `chime[${roomCode}]`;
+export const formatMeetingSsKey = (roomTitle: string) => `chime[${roomTitle}]`;

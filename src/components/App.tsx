@@ -8,10 +8,10 @@ import ChatOpenContextProvider from "./contexts/ChatOpenContext";
 import ChimeSdkWrapper from "./chime/ChimeSdkWrapper";
 import store from "redux/store";
 
-import Home from "./chimeWeb/Welcome";
+import Welcome from "components/chimeWeb/Welcome";
 import Join from "./chimeWeb/Intro/Join";
 import MeetingContainer from "./chimeWeb/Meeting/MeetingContainer";
-import End from "./chimeWeb/End";
+import End from "components/chimeWeb/End";
 import SocketContextProvider from "./chime/SocketContextProvider";
 import SelectedReactionContextProvider from "./contexts/SelectedReactionContext";
 import VotingOpenContextProvider from "./contexts/VotingOpenContext";
@@ -44,7 +44,7 @@ function App() {
                         <Join />
                     </Route>
                     <Route path={`${baseHref}`}>
-                        <Home chime={chime} />
+                        <Welcome chime={chime} />
                     </Route>
                 </Switch>
             </Router>

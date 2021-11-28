@@ -1,6 +1,6 @@
 import QRCodeView from "./QRCodeView";
 import { formatJoinRoomUrl } from "./Intro/urls";
-import React, { SetStateAction } from "react";
+import React, { MouseEventHandler } from "react";
 import { useMediaQuery } from "react-responsive";
 import classNames from "classnames";
 import { isFalsyOrWhitespace } from "util/stringUtils";
@@ -9,26 +9,26 @@ import styles from "./JoinInfoForm.module.scss";
 
 type Props = {
     username: string;
-    onUsernameChanged: React.Dispatch<SetStateAction<string>>;
-    roomCode: string;
-    onRoomCodeChanged: React.Dispatch<SetStateAction<string>>;
-    onSubmit: () => void;
+    onUsernameChanged: React.Dispatch<string>;
+    roomTitle: string;
+    onRoomTitleChanged: React.Dispatch<string>;
+    onSubmit: MouseEventHandler;
     disableSubmit?: boolean;
     usernameInputRef?: React.Ref<HTMLInputElement>;
-    roomCodeInputRef?: React.Ref<HTMLInputElement>;
+    roomTitleInputRef?: React.Ref<HTMLInputElement>;
 };
 
 export function JoinInfoForm({
     username,
     onUsernameChanged,
-    roomCode,
-    onRoomCodeChanged,
+    roomTitle,
+    onRoomTitleChanged,
     onSubmit,
     usernameInputRef,
-    roomCodeInputRef,
+    roomTitleInputRef,
     disableSubmit = false,
 }: Props) {
-    const isValid = !isFalsyOrWhitespace(roomCode) && !isFalsyOrWhitespace(username);
+    const isValid = !isFalsyOrWhitespace(roomTitle) && !isFalsyOrWhitespace(username);
     const isMobile = useMediaQuery({ maxWidth: 960 });
 
     const qrSize = isMobile ? 100 : 150;
@@ -48,11 +48,11 @@ export function JoinInfoForm({
                         onChange={(ev) => onUsernameChanged(ev.target.value)}
                     />
                     <input
-                        ref={roomCodeInputRef}
+                        ref={roomTitleInputRef}
                         type="text"
-                        placeholder="Code"
-                        value={roomCode}
-                        onChange={(ev) => onRoomCodeChanged(ev.target.value)}
+                        placeholder="Code / Titel"
+                        value={roomTitle}
+                        onChange={(ev) => onRoomTitleChanged(ev.target.value)}
                     />
                     <button
                         className="mg-t-2 btn btn--primary"
@@ -63,9 +63,9 @@ export function JoinInfoForm({
                     </button>
                 </div>
                 {/* <input type="text" placeholder="Playback URL" value={playbackURL} onChange={this.handlePlaybackURLChange} /> */}
-                {roomCode && (
+                {roomTitle && (
                     <QRCodeView
-                        content={formatJoinRoomUrl(roomCode)}
+                        content={formatJoinRoomUrl(roomTitle)}
                         width={qrSize}
                         height={qrSize}
                         padding={1}

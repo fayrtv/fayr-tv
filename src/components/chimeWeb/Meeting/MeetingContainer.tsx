@@ -14,19 +14,19 @@ import { JoinInfo } from "components/chimeWeb/types";
 
 type PublicProps = {
     chime: ChimeSdkWrapper;
-    roomCode: string;
+    roomTitle: string;
 };
 
 export const MeetingContainer = ({
     chime,
-    roomCode,
+    roomTitle,
     history,
 }: PublicProps & { history: RouteComponentProps["history"] }) => {
     const audioElementRef = React.createRef<HTMLAudioElement>();
     // const myVideoElement = React.createRef<HTMLVideoElement>();
 
     // Will be undefined on direct URL loading without previously filling meeting fields
-    const [state, setState] = usePersistedState<SSData | undefined>(formatMeetingSsKey(roomCode));
+    const [state, setState] = usePersistedState<SSData | undefined>(formatMeetingSsKey(roomTitle));
 
     // Loading, Success or Failed
     const [meetingStatus, setMeetingStatus] = React.useState<MeetingStatus | null>(null);
@@ -100,16 +100,16 @@ export const MeetingContainer = ({
         chime.audioVideo.addObserver(observer);
         return () => chime.audioVideo?.removeObserver(observer);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [roomCode, state?.role, chime, history]);
+    }, [roomTitle, state?.role, chime, history]);
 
     return isLoading ? (
         <LoadingAnimation fullScreen={true} />
-    ) : state && roomCode ? (
+    ) : state && roomTitle ? (
         <>
             <audio ref={audioElementRef} style={{ display: "none" }} />
             <Meeting
                 chime={chime}
-                roomCode={roomCode}
+                roomTitle={roomTitle}
                 meetingStatus={meetingStatus}
                 setMeetingStatus={setMeetingStatus}
                 joinInfo={state.joinInfo!}
@@ -128,14 +128,14 @@ const MeetingRouter = ({
     location,
     history,
     chime,
-}: Omit<RouteComponentProps & PublicProps, "roomCode">) => {
-    const roomCode = React.useMemo<string | null>(() => {
+}: Omit<RouteComponentProps & PublicProps, "roomTitle">) => {
+    const roomTitle = React.useMemo<string | null>(() => {
         const qs = new URLSearchParams(location.search);
         return qs.get("room");
     }, [location.search]);
 
-    return roomCode ? (
-        <MeetingContainer chime={chime} roomCode={roomCode} history={history} />
+    return roomTitle ? (
+        <MeetingContainer chime={chime} roomTitle={roomTitle} history={history} />
     ) : (
         <Redirect to={`${config.BASE_HREF}/`} />
     );
