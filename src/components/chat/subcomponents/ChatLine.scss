@@ -11,17 +11,16 @@
 }
 
 .chat-line {
-    padding: 12px 15px;
+    padding: var(--chat-line-padding);
+
     background: var(--color-bg-chat-bubble);
     border-radius: var(--input-height);
     display: flex;
     margin: 0 0 5px 0;
 
     font-size: var(--chat-line-font-size);
-    padding: var(--chat-line-padding);
 
-    display: flex;
-    justify-content: space-between;
+    align-items: center;
 
     p {
         display: inline;
@@ -39,6 +38,7 @@
     }
 
     .chat-line_timestamp {
+        margin-right: 10px;
         visibility: hidden;
     }
 
