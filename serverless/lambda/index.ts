@@ -565,10 +565,10 @@ export const join: Handler<APIGatewayProxyEvent> = async (event, context, callba
 };
 
 type AttendeeInfo = {
-	AttendeeId: string;
-	Name: string;
-	Role: string;
-}
+    AttendeeId: string;
+    Name: string;
+    Role: string;
+};
 
 export const attendee: Handler<APIGatewayProxyEvent> = async (event, context, callback) => {
     console.log("attendee event:", JSON.stringify(event, null, 2));
@@ -602,7 +602,7 @@ export const attendee: Handler<APIGatewayProxyEvent> = async (event, context, ca
         AttendeeInfo: {
             AttendeeId: attendeeId,
             Name: attendeeEntity.Name.S,
-			Role: attendeeEntity.Role.S,
+            Role: attendeeEntity.Role.S,
         } as AttendeeInfo,
     };
 
