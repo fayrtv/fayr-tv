@@ -1,23 +1,19 @@
 // Components
-import ParticipantVideo from "./ParticipantVideo";
 import Cell from "components/common/GridLayout/Cell";
 import Grid from "components/common/GridLayout/Grid";
 
 // Types
-import { IChimeSdkWrapper } from "components/chime/ChimeSdkWrapper";
-import { LocalVideoInfo, Roster } from "../types";
+import { LocalVideoInfo } from "../types";
 
 // Styles
 import styles from "./ParticipantVideoGroup.module.scss";
 
 type Props = {
-    chime: IChimeSdkWrapper;
-    roster: Roster;
     localVideoInfo: LocalVideoInfo;
-    pin(id: string): void;
+    participantVideos: IterableIterator<JSX.Element>;
 };
 
-export const ParticipantVideoGroup = ({ chime, roster, pin, localVideoInfo }: Props) => {
+export const ParticipantVideoGroup = ({ localVideoInfo, participantVideos }: Props) => {
     return (
         <Grid
             gridProperties={{
@@ -27,27 +23,12 @@ export const ParticipantVideoGroup = ({ chime, roster, pin, localVideoInfo }: Pr
             }}
             className={styles.ParticipantVideoGroup}
         >
-            {roster.slice(0, 10).map((attendee, index) => {
+            {Array.from(participantVideos).map((video, index) => {
                 if (localVideoInfo.replace && index === localVideoInfo.tile) {
                     return <Cell key={index}>{localVideoInfo.node}</Cell>;
                 }
 
-                return (
-                    <Cell key={index}>
-                        <ParticipantVideo
-                            chime={chime}
-                            tileIndex={index}
-                            key={index}
-                            attendeeId={attendee.attendeeId}
-                            videoEnabled={attendee.videoEnabled}
-                            name={attendee.name}
-                            muted={attendee.muted}
-                            volume={attendee.volume}
-                            videoElement={attendee.videoElement}
-                            pin={pin}
-                        />
-                    </Cell>
-                );
+                return <Cell key={index}>{video}</Cell>;
             })}
         </Grid>
     );

@@ -44,6 +44,7 @@ export type FlexProps = {
     onClick?: React.MouseEventHandler<HTMLDivElement>;
     onScroll?: (event: React.UIEvent<HTMLDivElement>) => void;
     title?: string;
+    id?: string;
 };
 
 export const Flex = React.forwardRef<HTMLDivElement, FlexProps>((props, ref) => {
@@ -63,6 +64,7 @@ export const Flex = React.forwardRef<HTMLDivElement, FlexProps>((props, ref) => 
         title = null,
         basis,
         grow,
+        id,
     } = props;
 
     const flexStyles: React.CSSProperties = {
@@ -103,6 +105,7 @@ export const Flex = React.forwardRef<HTMLDivElement, FlexProps>((props, ref) => 
         <div
             className={classes}
             style={flexStyles}
+            id={id}
             onClick={onClick}
             onScroll={onScroll}
             ref={ref}

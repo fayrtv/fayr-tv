@@ -79,6 +79,8 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
                 return newRoster;
             });
 
+            // TODO: This should move into the respective participantvideo, it rather belongs in there, and for
+            // now this is a very flaky binding
             setTimeout(() => {
                 const videoElement = document.getElementById(`video_${tileState.boundAttendeeId}`);
 
@@ -196,23 +198,21 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
 
     React.useEffect(() => {
         chime.subscribeToRosterUpdate(onRosterUpdate);
+        const audioVideo = chime.audioVideo;
 
-        if (chime.audioVideo) {
-            chime.audioVideo.addObserver({
-                videoTileDidUpdate: videoTileDidUpdateCallback,
-                videoTileWasRemoved: videoTileWasRemovedCallback,
-            });
+        const observer = {
+            videoTileDidUpdate: videoTileDidUpdateCallback,
+            videoTileWasRemoved: videoTileWasRemovedCallback,
+        };
+
+        if (audioVideo) {
+            audioVideo.addObserver(observer);
         }
 
         return () => {
             chime.unsubscribeFromRosterUpdate(onRosterUpdate);
             try {
-                chime.audioVideo?.removeObserver({
-                    videoTileDidUpdate: videoTileDidUpdateCallback,
-                });
-                chime.audioVideo?.removeObserver({
-                    videoTileWasRemoved: videoTileWasRemovedCallback,
-                });
+                audioVideo.removeObserver(observer);
             } catch (ex) {
                 // ok
             }
@@ -228,35 +228,42 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
 
     const [pinnedHostIdentifier, setPinnedHostIdentifier] = React.useState<Nullable<string>>(null);
 
-    const localVideo = <LocalVideo key="LocalVideo" chime={chime} joinInfo={joinInfo} />;
+    const localVideo = (
+        <LocalVideo
+            key="LocalVideo"
+            chime={chime}
+            joinInfo={joinInfo}
+            pin={setPinnedHostIdentifier}
+        />
+    );
 
-    const grabPinnedRemoteVideo = (id: string) => {
-        const rosterElementIndex = roster.findIndex((x) => x.attendeeId === id);
+    const participantVideos = React.useMemo(() => {
+        const participantVideoMap = new Map<string, JSX.Element>();
 
-        if (rosterElementIndex === -1) {
-            return null;
-        }
+        roster.forEach((attendee) => {
+            participantVideoMap.set(
+                attendee.attendeeId,
+                <ParticipantVideo
+                    chime={chime}
+                    tileIndex={attendee.tileId}
+                    key={attendee.attendeeId}
+                    attendeeId={attendee.attendeeId}
+                    videoEnabled={attendee.videoEnabled}
+                    name={attendee.name}
+                    muted={attendee.muted}
+                    volume={attendee.volume}
+                    videoElement={attendee.videoElement}
+                    pin={setPinnedHostIdentifier}
+                />,
+            );
+        });
 
-        const rosterElement = roster[rosterElementIndex];
-
-        return (
-            <ParticipantVideo
-                muted={rosterElement.muted}
-                attendeeId={id}
-                videoEnabled={rosterElement.videoEnabled}
-                name={rosterElement.name}
-                videoElement={rosterElement.videoElement}
-                chime={chime}
-                tileIndex={rosterElementIndex}
-                volume={rosterElement.volume}
-                pin={(_) => void 0}
-            />
-        );
-    };
+        return participantVideoMap;
+    }, [roster, setPinnedHostIdentifier]);
 
     const highlightVideo = (
         <div className={styles.HighlightVideoWrapper}>
-            {!pinnedHostIdentifier ? localVideo : grabPinnedRemoteVideo(pinnedHostIdentifier!)}
+            {!pinnedHostIdentifier ? localVideo : participantVideos.get(pinnedHostIdentifier!)}
         </div>
     );
 
@@ -264,8 +271,7 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
         <div className={styles.ParticipantVideoWrapper}>
             <ParticipantVideoGroup
                 key="ParticipantVideoGroup"
-                chime={chime}
-                roster={roster}
+                participantVideos={participantVideos.values()}
                 localVideoInfo={
                     !pinnedHostIdentifier
                         ? {
@@ -279,7 +285,6 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
                               tile: roster.findIndex((x) => x.attendeeId === pinnedHostIdentifier),
                           }
                 }
-                pin={setPinnedHostIdentifier}
             />
         </div>
     );
