@@ -100,7 +100,11 @@ const LocalVideo = ({ chime, joinInfo, pin }: Props) => {
                         <video className="attendee_cam" ref={videoElement} />
                     </div>
                 </div>
-                <Flex className="cam__meta" id={`${joinInfo.Attendee.AttendeeId}`} space="Between">
+                <Flex
+                    className={`cam__meta ${metaCls}`}
+                    id={`${joinInfo.Attendee.AttendeeId}`}
+                    space="Between"
+                >
                     ich
                     <Flex mainAlign="Center" direction="Row">
                         <span className={`${micMuteCls} btn--mic`}>
