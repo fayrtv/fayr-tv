@@ -71,7 +71,7 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
 
                 newRoster[index] = {
                     ...attendee,
-                    videoEnabled: tileState.active,
+                    videoEnabled: true,
                     attendeeId: tileState.boundAttendeeId,
                     tileId: tileState.tileId,
                 } as Attendee;
