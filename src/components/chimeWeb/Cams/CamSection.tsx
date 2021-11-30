@@ -1,30 +1,40 @@
+// Framework
 import React from "react";
-import RemoteVideo from "./RemoteVideo";
-import * as config from "../../config";
-
-import { IChimeSdkWrapper, RosterMap, Attendee } from "../chime/ChimeSdkWrapper";
-import { JoinInfo } from "./types";
 import { VideoTileState } from "amazon-chime-sdk-js";
-import { ReduxStore } from "../../redux/store";
-import { connect, useDispatch } from "react-redux";
-import { replaceRemoteVideoRoster } from "./../../redux/reducers/remoteVideoReducer";
-import Cell from "components/common/GridLayout/Cell";
-import Grid from "components/common/GridLayout/Grid";
+import { useDispatch, useSelector } from "react-redux";
+
+// Components
+import LocalVideo from "./LocalVideo/LocalVideo";
+import ParticipantVideoGroup from "./Participants/ParticipantVideoGroup";
+
+// Functionality
+import * as config from "config";
+import { replaceParticipantVideoRoster } from "redux/reducers/participantVideoReducer";
+
+// Types
+import { RosterMap, Attendee } from "components/chime/ChimeSdkWrapper";
+import { JoinInfo } from "../types";
+import { Roster } from "./types";
+import { ReduxStore } from "redux/store";
+import { Nullable } from "types/global";
+
+// Styles
+import styles from "./CamSection.module.scss";
+import ParticipantVideo from "./Participants/ParticipantVideo";
 
 const MAX_REMOTE_VIDEOS = config.CHIME_ROOM_MAX_ATTENDEE;
 
-type Roster = Array<Attendee>;
-
 type Props = {
-    chime: IChimeSdkWrapper;
+    chime: any;
     joinInfo: JoinInfo;
-    storedRoster: Roster;
 };
 
-export const RemoteVideoGroup = ({ chime, joinInfo, storedRoster }: Props) => {
+export const CamSection = ({ chime, joinInfo }: Props) => {
     const [roster, setRoster] = React.useState<Roster>([]);
     const previousRoster = React.useRef<Roster>([]);
+
     const dispatch = useDispatch();
+    const storedRoster = useSelector<ReduxStore, Roster>((x) => x.participantVideoReducer);
 
     const findRosterSlot = React.useCallback((attendeeId: string, localRoster: Roster) => {
         for (let index = 0; index < localRoster.length; index++) {
@@ -61,26 +71,15 @@ export const RemoteVideoGroup = ({ chime, joinInfo, storedRoster }: Props) => {
 
                 newRoster[index] = {
                     ...attendee,
-                    videoEnabled: tileState.active,
+                    videoEnabled: true,
                     attendeeId: tileState.boundAttendeeId,
                     tileId: tileState.tileId,
                 } as Attendee;
 
                 return newRoster;
             });
-
-            setTimeout(() => {
-                const videoElement = document.getElementById(`video_${tileState.boundAttendeeId}`);
-
-                if (videoElement) {
-                    chime.audioVideo.bindVideoElement(
-                        tileState.tileId!,
-                        videoElement as HTMLVideoElement,
-                    );
-                }
-            }, 1000);
         },
-        [chime.audioVideo, findRosterSlot],
+        [findRosterSlot],
     );
 
     const videoTileWasRemovedCallback = React.useCallback(
@@ -112,29 +111,6 @@ export const RemoteVideoGroup = ({ chime, joinInfo, storedRoster }: Props) => {
                 if (config.DEBUG) {
                     console.log("Attendee(s) left");
                 }
-
-                const differ = previousRoster.current.filter(
-                    (_, k) => previousRoster.current[k] !== newRoster[k],
-                );
-
-                if (config.DEBUG) {
-                    console.log(differ);
-                }
-
-                if (differ.length) {
-                    for (let attendee of differ) {
-                        const index = findRosterSlot(attendee.attendeeId, roster);
-
-                        setRoster((currentRoster) => {
-                            const newRoster = [...currentRoster];
-                            newRoster[index] = {
-                                ...roster[index],
-                                videoElement: roster[index].videoElement,
-                            } as Attendee;
-                            return newRoster;
-                        });
-                    }
-                }
             }
 
             previousRoster.current = Object.entries(newRoster).map(([attendeeId, attendee]) => ({
@@ -142,7 +118,7 @@ export const RemoteVideoGroup = ({ chime, joinInfo, storedRoster }: Props) => {
                 attendeeId,
             }));
 
-            dispatch(replaceRemoteVideoRoster(previousRoster.current));
+            dispatch(replaceParticipantVideoRoster(previousRoster.current));
 
             for (let attendeeId in newRoster) {
                 // Exclude self & empty names
@@ -173,11 +149,7 @@ export const RemoteVideoGroup = ({ chime, joinInfo, storedRoster }: Props) => {
         previousRoster.current = storedRoster;
 
         for (let i = 0; i < MAX_REMOTE_VIDEOS; ++i) {
-            localRoster[i] =
-                storedRoster[i + 1] ??
-                ({
-                    videoElement: React.createRef(),
-                } as Attendee);
+            localRoster[i] = storedRoster[i + 1] ?? ({} as Attendee);
         }
 
         setRoster(localRoster);
@@ -186,7 +158,6 @@ export const RemoteVideoGroup = ({ chime, joinInfo, storedRoster }: Props) => {
 
     React.useEffect(() => {
         chime.subscribeToRosterUpdate(onRosterUpdate);
-
         const audioVideo = chime.audioVideo;
 
         const observer = {
@@ -215,38 +186,83 @@ export const RemoteVideoGroup = ({ chime, joinInfo, storedRoster }: Props) => {
         previousRoster.current,
     ]);
 
+    const [pinnedHostIdentifier, setPinnedHostIdentifier] = React.useState<Nullable<string>>(null);
+
+    const localVideo = (
+        <LocalVideo
+            key="LocalVideo"
+            chime={chime}
+            joinInfo={joinInfo}
+            pin={setPinnedHostIdentifier}
+        />
+    );
+
+    const participantVideos = React.useMemo(() => {
+        const participantVideoMap = new Map<string, JSX.Element>();
+
+        roster.forEach((attendee) => {
+            participantVideoMap.set(
+                attendee.attendeeId,
+                <ParticipantVideo
+                    chime={chime}
+                    tileIndex={attendee.tileId}
+                    key={attendee.attendeeId}
+                    attendeeId={attendee.attendeeId}
+                    videoEnabled={attendee.videoEnabled}
+                    name={attendee.name}
+                    muted={attendee.muted}
+                    volume={attendee.volume}
+                    pin={setPinnedHostIdentifier}
+                />,
+            );
+        });
+
+        return participantVideoMap;
+    }, [roster, setPinnedHostIdentifier, chime]);
+
+    const highlightVideo = (
+        <div className={styles.HighlightVideoWrapper}>
+            {!pinnedHostIdentifier ? localVideo : participantVideos.get(pinnedHostIdentifier!)}
+        </div>
+    );
+
+    const participantVideo = (
+        <div className={styles.ParticipantVideoWrapper}>
+            <ParticipantVideoGroup
+                key="ParticipantVideoGroup"
+                participantVideos={participantVideos.values()}
+                localVideoInfo={
+                    !pinnedHostIdentifier
+                        ? {
+                              node: null,
+                              replace: false,
+                              tile: 0,
+                          }
+                        : {
+                              node: localVideo,
+                              replace: true,
+                              tile: roster.findIndex((x) => x.attendeeId === pinnedHostIdentifier),
+                          }
+                }
+            />
+        </div>
+    );
+
     return (
-        <Grid
-            gridProperties={{
-                gap: 0,
-                gridTemplateRows: "repeat(5, 1fr)",
-                gridTemplateColumns: "repeat(2, 50%)",
-            }}
-            className="RemoteVideoGroup"
-        >
-            {roster.slice(0, 10).map((attendee, index) => {
-                return (
-                    <Cell key={index}>
-                        <RemoteVideo
-                            chime={chime}
-                            tileIndex={index}
-                            key={index}
-                            attendeeId={attendee.attendeeId}
-                            videoEnabled={attendee.videoEnabled}
-                            name={attendee.name}
-                            muted={attendee.muted}
-                            volume={attendee.volume}
-                            videoElement={attendee.videoElement}
-                        />
-                    </Cell>
-                );
-            })}
-        </Grid>
+        <div className={styles.CamSection}>
+            {config.HighlightVideoAlignment === "Top" ? (
+                <>
+                    {highlightVideo}
+                    {participantVideo}
+                </>
+            ) : (
+                <>
+                    {participantVideo}
+                    {highlightVideo}
+                </>
+            )}
+        </div>
     );
 };
 
-const mapStateToProps = (store: ReduxStore): Pick<Props, "storedRoster"> => ({
-    storedRoster: store.remoteVideoReducer,
-});
-
-export default connect(mapStateToProps)(RemoteVideoGroup);
+export default CamSection;

@@ -6,8 +6,6 @@ import VideoPlayer from "../../videoPlayer/VideoPlayer";
 import Chat from "../../chat/Chat";
 import Controls from "../Controls";
 import Settings from "../Settings";
-import LocalVideo from "../LocalVideo";
-import RemoteVideoGroup from "../RemoteVideoGroup";
 import Error from "components/chimeWeb/Error";
 import VotingContainer from "../Voting/VotingContainer";
 import ChimeSdkWrapper from "components/chime/ChimeSdkWrapper";
@@ -18,6 +16,7 @@ import "../ChimeWeb.scss";
 import styles from "./Meeting.module.scss";
 import { formatMeetingSsKey } from "components/chimeWeb/Meeting/storage";
 import { MeetingStatus, SSData } from "components/chimeWeb/Meeting/meetingTypes";
+import CamSection from "../Cams/CamSection";
 
 type PublicProps = {
     chime: ChimeSdkWrapper;
@@ -72,33 +71,7 @@ const Meeting = ({
         }
     };
 
-    const localVideo = (
-        <div className={styles.LocalVideoWrapper}>
-            <LocalVideo key="LocalVideo" chime={chime} joinInfo={joinInfo} />
-        </div>
-    );
-
-    const remoteVideo = (
-        <div className={styles.RemoteVideoWrapper}>
-            <RemoteVideoGroup key="RemoteVideoGroup" chime={chime} joinInfo={joinInfo} />
-        </div>
-    );
-
-    const camSection = (
-        <div className={styles.CamSection}>
-            {config.LocalVideoAlignment === "Top" ? (
-                <>
-                    {localVideo}
-                    {remoteVideo}
-                </>
-            ) : (
-                <>
-                    {remoteVideo}
-                    {localVideo}
-                </>
-            )}
-        </div>
-    );
+    const camSection = <CamSection chime={chime} joinInfo={joinInfo} />;
 
     return (
         <>
