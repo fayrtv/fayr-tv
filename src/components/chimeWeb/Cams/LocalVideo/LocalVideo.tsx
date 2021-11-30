@@ -89,7 +89,8 @@ const LocalVideo = ({ chime, joinInfo, pin }: Props) => {
     const metaCls = showMetaCombined ? "" : " cam__meta--hide";
 
     return (
-        <div className={styles.LocalVideo}
+        <div
+            className={styles.LocalVideo}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
