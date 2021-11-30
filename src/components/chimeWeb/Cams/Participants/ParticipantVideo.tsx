@@ -24,7 +24,6 @@ type Props = {
     attendeeId: string;
     videoEnabled: boolean;
     name: string;
-    videoElement: React.RefObject<HTMLVideoElement>;
     chime: IChimeSdkWrapper;
     tileIndex: number;
     volume: number;
@@ -36,7 +35,6 @@ const ParticipantVideo = ({
     attendeeId,
     videoEnabled,
     name,
-    videoElement,
     chime,
     tileIndex,
     volume,
@@ -45,6 +43,8 @@ const ParticipantVideo = ({
     const [showMeta, setShowMeta] = React.useState(true);
     const [talking, setTalking] = React.useState(false);
     const [emojiReaction, setEmojiReaction] = React.useState<Nullable<string>>(null);
+
+    const videoRef = React.useRef<HTMLVideoElement>(null);
 
     const { socket } = useSocket();
 
@@ -56,15 +56,15 @@ const ParticipantVideo = ({
         }
         const tile = chime.audioVideo.getVideoTile(tileIndex);
 
-        if (!tile || !tile.state().active) {
+        if (!tile) {
             return;
         }
 
-        if (videoElement?.current) {
-            chime.audioVideo.bindVideoElement(tileIndex, videoElement.current);
+        if (videoRef?.current) {
+            chime.audioVideo.bindVideoElement(tileIndex, videoRef.current);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [chime.audioVideo]);
+    }, [chime.audioVideo, tileIndex]);
 
     React.useEffect(() => {
         if (!socket) {
@@ -122,11 +122,7 @@ const ParticipantVideo = ({
         >
             <div className="preview">
                 <div className="video-container pos-relative">
-                    <video
-                        ref={videoElement}
-                        className="attendee_cam remote-attendee"
-                        id={videoId}
-                    />
+                    <video ref={videoRef} className="attendee_cam remote-attendee" id={videoId} />
                     <CSSTransition
                         in={emojiReaction !== null}
                         timeout={3000}

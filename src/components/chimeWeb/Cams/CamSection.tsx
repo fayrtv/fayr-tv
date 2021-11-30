@@ -78,21 +78,8 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
 
                 return newRoster;
             });
-
-            // TODO: This should move into the respective participantvideo, it rather belongs in there, and for
-            // now this is a very flaky binding
-            setTimeout(() => {
-                const videoElement = document.getElementById(`video_${tileState.boundAttendeeId}`);
-
-                if (videoElement) {
-                    chime.audioVideo.bindVideoElement(
-                        tileState.tileId!,
-                        videoElement as HTMLVideoElement,
-                    );
-                }
-            }, 1000);
         },
-        [chime.audioVideo, findRosterSlot],
+        [findRosterSlot],
     );
 
     const videoTileWasRemovedCallback = React.useCallback(
@@ -123,29 +110,6 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
             if (Object.keys(newRoster).length < previousRoster.current.length) {
                 if (config.DEBUG) {
                     console.log("Attendee(s) left");
-                }
-
-                const differ = previousRoster.current.filter(
-                    (_, k) => previousRoster.current[k] !== newRoster[k],
-                );
-
-                if (config.DEBUG) {
-                    console.log(differ);
-                }
-
-                if (differ.length) {
-                    for (let attendee of differ) {
-                        const index = findRosterSlot(attendee.attendeeId, roster);
-
-                        setRoster((currentRoster) => {
-                            const newRoster = [...currentRoster];
-                            newRoster[index] = {
-                                ...roster[index],
-                                videoElement: roster[index].videoElement,
-                            } as Attendee;
-                            return newRoster;
-                        });
-                    }
                 }
             }
 
@@ -185,11 +149,7 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
         previousRoster.current = storedRoster;
 
         for (let i = 0; i < MAX_REMOTE_VIDEOS; ++i) {
-            localRoster[i] =
-                storedRoster[i + 1] ??
-                ({
-                    videoElement: React.createRef(),
-                } as Attendee);
+            localRoster[i] = storedRoster[i + 1] ?? ({} as Attendee);
         }
 
         setRoster(localRoster);
@@ -252,14 +212,13 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
                     name={attendee.name}
                     muted={attendee.muted}
                     volume={attendee.volume}
-                    videoElement={attendee.videoElement}
                     pin={setPinnedHostIdentifier}
                 />,
             );
         });
 
         return participantVideoMap;
-    }, [roster, setPinnedHostIdentifier]);
+    }, [roster, setPinnedHostIdentifier, chime]);
 
     const highlightVideo = (
         <div className={styles.HighlightVideoWrapper}>
