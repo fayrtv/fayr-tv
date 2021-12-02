@@ -1,5 +1,5 @@
 import React, { MouseEventHandler } from "react";
-import { MediaPlayer, PlayerState, PlayerEventType, isPlayerSupported } from "amazon-ivs-player";
+import { isPlayerSupported, MediaPlayer, PlayerEventType, PlayerState } from "amazon-ivs-player";
 import * as config from "../../config";
 import { SelectedReactionContext } from "components/contexts/SelectedReactionContext";
 import { SocketEventType } from "../chime/types";
@@ -8,15 +8,18 @@ import useSocket from "hooks/useSocket";
 import StreamVolumeControl from "./controls/StreamVolumeControl";
 
 import styles from "./VideoPlayer.module.scss";
-import Emoji from "react-emoji-render";
+import Emoji from "components/common/Emoji";
 import { makeid } from "util/guidHelper";
 import useManyClickHandlers from "hooks/useManyClickHandlers";
+import { EMOJI_SIZE } from "components/chimeWeb/Controls/emoji-reactions/EmojiReactionButton";
 
 type Props = {
     videoStream: string;
     fullScreenCamSection: React.ReactNode;
     attendeeId: string;
 };
+
+type EmojiReaction = { emoji: string; relativeXClick: number; relativeYClick: number };
 
 const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) => {
     const videoElement = React.useRef<HTMLDivElement>(null);
@@ -136,12 +139,69 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
         return () => currentVideoElement?.removeEventListener("fullscreenchange", cb);
     }, [videoElement]);
 
-    const { selectedEmoji } = React.useContext(SelectedReactionContext);
+    const { selectedEmojiReaction, reactionsDisabled } = React.useContext(SelectedReactionContext);
     const { socket } = useSocket();
+
+    const [uncommittedReactions, setUncommittedReactions] = React.useState<EmojiReaction[]>([]);
+
+    const publishReaction = React.useCallback(
+        (reaction: EmojiReaction) => {
+            if (!socket) {
+                return;
+            }
+            setUncommittedReactions((curr) => [...curr, reaction]);
+            socket.send<EmojiReactionTransferObject>({
+                messageType: SocketEventType.EmojiReaction,
+                payload: {
+                    attendeeId,
+                    emoji: reaction.emoji,
+                    clickPosition: {
+                        relativeX: reaction.relativeXClick,
+                        relativeY: reaction.relativeYClick,
+                    },
+                },
+            });
+        },
+        [attendeeId, socket],
+    );
+
+    const removeReactionEmojiAfterDelay = (reaction: JSX.Element) => {
+        setTimeout(() => {
+            setReactions((reactions) => reactions.filter((x) => x !== reaction));
+        }, 2000);
+    };
+
+    const renderReactionEmoji = React.useCallback(
+        (reaction: EmojiReaction) => {
+            setReactions((currentReactions) => {
+                const { height, width } = videoElement.current!.getBoundingClientRect();
+                const actualTop = height * reaction.relativeYClick - EMOJI_SIZE / 2;
+                const actualLeft = width * reaction.relativeXClick - EMOJI_SIZE / 2;
+
+                const key = makeid(8);
+                const newReaction = (
+                    <div
+                        key={`${reaction.emoji}_${key}`}
+                        className={styles.Reaction}
+                        style={{ top: actualTop, left: actualLeft }}
+                    >
+                        <Emoji text={reaction.emoji} />
+                    </div>
+                );
+
+                const newReactions = [...currentReactions, newReaction];
+
+                removeReactionEmojiAfterDelay(newReaction);
+
+                return newReactions;
+            });
+        },
+        [videoElement],
+    );
 
     const onVideoClicked: MouseEventHandler = React.useCallback(
         (event) => {
-            if (!socket || !videoElement.current) {
+            if (reactionsDisabled || !socket || !videoElement.current) {
                 return;
             }
 
@@ -151,19 +211,15 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
             const relativeXClick = Number((clientX / width).toFixed(3));
             const relativeYClick = Number((clientY / height).toFixed(3));
 
-            socket.send<EmojiReactionTransferObject>({
-                messageType: SocketEventType.EmojiReaction,
-                payload: {
-                    attendeeId,
-                    emoji: selectedEmoji,
-                    clickPosition: {
-                        relativeX: relativeXClick,
-                        relativeY: relativeYClick,
-                    },
-                },
-            });
+            const reaction: EmojiReaction = {
+                emoji: selectedEmojiReaction,
+                relativeXClick,
+                relativeYClick,
+            };
+            publishReaction(reaction);
+            renderReactionEmoji(reaction);
         },
-        [socket, selectedEmoji, attendeeId],
+        [publishReaction, reactionsDisabled, socket, selectedEmojiReaction, renderReactionEmoji],
     );
 
     const onVideoDoubleClicked: MouseEventHandler = toggleFullScreen;
@@ -178,38 +234,30 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
             SocketEventType.EmojiReaction,
             ({ emoji, clickPosition }) => {
                 const { relativeX, relativeY } = clickPosition!;
-                const { height, width } = videoElement.current!.getBoundingClientRect();
 
-                const actualTop = height * relativeY - 15;
-                const actualLeft = width * relativeX - 15;
+                const emojiReaction: EmojiReaction = {
+                    emoji,
+                    relativeXClick: relativeX,
+                    relativeYClick: relativeY,
+                };
 
-                setReactions((currentReactions) => {
-                    const newReactions = [...currentReactions];
+                // Remove from uncommited reactions
+                setUncommittedReactions((curr) =>
+                    curr.filter((x) => !reactionsEqual(x, emojiReaction)),
+                );
 
-                    const key = makeid(8);
-                    const newReaction = (
-                        <div
-                            key={`${emoji}_${key}`}
-                            className={styles.Reaction}
-                            style={{ top: `${actualTop}px`, left: `${actualLeft}px` }}
-                        >
-                            <Emoji text={emoji} />
-                        </div>
-                    );
-
-                    newReactions.push(newReaction);
-
-                    setTimeout(() => {
-                        setReactions((reactions) => reactions.filter((x) => x !== newReaction));
-                    }, 2000);
-
-                    return newReactions;
-                });
+                renderReactionEmoji(emojiReaction);
 
                 return Promise.resolve();
             },
         );
-    }, [socket]);
+    }, [renderReactionEmoji, socket, uncommittedReactions]);
+
+    React.useEffect(() => {
+        if (reactionsDisabled) {
+            setReactions([]);
+        }
+    }, [reactionsDisabled]);
 
     return (
         <div ref={videoElement} className="player-wrapper">
@@ -276,10 +324,18 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
                 id="video-player"
                 className={`el-player ${fullScreen ? "fullscreen" : ""}`}
                 playsInline
-            ></video>
+            />
             {reactions}
             {fullScreen && <div className="FullScreenCams">{fullScreenCamSection}</div>}
         </div>
+    );
+};
+
+const reactionsEqual = (x: EmojiReaction, y: EmojiReaction) => {
+    return (
+        x.emoji === y.emoji &&
+        x.relativeXClick === y.relativeXClick &&
+        x.relativeYClick === y.relativeYClick
     );
 };
 

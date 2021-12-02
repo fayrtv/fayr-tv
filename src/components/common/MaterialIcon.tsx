@@ -15,7 +15,7 @@ export enum MaterialIconType {
 export type MaterialIconProps<T> = {
     iconName: string;
     color?: string;
-    size?: number;
+    size?: number | string;
     onClick?(event: React.MouseEvent<HTMLSpanElement, MouseEvent>): T;
     className?: string;
     type?: keyof typeof MaterialIconType;

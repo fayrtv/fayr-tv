@@ -1,7 +1,7 @@
 // Framework
 import React, { useState } from "react";
 import Picker from "emoji-picker-react";
-import Emoji from "react-emoji-render";
+import Emoji from "components/common/Emoji";
 
 import styles from "./ChatInput.module.scss";
 import useGlobalClickHandler from "hooks/useGlobalClickHandler";
