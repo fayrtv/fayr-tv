@@ -2,8 +2,8 @@
 import * as React from "react";
 
 // Components
-import Flex from "../../common/Flex";
-import Emoji from "react-emoji-render";
+import Flex from "components/common/Flex";
+import Emoji from "components/common/Emoji";
 
 // Functionality
 import useGlobalClickHandler from "hooks/useGlobalClickHandler";
@@ -12,8 +12,10 @@ import useGlobalClickHandler from "hooks/useGlobalClickHandler";
 import { SelectedReactionContext } from "components/contexts/SelectedReactionContext";
 
 // Styles
-import styles from "./styles/ReactionButtonSelection.module.scss";
+import styles from "components/chimeWeb/Controls/styles/ReactionButtonSelection.module.scss";
 import { isInRect } from "util/coordinateUtil";
+import MaterialIcon from "components/common/MaterialIcon";
+import styled from "styled-components";
 
 const emojis = [":smile:", ":heart:", ":clap:", ":tada:", ":joy:"];
 
@@ -21,13 +23,29 @@ type Props = {
     onClose(): void;
 };
 
+const VerticalDivider = styled.div`
+    display: block;
+    border-left: 0 solid gray;
+    margin: 0 10px;
+    align-self: stretch;
+    :after {
+        content: "";
+        display: block;
+        margin-left: 0;
+        width: 1px;
+        height: 100%;
+        box-shadow: 0 0 5px gray;
+    }
+`;
+
+export const ReactionsDisabledIcon = (
+    props: Omit<React.ComponentProps<typeof MaterialIcon>, "iconName">,
+) => <MaterialIcon iconName="visibility_off" {...props} />;
+
 export const ReactionButtonSelection = ({ onClose }: Props) => {
     const buttonContainerRef = React.useRef<HTMLDivElement>(null);
-    const { setSelectedEmoji } = React.useContext(SelectedReactionContext);
-
-    const onEmojiClick = (emoji: string) => {
-        setSelectedEmoji(emoji);
-    };
+    const { setSelectedEmojiReaction, setReactionsDisabled } =
+        React.useContext(SelectedReactionContext);
 
     useGlobalClickHandler(
         (clickEvent) => {
@@ -58,12 +76,21 @@ export const ReactionButtonSelection = ({ onClose }: Props) => {
                 crossAlign="Center"
                 mainAlign="Center"
                 direction="Row"
+                style={{ alignItems: "center" }}
             >
                 {emojis.map((emoji) => (
-                    <div onClick={() => onEmojiClick(emoji)} key={emoji}>
+                    <div onClick={() => setSelectedEmojiReaction(emoji)} key={emoji}>
                         <Emoji text={emoji} />
                     </div>
                 ))}
+                <VerticalDivider />
+                <span style={{ marginLeft: 2, marginRight: 10, display: "inherit" }}>
+                    <ReactionsDisabledIcon
+                        onClick={() => setReactionsDisabled(true)}
+                        color="black"
+                        size="1.75em"
+                    />
+                </span>
             </Flex>
         </Flex>
     );
