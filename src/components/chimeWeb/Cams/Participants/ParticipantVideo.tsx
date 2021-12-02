@@ -1,7 +1,7 @@
 // Framework
 import React from "react";
 import { CSSTransition } from "react-transition-group";
-import Emoji from "react-emoji-render";
+import Emoji from "components/common/Emoji";
 
 // Functionality
 import useSocket from "hooks/useSocket";

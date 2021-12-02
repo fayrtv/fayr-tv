@@ -4,7 +4,7 @@
     // width: 150%;
 
     border: 1px solid black;
-    border-radius: 10px;
+    border-radius: 6px;
     background-color: lightgrey;
 
     .ReactionButtonInfo {
@@ -13,10 +13,8 @@
     }
 
     .ReactionButtonSelection {
-        span {
-            span {
-                font-size: 1.75em;
-            }
+        span span {
+            font-size: 1.75em;
         }
     }
 }
