@@ -4,6 +4,9 @@ import { Meeting } from "aws-sdk/clients/chime";
 import { APIGatewayProxyHandler, Handler } from "aws-lambda";
 import { APIGatewayProxyEvent } from "aws-lambda/trigger/api-gateway-proxy";
 
+type DynamoNumber = { N: string };
+type DynamoString = { S: string };
+
 const ddb = new AWS.DynamoDB();
 const { CONNECTIONS_TABLE_NAME, MEETINGS_TABLE_NAME, ATTENDEES_TABLE_NAME } = process.env;
 
@@ -129,7 +132,7 @@ const endMeeting = async (title: string) => {
     return result;
 };
 
-const getAttendee = async (title: string, attendeeId: string) => {
+const getAttendee = async (title: string, attendeeId: string): Promise<AttendeeEntity | null> => {
     const result = await ddb
         .getItem({
             TableName: ATTENDEES_TABLE_NAME,
@@ -141,9 +144,9 @@ const getAttendee = async (title: string, attendeeId: string) => {
         })
         .promise();
     if (!result.Item) {
-        return "Unknown";
+        return null;
     }
-    return result.Item.Name.S;
+    return result.Item;
 };
 
 const getAttendees = async (title: string) => {
@@ -181,19 +184,31 @@ const getAttendees = async (title: string) => {
     return filteredItems;
 };
 
-const putAttendee = async (title: string, attendeeId: string, name: string) => {
+type AttendeeEntity = {
+    AttendeeId: DynamoString;
+    Name: DynamoString;
+    TTL: DynamoNumber;
+    Role: DynamoString;
+};
+
+const putAttendee = async (title: string, attendeeId: string, name: string, role: string) => {
+    const item: AttendeeEntity = {
+        AttendeeId: {
+            S: `${title}/${attendeeId}`,
+        },
+        Name: { S: name },
+        TTL: {
+            N: "" + oneDayFromNow(),
+        },
+        Role: {
+            S: role,
+        },
+    };
+
     await ddb
         .putItem({
             TableName: ATTENDEES_TABLE_NAME,
-            Item: {
-                AttendeeId: {
-                    S: `${title}/${attendeeId}`,
-                },
-                Name: { S: name },
-                TTL: {
-                    N: "" + oneDayFromNow(),
-                },
-            },
+            Item: item,
         })
         .promise();
 };
@@ -449,6 +464,14 @@ export const createMeeting: Handler<APIGatewayProxyEvent> = async (event, contex
     callback(null, response);
 };
 
+type JoinPayload = {
+    title: string;
+    name: string;
+    role: string;
+    playbackURL: string;
+    region: string;
+};
+
 export const join: Handler<APIGatewayProxyEvent> = async (event, context, callback) => {
     console.log("join event:", JSON.stringify(event, null, 2));
 
@@ -456,7 +479,7 @@ export const join: Handler<APIGatewayProxyEvent> = async (event, context, callba
         return { statusCode: 400, body: "No request body provided" };
     }
 
-    let payload;
+    let payload: JoinPayload;
 
     try {
         payload = JSON.parse(event.body);
@@ -520,7 +543,7 @@ export const join: Handler<APIGatewayProxyEvent> = async (event, context, callba
 
     console.info("join event > attendeeInfo:", JSON.stringify(attendeeInfo, null, 2));
 
-    await putAttendee(title, attendeeInfo.Attendee!.AttendeeId!, name);
+    await putAttendee(title, attendeeInfo.Attendee!.AttendeeId!, name, payload.role);
 
     const joinInfo = {
         JoinInfo: {
@@ -541,6 +564,12 @@ export const join: Handler<APIGatewayProxyEvent> = async (event, context, callba
     callback(null, response);
 };
 
+type AttendeeInfo = {
+    AttendeeId: string;
+    Name: string;
+    Role: string;
+};
+
 export const attendee: Handler<APIGatewayProxyEvent> = async (event, context, callback) => {
     console.log("attendee event:", JSON.stringify(event, null, 2));
 
@@ -559,12 +588,22 @@ export const attendee: Handler<APIGatewayProxyEvent> = async (event, context, ca
         callback(null, response);
         return;
     }
-    const attendeeId = event.queryStringParameters.attendeeId;
+    const attendeeId = event.queryStringParameters.attendeeId as string;
+
+    const attendeeEntity = await getAttendee(title, attendeeId);
+
+    if (!attendeeEntity) {
+        // No attendee found => Presumably bad request on client side (Invalid ID)
+        response.statusCode = 400;
+        callback(null, response);
+    }
+
     const attendeeInfo = {
         AttendeeInfo: {
             AttendeeId: attendeeId,
-            Name: await getAttendee(title, attendeeId),
-        },
+            Name: attendeeEntity.Name.S,
+            Role: attendeeEntity.Role.S,
+        } as AttendeeInfo,
     };
 
     response.statusCode = 200;
