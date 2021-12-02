@@ -382,6 +382,8 @@ a.btn {
     display: flex;
     align-items: center;
     justify-content: center;
+    bottom: 5%;
+    left: 10%;
 
     &.fullscreen {
         @media (max-width: 480px) {
