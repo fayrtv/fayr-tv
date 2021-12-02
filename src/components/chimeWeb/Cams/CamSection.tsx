@@ -45,39 +45,42 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
         return localRoster.length;
     }, []);
 
-    const videoTileDidUpdateCallback = React.useCallback((tileState: VideoTileState) => {
-        if (
-            !tileState.boundAttendeeId ||
-            tileState.localTile ||
-            tileState.isContent ||
-            !tileState.tileId
-        ) {
-            return;
-        }
-
-        setRoster((currentRoster) => {
-            const newRoster = [...currentRoster];
-
-            let index = findRosterSlot(tileState.boundAttendeeId!, newRoster);
-
-            if (config.DEBUG) {
-                console.log(newRoster[index]);
+    const videoTileDidUpdateCallback = React.useCallback(
+        (tileState: VideoTileState) => {
+            if (
+                !tileState.boundAttendeeId ||
+                tileState.localTile ||
+                tileState.isContent ||
+                !tileState.tileId
+            ) {
+                return;
             }
 
-            const attendee =
-                newRoster[index] ??
-                previousRoster.current.find((x) => x.attendeeId === tileState.boundAttendeeId);
+            setRoster((currentRoster) => {
+                const newRoster = [...currentRoster];
 
-            newRoster[index] = {
-                ...attendee,
-                videoEnabled: true,
-                attendeeId: tileState.boundAttendeeId,
-                tileId: tileState.tileId,
-            } as Attendee;
+                let index = findRosterSlot(tileState.boundAttendeeId!, newRoster);
 
-            return newRoster;
-        });
-    }, []);
+                if (config.DEBUG) {
+                    console.log(newRoster[index]);
+                }
+
+                const attendee =
+                    newRoster[index] ??
+                    previousRoster.current.find((x) => x.attendeeId === tileState.boundAttendeeId);
+
+                newRoster[index] = {
+                    ...attendee,
+                    videoEnabled: true,
+                    attendeeId: tileState.boundAttendeeId,
+                    tileId: tileState.tileId,
+                } as Attendee;
+
+                return newRoster;
+            });
+        },
+        [findRosterSlot],
+    );
 
     const videoTileWasRemovedCallback = React.useCallback((tileId: number) => {
         setRoster((currentRoster) => {
