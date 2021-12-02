@@ -1,7 +1,7 @@
 .StreamVolumeControl {
     position: relative;
 
-    bottom: 0px !important;
+    bottom: 0 !important;
 
     &:hover {
         .SliderContainer {
@@ -27,8 +27,6 @@
         place-items: center;
 
         .SliderRail {
-            background-color: #707070;
-
             width: 25%;
             height: 85%;
 
@@ -40,15 +38,20 @@
             .SliderPin {
                 position: absolute;
 
-                bottom: 0px;
+                bottom: 0;
 
                 border-radius: 10px;
 
-                background-color: white;
+                background-color: #d9d9d9;
                 height: 15px;
                 width: 15px;
 
                 cursor: pointer;
+            }
+
+            .SliderPin:hover,
+            .SliderPin:active {
+                outline: 1px solid var(--color--primary);
             }
         }
     }

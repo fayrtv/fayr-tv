@@ -309,7 +309,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
                             >
                                 <path
                                     fill="none"
-                                    stroke="white"
+                                    stroke="#d9d9d9"
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
                                     strokeWidth="32"
