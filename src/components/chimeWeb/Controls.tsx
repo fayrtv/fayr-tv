@@ -9,8 +9,10 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 import styles from "./Controls.module.scss";
 import { useMediaQuery } from "react-responsive";
 import store from "../../redux/store";
-import ReactionButtonSelection from "./Controls/ReactionButtonSelection";
-import Emoji from "react-emoji-render";
+import ReactionButtonSelection, {
+    ReactionsDisabledIcon,
+} from "components/chimeWeb/Controls/emoji-reactions/ReactionButtonSelection";
+import Emoji from "components/common/Emoji";
 import { VotingOpenContext } from "../contexts/VotingOpenContext";
 import { SelectedReactionContext } from "components/contexts/SelectedReactionContext";
 import MaterialIcon from "../common/MaterialIcon";
@@ -54,7 +56,7 @@ const Controls: React.FC<Props & ReduxProps> = ({
     const [videoStatus, setVideoStatus] = React.useState(VideoStatus.Disabled);
     const [showPopUp, setShowPopUp] = React.useState(false);
 
-    const { selectedEmoji } = React.useContext(SelectedReactionContext);
+    const { selectedEmojiReaction, reactionsDisabled } = React.useContext(SelectedReactionContext);
 
     const isMobile = useMediaQuery({ maxWidth: 1024 });
 
@@ -62,7 +64,7 @@ const Controls: React.FC<Props & ReduxProps> = ({
 
     const controlsRef = React.useRef<HTMLDivElement>(null);
 
-    const withSuppressedBubble =
+    const withoutPropagation =
         (handler: () => Promise<void>): React.MouseEventHandler<HTMLDivElement> =>
         async (e) => {
             e.stopPropagation();
@@ -92,7 +94,9 @@ const Controls: React.FC<Props & ReduxProps> = ({
 
             try {
                 if (!chime.currentVideoInputDevice) {
-                    throw new Error("currentVideoInputDevice does not exist");
+                    console.error("currentVideoInputDevice does not exist");
+                    setVideoStatus(VideoStatus.Disabled);
+                    return;
                 }
 
                 try {
@@ -223,8 +227,8 @@ const Controls: React.FC<Props & ReduxProps> = ({
         <div
             key="ChatButton"
             className={`${styles.Button} ${chat_controls} ${styles.ChatContainer} btn rounded`}
-            title={`${isChatOpen ? "Hide" : "Show"} chat`}
-            onClick={withSuppressedBubble(handleChatClick)}
+            title={`Chat ${isChatOpen ? "ausblenden" : "anzeigen"}`}
+            onClick={withoutPropagation(handleChatClick)}
         >
             <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24">
                 <path d="M 4 3 C 2.9 3 2 3.9 2 5 L 2 17 L 5 14 L 8 14 L 8 17 C 8 18.1 8.9 19 10 19 L 19 19 L 22 22 L 22 10 C 22 8.9 21.1 8 20 8 L 16 8 L 16 5 C 16 3.9 15.1 3 14 3 L 4 3 z M 4 5 L 14 5 L 14 12 L 4 12 L 4 5 z M 16 10 L 20 10 L 20 17 L 10 17 L 10 14 L 14 14 C 15.1 14 16 13.1 16 12 L 16 10 z" />
@@ -243,7 +247,7 @@ const Controls: React.FC<Props & ReduxProps> = ({
         <div
             key="MicButton"
             className={`${styles.Button} ${mic_controls} btn rounded`}
-            onClick={withSuppressedBubble(muteButtonOnClick)}
+            onClick={withoutPropagation(muteButtonOnClick)}
             title="Mikrofon einschalten"
         >
             {localMuted ? (
@@ -277,7 +281,7 @@ const Controls: React.FC<Props & ReduxProps> = ({
         <div
             key="CamButton"
             className={`${styles.Button} ${cam_controls} btn rounded`}
-            onClick={withSuppressedBubble(videoButtonOnClick)}
+            onClick={withoutPropagation(videoButtonOnClick)}
             title="Kamera einschalten"
         >
             {videoStatus === VideoStatus.Enabled ? (
@@ -315,7 +319,7 @@ const Controls: React.FC<Props & ReduxProps> = ({
             key="SettingsButton"
             className={`${styles.Button} btn rounded`}
             title="Nimm Änderungen an deinen Einstellungen vor"
-            onClick={withSuppressedBubble(() => {
+            onClick={withoutPropagation(() => {
                 openSettings();
                 return Promise.resolve();
             })}
@@ -332,7 +336,7 @@ const Controls: React.FC<Props & ReduxProps> = ({
         <div
             key="SharePartyButton"
             className={`${styles.Button} btn rounded popup`}
-            onClick={withSuppressedBubble(handleRoomClick)}
+            onClick={withoutPropagation(handleRoomClick)}
             title="Leite den abgespeicherten Link an deine Freunde weiter"
         >
             <svg
@@ -357,9 +361,13 @@ const Controls: React.FC<Props & ReduxProps> = ({
         <div
             key="ReactionButton"
             className={`${styles.Button} ${styles.ReactionButton} btn rounded`}
-            onClick={withSuppressedBubble(reactionButtonOnClick)}
+            onClick={withoutPropagation(reactionButtonOnClick)}
         >
-            <Emoji text={selectedEmoji} />
+            {reactionsDisabled ? (
+                <ReactionsDisabledIcon color="white" />
+            ) : (
+                <Emoji text={selectedEmojiReaction} />
+            )}
             {reactionsOpen && (
                 <div className={styles.ReactionRow}>
                     <ReactionButtonSelection onClose={() => setReactionsOpen(false)} />
@@ -370,7 +378,7 @@ const Controls: React.FC<Props & ReduxProps> = ({
         <div
             key="EndButton"
             className={`${styles.Button} btn rounded btn--destruct btn--leave`}
-            onClick={withSuppressedBubble(endButtonOnClick)}
+            onClick={withoutPropagation(endButtonOnClick)}
             title="Verlasse die Watch Party"
         >
             <svg
@@ -394,7 +402,7 @@ const Controls: React.FC<Props & ReduxProps> = ({
             className={`${styles.Button} ${styles.VotingButton} ${
                 isVotingOpen ? `${styles.Active}` : ""
             } btn rounded`}
-            onClick={withSuppressedBubble(() => {
+            onClick={withoutPropagation(() => {
                 setVotingOpen(!isVotingOpen);
                 return Promise.resolve();
             })}
