@@ -82,28 +82,25 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
         [findRosterSlot],
     );
 
-    const videoTileWasRemovedCallback = React.useCallback(
-        (tileId: number) => {
+    const videoTileWasRemovedCallback = React.useCallback((tileId: number) => {
+        setRoster((currentRoster) => {
             // Find the removed tileId in the roster and mark the video as disabled.
             // eslint-disable-next-line
-            const index = roster.findIndex((o) => o.tileId === tileId);
+            const index = currentRoster.findIndex((o) => o.tileId === tileId);
 
             if (index === -1) {
-                return;
+                return currentRoster;
             }
 
-            setRoster((currentRoster) => {
-                const newRoster = [...currentRoster];
-                newRoster[index].videoEnabled = false;
-                return newRoster;
-            });
+            const newRoster = [...currentRoster];
+            newRoster[index] = {} as Attendee;
+            return newRoster;
+        });
 
-            if (config.DEBUG) {
-                console.log(`Tile was removed ${tileId}`);
-            }
-        },
-        [roster],
-    );
+        if (config.DEBUG) {
+            console.log(`Tile was removed ${tileId}`);
+        }
+    }, []);
 
     const onRosterUpdate = React.useCallback(
         (newRoster: RosterMap) => {
@@ -157,7 +154,6 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
     }, [chime]);
 
     React.useEffect(() => {
-        chime.subscribeToRosterUpdate(onRosterUpdate);
         const audioVideo = chime.audioVideo;
 
         const observer = {
@@ -170,7 +166,6 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
         }
 
         return () => {
-            chime.unsubscribeFromRosterUpdate(onRosterUpdate);
             try {
                 audioVideo.removeObserver(observer);
             } catch (ex) {
@@ -178,13 +173,16 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
             }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [
-        chime,
-        onRosterUpdate,
-        videoTileDidUpdateCallback,
-        videoTileWasRemovedCallback,
-        previousRoster.current,
-    ]);
+    }, [chime.audioVideo]);
+
+    React.useEffect(() => {
+        chime.subscribeToRosterUpdate(onRosterUpdate);
+
+        return () => {
+            chime.unsubscribeFromRosterUpdate(onRosterUpdate);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [chime, onRosterUpdate]);
 
     const [pinnedHostIdentifier, setPinnedHostIdentifier] = React.useState<Nullable<string>>(null);
 
