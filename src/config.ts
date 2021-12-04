@@ -24,7 +24,7 @@ export const DEFAULT_VIDEO_STREAM = sample([
     // KIKA
     "https://kikageohls.akamaized.net/hls/live/2022693/livetvkika_de/master.m3u8",
     // Tagesschau 24
-    "http://tagesschau-lh.akamaihd.net/i/tagesschau_1@119231/master.m3u8"
+    "http://tagesschau-lh.akamaihd.net/i/tagesschau_1@119231/master.m3u8",
 ]) as string;
 
 // Default Chat websocket link
