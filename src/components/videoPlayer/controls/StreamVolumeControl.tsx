@@ -9,6 +9,10 @@ import { useMediaQuery } from "react-responsive";
 // Styles
 import styles from "./StreamVolumeControl.module.scss";
 
+const RAIL_BG_COLOR = "#707070";
+const RAIL_GRADIENT_COLOR = "red";
+const RAIL_VALUE_COLOR = "blue";
+
 type Props = {
     player: MediaPlayer | undefined;
 };
@@ -19,7 +23,7 @@ export const StreamVolumeControl = ({ player }: Props) => {
     const railRef = React.useRef<HTMLDivElement>(null);
 
     const [muted, setMuted] = React.useState(false);
-    const [volumePercentage, setVolumePercentage] = React.useState(0);
+    const [volumeRatio, setVolumeRatio] = React.useState(0);
 
     const isMobile = useMediaQuery({ maxWidth: 960 });
 
@@ -28,7 +32,7 @@ export const StreamVolumeControl = ({ player }: Props) => {
             return;
         }
 
-        setVolumePercentage(player.getVolume());
+        setVolumeRatio(player.getVolume());
     }, [player?.getVolume() ?? undefined, railRef.current]);
 
     const onMuteClick: React.MouseEventHandler = React.useCallback(
@@ -42,9 +46,9 @@ export const StreamVolumeControl = ({ player }: Props) => {
                 setMuted(newMuteState);
 
                 if (newMuteState) {
-                    setVolumePercentage(0);
+                    setVolumeRatio(0);
                 } else {
-                    setVolumePercentage(player.getVolume());
+                    setVolumeRatio(player.getVolume());
                 }
             }
         },
@@ -62,7 +66,7 @@ export const StreamVolumeControl = ({ player }: Props) => {
             percentage = 1;
         }
 
-        setVolumePercentage(percentage);
+        setVolumeRatio(percentage);
         player?.setVolume(percentage);
 
         if (player?.isMuted()) {
@@ -140,12 +144,17 @@ export const StreamVolumeControl = ({ player }: Props) => {
         };
     }, [muted, player, railRef, pinRef, isMobile]);
 
-    const { height } = railRef.current?.getBoundingClientRect() ?? { height: 0 };
+    const volumePercentage = volumeRatio * 100;
 
+    const sliderStyle = {
+        backgroundImage: `linear-gradient(0, ${RAIL_VALUE_COLOR} ${
+            volumePercentage / 3
+        }%, ${RAIL_GRADIENT_COLOR} ${volumePercentage}%, ${RAIL_BG_COLOR} ${volumePercentage}%)`,
+    };
     return (
         <div
             className={`mg-x-1 player-btn player-btn--icon ${
-                muted || volumePercentage === 0 ? "player-btn--mute" : "player-btn--unmute"
+                muted || volumeRatio === 0 ? "player-btn--mute" : "player-btn--unmute"
             } ${styles.StreamVolumeControl}`}
             onClick={onMuteClick}
         >
@@ -177,10 +186,10 @@ export const StreamVolumeControl = ({ player }: Props) => {
                     event.preventDefault();
                 }}
             >
-                <div className={styles.SliderRail} ref={railRef}>
+                <div className={styles.SliderRail} ref={railRef} style={sliderStyle}>
                     <span
                         className={styles.SliderPin}
-                        style={{ bottom: `${Number(volumePercentage * height) - 8}px` }}
+                        style={{ bottom: `calc(${volumeRatio * 100}% - 8px)` }}
                         ref={pinRef}
                     />
                 </div>
