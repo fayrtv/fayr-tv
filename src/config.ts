@@ -19,7 +19,7 @@ export const DEFAULT_VIDEO_STREAM =
 // "https://ea6f7e87fe3e.eu-west-1.playback.live-video.net/api/video/v1/eu-west-1.676057042583.channel.KeSLVW8GAv39.m3u8"; // Elgato stream
 
 // Default Chat websocket link
-export const CHAT_WEBSOCKET = "wss://glql810lxg.execute-api.eu-central-1.amazonaws.com/Prod	";
+export const CHAT_WEBSOCKET = "wss://glql810lxg.execute-api.eu-central-1.amazonaws.com/Prod";
 
 // Chime-SDK logging level: INFO, WARN, ERROR, DEBUG
 export const CHIME_LOG_LEVEL = "DEBUG";

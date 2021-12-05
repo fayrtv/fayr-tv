@@ -278,20 +278,16 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
                             <svg
                                 className="player-icon player-icon--play"
                                 xmlns="http://www.w3.org/2000/svg"
-                                height="36"
-                                viewBox="0 0 24 24"
-                                width="36"
+                                viewBox="0 0 40 40"
                             >
-                                <path d="M8 6.82v10.36c0 .79.87 1.27 1.54.84l8.14-5.18c.62-.39.62-1.29 0-1.69L9.54 5.98C8.87 5.55 8 6.03 8 6.82z" />
+                                <path d="M 6 3 A 1 1 0 0 0 5 4 A 1 1 0 0 0 5 4.0039062 L 5 15 L 5 25.996094 A 1 1 0 0 0 5 26 A 1 1 0 0 0 6 27 A 1 1 0 0 0 6.5800781 26.8125 L 6.5820312 26.814453 L 26.416016 15.908203 A 1 1 0 0 0 27 15 A 1 1 0 0 0 26.388672 14.078125 L 6.5820312 3.1855469 L 6.5800781 3.1855469 A 1 1 0 0 0 6 3 z" />
                             </svg>
                             <svg
                                 className="player-icon player-icon--pause"
                                 xmlns="http://www.w3.org/2000/svg"
-                                height="36"
-                                viewBox="0 0 24 24"
-                                width="36"
+                                viewBox="0 0 40 40"
                             >
-                                <path d="M8 19c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2s-2 .9-2 2v10c0 1.1.9 2 2 2zm6-12v10c0 1.1.9 2 2 2s2-.9 2-2V7c0-1.1-.9-2-2-2s-2 .9-2 2z" />
+                                <path d="M 8 4 C 6.895 4 6 4.895 6 6 L 6 24 C 6 25.105 6.895 26 8 26 L 10 26 C 11.105 26 12 25.105 12 24 L 12 6 C 12 4.895 11.105 4 10 4 L 8 4 z M 20 4 C 18.895 4 18 4.895 18 6 L 18 24 C 18 25.105 18.895 26 20 26 L 22 26 C 23.105 26 24 25.105 24 24 L 24 6 C 24 4.895 23.105 4 22 4 L 20 4 z" />
                             </svg>
                         </button>
                         <StreamVolumeControl player={player.current} />
@@ -303,17 +299,11 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
                             <svg
                                 className="player-icon"
                                 xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 512 512"
-                                height="36"
-                                width="36"
+                                viewBox="0 0 40 40"
                             >
                                 <path
-                                    fill="none"
-                                    stroke="white"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="32"
-                                    d="M432 320v112H320M421.8 421.77L304 304M80 192V80h112M90.2 90.23L208 208M320 80h112v112M421.77 90.2L304 208M192 432H80V320M90.23 421.8L208 304"
+                                    fill="white"
+                                    d="M 6 4 C 4.9069372 4 4 4.9069372 4 6 L 4 10 A 1.0001 1.0001 0 1 0 6 10 L 6 6 L 10 6 A 1.0001 1.0001 0 1 0 10 4 L 6 4 z M 20 4 A 1.0001 1.0001 0 1 0 20 6 L 24 6 L 24 10 A 1.0001 1.0001 0 1 0 26 10 L 26 6 C 26 4.9069372 25.093063 4 24 4 L 20 4 z M 4.984375 18.986328 A 1.0001 1.0001 0 0 0 4 20 L 4 24 C 4 25.093063 4.9069372 26 6 26 L 10 26 A 1.0001 1.0001 0 1 0 10 24 L 6 24 L 6 20 A 1.0001 1.0001 0 0 0 4.984375 18.986328 z M 24.984375 18.986328 A 1.0001 1.0001 0 0 0 24 20 L 24 24 L 20 24 A 1.0001 1.0001 0 1 0 20 26 L 24 26 C 25.093063 26 26 25.093063 26 24 L 26 20 A 1.0001 1.0001 0 0 0 24.984375 18.986328 z"
                                 />
                             </svg>
                         </button>

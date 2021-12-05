@@ -19,8 +19,8 @@
     }
 
     &.VotingActive {
-        background-color: rgba(255, 255, 255, 0.3);
-        backdrop-filter: blur(6px);
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
     }
 
     .VotingWrapper {

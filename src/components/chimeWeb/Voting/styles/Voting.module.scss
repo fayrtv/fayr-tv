@@ -26,13 +26,14 @@
 
         border-radius: 10px;
 
-        box-shadow: 0 0 10px grey;
+        // box-shadow: 0 0 10px grey;
     }
 
     .CloseButton {
         height: 50px;
         width: 50px;
-        background-color: rgba(0, 0, 0, 0.3);
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
         border-radius: 5px;
         margin-left: 10px;
 

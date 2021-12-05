@@ -431,7 +431,6 @@ a.btn {
     display: flex;
     flex-shrink: 0;
     flex-wrap: nowrap;
-    display: none;
     border-radius: 2px;
 }
 
@@ -443,16 +442,14 @@ a.btn {
 }
 
 .player-btn:focus {
-    border: 2px solid #fff;
+    border: 2px solid #d9d9d9;
 }
 
 .player-icon {
     fill: #d9d9d9;
-    // background-color: rgba(0, 0, 0, 0.3);
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(5px);
     border-radius: 5px;
-    size: 50%;
 }
 
 .player-btn--pause .player-icon--pause {

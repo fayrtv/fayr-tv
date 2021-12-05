@@ -19,14 +19,14 @@ export type VotingReducerState = Array<VotingData>;
 const initialState: VotingReducerState = [
     {
         hostTeam: {
-            identifier: "vfb",
+            identifier: "dynamo",
             teamIconSource:
-                "https://iconape.com/wp-content/files/hu/323161/png/vfb-stuttgart-1960-logo.png",
+                "https://fayr-image-library.s3.eu-central-1.amazonaws.com/club-material/badges/dynamo_dresden_square.png",
         },
         guestTeam: {
             identifier: "b04",
             teamIconSource:
-                "https://icons.iconarchive.com/icons/giannis-zographos/german-football-club/256/Bayer-Leverkusen-icon.png",
+                "https://fayr-image-library.s3.eu-central-1.amazonaws.com/club-material/badges/bayer_04_square.png",
         },
         votes: [],
         votingId: "215235235",
