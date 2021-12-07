@@ -25,19 +25,15 @@
 
 /* The actual popup */
 .popup .popuptext {
-    /* visibility: fixed; */
     visibility: hidden;
     width: 200px;
-    // background-color: #fa7751;
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(5px);
-    // color: #1c202a;
     text-align: center;
-    /* border-radius: 0.6rem; */
     padding: 0.8rem 0;
     position: absolute;
     z-index: 50;
-    bottom: 50px;
+    bottom: 70px;
 }
 
 .popup .show {
@@ -58,7 +54,7 @@
 
     z-index: 1;
 
-    width: 30%;
+    width: 25%;
     position: absolute;
     right: 0;
     bottom: 0;

@@ -370,6 +370,9 @@ a.btn {
     bottom: 0;
     z-index: 1;
     /* transition: background 0.1s ease-in-out; */
+
+    display: grid;
+    place-items: center;
 }
 
 .player-controls__inner {
@@ -381,7 +384,6 @@ a.btn {
     justify-content: center;
     bottom: 5%;
     left: 10%;
-    // right: 10%;
 
     &.fullscreen {
         @media (max-width: 480px) {
@@ -407,29 +409,6 @@ a.btn {
 
 .FullScreenCams {
     height: 100%;
-}
-
-.RemoteVideoGroup {
-    height: 100%;
-    @media (max-width: 480px) {
-        .cam {
-            display: flex;
-            flex-direction: row;
-
-            .cam__meta {
-                display: flex;
-                flex-direction: column;
-
-                max-width: 30%;
-
-                .cam__meta_name {
-                    text-overflow: ellipsis;
-                    overflow: hidden;
-                    max-width: 100%;
-                }
-            }
-        }
-    }
 }
 
 .overlay--hover #player-controls {
@@ -464,12 +443,11 @@ a.btn {
 }
 
 .player-btn:focus {
-    border: 2px solid #fff;
+    border: 2px solid #d9d9d9;
 }
 
 .player-icon {
     fill: #d9d9d9;
-    // background-color: rgba(0, 0, 0, 0.3);
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(5px);
     border-radius: 5px;

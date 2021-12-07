@@ -7,10 +7,10 @@
         align-content: center;
         justify-content: center;
 
-        background-color: white;
+        // background-color: white;
 
         &.GuestTeamIcon {
-            background-color: red;
+            // background-color: red;
         }
 
         > img {
@@ -22,7 +22,7 @@
         display: grid;
         place-items: center;
 
-        background: black;
+        background: #07090C;
 
         .VotingSection {
             height: 100%;

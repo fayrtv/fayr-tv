@@ -3,7 +3,7 @@
     width: 100%;
     display: grid;
     place-items: center;
-    background-color: black;
+    background-color: #07090C;
 
     .OverviewPage {
         width: 70%;
@@ -22,10 +22,10 @@
         }
 
         .TeamIcon {
-            background-color: white;
+            // background-color: white;
 
             &.GuestTeamIcon {
-                background-color: red;
+                // background-color: red;
             }
 
             display: grid;
