@@ -431,6 +431,7 @@ a.btn {
     display: flex;
     flex-shrink: 0;
     flex-wrap: nowrap;
+    display: none;
     border-radius: 2px;
 }
 
@@ -450,6 +451,7 @@ a.btn {
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(5px);
     border-radius: 5px;
+    size: 50%;
 }
 
 .player-btn--pause .player-icon--pause {
