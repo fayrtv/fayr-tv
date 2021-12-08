@@ -1,14 +1,12 @@
 @use "../../mediaQueries" as mq;
 
 .cam {
-    // background: transparent;
     background: rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(5px);
     height: 100%;
     width: auto;
-    /* background: var(--color--tertiary); */
     margin: 0 0.5rem;
-    display: grid;
+    display: flex;
     flex-direction: column;
 
     align-items: center;
@@ -30,10 +28,7 @@
         .attendee_cam {
             width: 100%;
             height: 100%;
-            // border-radius: 50px;
             object-fit: cover;
-            // background: rgba(0, 0, 0, 0.2);
-            // backdrop-filter: blur(10px);
         }
 
         .video-container {
