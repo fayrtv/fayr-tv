@@ -31,7 +31,7 @@
         "video.js": "^7.10.2"
     },
     "scripts": {
-        "prepare": "husky install",
+        "prepare": "cd .. && husky install fayr-ivp/.husky",
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test --passWithNoTests",

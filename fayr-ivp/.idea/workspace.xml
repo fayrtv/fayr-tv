@@ -1,0 +1,555 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="be9798bd-43f0-4136-9307-8092078eadb4" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+    </option>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+        <option value="TypeScript JSX File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="random-streams" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="GitRewordedCommitMessages">
+    <option name="commitMessagesMapping">
+      <RewordedCommitMessageMapping>
+        <option name="originalMessage" value="Added an icon to disable emoji reactions and improved the immediacy of adding reactions" />
+        <option name="rewordedMessage" value="Added an icon to disable emoji reactions and improved the immediacy of adding reactions" />
+      </RewordedCommitMessageMapping>
+    </option>
+    <option name="currentCommit" value="1" />
+    <option name="onto" value="54d690bd50ba93e50f021fafbc4a45395c24d14c" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/components/chimeWeb/Intro/Join.tsx" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/serverless/template.yaml" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/components/chimeWeb/Meeting/MeetingContainer.tsx" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/index.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/components/chat/subcomponents/ChatLine.scss" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/config.ts" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="ProjectId" id="20qT1CU2L3GsmAPX5nMyMFpP4hE" />
+  <component name="ProjectLevelVcsManager">
+    <OptionsSetting value="false" id="Update" />
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="autoscrollToSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="js.last.introduce.type" value="CONST" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="yarn" />
+    <property name="prettierjs.PrettierConfiguration.Package" value="C:\projects\fayr\fayr_tv_live\node_modules\prettier" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="ts.external.directory.path" value="C:\projects\fayr\fayr_tv_live\node_modules\typescript\lib" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="Push.Settings">
+    <force-push-targets>
+      <force-push-target remote-path="upstream" branch="crlf-prettier" />
+      <force-push-target remote-path="origin" branch="main" />
+      <force-push-target remote-path="upstream" branch="meeting-rfc" />
+      <force-push-target remote-path="upstream" branch="room-title" />
+      <force-push-target remote-path="upstream" branch="welcome-tsx" />
+      <force-push-target remote-path="upstream" branch="chat-lines" />
+      <force-push-target remote-path="upstream" branch="serverless-ts" />
+      <force-push-target remote-path="origin" branch="disable-reactions-and-improvements" />
+      <force-push-target remote-path="upstream" branch="disable-reactions-and-improvements" />
+      <force-push-target remote-path="upstream" branch="colored-rail" />
+    </force-push-targets>
+  </component>
+  <component name="ReaderModeSettings">
+    <option name="showLigatures" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\projects\fayr\fayr_tv_live" />
+      <recent name="C:\projects\fayr\fayr_tv_live\src\redux\reducers" />
+    </key>
+    <key name="es6.move.members.recent.items">
+      <recent name="C:\projects\fayr\fayr_tv_live\src\components\chimeWeb\Meeting\meetingTypes.ts" />
+      <recent name="C:\projects\fayr\fayr_tv_live\src\components\chimeWeb\Meeting\storage.ts" />
+      <recent name="C:\projects\fayr\fayr_tv_live\src\components\chimeWeb\Meeting\MeetingContainer.tsx" />
+      <recent name="C:\projects\fayr\fayr_tv_live\src\hooks\usePersistedState.ts" />
+      <recent name="C:\projects\fayr\fayr_tv_live\src\components\chimeWeb\Intro\urls.ts" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\projects\fayr\fayr_tv_live\src\components\chimeWeb\Controls\emoji-reactions" />
+      <recent name="C:\projects\fayr\fayr_tv_live\src\components\chimeWeb\Meeting" />
+      <recent name="C:\projects\fayr\fayr_tv_live\src\components\common\interactivity" />
+    </key>
+  </component>
+  <component name="RunManager" selected="npm.start">
+    <configuration name="deploy.ps1" type="PowerShellRunType" factoryName="PowerShell" temporary="true" scriptUrl="$PROJECT_DIR$/serverless/deploy.ps1" commandOptions="-ExecutionPolicy Bypass" workingDirectory="C:\Users\josch" executablePath="$PROJECT_DIR$/../../../Windows/System32/WindowsPowerShell/v1.0/powershell.exe">
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="install" type="js.build_tools.npm" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="install" />
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="start" type="js.build_tools.npm">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="npm.install" />
+      <item itemvalue="npm.start" />
+      <item itemvalue="PowerShell.deploy.ps1" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="PowerShell.deploy.ps1" />
+        <item itemvalue="PowerShell.deploy.ps1" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="be9798bd-43f0-4136-9307-8092078eadb4" name="Changes" comment="" />
+      <created>1636770902428</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1636770902428</updated>
+      <workItem from="1636770905120" duration="31611000" />
+      <workItem from="1636913635201" duration="2665000" />
+      <workItem from="1638026903224" duration="11405000" />
+      <workItem from="1638105689844" duration="13333000" />
+      <workItem from="1638280781009" duration="13775000" />
+      <workItem from="1638399023291" duration="8693000" />
+      <workItem from="1638474120063" duration="6541000" />
+    </task>
+    <task id="LOCAL-00001" summary="Fixed ESLint warnings">
+      <created>1636771317844</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1636771317844</updated>
+    </task>
+    <task id="LOCAL-00002" summary="More WebStorm stuff">
+      <created>1636771354333</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1636771354333</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Fixed compile break">
+      <created>1636771768861</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1636771768861</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Fixed remaining warnings">
+      <created>1636771968544</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1636771968544</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Disable Spellchecks in WebStorm">
+      <created>1636836169026</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1636836169026</updated>
+    </task>
+    <task id="LOCAL-00006" summary="No more unnecessary setter">
+      <created>1636836181068</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1636836181068</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Extracted a formatJoinRoomUrl function">
+      <created>1636837770922</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1636837770922</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Made region optional (as it may not be present in every call)">
+      <created>1636837791524</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1636837791524</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Started converting Meeting.jsx to TypeScript (WIP)">
+      <created>1636837809940</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1636837809940</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Converted Meeting to functional React component">
+      <created>1636848509322</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1636848509322</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Converted Meeting to functional React component">
+      <created>1636848602864</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1636848602864</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Converted Meeting to functional React component">
+      <created>1636848769951</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1636848769951</updated>
+    </task>
+    <task id="LOCAL-00013" summary="- Moved Meeting-related components into dedicated folder&#10;- Extracted a JoinInfoForm &#10;- Fixed some bugs with the Meeting component implementation&#10;- Unsubscribe from update handlers where possible in useEffect cleanup">
+      <created>1636909317415</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1636909317415</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Turned Error to TypeScript FC aswell">
+      <created>1636910011887</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1636910011887</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Incorporated Stefan's suggestions">
+      <created>1636913797969</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1636913797969</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Ran prettier on changes">
+      <created>1636913915282</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1636913915282</updated>
+    </task>
+    <task id="LOCAL-00017" summary="roomCode -&gt; roomTitle">
+      <created>1638027978907</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1638027978907</updated>
+    </task>
+    <task id="LOCAL-00018" summary="roomCode -&gt; roomTitle">
+      <created>1638028045757</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1638028045757</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Converted Welcome.jsx to TypeScript">
+      <created>1638029139259</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1638029139259</updated>
+    </task>
+    <task id="LOCAL-00020" summary="roomCode -&gt; roomTitle">
+      <created>1638029177914</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1638029177914</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Converted Welcome.jsx to TypeScript">
+      <created>1638029571956</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1638029571956</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Converted End.jsx to TypeScript">
+      <created>1638029586325</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1638029586325</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Improved styling of chat lines (with timestamps)">
+      <created>1638029943113</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1638029943113</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Removed unnecessary trailing slash from CHIME_ROOM_API">
+      <created>1638033904024</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1638033904024</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Disable chat's &quot;Send&quot; button when input is empty">
+      <created>1638033917895</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1638033917895</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Added loading screen for chat initialization">
+      <created>1638034790115</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1638034790115</updated>
+    </task>
+    <task id="LOCAL-00027" summary="mergeme">
+      <created>1638034976218</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1638034976218</updated>
+    </task>
+    <task id="LOCAL-00028" summary="ServiceWorker to TypeScript">
+      <created>1638035471939</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1638035471939</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Double click video for full screen">
+      <created>1638056215614</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1638056215614</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Converted serverless backend to TypeScript">
+      <created>1638111083649</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1638111083649</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Converted serverless backend to TypeScript">
+      <created>1638111240468</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1638111240468</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Added amplify.yml configuration to repo">
+      <created>1638117164948</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1638117164948</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Added an icon to disable emoji reactions and improved the immediacy of adding reactions">
+      <created>1638407819066</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1638407819066</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Added an icon to disable emoji reactions and improved the immediacy of adding reactions">
+      <created>1638408046583</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1638408046583</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Added an icon to disable emoji reactions and improved the immediacy of adding reactions">
+      <created>1638408193032</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1638408193032</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Added an icon to disable emoji reactions and improved the immediacy of adding reactions">
+      <created>1638408230405</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1638408230405</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Colored volume slider">
+      <created>1638481784384</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1638481784384</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Colored volume slider">
+      <created>1638481898103</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1638481898103</updated>
+    </task>
+    <task id="LOCAL-00039" summary="Start random streams">
+      <created>1638483972050</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1638483972050</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+      </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="9a846fcd-cceb-43d6-baee-8ffb06fb1ae3">
+          <value>
+            <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="true" />
+                </map>
+              </option>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="roots">
+                    <value>
+                      <list>
+                        <option value="$PROJECT_DIR$" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="random-streams" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="9a846fcd-cceb-43d6-baee-8ffb06fb1ae3" value="TOOL_WINDOW" />
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
+    <MESSAGE value="Disable Spellchecks in WebStorm" />
+    <MESSAGE value="No more unnecessary setter" />
+    <MESSAGE value="Extracted a formatJoinRoomUrl function" />
+    <MESSAGE value="Made region optional (as it may not be present in every call)" />
+    <MESSAGE value="Started converting Meeting.jsx to TypeScript (WIP)" />
+    <MESSAGE value="Converted Meeting to functional React component" />
+    <MESSAGE value="- Moved Meeting-related components into dedicated folder&#10;- Extracted a JoinInfoForm &#10;- Fixed some bugs with the Meeting component implementation&#10;- Unsubscribe from update handlers where possible in useEffect cleanup" />
+    <MESSAGE value="Turned Error to TypeScript FC aswell" />
+    <MESSAGE value="Incorporated Stefan's suggestions" />
+    <MESSAGE value="Ran prettier on changes" />
+    <MESSAGE value="roomCode -&gt; roomTitle" />
+    <MESSAGE value="Converted Welcome.jsx to TypeScript" />
+    <MESSAGE value="Converted End.jsx to TypeScript" />
+    <MESSAGE value="Improved styling of chat lines (with timestamps)" />
+    <MESSAGE value="Removed unnecessary trailing slash from CHIME_ROOM_API" />
+    <MESSAGE value="Disable chat's &quot;Send&quot; button when input is empty" />
+    <MESSAGE value="Added loading screen for chat initialization" />
+    <MESSAGE value="mergeme" />
+    <MESSAGE value="ServiceWorker to TypeScript" />
+    <MESSAGE value="Double click video for full screen" />
+    <MESSAGE value="Converted serverless backend to TypeScript" />
+    <MESSAGE value="Added amplify.yml configuration to repo" />
+    <MESSAGE value="Added an icon to disable emoji reactions and improved the immediacy of adding reactions" />
+    <MESSAGE value="Colored volume slider" />
+    <MESSAGE value="Start random streams" />
+    <option name="LAST_COMMIT_MESSAGE" value="Start random streams" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
