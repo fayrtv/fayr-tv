@@ -1,7 +1,9 @@
+@use "../../../mediaQueries" as mq;
+
 .ParticipantVideoGroup {
     height: 100%;
 
-    @media (max-width: 480px) {
+    @media (max-width: mq.$mobile) {
         .cam {
             display: flex;
             flex-direction: row;
