@@ -84,6 +84,12 @@ Resources:
             AttributeDefinitions:
                 - AttributeName: "AttendeeId"
                   AttributeType: "S"
+                - AttributeName: "Name"
+                  AttributeType: "S"
+                - AttributeName: "TTL"
+                  AttributeType: "N"
+                - AttributeName: "Role"
+                  AttributeType: "S"
             KeySchema:
                 - AttributeName: "AttendeeId"
                   KeyType: "HASH"
