@@ -87,7 +87,7 @@ export const ReactionButtonSelection = ({ onClose }: Props) => {
                 <span style={{ marginLeft: 2, marginRight: 10, display: "inherit" }}>
                     <ReactionsDisabledIcon
                         onClick={() => setReactionsDisabled(true)}
-                        color="black"
+                        color="#D2D2D2"
                         size="1.75em"
                     />
                 </span>

@@ -338,7 +338,7 @@ a.btn {
 .select__field {
     -webkit-appearance: none;
     -moz-appearance: none;
-    background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg fill='#D2D2D2' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
     background-repeat: no-repeat;
     background-position-x: 100%;
     background-position-y: 5px;
@@ -438,8 +438,6 @@ a.btn {
 .player-btn--icon {
     width: var(--btn-size);
     height: var(--btn-size);
-    justify-content: center;
-    align-items: center;
 }
 
 .player-btn:focus {
@@ -451,7 +449,9 @@ a.btn {
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(5px);
     border-radius: 5px;
-    size: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .player-btn--pause .player-icon--pause {
@@ -467,5 +467,13 @@ a.btn {
 }
 
 .player-btn--unmute .player-icon--volume_up {
+    display: none;
+}
+
+.player-btn--minimize .player-icon--fullscreen_off {
+    display: none;
+}
+
+.player-btn--maximize .player-icon--fullscreen_on {
     display: none;
 }
