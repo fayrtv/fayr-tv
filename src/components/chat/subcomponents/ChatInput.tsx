@@ -93,7 +93,7 @@ export const ChatInput = ({ inputRef, userName }: Props) => {
                             onClick={() => setEmojiPickerOpen(!emojiPickerOpen)}
                         >
                             <div className={styles.EmojiIcon}>
-                                <Emoji text=":)" />
+                                <Emoji text=";)" />
                             </div>
                         </div>
                         {emojiPickerOpen && (
