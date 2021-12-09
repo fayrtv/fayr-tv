@@ -1,6 +1,6 @@
 {
-    "short_name": "FAYR TV Studio",
-    "name": "The self-service video stream builder",
+    "short_name": "FAYR TV Web App",
+    "name": "The MVP of FAYR TV build in React and deployed on AWS using SAM and IVS",
     "icons": [
         {
             "src": "favicon.ico",
