@@ -1,0 +1,17 @@
+version: 1
+frontend:
+  phases:
+    - cd fayr-ivp
+    preBuild:
+      commands:
+        - yarn install
+    build:
+      commands:
+        - yarn run build
+  artifacts:
+    baseDirectory: build
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
