@@ -15,6 +15,7 @@ import {
 import copy from "copy-to-clipboard";
 import lz from "lzutf8";
 import React, { useState } from "react";
+import tw from "twin.macro";
 
 export const Topbar = () => {
     const { actions, query, enabled, canUndo, canRedo } = useEditor((state, query) => ({
@@ -29,7 +30,7 @@ export const Topbar = () => {
     const [stateToLoad, setStateToLoad] = useState<string | null>(null);
 
     return (
-        <Box px={1} py={1} mt={3} mb={1} bgcolor="#cbe8e7">
+        <Box px={1} py={1} mt={3} mb={1} tw="bg-red-100">
             <Grid container alignItems="center">
                 <Grid item xs>
                     <FormControlLabel
