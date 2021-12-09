@@ -20,7 +20,7 @@ export const Toolbox = () => {
         container
         direction="column"
         alignItems="center"
-        justify="center"
+        justifyContent="center"
         spacing={1}
       >
         <Box pb={2}>
