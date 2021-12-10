@@ -1,10 +1,12 @@
+@use "../../mediaQueries" as mq;
+
 .CamSection {
     height: 100vh;
 
     .HighlightVideoWrapper {
         height: 25%;
 
-        @media (max-width: 480px) {
+        @media (max-width: mq.$mobile) {
             height: 35%;
             width: auto;
         }
@@ -13,7 +15,7 @@
     .ParticipantVideoWrapper {
         height: 75%;
 
-        @media (max-width: 480px) {
+        @media (max-width: mq.$mobile) {
             height: 65%;
         }
     }

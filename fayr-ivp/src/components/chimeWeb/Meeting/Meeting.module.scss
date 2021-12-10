@@ -1,10 +1,12 @@
+@use "../../mediaQueries" as mq;
+
 @mixin CamSection {
     height: 100vh;
 
     .HighlightVideoWrapper {
         height: 25%;
 
-        @media (max-width: 480px) {
+        @media (max-width: mq.$mobile) {
             height: 35%;
             width: auto;
         }
@@ -13,7 +15,7 @@
     .ParticipantVideoWrapper {
         height: 75%;
 
-        @media (max-width: 480px) {
+        @media (max-width: mq.$mobile) {
             height: 65%;
         }
     }
@@ -25,7 +27,7 @@
         overflow-x: hidden;
         position: relative;
 
-        @media (max-width: 480px) {
+        @media (max-width: mq.$mobile) {
             flex-grow: 3;
             height: unset;
         }
@@ -41,11 +43,11 @@
             height: 100%;
         }
 
-        @media (max-width: 960px) {
+        @media (max-width: mq.$largeScreens) {
             width: 25%;
         }
 
-        @media (max-width: 480px) {
+        @media (max-width: mq.$mobile) {
             flex-grow: 1;
             max-height: 50%;
             width: 100%;

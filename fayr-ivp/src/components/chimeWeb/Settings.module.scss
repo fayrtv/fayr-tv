@@ -1,11 +1,12 @@
-@import "../../styles/animations";
+@use "../../styles/animations";
+@use "../mediaQueries" as mq;
 
 .SettingsContainer {
-    @media (max-width: 960px) {
+    @media (max-width: mq.$largeScreens) {
         overflow-y: auto;
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: mq.$mobile) {
         width: 100%;
     }
 

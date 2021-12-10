@@ -1,10 +1,12 @@
+@use "../mediaQueries" as mq;
+
 :root {
     --chat-row-template: 1fr 8rem;
     --room-link-label-font-size: 1.6rem;
     --composer-font-size: var(--room-link-label-font-size);
 }
 
-@media (max-width: 960px) {
+@media (max-width: mq.$largeScreens) {
     /* Large Screens and below */
     :root {
         --chat-row-template: 1fr 5rem;
