@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import { RoomMemberRole } from "types/Room";
+
+import { IChimeSdkWrapper } from "components/chime/ChimeSdkWrapper";
+
 import * as config from "../../config";
 import Error from "./Error";
-import { formatMeetingSsKey } from "./Meeting/storage";
 import { JoinInfoForm } from "./JoinInfoForm";
-import { RoomMemberRole } from "types/Room";
-import { IChimeSdkWrapper } from "components/chime/ChimeSdkWrapper";
+import { formatMeetingSsKey } from "./Meeting/storage";
 
 type Props = RouteComponentProps & {
     chime: IChimeSdkWrapper;

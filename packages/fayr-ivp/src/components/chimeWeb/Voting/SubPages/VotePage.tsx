@@ -1,15 +1,16 @@
 // Framework
 import * as React from "react";
 
-// Components
-import {Flex} from "@fayr/shared-components";
-import Grid from "components/common/GridLayout/Grid";
 import Cell from "components/common/GridLayout/Cell";
+import Grid from "components/common/GridLayout/Grid";
 
-import VoteCounter from "../VoteCounter";
+// Components
+import { Flex } from "@fayr/shared-components";
 
 // Styles
 import styles from "./VotePage.module.scss";
+
+import VoteCounter from "../VoteCounter";
 import { VotingData } from "../types";
 
 type Props = {

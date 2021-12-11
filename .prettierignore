@@ -1,7 +1,10 @@
-.vscode/
+**/.vscode/
 .husky/
-.idea/
-node_modules/
+**/.idea/
+**/node_modules/
 **/lib/
 **/dist/
 **/build/
+
+# For some reason this causes trouble
+packages/fayr-ivp/src/index.js

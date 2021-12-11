@@ -2,11 +2,11 @@
 import Cell from "components/common/GridLayout/Cell";
 import Grid from "components/common/GridLayout/Grid";
 
-// Types
-import { LocalVideoInfo } from "../types";
-
 // Styles
 import styles from "./ParticipantVideoGroup.module.scss";
+
+// Types
+import { LocalVideoInfo } from "../types";
 
 type Props = {
     localVideoInfo: LocalVideoInfo;

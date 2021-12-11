@@ -1,17 +1,20 @@
-import React, { MouseEventHandler } from "react";
 import { isPlayerSupported, MediaPlayer, PlayerEventType, PlayerState } from "amazon-ivs-player";
-import * as config from "../../config";
-import { SelectedReactionContext } from "components/contexts/SelectedReactionContext";
-import { SocketEventType } from "../chime/types";
-import { EmojiReactionTransferObject } from "../chimeWeb/types";
+import React, { MouseEventHandler } from "react";
+import { makeid } from "util/guidHelper";
+
+import useManyClickHandlers from "hooks/useManyClickHandlers";
 import useSocket from "hooks/useSocket";
-import StreamVolumeControl from "./controls/StreamVolumeControl";
+
+import { EMOJI_SIZE } from "components/chimeWeb/Controls/emoji-reactions/EmojiReactionButton";
+import Emoji from "components/common/Emoji";
+import { SelectedReactionContext } from "components/contexts/SelectedReactionContext";
 
 import styles from "./VideoPlayer.module.scss";
-import Emoji from "components/common/Emoji";
-import { makeid } from "util/guidHelper";
-import useManyClickHandlers from "hooks/useManyClickHandlers";
-import { EMOJI_SIZE } from "components/chimeWeb/Controls/emoji-reactions/EmojiReactionButton";
+
+import * as config from "../../config";
+import { SocketEventType } from "../chime/types";
+import { EmojiReactionTransferObject } from "../chimeWeb/types";
+import StreamVolumeControl from "./controls/StreamVolumeControl";
 
 type Props = {
     videoStream: string;

@@ -1,8 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 // Framework
-import * as React from "react";
 import { MediaPlayer } from "amazon-ivs-player";
-
+import * as React from "react";
 // Functionality
 import { useMediaQuery } from "react-responsive";
 

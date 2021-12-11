@@ -1,12 +1,12 @@
 // Framework
-import React, { useMemo } from "react";
 import moment from "moment";
-
-// Types
-import { Message } from "../types";
+import React, { useMemo } from "react";
 
 // Styles
 import "./ChatLine.scss";
+
+// Types
+import { Message } from "../types";
 
 const urlRegExp =
     /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_.~#?&//=]*)/g;

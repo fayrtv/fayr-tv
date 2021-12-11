@@ -1,5 +1,6 @@
-import { ReducerAction } from "../types";
 import { AttendeeVote, VotingData } from "components/chimeWeb/Voting/types";
+
+import { ReducerAction } from "../types";
 
 const VOTING_CREATED = "VOTING_CREATED";
 const VOTING_UPDATE_VOTE = "VOTING_UPDATE_VOTE";

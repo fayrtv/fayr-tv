@@ -1,6 +1,5 @@
 // Framework
 import * as redux from "redux";
-
 // Functionality
 import {
     reducer as chatMessageReducer,

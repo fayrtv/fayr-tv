@@ -1,15 +1,19 @@
-import "../Cam.scss";
-import styles from "./ParticipantVideo.module.scss";
-import { Flex } from "@fayr/shared-components";
+import React from "react";
+import { CSSTransition } from "react-transition-group";
+import { Nullable } from "types/global";
+
+import useSocket from "hooks/useSocket";
+
 import { IChimeSdkWrapper } from "components/chime/ChimeSdkWrapper";
 import { SocketEventType } from "components/chime/types";
 import { EmojiReactionTransferObject } from "components/chimeWeb/types";
 import Emoji from "components/common/Emoji";
 import MaterialIcon from "components/common/MaterialIcon";
-import useSocket from "hooks/useSocket";
-import React from "react";
-import { CSSTransition } from "react-transition-group";
-import { Nullable } from "types/global";
+
+import { Flex } from "@fayr/shared-components";
+
+import "../Cam.scss";
+import styles from "./ParticipantVideo.module.scss";
 
 type Props = {
     muted: boolean;

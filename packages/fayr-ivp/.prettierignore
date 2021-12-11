@@ -1,5 +1,1 @@
-.vscode/
-.idea/
-node_modules/
-dist/
-build/
+src/index.js

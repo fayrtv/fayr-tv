@@ -1,22 +1,23 @@
 import React, { SetStateAction } from "react";
-import * as config from "../../../config";
 
-// Components
-import VideoPlayer from "../../videoPlayer/VideoPlayer";
-import Chat from "../../chat/Chat";
-import Controls from "../Controls";
-import Settings from "../Settings";
-import Error from "components/chimeWeb/Error";
-import VotingContainer from "../Voting/VotingContainer";
 import ChimeSdkWrapper from "components/chime/ChimeSdkWrapper";
+import Error from "components/chimeWeb/Error";
+import { MeetingStatus, SSData } from "components/chimeWeb/Meeting/meetingTypes";
+import { formatMeetingSsKey } from "components/chimeWeb/Meeting/storage";
 import { JoinInfo } from "components/chimeWeb/types";
 
 // Styles
 import "../ChimeWeb.scss";
 import styles from "./Meeting.module.scss";
-import { formatMeetingSsKey } from "components/chimeWeb/Meeting/storage";
-import { MeetingStatus, SSData } from "components/chimeWeb/Meeting/meetingTypes";
+
+import * as config from "../../../config";
+import Chat from "../../chat/Chat";
+// Components
+import VideoPlayer from "../../videoPlayer/VideoPlayer";
 import CamSection from "../Cams/CamSection";
+import Controls from "../Controls";
+import Settings from "../Settings";
+import VotingContainer from "../Voting/VotingContainer";
 
 type PublicProps = {
     chime: ChimeSdkWrapper;

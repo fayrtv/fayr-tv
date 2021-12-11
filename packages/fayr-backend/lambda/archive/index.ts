@@ -1,8 +1,8 @@
 // noinspection JSUnusedGlobalSymbols
-import AWS, { DynamoDB } from "aws-sdk";
-import { Meeting } from "aws-sdk/clients/chime";
 import { APIGatewayProxyHandler, Handler } from "aws-lambda";
 import { APIGatewayProxyEvent } from "aws-lambda/trigger/api-gateway-proxy";
+import AWS, { DynamoDB } from "aws-sdk";
+import { Meeting } from "aws-sdk/clients/chime";
 
 type DynamoNumber = { N: string };
 type DynamoString = { S: string };

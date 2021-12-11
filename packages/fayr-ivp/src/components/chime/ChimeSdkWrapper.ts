@@ -11,13 +11,13 @@ import {
     ReconnectingPromisedWebSocket,
     AudioVideoFacade,
 } from "amazon-chime-sdk-js";
-
 import throttle from "lodash/throttle";
-import { Nullable, Callback } from "../../types/global";
+
 import * as config from "../../config";
+import { Nullable, Callback } from "../../types/global";
 import { JoinInfo } from "../chimeWeb/types";
-import { ISocketProvider } from "./types";
 import SocketProvider from "./SocketProvider";
+import { ISocketProvider } from "./types";
 
 export type DeviceInfo = {
     label: string;

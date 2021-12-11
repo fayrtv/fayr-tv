@@ -1,23 +1,23 @@
 import React from "react";
-import ChatLine from "./subcomponents/ChatLine";
-import ChatInput from "./subcomponents/ChatInput";
-import { ChatOpenContext } from "../contexts/ChatOpenContext";
 import { connect } from "react-redux";
-import { ReduxStore } from "../../redux/store";
 import { Action, Dispatch } from "redux";
-
 // Functionality
 import { addMessage, markAsSeen } from "redux/reducers/chatMessageReducer";
-import { IChimeSocket } from "../chime/ChimeSdkWrapper";
-import { CouldBeArray } from "../../util/collectionUtil";
-import { useSocket } from "hooks/useSocket";
 
-// Types
-import { Message, MessageTransferObject } from "./types";
-import { SocketEventType } from "../chime/types";
+import { useSocket } from "hooks/useSocket";
 
 // Styles
 import "./Chat.scss";
+
+import { ReduxStore } from "../../redux/store";
+import { CouldBeArray } from "../../util/collectionUtil";
+import { IChimeSocket } from "../chime/ChimeSdkWrapper";
+import { SocketEventType } from "../chime/types";
+import { ChatOpenContext } from "../contexts/ChatOpenContext";
+import ChatInput from "./subcomponents/ChatInput";
+import ChatLine from "./subcomponents/ChatLine";
+// Types
+import { Message, MessageTransferObject } from "./types";
 
 type Props = {
     chimeSocket: IChimeSocket;

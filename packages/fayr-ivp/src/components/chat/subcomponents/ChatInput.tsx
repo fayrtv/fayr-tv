@@ -1,14 +1,19 @@
-import { SocketEventType } from "../../chime/types";
-import { MessageTransferObject } from "../types";
-import styles from "./ChatInput.module.scss";
-import { LoadingAnimation } from "@fayr/shared-components";
-import Emoji from "components/common/Emoji";
 import Picker from "emoji-picker-react";
-import useGlobalClickHandler from "hooks/useGlobalClickHandler";
-import { useSocket } from "hooks/useSocket";
 import React, { useState } from "react";
 import { isInRect } from "util/coordinateUtil";
 import { isFalsyOrWhitespace } from "util/stringUtils";
+
+import useGlobalClickHandler from "hooks/useGlobalClickHandler";
+import { useSocket } from "hooks/useSocket";
+
+import Emoji from "components/common/Emoji";
+
+import { LoadingAnimation } from "@fayr/shared-components";
+
+import styles from "./ChatInput.module.scss";
+
+import { SocketEventType } from "../../chime/types";
+import { MessageTransferObject } from "../types";
 
 type Props = {
     inputRef: React.RefObject<HTMLInputElement>;

@@ -1,10 +1,10 @@
 // Framework
 import * as React from "react";
 
+import styles from "./styles/VotingMenuEntry.module.scss";
+
 // Types
 import { VotingPage } from "./types";
-
-import styles from "./styles/VotingMenuEntry.module.scss";
 
 type Props = {
     content: React.ReactNode;

@@ -3,13 +3,13 @@ import * as React from "react";
 
 // Functionality
 import useEventHandler from "hooks/useEventHandler";
-import * as config from "../../config";
-
-// Types
-import { JoinInfo } from "./types";
 
 // Styles
 import styles from "./Settings.module.scss";
+
+import * as config from "../../config";
+// Types
+import { JoinInfo } from "./types";
 
 type Props = {
     chime: any;
