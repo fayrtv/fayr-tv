@@ -10,8 +10,8 @@
     "scripts": {
         "prepare": "husky install",
         "build": "lerna run build",
-        "format": "prettylint \"packages/**/*.{ts,js,html,jsx,tsx,css,less,scss,json}\" --fix",
-        "format-check": "prettylint \"packages/**/*.{ts,js,html,jsx,tsx,css,less,scss,json}\"",
+        "format": "prettylint \"**/*.{ts,js,html,jsx,tsx,css,less,scss,json}\" --fix",
+        "format-check": "prettylint \"**/*.{ts,js,html,jsx,tsx,css,less,scss,json}\"",
         "test": "lerna run test"
     },
     "devDependencies": {
