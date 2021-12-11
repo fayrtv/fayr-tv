@@ -46,10 +46,10 @@ export default function Layout({ main, sidebar }: Props) {
                     <div className="w-full py-6 flex flex-col items-center">
                         <div className="flex-shrink-0 flex items-center">
                             <img
-                                src="https://i.ibb.co/jGzKGYw/fayrtv-logo.png"
+                                src="https://fayr-logo-v001.s3.eu-central-1.amazonaws.com/svg/fayr_logo_main.svg"
                                 className="h-8 w-auto"
                                 alt="fayrtv-logo"
-                                height="200"
+                                height="70"
                                 style={{ border: "none" }}
                             />
                         </div>
