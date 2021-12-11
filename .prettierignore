@@ -9,5 +9,5 @@
 # For some reason this causes trouble
 packages/fayr-ivp/src/index.js
 
-# For some reason this causes trouble
+# Gets dynamically built
 packages/fayr-studio/src/assets/styles.css
