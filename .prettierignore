@@ -8,3 +8,6 @@
 
 # For some reason this causes trouble
 packages/fayr-ivp/src/index.js
+
+# For some reason this causes trouble
+packages/fayr-studio/src/assets/styles.css
