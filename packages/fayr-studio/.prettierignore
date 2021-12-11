@@ -1,6 +1,0 @@
-.vscode/
-.husky/
-.idea/
-build/
-dist/
-node_modules/
