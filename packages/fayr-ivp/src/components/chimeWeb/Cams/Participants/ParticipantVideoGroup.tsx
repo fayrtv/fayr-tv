@@ -18,7 +18,7 @@ export const ParticipantVideoGroup = ({ localVideoInfo, participantVideos }: Pro
         <Grid
             gridProperties={{
                 gap: 0,
-                gridTemplateRows: "repeat(5, 1fr)",
+                gridTemplateRows: "repeat(5, 20%)",
                 gridTemplateColumns: "repeat(2, 50%)",
             }}
             className={styles.ParticipantVideoGroup}

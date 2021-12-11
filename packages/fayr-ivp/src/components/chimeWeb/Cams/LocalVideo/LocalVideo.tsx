@@ -83,7 +83,7 @@ const LocalVideo = ({ chime, joinInfo, pin }: Props) => {
     const showMetaCombined = showMeta || muted || !enabled;
 
     const micMuteCls = muted ? "controls__btn--mic_on" : "controls__btn--mic_off";
-    const metaCls = showMetaCombined ? "" : " cam__meta--hide";
+    const metaCls = showMetaCombined ? "" : " participantMeta--hide";
 
     return (
         <div
@@ -98,7 +98,7 @@ const LocalVideo = ({ chime, joinInfo, pin }: Props) => {
                     </div>
                 </div>
                 <Flex
-                    className={`cam__meta ${metaCls}`}
+                    className={`participantMeta ${metaCls}`}
                     id={`${joinInfo.Attendee.AttendeeId}`}
                     space="Between"
                 >

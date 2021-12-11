@@ -106,7 +106,7 @@ const ParticipantVideo = ({
     const showMetaCombined = showMeta || muted || !videoEnabled;
     const micMuteCls = muted ? "controls__btn--mic_on" : "controls__btn--mic_off";
     const micTalkingIndicator = talking ? "controls__btn--talking" : "";
-    const metaCls = showMetaCombined ? "" : " cam__meta--hide";
+    const metaCls = showMetaCombined ? "" : " participantMeta--hide";
     const videoId = `video_${attendeeId}`;
 
     return (
@@ -142,12 +142,12 @@ const ParticipantVideo = ({
                 </div>
             </div>
             <Flex
-                className={`cam__meta${metaCls} ${micTalkingIndicator}`}
+                className={`participantMeta${metaCls} ${micTalkingIndicator}`}
                 direction="Row"
                 space="Between"
             >
-                <span className="cam__meta_name">{name}</span>
-                <Flex mainAlign="Center" direction="Row">
+                <span className="participantMeta_name">{name}</span>
+                <Flex mainAlign="Center" direction="Row" className={styles.ParticipantControls}>
                     <span className={`${micMuteCls} btn--mic`} data-id={attendeeId}>
                         <svg
                             className="attendee mg-l-1 btn__svg btn__svg--sm btn__svg--mic_on"

@@ -338,7 +338,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
                 playsInline
             />
             {reactions}
-            {fullScreen && <div className="FullScreenCams">{fullScreenCamSection}</div>}
+            {fullScreen && <div className={styles.FullScreenCams}>{fullScreenCamSection}</div>}
         </div>
     );
 };
