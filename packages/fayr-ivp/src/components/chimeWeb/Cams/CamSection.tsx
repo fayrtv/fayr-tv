@@ -144,8 +144,17 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
         const localRoster: Roster = [];
         previousRoster.current = storedRoster;
 
+        const videoTiles = chime.audioVideo.videoTileController.getAllVideoTiles();
+
         for (let i = 0; i < MAX_REMOTE_VIDEOS; ++i) {
             localRoster[i] = storedRoster[i + 1] ?? ({} as Attendee);
+            const boundTile = videoTiles.find(
+                (x: any) => x.tileState.boundAttendeeId === localRoster[i].attendeeId,
+            );
+
+            if (boundTile) {
+                localRoster[i].tileId = boundTile.tileState.tileId;
+            }
         }
 
         setRoster(localRoster);

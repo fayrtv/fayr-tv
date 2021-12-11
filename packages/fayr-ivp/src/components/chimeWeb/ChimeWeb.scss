@@ -395,24 +395,6 @@ a.btn {
     }
 }
 
-.FullScreenCams {
-    width: 20%;
-    z-index: 5000;
-
-    > div {
-        height: 100%;
-    }
-
-    @media (max-width: mq.$mobile) {
-        height: 50%;
-        width: 100%;
-    }
-}
-
-.FullScreenCams {
-    height: 100%;
-}
-
 .overlay--hover #player-controls {
     background: rgba(0, 0, 0, 0);
 }
