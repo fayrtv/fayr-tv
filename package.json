@@ -15,11 +15,11 @@
         "test": "lerna run test"
     },
     "devDependencies": {
-        "lerna": "^4.0.0",
+        "@trivago/prettier-plugin-sort-imports": "^2.0.4",
         "husky": "^7.0.0",
+        "lerna": "^4.0.0",
         "prettier": "^2.4.1",
         "pretty-quick": "^3.1.1",
-        "prettylint": "^1.0.0",
-        "@trivago/prettier-plugin-sort-imports": "^2.0.4"
+        "prettylint": "^1.0.0"
     }
 }
