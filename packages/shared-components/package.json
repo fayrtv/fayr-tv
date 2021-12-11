@@ -1,0 +1,28 @@
+{
+    "name": "@fayr/shared-components",
+    "version": "1.0.0",
+    "main": "lib/index.js",
+    "scripts": {
+        "build": "yarn clean && tsc && yarn copy-files",
+        "dev": "tsc -w",
+        "clean": "rimraf lib/",
+        "copy-files": "copyfiles -u 1 src/**/*.scss lib/"
+    },
+    "devDependencies": {
+        "@types/node-sass": "^4.11.2",
+        "@types/react": "^17.0.37",
+        "copyfiles": "^2.4.1",
+        "node-sass": "^7.0.0",
+        "react": "^17.0.2",
+        "rimraf": "^3.0.2",
+        "typescript": "^4.5.0"
+    },
+    "dependencies": {
+        "@types/react-dom": "^17.0.11",
+        "classnames": "^2.3.1",
+        "react-dom": "^17.0.2",
+        "react-emoji-render": "^1.2.4",
+        "styled-components": "^5.3.3",
+        "twin.macro": "^2.8.2"
+    }
+}
