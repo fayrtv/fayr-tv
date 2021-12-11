@@ -4,4 +4,4 @@ module.exports = {
         config: "./src/tailwind.config.js",
         format: "auto",
     },
-}
+};

@@ -8,8 +8,8 @@
         ]
     },
     "scripts": {
-        "build": "lerna run build",
         "prepare": "husky install",
+        "build": "lerna run build",
         "format": "prettylint \"**/*.{ts,js,html,jsx,tsx,css,less,scss,json}\" --fix",
         "format-check": "prettylint \"**/*.{ts,js,html,jsx,tsx,css,less,scss,json}\""
     },

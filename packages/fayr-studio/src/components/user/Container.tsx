@@ -55,7 +55,9 @@ export const ContainerSettings = () => {
                 <FormLabel component="legend">Padding</FormLabel>
                 <Slider
                     defaultValue={padding}
-                    onChange={(_, value) => setProp((props: NodeData["props"]) => (props.padding = value), 500)}
+                    onChange={(_, value) =>
+                        setProp((props: NodeData["props"]) => (props.padding = value), 500)
+                    }
                 />
             </FormControl>
         </div>
