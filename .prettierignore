@@ -1,6 +1,7 @@
 .vscode/
 .husky/
 .idea/
-dist/
 node_modules/
 **/lib/
+**/dist/
+**/build/
