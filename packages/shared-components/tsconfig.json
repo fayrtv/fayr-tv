@@ -1,14 +1,14 @@
 {
-  "compilerOptions": {
-    "baseUrl": "./src",
-    "outDir": "lib",
-    "module": "es6",
-    "target": "es5",
-    "declaration": true,
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "jsx": "react"
-  },
-  "include": ["src"],
-  "exclude": ["node_modules", "lib"]
+    "compilerOptions": {
+        "baseUrl": "./src",
+        "outDir": "lib",
+        "module": "es6",
+        "target": "es5",
+        "declaration": true,
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+        "jsx": "react"
+    },
+    "include": ["src"],
+    "exclude": ["node_modules", "lib"]
 }
