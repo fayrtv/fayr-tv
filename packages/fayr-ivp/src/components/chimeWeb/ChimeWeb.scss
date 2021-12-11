@@ -427,15 +427,10 @@ a.btn {
     cursor: pointer;
     border: 2px solid transparent;
     -webkit-appearance: none;
-    background: transparent;
     bottom: 10px;
     padding: 0;
-    display: flex;
     flex-shrink: 0;
     flex-wrap: nowrap;
-    display: none;
-    border-radius: 2px;
-
     fill: #d9d9d9;
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(5px);
