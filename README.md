@@ -4,6 +4,10 @@
 
 This is the monorepository of FAYR.
 
+## Initial project setup
+
+`yarn run setup`
+
 ## Benefits of Lerna
 
 -   Can manage recursive internal dependencies. Same logic for both internal and external dependencies, it's completely transparent.

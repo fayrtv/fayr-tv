@@ -8,6 +8,7 @@
         ]
     },
     "scripts": {
+        "setup": "npx lerna bootstrap && yarn build && yarn prepare",
         "prepare": "husky install",
         "build": "lerna run build",
         "format": "prettylint \"**/*.{ts,js,html,jsx,tsx,css,less,scss,json}\" --fix",
