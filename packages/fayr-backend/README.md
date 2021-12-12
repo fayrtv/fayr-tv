@@ -1,10 +1,12 @@
-# Amazon IVS + Chime Demo
+# FAYT Serverless Deployment
+
+This manual shows you how to deploy the serverless function to AWS. During this process you will deploy a cloudformation stack which will give you at the end two output links, an Chime API URL (for WebRTC) and a WebSocket link (for the chat).
 
 ## Prerequisites
 
-- Access to AWS Account with permission to create IAM role, DynamoDB, Lambda, API Gateway, S3, and Cloudformation.
-- [AWS CLI Version 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
-- [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html)
+-   Access to AWS Account with permission to create IAM role, DynamoDB, Lambda, API Gateway, S3, and Cloudformation.
+-   [AWS CLI Version 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
+-   [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html)
 
 ## Deploy from your local machine
 
@@ -18,8 +20,8 @@ For additional help on configuring, please see https://docs.aws.amazon.com/cli/l
 
 ### 1. Create an S3 bucket
 
-- Replace `<my-bucket-name>` with your bucket name.
-- Replace `<my-region>` with your region name.
+-   Replace `<my-bucket-name>` with your bucket name.
+-   Replace `<my-region>` with your region name.
 
 ```
 aws s3api create-bucket --bucket <my-bucket-name> --region <my-region> \
