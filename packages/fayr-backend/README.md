@@ -1,4 +1,4 @@
-# FAYT Serverless Deployment
+# FAYR Serverless Deployment
 
 This manual shows you how to deploy the serverless function to AWS. During this process you will deploy a cloudformation stack which will give you at the end two output links, an Chime API URL (for WebRTC) and a WebSocket link (for the chat).
 
