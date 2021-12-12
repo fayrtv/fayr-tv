@@ -2,7 +2,7 @@ import React from "react";
 
 const steps = [
     { id: "Schritt 1", name: "Welcome Screen", href: "#", status: "complete" },
-    { id: "Schritt 2", name: "Interactive Video Player", href: "#", status: "current" },
+    { id: "Schritt 2", name: "Video Player", href: "#", status: "current" },
 ];
 
 export default function Steps() {
