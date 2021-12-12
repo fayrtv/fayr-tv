@@ -1,16 +1,6 @@
+import Steps from "./Steps";
 import { Dialog, Menu, Transition } from "@headlessui/react";
-import {
-    CogIcon,
-    CollectionIcon,
-    HomeIcon,
-    MenuAlt2Icon,
-    PhotographIcon,
-    PlusSmIcon,
-    UserGroupIcon,
-    ViewGridIcon,
-    XIcon,
-} from "@heroicons/react/outline";
-import { SearchIcon } from "@heroicons/react/solid";
+import { CogIcon, CollectionIcon, MenuAlt2Icon, PlusSmIcon, XIcon } from "@heroicons/react/outline";
 import React, { Fragment, useState } from "react";
 
 type Props = {
@@ -19,11 +9,7 @@ type Props = {
 };
 
 const sidebarNavigation = [
-    { name: "Home", href: "#", icon: HomeIcon, current: false },
-    { name: "All Files", href: "#", icon: ViewGridIcon, current: false },
-    { name: "Photos", href: "#", icon: PhotographIcon, current: true },
-    { name: "Shared", href: "#", icon: UserGroupIcon, current: false },
-    { name: "Albums", href: "#", icon: CollectionIcon, current: false },
+    { name: "Studio", href: "#", icon: CollectionIcon, current: true },
     { name: "Settings", href: "#", icon: CogIcon, current: false },
 ];
 const userNavigation = [
@@ -42,7 +28,7 @@ export default function Layout({ main, sidebar }: Props) {
         <>
             <div className="h-full flex">
                 {/* Narrow sidebar */}
-                <div className="hidden w-28 bg-indigo-700 overflow-y-auto md:block">
+                <div className="hidden w-28 bg-background overflow-y-auto md:block">
                     <div className="w-full py-6 flex flex-col items-center">
                         <div className="flex-shrink-0 flex items-center">
                             <img
@@ -60,8 +46,8 @@ export default function Layout({ main, sidebar }: Props) {
                                     href={item.href}
                                     className={classNames(
                                         item.current
-                                            ? "bg-indigo-800 text-white"
-                                            : "text-indigo-100 hover:bg-indigo-800 hover:text-white",
+                                            ? "bg-background text-primary"
+                                            : "text-primary hover:bg-primary hover:text-neutral",
                                         "group w-full p-3 rounded-md flex flex-col items-center text-xs font-medium",
                                     )}
                                     aria-current={item.current ? "page" : undefined}
@@ -70,7 +56,7 @@ export default function Layout({ main, sidebar }: Props) {
                                         className={classNames(
                                             item.current
                                                 ? "text-white"
-                                                : "text-indigo-300 group-hover:text-white",
+                                                : "text-primary-300 group-hover:text-white",
                                             "h-6 w-6",
                                         )}
                                         aria-hidden="true"
@@ -191,27 +177,8 @@ export default function Layout({ main, sidebar }: Props) {
                                 <MenuAlt2Icon className="h-6 w-6" aria-hidden="true" />
                             </button>
                             <div className="flex-1 flex justify-between px-4 sm:px-6">
-                                <div className="flex-1 flex">
-                                    <form className="w-full flex md:ml-0" action="#" method="GET">
-                                        <label htmlFor="search-field" className="sr-only">
-                                            Search all files
-                                        </label>
-                                        <div className="relative w-full text-gray-400 focus-within:text-gray-600">
-                                            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center">
-                                                <SearchIcon
-                                                    className="flex-shrink-0 h-5 w-5"
-                                                    aria-hidden="true"
-                                                />
-                                            </div>
-                                            <input
-                                                name="search-field"
-                                                id="search-field"
-                                                className="h-full w-full border-transparent py-2 pl-8 pr-3 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 focus:border-transparent focus:placeholder-gray-400"
-                                                placeholder="Search"
-                                                type="search"
-                                            />
-                                        </div>
-                                    </form>
+                                <div className="relative w-full text-gray-400 focus-within:text-gray-600">
+                                    <Steps />
                                 </div>
                                 <div className="ml-2 flex items-center space-x-4 sm:ml-6 sm:space-x-6">
                                     {/* Profile dropdown */}
@@ -235,7 +202,7 @@ export default function Layout({ main, sidebar }: Props) {
                                             leaveFrom="transform opacity-100 scale-100"
                                             leaveTo="transform opacity-0 scale-95"
                                         >
-                                            <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                            <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-primary ring-opacity-5 focus:outline-none">
                                                 {userNavigation.map((item) => (
                                                     <Menu.Item key={item.name}>
                                                         {({ active }) => (

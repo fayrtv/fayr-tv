@@ -16,7 +16,7 @@ import copy from "copy-to-clipboard";
 import lz from "lzutf8";
 import React, { useState } from "react";
 
-export const Topbar = () => {
+export const SaveLoadActions = () => {
     const { actions, query, enabled, canUndo, canRedo } = useEditor((state, query) => ({
         enabled: state.options.enabled,
         canUndo: state.options.enabled && query.history.canUndo(),
