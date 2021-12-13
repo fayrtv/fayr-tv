@@ -1,8 +1,10 @@
 import { useState, useEffect, MouseEventHandler } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { Nullable } from "types/global";
-import * as config from "../../../config";
+
 import Error from "components/chimeWeb/Error";
+
+import * as config from "../../../config";
 
 export const Join = ({ location, history }: RouteComponentProps) => {
     const [showError, setShowError] = useState(false);

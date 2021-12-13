@@ -1,13 +1,10 @@
-// Framework
 import React from "react";
+import { Nullable } from "types/global";
 
-// Components
-import Flex from "components/common/Flex";
+import { JoinInfo } from "components/chimeWeb/types";
 import MaterialIcon from "components/common/MaterialIcon";
 
-// Types
-import { JoinInfo } from "components/chimeWeb/types";
-import { Nullable } from "types/global";
+import { Flex } from "@fayr/shared-components";
 
 import "../Cam.scss";
 import styles from "./LocalVideo.module.scss";
@@ -86,7 +83,7 @@ const LocalVideo = ({ chime, joinInfo, pin }: Props) => {
     const showMetaCombined = showMeta || muted || !enabled;
 
     const micMuteCls = muted ? "controls__btn--mic_on" : "controls__btn--mic_off";
-    const metaCls = showMetaCombined ? "" : " cam__meta--hide";
+    const metaCls = showMetaCombined ? "" : " participantMeta--hide";
 
     return (
         <div
@@ -101,7 +98,7 @@ const LocalVideo = ({ chime, joinInfo, pin }: Props) => {
                     </div>
                 </div>
                 <Flex
-                    className={`cam__meta ${metaCls}`}
+                    className={`participantMeta ${metaCls}`}
                     id={`${joinInfo.Attendee.AttendeeId}`}
                     space="Between"
                 >

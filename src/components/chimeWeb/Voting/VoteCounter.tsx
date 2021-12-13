@@ -1,12 +1,10 @@
-// Framework
 import * as React from "react";
 
-// Components
-import Flex from "components/common/Flex";
-
-// Styles
-import styles from "./styles/VoteCounter.module.scss";
 import MaterialIcon from "components/common/MaterialIcon";
+
+import { Flex } from "@fayr/shared-components";
+
+import styles from "./styles/VoteCounter.module.scss";
 
 type Props = {
     value: number;

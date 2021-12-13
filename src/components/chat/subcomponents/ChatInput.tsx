@@ -1,16 +1,19 @@
-// Framework
-import React, { useState } from "react";
 import Picker from "emoji-picker-react";
+import React, { useState } from "react";
+import { isInRect } from "util/coordinateUtil";
+import { isFalsyOrWhitespace } from "util/stringUtils";
+
+import useGlobalClickHandler from "hooks/useGlobalClickHandler";
+import { useSocket } from "hooks/useSocket";
+
 import Emoji from "components/common/Emoji";
 
+import { LoadingAnimation } from "@fayr/shared-components";
+
 import styles from "./ChatInput.module.scss";
-import useGlobalClickHandler from "hooks/useGlobalClickHandler";
-import { isInRect } from "util/coordinateUtil";
-import { useSocket } from "hooks/useSocket";
-import { MessageTransferObject } from "../types";
+
 import { SocketEventType } from "../../chime/types";
-import { isFalsyOrWhitespace } from "util/stringUtils";
-import LoadingAnimation from "components/common/interactivity/LoadingAnimation";
+import { MessageTransferObject } from "../types";
 
 type Props = {
     inputRef: React.RefObject<HTMLInputElement>;
@@ -93,7 +96,7 @@ export const ChatInput = ({ inputRef, userName }: Props) => {
                             onClick={() => setEmojiPickerOpen(!emojiPickerOpen)}
                         >
                             <div className={styles.EmojiIcon}>
-                                <Emoji text=":)" />
+                                <Emoji text=";)" />
                             </div>
                         </div>
                         {emojiPickerOpen && (

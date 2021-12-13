@@ -1,5 +1,5 @@
-import { ReducerAction } from "../types";
 import { Attendee } from "../../components/chime/ChimeSdkWrapper";
+import { ReducerAction } from "../types";
 
 const PARTICIPANT_VIDEOROSTER_UPDATED = "PARTICIPANT_VIDEOROSTER_UPDATED";
 

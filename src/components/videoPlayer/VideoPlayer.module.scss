@@ -23,3 +23,18 @@
     opacity: 0;
     transition: all 1s;
 }
+
+.FullScreenCams {
+    height: 100%;
+    width: 20%;
+    z-index: 5000;
+
+    > div {
+        height: 100%;
+    }
+
+    @media (max-width: 480px) {
+        height: 50%;
+        width: 100%;
+    }
+}

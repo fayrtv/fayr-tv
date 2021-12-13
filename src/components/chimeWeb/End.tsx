@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+
 import * as config from "../../config";
 
 type Props = RouteComponentProps & {};

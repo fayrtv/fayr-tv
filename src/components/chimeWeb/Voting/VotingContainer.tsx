@@ -1,27 +1,28 @@
 // Framework
-import { connect, useDispatch } from "react-redux";
 import * as React from "react";
-
-// Components
-import Flex from "components/common/Flex";
-import Voting from "./Voting";
+import { connect, useDispatch } from "react-redux";
+import { updateVote } from "redux/reducers/votingReducer";
+import { ReduxStore } from "redux/store";
+import { isInRect } from "util/coordinateUtil";
 
 // Functionality
 import useGlobalClickHandler from "hooks/useGlobalClickHandler";
-import { isInRect } from "util/coordinateUtil";
 import useSocket from "hooks/useSocket";
-import { updateVote } from "redux/reducers/votingReducer";
-import { VotingOpenContext } from "../../contexts/VotingOpenContext";
 
-// Types
-import { Callback, Nullable } from "../../../types/global";
-import { ReduxStore } from "redux/store";
-import { AttendeeVoteDto, VotingData } from "./types";
 import { SocketEventType } from "components/chime/types";
+
+// Components
+import { Flex } from "@fayr/shared-components";
 
 // Styles
 import styles from "./styles/VotingContainer.module.scss";
+
+// Types
+import { Callback, Nullable } from "../../../types/global";
 import ChimeSdkWrapper, { RosterMap } from "../../chime/ChimeSdkWrapper";
+import { VotingOpenContext } from "../../contexts/VotingOpenContext";
+import Voting from "./Voting";
+import { AttendeeVoteDto, VotingData } from "./types";
 
 type Props = {
     attendeeId: string;

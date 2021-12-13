@@ -1,6 +1,8 @@
-import { ReducerAction } from "../types";
-import { Message } from "components/chat/types";
 import { CouldBeArray, ensureArray } from "util/collectionUtil";
+
+import { Message } from "components/chat/types";
+
+import { ReducerAction } from "../types";
 
 const CHAT_ADD_MESSAGE = "CHAT_ADD_MESSAGE";
 const CHAT_MARK_MESSAGE_AS_SEEN = "CHAT_MARK_MESSAGE_AS_SEEN";

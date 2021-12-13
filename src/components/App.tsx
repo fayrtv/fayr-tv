@@ -1,18 +1,18 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Provider } from "react-redux";
-import * as config from "../config";
-import ChatOpenContextProvider from "./contexts/ChatOpenContext";
-// import './App.css';
-
-import ChimeSdkWrapper from "./chime/ChimeSdkWrapper";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import store from "redux/store";
 
+import End from "components/chimeWeb/End";
 import Welcome from "components/chimeWeb/Welcome";
+
+import * as config from "../config";
+// import './App.css';
+import ChimeSdkWrapper from "./chime/ChimeSdkWrapper";
+import SocketContextProvider from "./chime/SocketContextProvider";
 import Join from "./chimeWeb/Intro/Join";
 import MeetingContainer from "./chimeWeb/Meeting/MeetingContainer";
-import End from "components/chimeWeb/End";
-import SocketContextProvider from "./chime/SocketContextProvider";
+import ChatOpenContextProvider from "./contexts/ChatOpenContext";
 import SelectedReactionContextProvider from "./contexts/SelectedReactionContext";
 import VotingOpenContextProvider from "./contexts/VotingOpenContext";
 

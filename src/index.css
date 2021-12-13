@@ -1190,7 +1190,7 @@ input.rounded {
 
 .btn--destruct {
     /* background: var(--color--destructive); */
-    background: #B51700;
+    background: #b51700;
     color: var(--color-text-inverted);
 }
 

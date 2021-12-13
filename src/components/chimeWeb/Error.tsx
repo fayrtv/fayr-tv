@@ -1,8 +1,9 @@
 import React from "react";
 
+import useEventHandler from "hooks/useEventHandler";
+
 // Styles
 import "./Error.css";
-import useEventHandler from "hooks/useEventHandler";
 
 // Assets
 

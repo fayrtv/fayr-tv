@@ -1,5 +1,5 @@
-import { makeid } from "util/guidHelper";
 import { sample } from "lodash";
+import { makeid } from "util/guidHelper";
 
 export const BASE_HREF = "";
 
@@ -16,13 +16,13 @@ export const CHIME_ROOM_MAX_ATTENDEE = 16;
 
 export const DEFAULT_VIDEO_STREAM = sample([
     // Das Erste
-    "https://derste247liveut.akamaized.net/hls/live/662734/daserste_ut_de/profile1/1.m3u8",
+    // "https://derste247liveut.akamaized.net/hls/live/662734/daserste_ut_de/profile1/1.m3u8",
     // Bunny stream
     // "https://3d26876b73d7.us-west-2.playback.live-video.net/api/video/v1/us-west-2.913157848533.channel.rkCBS9iD1eyd.m3u8",
     // ARTE
-    "https://artesimulcast.akamaized.net/hls/live/2030993/artelive_de/index.m3u8",
+    // "https://artesimulcast.akamaized.net/hls/live/2030993/artelive_de/index.m3u8",
     // KIKA
-    "https://kikageohls.akamaized.net/hls/live/2022693/livetvkika_de/master.m3u8",
+    // "https://kikageohls.akamaized.net/hls/live/2022693/livetvkika_de/master.m3u8",
     // Tagesschau 24
     "http://tagesschau-lh.akamaihd.net/i/tagesschau_1@119231/master.m3u8",
 ]) as string;

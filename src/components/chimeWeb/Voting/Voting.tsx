@@ -1,22 +1,19 @@
-// Framework
-import { useMediaQuery } from "react-responsive";
 import * as React from "react";
+import { useMediaQuery } from "react-responsive";
 
-// Components
-import Grid from "components/common/GridLayout/Grid";
 import Cell from "components/common/GridLayout/Cell";
-import Flex from "components/common/Flex";
+import Grid from "components/common/GridLayout/Grid";
 import MaterialIcon from "components/common/MaterialIcon";
-import VotePage from "./SubPages/VotePage";
-import VotingMenuEntry from "./VotingMenuEntry";
+
+import { Flex } from "@fayr/shared-components";
+
+import styles from "./styles/Voting.module.scss";
+
 import OverviewPage from "./SubPages/OverviewPage";
 import SurveyPage from "./SubPages/SurveyPage";
-
-// Types
+import VotePage from "./SubPages/VotePage";
+import VotingMenuEntry from "./VotingMenuEntry";
 import { VotingData, VotingPage } from "./types";
-
-// Styles
-import styles from "./styles/Voting.module.scss";
 
 type Props = {
     votingRef: React.RefObject<HTMLDivElement>;

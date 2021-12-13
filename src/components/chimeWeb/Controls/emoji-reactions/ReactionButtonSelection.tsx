@@ -1,21 +1,15 @@
-// Framework
 import * as React from "react";
+import styled from "styled-components";
+import { isInRect } from "util/coordinateUtil";
 
-// Components
-import Flex from "components/common/Flex";
-import Emoji from "components/common/Emoji";
-
-// Functionality
 import useGlobalClickHandler from "hooks/useGlobalClickHandler";
 
-// Types
+import styles from "components/chimeWeb/Controls/styles/ReactionButtonSelection.module.scss";
+import Emoji from "components/common/Emoji";
+import MaterialIcon from "components/common/MaterialIcon";
 import { SelectedReactionContext } from "components/contexts/SelectedReactionContext";
 
-// Styles
-import styles from "components/chimeWeb/Controls/styles/ReactionButtonSelection.module.scss";
-import { isInRect } from "util/coordinateUtil";
-import MaterialIcon from "components/common/MaterialIcon";
-import styled from "styled-components";
+import { Flex } from "@fayr/shared-components";
 
 const emojis = [":smile:", ":heart:", ":clap:", ":tada:", ":joy:"];
 
@@ -87,7 +81,7 @@ export const ReactionButtonSelection = ({ onClose }: Props) => {
                 <span style={{ marginLeft: 2, marginRight: 10, display: "inherit" }}>
                     <ReactionsDisabledIcon
                         onClick={() => setReactionsDisabled(true)}
-                        color="black"
+                        color="#D2D2D2"
                         size="1.75em"
                     />
                 </span>

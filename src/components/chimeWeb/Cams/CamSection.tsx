@@ -1,26 +1,25 @@
 // Framework
-import React from "react";
 import { VideoTileState } from "amazon-chime-sdk-js";
-import { useDispatch, useSelector } from "react-redux";
-
-// Components
-import LocalVideo from "./LocalVideo/LocalVideo";
-import ParticipantVideoGroup from "./Participants/ParticipantVideoGroup";
-
 // Functionality
 import * as config from "config";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { replaceParticipantVideoRoster } from "redux/reducers/participantVideoReducer";
-
-// Types
-import { RosterMap, Attendee } from "components/chime/ChimeSdkWrapper";
-import { JoinInfo } from "../types";
-import { Roster } from "./types";
 import { ReduxStore } from "redux/store";
 import { Nullable } from "types/global";
 
+// Types
+import { RosterMap, Attendee } from "components/chime/ChimeSdkWrapper";
+
 // Styles
 import styles from "./CamSection.module.scss";
+
+import { JoinInfo } from "../types";
+// Components
+import LocalVideo from "./LocalVideo/LocalVideo";
 import ParticipantVideo from "./Participants/ParticipantVideo";
+import ParticipantVideoGroup from "./Participants/ParticipantVideoGroup";
+import { Roster } from "./types";
 
 const MAX_REMOTE_VIDEOS = config.CHIME_ROOM_MAX_ATTENDEE;
 
@@ -145,8 +144,17 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
         const localRoster: Roster = [];
         previousRoster.current = storedRoster;
 
+        const videoTiles = chime.audioVideo.videoTileController.getAllVideoTiles();
+
         for (let i = 0; i < MAX_REMOTE_VIDEOS; ++i) {
             localRoster[i] = storedRoster[i + 1] ?? ({} as Attendee);
+            const boundTile = videoTiles.find(
+                (x: any) => x.tileState.boundAttendeeId === localRoster[i].attendeeId,
+            );
+
+            if (boundTile) {
+                localRoster[i].tileId = boundTile.tileState.tileId;
+            }
         }
 
         setRoster(localRoster);

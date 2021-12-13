@@ -1,11 +1,14 @@
-import QRCodeView from "./QRCodeView";
-import { formatJoinRoomUrl } from "./Intro/urls";
+import classNames from "classnames";
 import React, { MouseEventHandler } from "react";
 import { useMediaQuery } from "react-responsive";
-import classNames from "classnames";
 import { isFalsyOrWhitespace } from "util/stringUtils";
 
+import usePersistedState from "hooks/usePersistedState";
+
 import styles from "./JoinInfoForm.module.scss";
+
+import { formatJoinRoomUrl } from "./Intro/urls";
+import QRCodeView from "./QRCodeView";
 
 type Props = {
     username: string;
@@ -31,6 +34,13 @@ export function JoinInfoForm({
     const isValid = !isFalsyOrWhitespace(roomTitle) && !isFalsyOrWhitespace(username);
     const isMobile = useMediaQuery({ maxWidth: 960 });
 
+    const [usernameInternal, setUsernameInternal] = usePersistedState("USERNAME", () => username);
+
+    const setUsername = (newValue: string) => {
+        setUsernameInternal(newValue);
+        onUsernameChanged(newValue);
+    };
+
     const qrSize = isMobile ? 100 : 150;
 
     return (
@@ -44,8 +54,8 @@ export function JoinInfoForm({
                         ref={usernameInputRef}
                         type="text"
                         placeholder="Dein Name"
-                        value={username}
-                        onChange={(ev) => onUsernameChanged(ev.target.value)}
+                        value={usernameInternal}
+                        onChange={(ev) => setUsername(ev.target.value)}
                     />
                     <input
                         ref={roomTitleInputRef}

@@ -1,5 +1,5 @@
 {
-    "name": "fayr_tv_live",
+    "name": "@fayr/ivp",
     "version": "0.1.1",
     "private": true,
     "dependencies": {
@@ -31,12 +31,9 @@
         "video.js": "^7.10.2"
     },
     "scripts": {
-        "prepare": "husky install",
         "start": "react-scripts start",
         "build": "react-scripts build",
-        "test": "react-scripts test --passWithNoTests",
-        "format": "prettylint \"**/*.{ts,js,html,jsx,tsx,css,less,scss,json}\" --fix",
-        "format-check": "prettylint \"**/*.{ts,js,html,jsx,tsx,css,less,scss,json}\""
+        "test": "react-scripts test --passWithNoTests"
     },
     "eslintConfig": {
         "extends": "react-app"
@@ -62,10 +59,6 @@
         "@types/react-transition-group": "^4.4.4",
         "@types/styled-components": "^5.1.15",
         "aws-sdk": "^2.1037.0",
-        "husky": "^7.0.0",
-        "prettier": "^2.4.1",
-        "pretty-quick": "^3.1.1",
-        "prettylint": "^1.0.0",
         "sass": "^1.39.2",
         "sass-loader": "^12.1.0"
     }

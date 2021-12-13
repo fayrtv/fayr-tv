@@ -1,5 +1,5 @@
-import React from "react";
 import { debounce } from "lodash";
+import React from "react";
 
 // https://stackoverflow.com/questions/25777826/onclick-works-but-ondoubleclick-is-ignored-on-react-component
 const useManyClickHandlers = (...handlers: Array<(e: React.MouseEvent<HTMLElement>) => void>) => {

@@ -2,11 +2,11 @@
 import Cell from "components/common/GridLayout/Cell";
 import Grid from "components/common/GridLayout/Grid";
 
-// Types
-import { LocalVideoInfo } from "../types";
-
 // Styles
 import styles from "./ParticipantVideoGroup.module.scss";
+
+// Types
+import { LocalVideoInfo } from "../types";
 
 type Props = {
     localVideoInfo: LocalVideoInfo;
@@ -18,7 +18,7 @@ export const ParticipantVideoGroup = ({ localVideoInfo, participantVideos }: Pro
         <Grid
             gridProperties={{
                 gap: 0,
-                gridTemplateRows: "repeat(5, 1fr)",
+                gridTemplateRows: "repeat(5, 20%)",
                 gridTemplateColumns: "repeat(2, 50%)",
             }}
             className={styles.ParticipantVideoGroup}

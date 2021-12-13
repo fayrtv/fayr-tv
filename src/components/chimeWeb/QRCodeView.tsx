@@ -1,5 +1,5 @@
-import React from "react";
 import QRCode from "qrcode-svg";
+import React from "react";
 
 type Props = QRCode.Options;
 

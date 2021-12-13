@@ -1,8 +1,7 @@
 // Framework
-import * as React from "react";
-
 // Functionality
 import classNames from "classnames";
+import * as React from "react";
 
 export enum MaterialIconType {
     Outlined,

@@ -1,16 +1,19 @@
-import { Redirect, RouteComponentProps, withRouter } from "react-router-dom";
-import React from "react";
-import { usePersistedState } from "hooks/usePersistedState";
-import useLoadingGuard from "hooks/useLoadingGuard";
-import * as config from "config";
-import AudioVideoObserver from "amazon-chime-sdk-js/build/audiovideoobserver/AudioVideoObserver";
 import { MeetingSessionStatusCode } from "amazon-chime-sdk-js";
-import LoadingAnimation from "components/common/interactivity/LoadingAnimation";
+import AudioVideoObserver from "amazon-chime-sdk-js/build/audiovideoobserver/AudioVideoObserver";
+import * as config from "config";
+import React from "react";
+import { Redirect, RouteComponentProps, withRouter } from "react-router-dom";
+
+import useLoadingGuard from "hooks/useLoadingGuard";
+import { usePersistedState } from "hooks/usePersistedState";
+
 import ChimeSdkWrapper from "components/chime/ChimeSdkWrapper";
-import { formatMeetingSsKey } from "components/chimeWeb/Meeting/storage";
-import { MeetingStatus, SSData } from "components/chimeWeb/Meeting/meetingTypes";
 import Meeting from "components/chimeWeb/Meeting/Meeting";
+import { MeetingStatus, SSData } from "components/chimeWeb/Meeting/meetingTypes";
+import { formatMeetingSsKey } from "components/chimeWeb/Meeting/storage";
 import { JoinInfo } from "components/chimeWeb/types";
+
+import { LoadingAnimation } from "@fayr/shared-components";
 
 type PublicProps = {
     chime: ChimeSdkWrapper;
