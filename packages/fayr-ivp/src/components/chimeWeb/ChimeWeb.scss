@@ -64,6 +64,7 @@ input:disabled {
 }
 
 .welcome {
+    height: 100vh;
     overflow: auto;
 }
 
@@ -375,6 +376,12 @@ a.btn {
 
     display: grid;
     place-items: center;
+
+    &.fullscreen {
+        @media (max-width: mq.$mobile) {
+            height: 50%;
+        }
+    }
 }
 
 .player-controls__inner {
@@ -386,13 +393,6 @@ a.btn {
     justify-content: center;
     bottom: 5%;
     left: 10%;
-
-    &.fullscreen {
-        @media (max-width: mq.$mobile) {
-            position: relative;
-            height: 50%;
-        }
-    }
 }
 
 .overlay--hover #player-controls {

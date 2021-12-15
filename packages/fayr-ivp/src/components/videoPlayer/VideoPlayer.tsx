@@ -269,7 +269,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
                 className={`overlay ${fullScreen ? "fullscreen" : ""}`}
                 onClick={videoClickHandler}
             >
-                <div id="player-controls">
+                <div id="player-controls" className={fullScreen ? "fullscreen" : ""}>
                     <div
                         className={`player-controls__inner ${
                             fullScreen ? "player-btn--maximize" : "player-btn--minimize"
