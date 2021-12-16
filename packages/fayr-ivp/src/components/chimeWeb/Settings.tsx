@@ -4,6 +4,8 @@ import * as React from "react";
 // Functionality
 import useEventHandler from "hooks/useEventHandler";
 
+import MaterialIcon from "components/common/MaterialIcon";
+
 // Styles
 import styles from "./Settings.module.scss";
 
@@ -175,6 +177,13 @@ export const Settings = ({ chime, closeSettings, joinInfo, saveSettings }: Props
                         </button>
                     </fieldset>
                 </form>
+                <MaterialIcon
+                    className={styles.CloseButton}
+                    onClick={closeSettings}
+                    iconName="close"
+                    color="white"
+                    size={35}
+                />
             </div>
             <div className="modal__overlay" onClick={closeSettings} />
         </div>
