@@ -8,9 +8,10 @@ type Props = {
     text: string;
     fontSize?: string | number;
     textAlign?: string;
+    color?: "primary";
 };
 
-export const Text = ({ text, fontSize, textAlign, ...props }: Props) => {
+export const Text = ({ text, fontSize, color, textAlign, ...props }: Props) => {
     const {
         connectors: { connect, drag },
         selected,

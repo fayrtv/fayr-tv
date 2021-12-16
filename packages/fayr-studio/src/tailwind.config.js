@@ -4,13 +4,14 @@ const plugin = require("tailwindcss/plugin");
 module.exports = {
     content: ["./src/**/*.{js,jsx,ts,tsx}"],
     theme: {
-        colors: {
-            background: "#07090c",
-            neutral: "#D9D9D9",
-            white: "#ffffff",
-            primary: "#fa7751",
-        },
         extend: {
+            colors: {
+                background: "#07090C",
+                neutral: "#D9D9D9",
+                white: "#ffffff",
+                primary: "#fa7751",
+                gray: "#181F29",
+            },
             fontFamily: {
                 sans: ["WinnerSans", defaultTheme.fontFamily.sans],
             },

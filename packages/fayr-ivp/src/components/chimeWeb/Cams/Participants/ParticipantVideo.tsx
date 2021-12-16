@@ -8,12 +8,13 @@ import { IChimeSdkWrapper } from "components/chime/ChimeSdkWrapper";
 import { SocketEventType } from "components/chime/types";
 import { EmojiReactionTransferObject } from "components/chimeWeb/types";
 import Emoji from "components/common/Emoji";
-import MaterialIcon from "components/common/MaterialIcon";
 
 import { Flex } from "@fayr/shared-components";
 
 import "../Cam.scss";
 import styles from "./ParticipantVideo.module.scss";
+
+import MaterialIcon from "../../shared-components/src/MaterialIcon";
 
 type Props = {
     muted: boolean;

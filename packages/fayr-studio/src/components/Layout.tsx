@@ -1,25 +1,41 @@
-import Steps from "./Steps";
+import SidebarNav from "./navigation/SidebarNav";
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import { CogIcon, CollectionIcon, MenuAlt2Icon, PlusSmIcon, XIcon } from "@heroicons/react/outline";
+import NavMenuIconActionButton, {
+    navMenuIconActionButtonStyle,
+} from "components/navigation/NavMenuIconActionButton";
 import React, { Fragment, useState } from "react";
+import tw from "twin.macro";
 
 type Props = {
     sidebar: JSX.Element;
     main: JSX.Element;
 };
 
-const sidebarNavigation = [
-    { name: "Studio", href: "#", icon: CollectionIcon, current: true },
-    { name: "Settings", href: "#", icon: CogIcon, current: false },
-];
 const userNavigation = [
     { name: "Your Profile", href: "#" },
     { name: "Sign out", href: "#" },
 ];
 
+const Header = tw.div`flex-1 flex justify-between px-4 sm:px-6`;
+
+const TopbarMain = tw.div`
+relative w-full text-gray-400 focus-within:text-gray-600
+`;
+
 function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(" ");
 }
+
+const FayrLogo = () => (
+    <img
+        src="https://fayr-logo-v001.s3.eu-central-1.amazonaws.com/svg/fayr_logo_main.svg"
+        className="h-8 w-auto"
+        alt="fayrtv-logo"
+        height="70"
+        style={{ border: "none" }}
+    />
+);
 
 export default function Layout({ main, sidebar }: Props) {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -28,43 +44,35 @@ export default function Layout({ main, sidebar }: Props) {
         <>
             <div className="h-full flex">
                 {/* Narrow sidebar */}
-                <div className="hidden w-28 bg-background overflow-y-auto md:block">
+                <div className="hidden w-28 px-4 bg-background overflow-y-auto md:block">
                     <div className="w-full py-6 flex flex-col items-center">
                         <div className="flex-shrink-0 flex items-center">
-                            <img
-                                src="https://fayr-logo-v001.s3.eu-central-1.amazonaws.com/svg/fayr_logo_main.svg"
-                                className="h-8 w-auto"
-                                alt="fayrtv-logo"
-                                height="70"
-                                style={{ border: "none" }}
-                            />
+                            <FayrLogo />
                         </div>
-                        <div className="flex-1 mt-6 w-full px-2 space-y-1">
-                            {sidebarNavigation.map((item) => (
-                                <a
-                                    key={item.name}
-                                    href={item.href}
-                                    className={classNames(
-                                        item.current
-                                            ? "bg-background text-primary"
-                                            : "text-primary hover:bg-primary hover:text-neutral",
-                                        "group w-full p-3 rounded-md flex flex-col items-center text-xs font-medium",
-                                    )}
-                                    aria-current={item.current ? "page" : undefined}
-                                >
-                                    <item.icon
-                                        className={classNames(
-                                            item.current
-                                                ? "text-white"
-                                                : "text-primary-300 group-hover:text-white",
-                                            "h-6 w-6",
-                                        )}
-                                        aria-hidden="true"
-                                    />
-                                    <span className="mt-2">{item.name}</span>
-                                </a>
-                            ))}
-                        </div>
+                        <SidebarNav
+                            items={[
+                                {
+                                    name: "Studio",
+                                    href: "#",
+                                    iconProps: { iconName: "visibility_off" },
+                                    isSelected: true,
+                                    children: [
+                                        {
+                                            name: "Sub",
+                                            href: "#",
+                                            iconProps: { iconName: "visibility_off" },
+                                            isSelected: true,
+                                        },
+                                    ],
+                                },
+                                {
+                                    name: "Settings",
+                                    href: "#",
+                                    iconProps: { iconName: "visibility_off" },
+                                    isSelected: false,
+                                },
+                            ]}
+                        />
                     </div>
                 </div>
 
@@ -126,7 +134,20 @@ export default function Layout({ main, sidebar }: Props) {
                                     <div className="mt-5 flex-1 h-0 px-2 overflow-y-auto">
                                         <nav className="h-full flex flex-col">
                                             <div className="space-y-1">
-                                                {sidebarNavigation.map((item) => (
+                                                {[
+                                                    {
+                                                        name: "Studio",
+                                                        href: "#",
+                                                        icon: CollectionIcon,
+                                                        current: true,
+                                                    },
+                                                    {
+                                                        name: "Settings",
+                                                        href: "#",
+                                                        icon: CogIcon,
+                                                        current: false,
+                                                    },
+                                                ].map((item) => (
                                                     <a
                                                         key={item.name}
                                                         href={item.href}
@@ -167,7 +188,7 @@ export default function Layout({ main, sidebar }: Props) {
                 {/* Content area */}
                 <div className="flex-1 flex flex-col overflow-hidden">
                     <header className="w-full">
-                        <div className="relative z-10 flex-shrink-0 h-16 bg-white border-b border-gray-200 shadow-sm flex">
+                        <div className="relative z-10 h-16 border-b border-gray-200 shadow-sm flex">
                             <button
                                 type="button"
                                 className="border-r border-gray-200 px-4 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
@@ -176,15 +197,14 @@ export default function Layout({ main, sidebar }: Props) {
                                 <span className="sr-only">Open sidebar</span>
                                 <MenuAlt2Icon className="h-6 w-6" aria-hidden="true" />
                             </button>
-                            <div className="flex-1 flex justify-between px-4 sm:px-6">
-                                <div className="relative w-full text-gray-400 focus-within:text-gray-600">
-                                    <Steps />
-                                </div>
+                            <Header tw="block py-6" className="bg-background py-6">
+                                <TopbarMain />
+
                                 <div className="ml-2 flex items-center space-x-4 sm:ml-6 sm:space-x-6">
                                     {/* Profile dropdown */}
                                     <Menu as="div" className="relative flex-shrink-0">
                                         <div>
-                                            <Menu.Button className="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            <Menu.Button style={navMenuIconActionButtonStyle}>
                                                 <span className="sr-only">Open user menu</span>
                                                 <img
                                                     className="h-8 w-8 rounded-full"
@@ -222,6 +242,9 @@ export default function Layout({ main, sidebar }: Props) {
                                         </Transition>
                                     </Menu>
 
+                                    <NavMenuIconActionButton
+                                        iconProps={{ iconName: "notifications" }}
+                                    />
                                     <button
                                         type="button"
                                         className="flex bg-indigo-600 p-1 rounded-full items-center justify-center text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -230,7 +253,7 @@ export default function Layout({ main, sidebar }: Props) {
                                         <span className="sr-only">Add file</span>
                                     </button>
                                 </div>
-                            </div>
+                            </Header>
                         </div>
                     </header>
 

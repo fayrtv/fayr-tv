@@ -6,10 +6,11 @@ import useGlobalClickHandler from "hooks/useGlobalClickHandler";
 
 import styles from "components/chimeWeb/Controls/styles/ReactionButtonSelection.module.scss";
 import Emoji from "components/common/Emoji";
-import MaterialIcon from "components/common/MaterialIcon";
 import { SelectedReactionContext } from "components/contexts/SelectedReactionContext";
 
 import { Flex } from "@fayr/shared-components";
+
+import MaterialIcon from "../../shared-components/src/MaterialIcon";
 
 const emojis = [":smile:", ":heart:", ":clap:", ":tada:", ":joy:"];
 

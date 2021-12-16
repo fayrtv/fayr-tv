@@ -9,12 +9,10 @@ import { Container } from "./user/Container";
 import { Text } from "./user/Text";
 import { Editor, Element, Frame } from "@craftjs/core";
 import React from "react";
-import { GlobalStyles } from "twin.macro";
 
 export default function App() {
     return (
         <>
-            <GlobalStyles />
             <Editor
                 resolver={{
                     Card,
@@ -36,9 +34,23 @@ export default function App() {
                                     background="#eeeeee"
                                     data-cy="root-container"
                                 >
-                                    <Card data-cy="frame-card" />
-                                    <Button text="Click me" size="small" data-cy="frame-button" />
-                                    <Text fontSize={20} text="Hi world!" data-cy="frame-text" />
+                                    {/*<Card data-cy="frame-card" />*/}
+                                    <Text
+                                        fontSize="large"
+                                        color="primary"
+                                        text="It's me again!"
+                                        data-cy="frame-container-text"
+                                    />
+                                    <Button
+                                        text="Der Watch Party beitreten"
+                                        size="small"
+                                        data-cy="frame-button"
+                                    />
+                                    <Text
+                                        fontSize={20}
+                                        text="Fiebere zusammen mit deinen Freunden bei diesem Event mit!"
+                                        data-cy="frame-text"
+                                    />
                                     <Element
                                         canvas
                                         is={Container}
