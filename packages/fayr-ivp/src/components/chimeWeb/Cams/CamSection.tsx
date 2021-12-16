@@ -9,7 +9,7 @@ import { ReduxStore } from "redux/store";
 import { Nullable } from "types/global";
 
 // Types
-import { RosterMap, Attendee } from "components/chime/ChimeSdkWrapper";
+import { RosterMap, Attendee, Role } from "components/chime/ChimeSdkWrapper";
 
 // Styles
 import styles from "./CamSection.module.scss";
@@ -31,6 +31,8 @@ type Props = {
 export const CamSection = ({ chime, joinInfo }: Props) => {
     const [roster, setRoster] = React.useState<Roster>([]);
     const previousRoster = React.useRef<Roster>([]);
+
+    const [pinnedHostIdentifier, setPinnedHostIdentifier] = React.useState<Nullable<string>>(null);
 
     const dispatch = useDispatch();
     const storedRoster = useSelector<ReduxStore, Roster>((x) => x.participantVideoReducer);
@@ -130,6 +132,10 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
                     attendeeId: attendeeId,
                 };
 
+                if (config.PinHost && !pinnedHostIdentifier && attendee.role === Role.Host) {
+                    setPinnedHostIdentifier(attendee.attendeeId);
+                }
+
                 setRoster((currentRoster) => {
                     const newRoster = [...currentRoster];
                     newRoster[index] = attendee;
@@ -137,7 +143,7 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
                 });
             }
         },
-        [dispatch, roster, findRosterSlot, joinInfo.Attendee.AttendeeId],
+        [dispatch, roster, findRosterSlot, joinInfo.Attendee.AttendeeId, pinnedHostIdentifier],
     );
 
     React.useEffect(() => {
@@ -191,8 +197,6 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [chime, onRosterUpdate]);
-
-    const [pinnedHostIdentifier, setPinnedHostIdentifier] = React.useState<Nullable<string>>(null);
 
     const localVideo = (
         <LocalVideo
