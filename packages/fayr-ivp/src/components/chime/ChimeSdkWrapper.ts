@@ -35,6 +35,11 @@ type DeviceUpdatePayload = {
 
 export type DeviceUpdateCallback = (deviceInfo: DeviceUpdatePayload) => void;
 
+export enum Role {
+    Attendee,
+    Host,
+}
+
 export type Attendee = {
     attendeeId: string;
     muted: boolean;
@@ -44,6 +49,7 @@ export type Attendee = {
     videoEnabled: boolean;
     videoElement: React.RefObject<HTMLVideoElement>;
     volume: number;
+    role: Role;
 };
 
 export type RosterMap = {
@@ -246,7 +252,7 @@ export default class ChimeSdkWrapper implements IChimeSdkWrapper, IChimeSocket {
                     let shouldPublishImmediately = false;
 
                     if (!this.roster[attendeeId]) {
-                        this.roster[attendeeId] = { name: "" } as Attendee;
+                        this.roster[attendeeId] = { name: "", role: Role.Attendee } as Attendee;
                     }
                     if (volume !== null) {
                         this.roster[attendeeId].volume = Math.round(volume * 100);
@@ -265,8 +271,16 @@ export default class ChimeSdkWrapper implements IChimeSdkWrapper, IChimeSocket {
                             )}&attendeeId=${encodeURIComponent(attendeeId)}`,
                         );
                         const json = await response.json();
-                        if (json.AttendeeInfo && this.roster[attendeeId]) {
-                            this.roster[attendeeId].name = json.AttendeeInfo.Name || "";
+                        const attendee = this.roster[attendeeId];
+                        if (json.AttendeeInfo && attendee) {
+                            attendee.name = json.AttendeeInfo.Name || "";
+
+                            let role = Role.Attendee;
+                            if ((json.AttendeeInfo.Role || "") === "host") {
+                                role = Role.Host;
+                            }
+                            attendee.role = role;
+
                             shouldPublishImmediately = true;
                         }
                     }

@@ -24,7 +24,7 @@ export const DEFAULT_VIDEO_STREAM = sample([
     // KIKA
     // "https://kikageohls.akamaized.net/hls/live/2022693/livetvkika_de/master.m3u8",
     // Tagesschau 24
-    "http://tagesschau-lh.akamaihd.net/i/tagesschau_1@119231/master.m3u8",
+    "https://3d26876b73d7.us-west-2.playback.live-video.net/api/video/v1/us-west-2.913157848533.channel.rkCBS9iD1eyd.m3u8",
 ]) as string;
 
 // Default Chat websocket link
@@ -38,3 +38,4 @@ export const DEBUG = false;
 export const RANDOM = makeid(8);
 
 export const HighlightVideoAlignment: "Top" | "Bottom" = "Bottom";
+export const PinHost: boolean = false;
