@@ -15,7 +15,7 @@ import Chat from "../../chat/Chat";
 // Components
 import VideoPlayer from "../../videoPlayer/VideoPlayer";
 import CamSection from "../Cams/CamSection";
-import Controls from "../Controls";
+import Controls from "../Controls/Controls";
 import Settings from "../Settings";
 import VotingContainer from "../Voting/VotingContainer";
 

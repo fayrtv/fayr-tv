@@ -15,6 +15,8 @@ import { JoinInfo } from "components/chimeWeb/types";
 
 import { LoadingAnimation } from "@fayr/shared-components";
 
+import MeetingStartScreen from "./MeetingStartScreen";
+
 type PublicProps = {
     chime: ChimeSdkWrapper;
     roomTitle: string;
@@ -33,6 +35,8 @@ export const MeetingContainer = ({
 
     // Loading, Success or Failed
     const [meetingStatus, setMeetingStatus] = React.useState<MeetingStatus | null>(null);
+
+    const [showStartScreen, setShowStartScreen] = React.useState(true);
 
     const initializeSession = React.useCallback(
         async () => {
@@ -108,20 +112,27 @@ export const MeetingContainer = ({
     return isLoading ? (
         <LoadingAnimation fullScreen={true} />
     ) : state && roomTitle ? (
-        <>
-            <audio ref={audioElementRef} style={{ display: "none" }} />
-            <Meeting
-                chime={chime}
-                roomTitle={roomTitle}
-                meetingStatus={meetingStatus}
-                setMeetingStatus={setMeetingStatus}
-                joinInfo={state.joinInfo!}
-                role={state.role}
-                title={state.title}
-                username={state.username}
-                playbackURL={state.playbackURL}
+        showStartScreen ? (
+            <MeetingStartScreen
+                audioVideo={chime.audioVideo}
+                onContinue={() => setShowStartScreen(false)}
             />
-        </>
+        ) : (
+            <>
+                <audio ref={audioElementRef} style={{ display: "none" }} />
+                <Meeting
+                    chime={chime}
+                    roomTitle={roomTitle}
+                    meetingStatus={meetingStatus}
+                    setMeetingStatus={setMeetingStatus}
+                    joinInfo={state.joinInfo!}
+                    role={state.role}
+                    title={state.title}
+                    username={state.username}
+                    playbackURL={state.playbackURL}
+                />
+            </>
+        )
     ) : (
         <Redirect to={`${config.BASE_HREF}/`} />
     );

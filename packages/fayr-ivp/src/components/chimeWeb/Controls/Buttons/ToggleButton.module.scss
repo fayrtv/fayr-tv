@@ -1,0 +1,5 @@
+@use "../Controls.module.scss" as commonControls;
+
+.Button {
+    @include commonControls.CommonButton;
+}

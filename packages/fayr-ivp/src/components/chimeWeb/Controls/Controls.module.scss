@@ -1,3 +1,45 @@
+@mixin CommonButton {
+    margin: 0 1rem;
+    display: flex;
+
+    flex-grow: 1;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+
+    max-width: 42px;
+
+    cursor: pointer;
+    margin: 0;
+
+    @media (min-width: 1025px) {
+        margin: 0 0.5rem;
+    }
+
+    @media (max-width: 365px) {
+        max-height: 10vw;
+        max-width: 10vw;
+    }
+
+    svg {
+        height: calc(100% - 2rem);
+        width: calc(100% - 2rem);
+    }
+
+    @media (max-width: 1024px) {
+        margin: 0 0.5rem;
+
+        svg {
+            height: calc(100% - 1rem);
+            width: calc(100% - 1rem);
+        }
+    }
+
+    &.Active {
+        background-color: var(--color--destructive);
+    }
+}
+
 .Controls {
     position: relative;
     padding: 2rem;
@@ -39,45 +81,7 @@
     }
 
     .Button {
-        margin: 0 1rem;
-        display: flex;
-
-        flex-grow: 1;
-        align-items: center;
-        align-content: center;
-        justify-content: center;
-
-        max-width: 42px;
-
-        cursor: pointer;
-        margin: 0;
-
-        @media (min-width: 1025px) {
-            margin: 0 0.5rem;
-        }
-
-        @media (max-width: 365px) {
-            max-height: 10vw;
-            max-width: 10vw;
-        }
-
-        svg {
-            height: calc(100% - 2rem);
-            width: calc(100% - 2rem);
-        }
-
-        @media (max-width: 1024px) {
-            margin: 0 0.5rem;
-
-            svg {
-                height: calc(100% - 1rem);
-                width: calc(100% - 1rem);
-            }
-        }
-
-        &.Active {
-            background-color: var(--color--destructive);
-        }
+        @include CommonButton;
 
         &.ChatContainer {
             position: relative;

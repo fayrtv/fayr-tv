@@ -6,6 +6,8 @@ import store from "redux/store";
 import End from "components/chimeWeb/End";
 import Welcome from "components/chimeWeb/Welcome";
 
+import styles from "./App.module.scss";
+
 import * as config from "../config";
 // import './App.css';
 import ChimeSdkWrapper from "./chime/ChimeSdkWrapper";
@@ -21,7 +23,7 @@ function App() {
     const baseHref = config.BASE_HREF;
 
     return (
-        <div className="App full-width full-height">
+        <div className={styles.App}>
             <Router>
                 <Switch>
                     <Route path={`${baseHref}/end`}>

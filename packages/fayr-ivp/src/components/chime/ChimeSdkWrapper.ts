@@ -195,33 +195,14 @@ export default class ChimeSdkWrapper implements IChimeSdkWrapper, IChimeSocket {
     }
 
     async initializeMeetingSession(configuration: MeetingSessionConfiguration) {
-        debugger;
         const logger = new ConsoleLogger("SDK", LogLevel.ERROR);
         const deviceController = new DefaultDeviceController(logger);
         this._meetingSession = new DefaultMeetingSession(configuration, logger, deviceController);
         this._audioVideo = this._meetingSession.audioVideo;
 
         this.audioInputDevices = [];
-        (await this._audioVideo.listAudioInputDevices()).forEach((mediaDeviceInfo) => {
-            this.audioInputDevices.push({
-                label: mediaDeviceInfo.label,
-                value: mediaDeviceInfo.deviceId,
-            });
-        });
         this.audioOutputDevices = [];
-        (await this._audioVideo.listAudioOutputDevices()).forEach((mediaDeviceInfo) => {
-            this.audioOutputDevices.push({
-                label: mediaDeviceInfo.label,
-                value: mediaDeviceInfo.deviceId,
-            });
-        });
         this.videoInputDevices = [];
-        (await this._audioVideo.listVideoInputDevices()).forEach((mediaDeviceInfo) => {
-            this.videoInputDevices.push({
-                label: mediaDeviceInfo.label,
-                value: mediaDeviceInfo.deviceId,
-            });
-        });
 
         this.publishDevicesUpdated();
         this._audioVideo.addDeviceChangeObserver(this);
