@@ -195,6 +195,7 @@ export default class ChimeSdkWrapper implements IChimeSdkWrapper, IChimeSocket {
     }
 
     async initializeMeetingSession(configuration: MeetingSessionConfiguration) {
+        debugger;
         const logger = new ConsoleLogger("SDK", LogLevel.ERROR);
         const deviceController = new DefaultDeviceController(logger);
         this._meetingSession = new DefaultMeetingSession(configuration, logger, deviceController);
