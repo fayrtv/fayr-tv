@@ -5,6 +5,8 @@ import * as React from "react";
 // Functionality
 import { useMediaQuery } from "react-responsive";
 
+import useGlobalKeyHandler from "hooks/useGlobalKeyHandler";
+
 // Styles
 import styles from "./StreamVolumeControl.module.scss";
 
@@ -54,6 +56,15 @@ export const StreamVolumeControl = ({ player }: Props) => {
         [muted, player],
     );
 
+    const setVolume = (percentage: number) => {
+        setVolumeRatio(percentage);
+        player?.setVolume(percentage);
+
+        if (player?.isMuted()) {
+            player.setMuted(false);
+        }
+    };
+
     const convertClickToVolume = (y: number, railRef: HTMLDivElement) => {
         const { height, top } = railRef.getBoundingClientRect();
 
@@ -65,12 +76,7 @@ export const StreamVolumeControl = ({ player }: Props) => {
             percentage = 1;
         }
 
-        setVolumeRatio(percentage);
-        player?.setVolume(percentage);
-
-        if (player?.isMuted()) {
-            player.setMuted(false);
-        }
+        setVolume(percentage);
     };
 
     React.useEffect(() => {
@@ -142,6 +148,30 @@ export const StreamVolumeControl = ({ player }: Props) => {
             localRailRef.removeEventListener("mousedown", onRailMouseDown);
         };
     }, [muted, player, railRef, pinRef, isMobile]);
+
+    const onButtonUp = React.useCallback(() => {
+        if (!player) {
+            return;
+        }
+
+        const currentVol = player.getVolume();
+        const newVol = currentVol + 0.1;
+
+        player.setVolume(newVol > 1 ? 1 : newVol);
+    }, [player]);
+    useGlobalKeyHandler("ArrowUp", onButtonUp);
+
+    const onButtonDown = React.useCallback(() => {
+        if (!player) {
+            return;
+        }
+
+        const currentVol = player.getVolume();
+        const newVol = currentVol - 0.1;
+
+        player.setVolume(newVol < 0 ? 0 : newVol);
+    }, [player]);
+    useGlobalKeyHandler("ArrowDown", onButtonDown);
 
     const volumePercentage = volumeRatio * 100;
 

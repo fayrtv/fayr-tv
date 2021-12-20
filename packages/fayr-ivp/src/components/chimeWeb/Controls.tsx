@@ -18,6 +18,7 @@ import { Flex } from "@fayr/shared-components";
 import styles from "./Controls.module.scss";
 
 import * as config from "../../config";
+import useGlobalKeyHandler from "../../hooks/useGlobalKeyHandler";
 import store from "../../redux/store";
 import { ChatOpenContext } from "../contexts/ChatOpenContext";
 import { VotingOpenContext } from "../contexts/VotingOpenContext";
@@ -75,7 +76,7 @@ const Controls: React.FC<Props & ReduxProps> = ({
             await handler();
         };
 
-    const muteButtonOnClick = () => {
+    const toggleMute = () => {
         if (localMuted) {
             chime.audioVideo.realtimeUnmuteLocalAudio();
         } else {
@@ -90,7 +91,7 @@ const Controls: React.FC<Props & ReduxProps> = ({
         return Promise.resolve();
     };
 
-    const videoButtonOnClick = async () => {
+    const toggleVideo = async () => {
         if (videoStatus === VideoStatus.Disabled) {
             setVideoStatus(VideoStatus.Loading);
 
@@ -219,6 +220,9 @@ const Controls: React.FC<Props & ReduxProps> = ({
         }
     }, [isChatOpen, isMobile, setChatOpen]);
 
+    useGlobalKeyHandler(["m", "M", "keyM"], toggleMute);
+    useGlobalKeyHandler(["c", "C", "keyC"], toggleVideo);
+
     const mic_controls = localMuted ? "" : `${styles.Active}`;
     const cam_controls = videoStatus === VideoStatus.Enabled ? `${styles.Active}` : "";
     const chat_controls = isChatOpen ? `${styles.Active}` : "";
@@ -252,7 +256,7 @@ const Controls: React.FC<Props & ReduxProps> = ({
         <div
             key="MicButton"
             className={`${styles.Button} ${mic_controls} btn rounded`}
-            onClick={withoutPropagation(muteButtonOnClick)}
+            onClick={withoutPropagation(toggleMute)}
             title="Mikrofon einschalten"
         >
             {localMuted ? (
@@ -286,7 +290,7 @@ const Controls: React.FC<Props & ReduxProps> = ({
         <div
             key="CamButton"
             className={`${styles.Button} ${cam_controls} btn rounded`}
-            onClick={withoutPropagation(videoButtonOnClick)}
+            onClick={withoutPropagation(toggleVideo)}
             title="Kamera einschalten"
         >
             {videoStatus === VideoStatus.Enabled ? (

@@ -7,6 +7,7 @@ import { isInRect } from "util/coordinateUtil";
 
 // Functionality
 import useGlobalClickHandler from "hooks/useGlobalClickHandler";
+import useGlobalKeyHandler from "hooks/useGlobalKeyHandler";
 import useSocket from "hooks/useSocket";
 
 import { SocketEventType } from "components/chime/types";
@@ -91,6 +92,11 @@ export const VotingContainer = ({ attendeeId, chime, votings }: Props) => {
             setIsOpen(false);
         }
     });
+
+    useGlobalKeyHandler(
+        "Escape",
+        React.useCallback(() => setIsOpen(false), []),
+    );
 
     const updateTip = (hostTip: number, guestTip: number) => {
         const nameOfAttendee = idNameMapping.has(attendeeId)
