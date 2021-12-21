@@ -2,6 +2,7 @@ import { isPlayerSupported, MediaPlayer, PlayerEventType, PlayerState } from "am
 import React, { MouseEventHandler } from "react";
 import { makeid } from "util/guidHelper";
 
+import useGlobalKeyHandler from "hooks/useGlobalKeyHandler";
 import useManyClickHandlers from "hooks/useManyClickHandlers";
 import useSocket from "hooks/useSocket";
 
@@ -33,16 +34,19 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 
     const [reactions, setReactions] = React.useState<Array<React.ReactNode>>([]);
 
+    const pause = React.useCallback(() => {
+        const currentPlayer = player.current!;
+        paused ? currentPlayer.play() : currentPlayer.pause();
+        setPaused(!paused);
+    }, [paused]);
+
     const onPauseClick: React.MouseEventHandler = React.useCallback(
         (event) => {
             event.stopPropagation();
             event.preventDefault();
-
-            const currentPlayer = player.current!;
-            paused ? currentPlayer.play() : currentPlayer.pause();
-            setPaused(!paused);
+            pause();
         },
-        [paused],
+        [pause],
     );
 
     const toggleFullScreen: React.MouseEventHandler = React.useCallback(
@@ -261,6 +265,13 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
             setReactions([]);
         }
     }, [reactionsDisabled]);
+
+    const rewind = () => {};
+    const fastForward = () => {};
+
+    useGlobalKeyHandler("ArrowLeft", rewind);
+    useGlobalKeyHandler("ArrowRight", fastForward);
+    useGlobalKeyHandler([" ", "Space"], pause);
 
     return (
         <div ref={videoElement} className="player-wrapper">

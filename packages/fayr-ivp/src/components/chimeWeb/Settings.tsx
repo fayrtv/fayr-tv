@@ -2,7 +2,7 @@
 import * as React from "react";
 
 // Functionality
-import useEventHandler from "hooks/useEventHandler";
+import useGlobalKeyHandler from "hooks/useGlobalKeyHandler";
 
 import MaterialIcon from "components/common/MaterialIcon";
 
@@ -32,17 +32,7 @@ export const Settings = ({ chime, closeSettings, joinInfo, saveSettings }: Props
     const [speaker, setSpeaker] = React.useState<string>(currentSpeaker?.value);
     const [camera, setCamera] = React.useState<string>(currentCam?.value);
 
-    const handleKeyDown = React.useCallback(
-        ({ key }: KeyboardEvent) => {
-            if (key === "Escape") {
-                // keyCode 27 is Escape key
-                closeSettings();
-            }
-        },
-        [closeSettings],
-    );
-
-    useEventHandler("keydown", handleKeyDown);
+    useGlobalKeyHandler("Escape", closeSettings);
 
     const devicesUpdatedCallback = (fullDeviceInfo: any) => {
         if (config.DEBUG) {
