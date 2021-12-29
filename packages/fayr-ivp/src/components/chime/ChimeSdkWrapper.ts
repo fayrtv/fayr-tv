@@ -78,9 +78,24 @@ export interface IChimeSdkWrapper extends IChimeSocket {
 
     subscribeToRosterUpdate(callback: RosterUpdateCallback): number;
     unsubscribeFromRosterUpdate(callback: RosterUpdateCallback): void;
+
+    leaveRoom(end: boolean): Promise<void>;
 }
 
-export default class ChimeSdkWrapper implements IChimeSdkWrapper, IChimeSocket {
+export interface IChimeDevicePicker {
+    chooseAudioInputDevice(device: Nullable<DeviceInfo>): Promise<void>;
+    chooseAudioOutputDevice(device: Nullable<DeviceInfo>): Promise<void>;
+    chooseVideoInputDevice(device: Nullable<DeviceInfo>): Promise<void>;
+}
+
+export interface IChimeAudioVideoProvider {
+    currentAudioInputDevice: Nullable<DeviceInfo>;
+    currentVideoInputDevice: Nullable<DeviceInfo>;
+}
+
+export default class ChimeSdkWrapper
+    implements IChimeSdkWrapper, IChimeSocket, IChimeDevicePicker, IChimeAudioVideoProvider
+{
     private static WEB_SOCKET_TIMEOUT_MS = 10000;
     private static ROSTER_THROTTLE_MS = 400;
 
@@ -102,9 +117,16 @@ export default class ChimeSdkWrapper implements IChimeSdkWrapper, IChimeSocket {
     private name: Nullable<string> = null;
     private region: Nullable<string> = null;
 
-    private currentAudioInputDevice: Nullable<DeviceInfo> = null;
+    private _currentAudioInputDevice: Nullable<DeviceInfo> = null;
+    public get currentAudioInputDevice() {
+        return this._currentAudioInputDevice;
+    }
     private currentAudioOutputDevice: Nullable<DeviceInfo> = null;
-    private currentVideoInputDevice: Nullable<DeviceInfo> = null;
+    private _currentVideoInputDevice: Nullable<DeviceInfo> = null;
+    public get currentVideoInputDevice() {
+        return this._currentVideoInputDevice;
+    }
+
     private audioInputDevices: Array<DeviceInfo> = [];
     private audioOutputDevices: Array<DeviceInfo> = [];
     private videoInputDevices: Array<DeviceInfo> = [];
@@ -122,9 +144,9 @@ export default class ChimeSdkWrapper implements IChimeSdkWrapper, IChimeSocket {
         this.title = null;
         this.name = null;
         this.region = null;
-        this.currentAudioInputDevice = null;
+        this._currentAudioInputDevice = null;
         this.currentAudioOutputDevice = null;
-        this.currentVideoInputDevice = null;
+        this._currentVideoInputDevice = null;
         this.audioInputDevices = [];
         this.audioOutputDevices = [];
         this.videoInputDevices = [];
@@ -287,33 +309,6 @@ export default class ChimeSdkWrapper implements IChimeSdkWrapper, IChimeSocket {
             this.logError(event.reason);
         });
 
-        const audioInputs = await this._audioVideo?.listAudioInputDevices();
-        if (audioInputs && audioInputs.length > 0 && audioInputs[0].deviceId) {
-            this.currentAudioInputDevice = {
-                label: audioInputs[0].label,
-                value: audioInputs[0].deviceId,
-            };
-            await this._audioVideo?.chooseAudioInputDevice(audioInputs[0].deviceId);
-        }
-
-        const audioOutputs = await this._audioVideo?.listAudioOutputDevices();
-        if (audioOutputs && audioOutputs.length > 0 && audioOutputs[0].deviceId) {
-            this.currentAudioOutputDevice = {
-                label: audioOutputs[0].label,
-                value: audioOutputs[0].deviceId,
-            };
-            await this._audioVideo?.chooseAudioOutputDevice(audioOutputs[0].deviceId);
-        }
-
-        const videoInputs = await this._audioVideo?.listVideoInputDevices();
-        if (videoInputs && videoInputs.length > 0 && videoInputs[0].deviceId) {
-            this.currentVideoInputDevice = {
-                label: videoInputs[0].label,
-                value: videoInputs[0].deviceId,
-            };
-            await this._audioVideo?.chooseVideoInputDevice(null);
-        }
-
         this.publishDevicesUpdated();
 
         this._audioVideo?.bindAudioElement(element);
@@ -397,32 +392,32 @@ export default class ChimeSdkWrapper implements IChimeSdkWrapper, IChimeSocket {
 
     // Device
 
-    async chooseAudioInputDevice(device: DeviceInfo) {
+    chooseAudioInputDevice = async (device: Nullable<DeviceInfo>) => {
         try {
-            await this._audioVideo?.chooseAudioInputDevice(device.value);
-            this.currentAudioInputDevice = device;
+            await this._audioVideo?.chooseAudioInputDevice(device?.value ?? null);
+            this._currentAudioInputDevice = device;
         } catch (error) {
             this.logError(error);
         }
-    }
+    };
 
-    async chooseAudioOutputDevice(device: DeviceInfo) {
+    chooseAudioOutputDevice = async (device: Nullable<DeviceInfo>) => {
         try {
-            await this._audioVideo?.chooseAudioOutputDevice(device.value);
+            await this._audioVideo?.chooseAudioOutputDevice(device?.value ?? null);
             this.currentAudioOutputDevice = device;
         } catch (error) {
             this.logError(error);
         }
-    }
+    };
 
-    async chooseVideoInputDevice(device: DeviceInfo) {
+    chooseVideoInputDevice = async (device: Nullable<DeviceInfo>) => {
         try {
-            await this._audioVideo?.chooseVideoInputDevice(device.value);
-            this.currentVideoInputDevice = device;
+            await this._audioVideo?.chooseVideoInputDevice(device?.value ?? null);
+            this._currentVideoInputDevice = device;
         } catch (error) {
             this.logError(error);
         }
-    }
+    };
 
     // Observer methods
 
@@ -443,7 +438,7 @@ export default class ChimeSdkWrapper implements IChimeSdkWrapper, IChimeSocket {
         });
 
         if (!hasCurrentDevice) {
-            this.currentAudioInputDevice =
+            this._currentAudioInputDevice =
                 this.audioInputDevices.length > 0 ? this.audioInputDevices[0] : null;
         }
         this.publishDevicesUpdated();
@@ -478,8 +473,8 @@ export default class ChimeSdkWrapper implements IChimeSdkWrapper, IChimeSocket {
 
         this.videoInputDevices = freshVideoInputDeviceList.map((mediaDeviceInfo) => {
             if (
-                this.currentVideoInputDevice &&
-                mediaDeviceInfo.deviceId === this.currentVideoInputDevice.value
+                this._currentVideoInputDevice &&
+                mediaDeviceInfo.deviceId === this._currentVideoInputDevice.value
             ) {
                 hasCurrentDevice = true;
             }
@@ -491,7 +486,7 @@ export default class ChimeSdkWrapper implements IChimeSdkWrapper, IChimeSocket {
         });
 
         if (!hasCurrentDevice) {
-            this.currentVideoInputDevice =
+            this._currentVideoInputDevice =
                 this.videoInputDevices.length > 0 ? this.videoInputDevices[0] : null;
         }
 

@@ -12,11 +12,15 @@ export const MicrophoneToggle = ({ toggleState, onClick }: Props) => {
     return (
         <div
             key="MicButton"
-            className={classNames("btn rounded", styles.Button, { [styles.Active]: !toggleState })}
-            onClick={onClick}
+            className={classNames("btn rounded", styles.Button, { [styles.Active]: toggleState })}
+            onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onClick();
+            }}
             title="Mikrofon einschalten"
         >
-            {toggleState ? (
+            {!toggleState ? (
                 <svg
                     className={styles.BtnSvg}
                     fill="none"

@@ -1,9 +1,15 @@
 // Framework
 import { AudioVideoFacade } from "amazon-chime-sdk-js";
+import classNames from "classnames";
 import * as React from "react";
 
 // Types
-import { DeviceInfo } from "components/chime/ChimeSdkWrapper";
+import {
+    DeviceInfo,
+    IChimeAudioVideoProvider,
+    IChimeDevicePicker,
+} from "components/chime/ChimeSdkWrapper";
+import MaterialIcon from "components/common/MaterialIcon";
 
 // Components
 import { Grid, Cell, Flex } from "@fayr/shared-components";
@@ -13,34 +19,61 @@ import styles from "./MeetingStartScreen.module.scss";
 
 import CamToggle from "../Controls/Buttons/CamToggle";
 import MicrophoneToggle from "../Controls/Buttons/MicrophoneToggle";
+import { CameraSelection, MicrophoneSelection } from "../Controls/Selection/DeviceSelection";
+import AudioSensitivityBar from "./AudioSensitivityBar";
 
 type Props = {
     audioVideo: AudioVideoFacade;
+    attendeeId: string | null | undefined;
+    chime: IChimeDevicePicker & IChimeAudioVideoProvider;
     onContinue(): void;
 };
 
-export const MeetingStartScreen = ({ audioVideo, onContinue }: Props) => {
+export const MeetingStartScreen = ({ audioVideo, attendeeId, chime, onContinue }: Props) => {
     const videoRef = React.useRef<HTMLVideoElement>(null);
 
-    const [micMuted, setMicMuted] = React.useState(true);
-    const [camEnabled, setCamEnabled] = React.useState(false);
-    const [audioInputDevices, setAudioInputDevices] = React.useState<Array<DeviceInfo>>([]);
+    const [currentCam, setCurrentCam] = React.useState<string>(
+        () => chime.currentVideoInputDevice?.value ?? "",
+    );
     const [camDevices, setCamDevices] = React.useState<Array<DeviceInfo>>([]);
 
-    const onMicToggleClick = async () => {
-        const newMuteState = !micMuted;
+    const [currentMic, setCurrentMic] = React.useState<string>(
+        () => chime.currentAudioInputDevice?.value ?? "",
+    );
+    const [audioInputDevices, setAudioInputDevices] = React.useState<Array<DeviceInfo>>([]);
 
-        if (!newMuteState) {
+    const [volume, setVolume] = React.useState<number>(0);
+
+    const camEnabled = currentCam !== "";
+    const micEnabled = currentMic !== "";
+
+    const onMicToggleClick = async () => {
+        const newMicState = !micEnabled;
+
+        if (newMicState) {
             const devices = await audioVideo.listAudioInputDevices();
 
-            const deviceInfos: Array<DeviceInfo> = devices.map((x) => ({
-                label: x.label,
-                value: x.deviceId,
-            }));
+            // Chime might return an array of devices here, even if no permission is granted, so we
+            // have to check again if the queried devices are proper devices
+            if (devices.some((x) => x.deviceId !== "")) {
+                const deviceInfos: Array<DeviceInfo> = devices.map((x) => ({
+                    label: x.label,
+                    value: x.deviceId,
+                }));
 
-            setAudioInputDevices(deviceInfos);
+                await chime.chooseAudioInputDevice(deviceInfos[0]);
+                audioVideo.start();
+                audioVideo.realtimeUnmuteLocalAudio();
+
+                setCurrentMic(deviceInfos[0].label);
+                setAudioInputDevices(deviceInfos);
+            }
+        } else {
+            await chime.chooseAudioInputDevice(null);
+            audioVideo.realtimeMuteLocalAudio();
+            setAudioInputDevices([]);
+            setCurrentMic("");
         }
-        setMicMuted(newMuteState);
     };
 
     const onCamToggleClick = async () => {
@@ -48,23 +81,73 @@ export const MeetingStartScreen = ({ audioVideo, onContinue }: Props) => {
 
         if (newCamState) {
             const devices = await audioVideo.listVideoInputDevices();
-            const stream = await window.navigator.mediaDevices.getUserMedia({ video: true });
-            if (videoRef.current) {
-                videoRef.current.srcObject = stream;
-                videoRef.current.onloadedmetadata = (e) => {
-                    videoRef.current!.play();
-                };
+
+            // Chime might return an array of devices here, even if no permission is granted, so we
+            // have to check again if the queried devices are proper devices
+            if (devices.some((x) => x.deviceId !== "")) {
+                const deviceInfos: Array<DeviceInfo> = devices.map((x) => ({
+                    label: x.label,
+                    value: x.deviceId,
+                }));
+
+                await chime.chooseVideoInputDevice(deviceInfos[0]);
+                audioVideo.start();
+
+                audioVideo.startLocalVideoTile();
+
+                setCurrentCam(deviceInfos[0].label);
+                setCamDevices(deviceInfos);
             }
-
-            const deviceInfos: Array<DeviceInfo> = devices.map((x) => ({
-                label: x.label,
-                value: x.deviceId,
-            }));
-
-            setCamDevices(deviceInfos);
+        } else {
+            await chime.chooseVideoInputDevice(null);
+            audioVideo.stopLocalVideoTile();
+            setCamDevices([]);
+            setCurrentCam("");
         }
-        setMicMuted(newCamState);
     };
+
+    React.useEffect(() => {
+        if (camEnabled && videoRef.current) {
+            const currentTile = (audioVideo as any).videoTileController.currentLocalTile.tileState;
+            audioVideo.bindVideoElement(currentTile.tileId, videoRef.current!);
+            audioVideo.startLocalVideoTile();
+        }
+    }, [camEnabled]);
+
+    React.useEffect(() => {
+        if (micEnabled && audioVideo && attendeeId) {
+            audioVideo.realtimeSubscribeToVolumeIndicator(attendeeId, (_, volume) =>
+                setVolume(volume ?? 0),
+            );
+
+            return () => audioVideo.realtimeUnsubscribeFromVolumeIndicator(attendeeId);
+        }
+    }, [micEnabled, audioVideo]);
+
+    // React.useEffect(() => {
+    //     const check = async () => {
+    //         if (await hasCameraPermission()) {
+    //             const devices = await audioVideo.listVideoInputDevices();
+
+    //             const deviceInfos: Array<DeviceInfo> = devices.map((x) => ({
+    //                 label: x.label,
+    //                 value: x.deviceId,
+    //             }));
+    //             setCamDevices(deviceInfos);
+    //             setSelectedCamera(devices[0].deviceId);
+
+    //             window.navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
+    //                 if (videoRef.current && stream) {
+    //                     videoRef.current.srcObject = stream;
+    //                     videoRef.current.onloadedmetadata = (e) => {
+    //                         videoRef.current!.play();
+    //                     };
+    //                 }
+    //             });
+    //         }
+    //     };
+    //     check();
+    // }, []);
 
     return (
         <Grid
@@ -72,33 +155,61 @@ export const MeetingStartScreen = ({ audioVideo, onContinue }: Props) => {
             gridProperties={{
                 gridTemplateAreas: `
 					'Header Header' 
-					'CamPreview Selection'
-					'CamPreview Selection'
-					'CamPreview ContinueButton'
+					'CamPreview VolumeSensitivity'
+					'CamPreview VolumeSensitivity'
+					'Selection ContinueButton'
 				`,
                 gap: "1rem",
-                gridTemplateColumns: "1fr 50px",
-                gridTemplateRows: "50px repeat(2, 1fr)",
+                gridTemplateColumns: "1fr 6rem",
+                gridTemplateRows: "3rem 1fr 1fr 11rem",
             }}
         >
             <Cell className={styles.Header} gridArea="Header">
                 <span>Geräteauswahl</span>
             </Cell>
-            <Cell gridArea="CamPreview">
-                <Flex className={styles.CamPreview} direction="Column">
-                    <video className={styles.VideoPreview} ref={videoRef} />
-                    <Flex className={styles.CamToggle} direction="Row">
+            <Cell className={styles.CamPreviewCell} gridArea="CamPreview">
+                <Flex className={styles.VideoPreviewContainer} direction="Column">
+                    <video ref={videoRef} id="TestVideo" autoPlay playsInline />
+                    {!camEnabled && (
+                        <div className={styles.NoCamSelected}>
+                            <Flex direction="Column" crossAlign="Center">
+                                <span>Noch keine Kamera ausgewählt</span>
+                                <MaterialIcon iconName={"videocam_off"} color="white" />
+                            </Flex>
+                        </div>
+                    )}
+                </Flex>
+            </Cell>
+            <Cell className={styles.VolumeSensitivity} gridArea="VolumeSensitivity">
+                <AudioSensitivityBar segments={10} volume={volume} />
+            </Cell>
+            <Cell className={styles.Selection} gridArea="Selection">
+                <Flex direction="Column">
+                    <Flex direction="Row">
+                        <MicrophoneToggle toggleState={micEnabled} onClick={onMicToggleClick} />
+                        <MicrophoneSelection
+                            selectedDevice={currentMic}
+                            setSelectedDevice={setCurrentMic}
+                            availableDevices={audioInputDevices}
+                            chimeDevicePicker={chime}
+                        />
+                    </Flex>
+                    <Flex direction="Row">
                         <CamToggle toggleState={camEnabled} onClick={onCamToggleClick} />
+                        <CameraSelection
+                            selectedDevice={currentCam}
+                            setSelectedDevice={setCurrentCam}
+                            availableDevices={camDevices}
+                            chimeDevicePicker={chime}
+                        />
                     </Flex>
                 </Flex>
             </Cell>
-            <Cell gridArea="Selection">
-                <Flex direction="Column">
-                    <MicrophoneToggle toggleState={micMuted} onClick={onMicToggleClick} />
-                </Flex>
-            </Cell>
             <Cell gridArea="ContinueButton">
-                <button className="btn btn--primary" onClick={onContinue}>
+                <button
+                    className={classNames("btn btn--primary", styles.ContinueButton)}
+                    onClick={onContinue}
+                >
                     OK
                 </button>
             </Cell>

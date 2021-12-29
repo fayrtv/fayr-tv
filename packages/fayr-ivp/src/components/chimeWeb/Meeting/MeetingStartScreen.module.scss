@@ -18,28 +18,60 @@ $width: 30vw;
     .Header {
         display: grid;
         place-items: center;
+
+        span {
+            font-size: 3rem;
+        }
     }
 
-    .CamPreview {
+    .CamPreviewCell {
         height: 100%;
         width: 100%;
 
-        .VideoPreview {
-            border: 3px groove black;
+        .VideoPreviewContainer {
+            border: 3px solid rgb(68, 67, 67);
             border-radius: 10px;
+            background-color: black;
+            box-shadow: 0 0 12px 5px rgba(0, 0, 0, 0.4);
+            position: relative;
 
             margin: 10px 10px 10px 10px;
-            height: calc(90% - 20px);
 
+            height: 100%;
             max-height: 100%;
             max-width: 100%;
-        }
 
-        .CamToggle {
-            height: 10%;
+            video {
+                height: 100%;
+                width: 100%;
+                max-height: 100%;
+                max-width: 100%;
+            }
+
+            .NoCamSelected {
+                position: absolute;
+                display: grid;
+                place-items: center;
+                height: 100%;
+                width: 100%;
+            }
         }
     }
 
+    .Selection,
+    .ContinueButton {
+        margin-top: 1rem;
+    }
+
     .Selection {
+        > div {
+            > div:nth-of-type(2) {
+                margin-top: 1rem;
+            }
+        }
+    }
+
+    .ContinueButton {
+        width: 5rem;
     }
 }

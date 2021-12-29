@@ -115,7 +115,9 @@ export const MeetingContainer = ({
         showStartScreen ? (
             <MeetingStartScreen
                 audioVideo={chime.audioVideo}
+                attendeeId={chime.attendeeId}
                 onContinue={() => setShowStartScreen(false)}
+                chime={chime}
             />
         ) : (
             <>
