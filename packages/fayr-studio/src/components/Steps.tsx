@@ -1,47 +1,111 @@
+import { CheckIcon } from "@heroicons/react/solid";
 import React from "react";
 
 const steps = [
-    { id: "Schritt 1", name: "Welcome Screen", href: "#", status: "complete" },
-    { id: "Schritt 2", name: "Video Player", href: "#", status: "current" },
+    { id: "1", name: "Choose your Streaming Platform", href: "#", status: "complete" },
+    { id: "2", name: "Basic Setup", href: "#", status: "current" },
+    { id: "3", name: "Design", href: "#", status: undefined },
+    { id: "4", name: "Generate Streaming Keys or Add Videos", href: "#", status: undefined },
+    { id: "5", name: "Launch", href: "#", status: undefined },
 ];
+function classNames(...classes: any[]) {
+    return classes.filter(Boolean).join(" ");
+}
 
 export default function Steps() {
     return (
         <nav aria-label="Progress">
-            <ol className="space-y-4 md:flex md:space-y-0 md:space-x-8">
-                {steps.map((step) => (
-                    <li key={step.name} className="md:flex-1">
+            <ol className="overflow-hidden">
+                {steps.map((step, stepIdx) => (
+                    <li
+                        key={step.name}
+                        className={classNames(
+                            stepIdx !== steps.length - 1 ? "pb-10" : "",
+                            "relative",
+                        )}
+                    >
                         {step.status === "complete" ? (
-                            <a
-                                href={step.href}
-                                className="group pl-4 py-2 flex flex-col border-l-4 border-neutral-600 hover:border-primary md:pl-0 md:pt-4 md:pb-0 md:border-l-0 md:border-t-4"
-                            >
-                                <span className="text-xs text-neutral font-semibold tracking-wide uppercase group-hover:text-primary-800">
-                                    {step.id}
-                                </span>
-                                <span className="text-sm font-medium">{step.name}</span>
-                            </a>
+                            <>
+                                {stepIdx !== steps.length - 1 ? (
+                                    <div
+                                        className="-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-indigo-600"
+                                        aria-hidden="true"
+                                    />
+                                ) : null}
+                                <a href={step.href} className="relative flex items-start group">
+                                    <span className="h-9 flex items-center">
+                                        <span className="relative z-10 w-8 h-8 flex items-center justify-center bg-indigo-600 rounded-full group-hover:bg-indigo-800">
+                                            <CheckIcon
+                                                className="w-5 h-5 text-white"
+                                                aria-hidden="true"
+                                            />
+                                        </span>
+                                    </span>
+                                    <span className="ml-4 min-w-0 flex flex-col">
+                                        <span className="text-xs font-semibold tracking-wide uppercase">
+                                            {step.name}
+                                        </span>
+                                        <span className="text-sm text-gray-500">
+                                            Description
+                                            {/*{step.description}*/}
+                                        </span>
+                                    </span>
+                                </a>
+                            </>
                         ) : step.status === "current" ? (
-                            <a
-                                href={step.href}
-                                className="pl-4 py-2 flex flex-col border-l-4 border-indigo-600 md:pl-0 md:pt-4 md:pb-0 md:border-l-0 md:border-t-4"
-                                aria-current="step"
-                            >
-                                <span className="text-xs text-indigo-600 font-semibold tracking-wide uppercase">
-                                    {step.id}
-                                </span>
-                                <span className="text-sm font-medium">{step.name}</span>
-                            </a>
+                            <>
+                                {stepIdx !== steps.length - 1 ? (
+                                    <div
+                                        className="-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-300"
+                                        aria-hidden="true"
+                                    />
+                                ) : null}
+                                <a
+                                    href={step.href}
+                                    className="relative flex items-start group"
+                                    aria-current="step"
+                                >
+                                    <span className="h-9 flex items-center" aria-hidden="true">
+                                        <span className="relative z-10 w-8 h-8 flex items-center justify-center bg-white border-2 border-indigo-600 rounded-full">
+                                            <span className="h-2.5 w-2.5 bg-indigo-600 rounded-full" />
+                                        </span>
+                                    </span>
+                                    <span className="ml-4 min-w-0 flex flex-col">
+                                        <span className="text-xs font-semibold tracking-wide uppercase text-indigo-600">
+                                            {step.name}
+                                        </span>
+                                        <span className="text-sm text-gray-500">
+                                            Description
+                                            {/*{step.description}*/}
+                                        </span>
+                                    </span>
+                                </a>
+                            </>
                         ) : (
-                            <a
-                                href={step.href}
-                                className="group pl-4 py-2 flex flex-col border-l-4 border-gray-200 hover:border-gray-300 md:pl-0 md:pt-4 md:pb-0 md:border-l-0 md:border-t-4"
-                            >
-                                <span className="text-xs text-gray-500 font-semibold tracking-wide uppercase group-hover:text-gray-700">
-                                    {step.id}
-                                </span>
-                                <span className="text-sm font-medium">{step.name}</span>
-                            </a>
+                            <>
+                                {stepIdx !== steps.length - 1 ? (
+                                    <div
+                                        className="-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-300"
+                                        aria-hidden="true"
+                                    />
+                                ) : null}
+                                <a href={step.href} className="relative flex items-start group">
+                                    <span className="h-9 flex items-center" aria-hidden="true">
+                                        <span className="relative z-10 w-8 h-8 flex items-center justify-center bg-white border-2 border-gray-300 rounded-full group-hover:border-gray-400">
+                                            <span className="h-2.5 w-2.5 bg-transparent rounded-full group-hover:bg-gray-300" />
+                                        </span>
+                                    </span>
+                                    <span className="ml-4 min-w-0 flex flex-col">
+                                        <span className="text-xs font-semibold tracking-wide uppercase text-gray-500">
+                                            {step.name}
+                                        </span>
+                                        <span className="text-sm text-gray-500">
+                                            Description
+                                            {/*{step.description}*/}
+                                        </span>
+                                    </span>
+                                </a>
+                            </>
                         )}
                     </li>
                 ))}
