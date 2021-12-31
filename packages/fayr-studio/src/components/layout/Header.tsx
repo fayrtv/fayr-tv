@@ -1,4 +1,4 @@
-import { BellIcon, EyeIcon, PlusSmIcon, ViewGridIcon } from "@heroicons/react/solid";
+import { BellIcon, EyeIcon, ViewGridIcon } from "@heroicons/react/solid";
 import { ProfileDropdown } from "components/layout/ProfileDropdown";
 import React, { PropsWithChildren } from "react";
 
@@ -15,7 +15,7 @@ const Header = () => (
     <div className="bg-background flex-1 flex justify-between px-4 sm:px-6 py-6">
         <div className="relative w-full text-gray-400 focus-within:text-gray-600" />
 
-        <div className="ml-2 flex items-center space-x-6 sm:ml-6">
+        <div className="ml-2 flex items-center space-x-2 sm:ml-6">
             <IconElement>
                 <ProfileDropdown>
                     <img
