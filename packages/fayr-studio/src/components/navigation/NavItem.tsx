@@ -18,8 +18,8 @@ export default function NavItem({ href, iconProps, isSelected, name, children }:
                 href={href}
                 className={classNames(
                     isSelected
-                        ? "bg-gray-100 text-gray-900"
-                        : "bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900",
+                        ? "bg-blueish text-gray"
+                        : "bg-white text-blueish hover:bg-gray-50 hover:text-gray-900",
                     "group w-full flex items-center pl-2 py-2 text-sm font-medium rounded-md",
                 )}
             >

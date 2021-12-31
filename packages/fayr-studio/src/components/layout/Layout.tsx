@@ -183,7 +183,7 @@ export default function Layout({ children }: PropsWithChildren<{}>) {
                     </header>
 
                     {/* Main content */}
-                    <div className="flex-1 flex items-stretch overflow-hidden">
+                    <div className="flex-1 flex items-stretch overflow-hidden bg-black text-neutral">
                         <main className="flex-1 overflow-y-auto">
                             {/* Primary column */}
                             <section
