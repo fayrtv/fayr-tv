@@ -5,7 +5,7 @@ import React, { PropsWithChildren } from "react";
 const IconElement = ({ children }: PropsWithChildren<{}>) => (
     <button
         className="flex bg-gray items-center justify-center focus:outline-none
-    focus:ring-2 focus:ring-neutral focus:bg-primary focus:text-black p-2 text-neutral"
+    focus:ring-2 focus:ring-neutral focus:bg-primary focus:text-black p-2 text-neutral block"
     >
         {children}
     </button>
@@ -15,7 +15,7 @@ const Header = () => (
     <div className="bg-background flex-1 flex justify-between px-4 sm:px-6 py-6">
         <div className="relative w-full text-gray-400 focus-within:text-gray-600" />
 
-        <div className="ml-2 flex items-center space-x-2 sm:ml-6">
+        <div className="ml-2 flex items-center space-x-4 sm:ml-6">
             <IconElement>
                 <ProfileDropdown>
                     <img

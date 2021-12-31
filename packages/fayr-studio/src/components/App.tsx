@@ -1,4 +1,4 @@
-import "../assets/styles.css";
+import "../assets/tailwind.css";
 import Steps from "components/Steps";
 import Layout from "components/layout/Layout";
 import React from "react";
