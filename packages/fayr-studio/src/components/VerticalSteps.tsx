@@ -1,6 +1,5 @@
 import { CheckIcon } from "@heroicons/react/solid";
-import React from "react";
-import { useRouteMatch } from "react-router-dom";
+import React, { Dispatch, SetStateAction } from "react";
 
 type Status = undefined | "complete" | "current";
 
@@ -14,6 +13,7 @@ type StepInfo = {
 
 type Props = {
     currentStepId: string;
+    setCurrentStepId: Dispatch<SetStateAction<string>>;
     steps: StepInfo[];
 };
 
@@ -73,7 +73,7 @@ function ConnectorLine({ highlighted }: { highlighted: boolean }) {
     );
 }
 
-export default function VerticalSteps({ currentStepId, steps }: Props) {
+export default function VerticalSteps({ currentStepId, setCurrentStepId, steps }: Props) {
     const stepsWithStatus = React.useMemo(() => {
         const result: (StepInfo & { status: Status })[] = [];
         let foundCurrent = false;
@@ -90,13 +90,14 @@ export default function VerticalSteps({ currentStepId, steps }: Props) {
         return result;
     }, [currentStepId, steps]);
 
-    const [expandedStepId, setExpandedStepId] = React.useState<string>(currentStepId);
+    // const [expandedStepId, setExpandedStepId] = React.useState<string>(currentStepId);
 
     return (
         <nav aria-label="Progress">
             <ol className="overflow-hidden">
                 {stepsWithStatus.map((step, stepIdx) => (
                     <li
+                        onClick={() => setCurrentStepId(step.id)}
                         key={step.name}
                         className={classNames(
                             stepIdx !== steps.length - 1 ? "pb-10" : "",
@@ -109,13 +110,21 @@ export default function VerticalSteps({ currentStepId, steps }: Props) {
 
                         <div className="relative flex items-start group">
                             <Bubble status={step.status} />
-                            <div className="ml-4 w-full block relative flex-row bg-background rounded-sm">
-                                <a href={step.href}>
-                                    <Text name={step.name} description={step.description} />
-                                </a>
-
-                                <div className="ml-8 my-8">
-                                    {expandedStepId === step.id
+                            <div className="ml-4 w-full block flex-row">
+                                <div
+                                    className={classNames(
+                                        "w-full block relative",
+                                        currentStepId === step.id
+                                            ? "bg-gradient-to-b from-background pb-8"
+                                            : "",
+                                    )}
+                                >
+                                    <a href={step.href}>
+                                        <Text name={step.name} description={step.description} />
+                                    </a>
+                                </div>
+                                <div className="w-full block relative bg-black px-8">
+                                    {currentStepId === step.id
                                         ? step.renderBody !== undefined
                                             ? step.renderBody()
                                             : `Content of ${step.name}`

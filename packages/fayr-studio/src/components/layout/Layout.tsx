@@ -1,5 +1,13 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { CogIcon, CollectionIcon, MenuAlt2Icon, XIcon } from "@heroicons/react/outline";
+import {
+    CogIcon,
+    CollectionIcon,
+    HomeIcon,
+    MenuAlt2Icon,
+    MicrophoneIcon,
+    VideoCameraIcon,
+    XIcon,
+} from "@heroicons/react/solid";
 import Header from "components/layout/Header";
 import SidebarNav from "components/navigation/SidebarNav";
 import React, { Fragment, PropsWithChildren, useState } from "react";
@@ -25,7 +33,7 @@ export default function Layout({ children }: PropsWithChildren<{}>) {
         <>
             <div className="h-full flex">
                 {/* Narrow sidebar */}
-                <div className="hidden w-28 px-4 bg-background overflow-y-auto md:block">
+                <div className="hidden bg-background overflow-y-auto md:block">
                     <div className="w-full py-6 flex flex-col items-center">
                         <div className="flex-shrink-0 flex items-center">
                             <FayrLogo />
@@ -33,23 +41,23 @@ export default function Layout({ children }: PropsWithChildren<{}>) {
                         <SidebarNav
                             items={[
                                 {
-                                    name: "Studio",
+                                    name: "Home",
                                     href: "#",
-                                    iconProps: { iconName: "visibility_off" },
+                                    icon: HomeIcon,
                                     isSelected: true,
                                     children: [
                                         {
                                             name: "Sub",
                                             href: "#",
-                                            iconProps: { iconName: "visibility_off" },
+                                            icon: VideoCameraIcon,
                                             isSelected: true,
                                         },
                                     ],
                                 },
                                 {
-                                    name: "Settings",
+                                    name: "Stream Manager",
                                     href: "#",
-                                    iconProps: { iconName: "visibility_off" },
+                                    icon: MicrophoneIcon,
                                     isSelected: false,
                                 },
                             ]}
