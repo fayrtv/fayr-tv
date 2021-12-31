@@ -1,7 +1,7 @@
 const AWS = require("aws-sdk");
 const ddb = new AWS.DynamoDB();
 const { CONNECTIONS_TABLE_NAME, MEETINGS_TABLE_NAME, ATTENDEES_TABLE_NAME } = process.env;
-const chime = new AWS.Chime({ region: "us-east-1" }); // Must be in us-east-1
+const chime = new AWS.Chime({ region: "eu-central-1" }); // Must be in us-east-1
 chime.endpoint = new AWS.Endpoint("https://service.chime.aws.amazon.com/console");
 
 const oneDayFromNow = Math.floor(Date.now() / 1000) + 60 * 60 * 24;
