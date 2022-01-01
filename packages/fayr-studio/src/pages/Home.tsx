@@ -1,10 +1,4 @@
-import {
-    CollectionIcon,
-    UserGroupIcon,
-    UsersIcon,
-    VariableIcon,
-    ViewGridIcon,
-} from "@heroicons/react/outline";
+import { CollectionIcon, UserGroupIcon, VariableIcon } from "@heroicons/react/outline";
 import Banner from "components/Banner";
 import ColumnCards, { Card } from "components/ColumnCards";
 import VerticalSteps from "components/VerticalSteps";
@@ -53,7 +47,7 @@ const cards: Card[] = [
         ctaPrimary: "Choose",
     },
 ];
-const Home: FunctionComponent<Props> = (props) => {
+const Home: FunctionComponent<Props> = () => {
     const [currentStepId, setCurrentStepId] = React.useState<string>("1");
     return (
         <>

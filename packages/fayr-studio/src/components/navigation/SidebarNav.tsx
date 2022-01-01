@@ -13,8 +13,8 @@ type Props = { items: Array<NavEntry> };
 
 export default function SidebarNav({ items }: Props) {
     return (
-        <div className="flex-column px-4 mt-[-1px] space-y-1">
-            <div className="rotate-[-4deg] border-primary bg-background text-primary flex border-2 justify-center font-semibold p-0">
+        <div className="flex-column px-4 space-y-1">
+            <div className="border-primary mt-2 bg-background text-primary flex border-2 justify-center font-semibold p-0">
                 STUDIO
             </div>
             {items.map((item) => (
