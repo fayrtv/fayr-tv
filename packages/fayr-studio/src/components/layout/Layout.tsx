@@ -1,11 +1,17 @@
 import { Dialog, Transition } from "@headlessui/react";
+import { LockClosedIcon } from "@heroicons/react/outline";
 import {
     CogIcon,
     CollectionIcon,
+    CurrencyDollarIcon,
     HomeIcon,
     MenuAlt2Icon,
     MicrophoneIcon,
-    VideoCameraIcon,
+    PresentationChartLineIcon,
+    ShieldCheckIcon,
+    SpeakerphoneIcon,
+    TrendingUpIcon,
+    UserGroupIcon,
     XIcon,
 } from "@heroicons/react/solid";
 import Header from "components/layout/Header";
@@ -33,35 +39,184 @@ export default function Layout({ children }: PropsWithChildren<{}>) {
         <>
             <div className="h-full flex">
                 {/* Narrow sidebar */}
-                <div className="hidden bg-background overflow-y-auto md:block">
+                <div className="hidden bg-background overflow-y-auto md:block no-scrollbar">
                     <div className="w-full py-6 flex flex-col items-center">
                         <div className="flex-shrink-0 flex items-center">
                             <FayrLogo />
                         </div>
-                        <SidebarNav
-                            items={[
-                                {
-                                    name: "Home",
-                                    href: "#",
-                                    icon: HomeIcon,
-                                    isSelected: true,
-                                    children: [
-                                        {
-                                            name: "Sub",
-                                            href: "#",
-                                            icon: VideoCameraIcon,
-                                            isSelected: true,
-                                        },
-                                    ],
-                                },
-                                {
-                                    name: "Stream Manager",
-                                    href: "#",
-                                    icon: MicrophoneIcon,
-                                    isSelected: false,
-                                },
-                            ]}
-                        />
+                        <div className="px-3">
+                            <div className="mx-2 select-none block border-primary mt-4 mb-8 bg-background text-primary flex border-2 justify-center font-upper">
+                                STUDIO
+                            </div>
+                            <SidebarNav
+                                items={[
+                                    {
+                                        name: "Home",
+                                        href: "#",
+                                        icon: HomeIcon,
+                                        isSelected: true,
+                                        children: [
+                                            {
+                                                name: "Dashboard",
+                                                href: "#",
+                                                isSelected: true,
+                                            },
+                                            {
+                                                name: "Health Status",
+                                                href: "#",
+                                                isSelected: true,
+                                            },
+                                        ],
+                                    },
+                                    {
+                                        name: "Stream Manager",
+                                        href: "#",
+                                        icon: MicrophoneIcon,
+                                        isSelected: false,
+                                        children: [
+                                            {
+                                                name: "Streaming Tools",
+                                                href: "#",
+                                                isSelected: true,
+                                            },
+                                            {
+                                                name: "Devices",
+                                                href: "#",
+                                                isSelected: true,
+                                            },
+                                        ],
+                                    },
+                                    {
+                                        name: "Content",
+                                        href: "#",
+                                        icon: CollectionIcon,
+                                        isSelected: false,
+                                        children: [
+                                            {
+                                                name: "Library",
+                                                href: "#",
+                                                isSelected: false,
+                                            },
+                                            {
+                                                name: "Records",
+                                                href: "#",
+                                                isSelected: false,
+                                            },
+                                        ],
+                                    },
+                                    {
+                                        name: "Insights",
+                                        href: "#",
+                                        icon: PresentationChartLineIcon,
+                                        isSelected: false,
+                                        children: [
+                                            {
+                                                name: "Summary",
+                                                href: "#",
+                                                isSelected: false,
+                                            },
+                                            {
+                                                name: "Analytics",
+                                                href: "#",
+                                                isSelected: false,
+                                            },
+                                            {
+                                                name: "Data",
+                                                href: "#",
+                                                isSelected: false,
+                                            },
+                                            {
+                                                name: "Report",
+                                                href: "#",
+                                                isSelected: false,
+                                            },
+                                        ],
+                                    },
+                                    {
+                                        name: "Community",
+                                        href: "#",
+                                        icon: UserGroupIcon,
+                                        isSelected: false,
+                                        children: [
+                                            {
+                                                name: "Followers",
+                                                href: "#",
+                                                isSelected: false,
+                                            },
+                                            {
+                                                name: "Partners",
+                                                href: "#",
+                                                isSelected: false,
+                                            },
+                                        ],
+                                    },
+                                    {
+                                        name: "Marketing",
+                                        href: "#",
+                                        icon: SpeakerphoneIcon,
+                                        isSelected: false,
+                                        children: [
+                                            {
+                                                name: "Advertising",
+                                                href: "#",
+                                                isSelected: false,
+                                            },
+                                            {
+                                                name: "Campaigns",
+                                                href: "#",
+                                                isSelected: false,
+                                            },
+                                            {
+                                                name: "Social Media",
+                                                href: "#",
+                                                isSelected: false,
+                                            },
+                                        ],
+                                    },
+                                    {
+                                        name: "Security",
+                                        href: "#",
+                                        icon: ShieldCheckIcon,
+                                        isSelected: false,
+                                        children: [
+                                            {
+                                                name: "Protection",
+                                                href: "#",
+                                                isSelected: false,
+                                            },
+                                            {
+                                                name: "Encryption",
+                                                href: "#",
+                                                isSelected: false,
+                                            },
+                                            {
+                                                name: "GDPR",
+                                                href: "#",
+                                                isSelected: false,
+                                            },
+                                        ],
+                                    },
+                                    {
+                                        name: "Monetization",
+                                        href: "#",
+                                        icon: CurrencyDollarIcon,
+                                        isSelected: false,
+                                        children: [
+                                            {
+                                                name: "Health Status",
+                                                href: "#",
+                                                isSelected: false,
+                                            },
+                                            {
+                                                name: "Dashboard",
+                                                href: "#",
+                                                isSelected: false,
+                                            },
+                                        ],
+                                    },
+                                ]}
+                            />
+                        </div>
                     </div>
                 </div>
 

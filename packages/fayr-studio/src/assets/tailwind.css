@@ -4,6 +4,11 @@
 
 @tailwind utilities;
 
+html {
+    /* Global scale */
+    font-size: 16px
+}
+
 body {
     background: #f3f3f3 !important;
 }
@@ -18,4 +23,21 @@ fieldset.MuiFormControl-root {
 
 *[draggable] {
     cursor: move !important;
+}
+
+/*
+    https://github.com/tailwindlabs/tailwindcss/discussions/2394
+    https://github.com/tailwindlabs/tailwindcss/pull/5732
+*/
+@layer utilities {
+    /* Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .no-scrollbar {
+        -ms-overflow-style: none; /* IE and Edge */
+        /*noinspection CssUnknownProperty*/
+        scrollbar-width: none; /* Firefox */
+    }
 }
