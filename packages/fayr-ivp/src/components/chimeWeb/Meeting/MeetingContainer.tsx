@@ -163,7 +163,16 @@ export const MeetingContainer = ({
                 }}
                 audioVideo={chime.audioVideo}
                 attendeeId={chime.attendeeId}
-                onContinue={() => setShowStartScreen(false)}
+                onContinue={() => {
+                    setShowStartScreen(false);
+                    if (!meetingMetaData.meetingInputOutputDevices) {
+                        setMeetingMetaData({
+                            ...meetingMetaData,
+                            meetingInputOutputDevices:
+                                meetingMetaData.meetingInputOutputDevices ?? {},
+                        });
+                    }
+                }}
                 chime={chime}
             />
         ) : (
