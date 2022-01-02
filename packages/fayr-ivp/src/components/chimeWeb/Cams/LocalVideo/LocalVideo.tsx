@@ -3,12 +3,10 @@ import { Nullable } from "types/global";
 
 import { JoinInfo } from "components/chimeWeb/types";
 
-import { Flex } from "@fayr/shared-components";
+import { Flex, MaterialIcon } from "@fayr/shared-components";
 
 import "../Cam.scss";
 import styles from "./LocalVideo.module.scss";
-
-import MaterialIcon from "../../shared-components/src/MaterialIcon";
 
 type Props = {
     chime: any;
