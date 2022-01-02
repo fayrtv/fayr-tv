@@ -1,16 +1,12 @@
-// Framework
 import * as React from "react";
 
-// Functionality
 import useGlobalKeyHandler from "hooks/useGlobalKeyHandler";
 
-import MaterialIcon from "components/common/MaterialIcon";
+import { MaterialIcon } from "@fayr/shared-components";
 
-// Styles
 import styles from "./Settings.module.scss";
 
 import * as config from "../../config";
-// Types
 import { JoinInfo } from "./types";
 
 type Props = {
