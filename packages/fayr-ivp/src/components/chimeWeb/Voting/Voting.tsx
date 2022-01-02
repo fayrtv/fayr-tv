@@ -4,11 +4,10 @@ import { useMediaQuery } from "react-responsive";
 import Cell from "components/common/GridLayout/Cell";
 import Grid from "components/common/GridLayout/Grid";
 
-import { Flex } from "@fayr/shared-components";
+import { Flex, MaterialIcon } from "@fayr/shared-components";
 
 import styles from "./styles/Voting.module.scss";
 
-import MaterialIcon from "../../shared-components/src/MaterialIcon";
 import OverviewPage from "./SubPages/OverviewPage";
 import SurveyPage from "./SubPages/SurveyPage";
 import VotePage from "./SubPages/VotePage";

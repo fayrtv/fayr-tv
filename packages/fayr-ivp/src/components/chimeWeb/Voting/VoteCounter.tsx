@@ -1,10 +1,9 @@
 import * as React from "react";
 
+import { MaterialIcon } from "@fayr/shared-components";
 import { Flex } from "@fayr/shared-components";
 
 import styles from "./styles/VoteCounter.module.scss";
-
-import MaterialIcon from "../../shared-components/src/MaterialIcon";
 
 type Props = {
     value: number;
