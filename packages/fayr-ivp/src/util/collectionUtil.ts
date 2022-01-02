@@ -6,3 +6,7 @@ export const ensureArray = <T>(potentialArray: CouldBeArray<T>): Array<T> => {
     }
     return [potentialArray];
 };
+
+export const range = (amount: number): Array<number> => {
+    return [...Array.from(Array(amount).keys())];
+};
