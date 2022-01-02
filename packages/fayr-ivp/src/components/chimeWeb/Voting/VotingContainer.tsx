@@ -1,25 +1,20 @@
-// Framework
 import * as React from "react";
 import { connect, useDispatch } from "react-redux";
 import { updateVote } from "redux/reducers/votingReducer";
 import { ReduxStore } from "redux/store";
+import { Callback, Nullable } from "types/global";
 import { isInRect } from "util/coordinateUtil";
 
-// Functionality
 import useGlobalClickHandler from "hooks/useGlobalClickHandler";
 import useGlobalKeyHandler from "hooks/useGlobalKeyHandler";
 import useSocket from "hooks/useSocket";
 
 import { SocketEventType } from "components/chime/types";
 
-// Components
 import { Flex } from "@fayr/shared-components";
 
-// Styles
 import styles from "./styles/VotingContainer.module.scss";
 
-// Types
-import { Callback, Nullable } from "../../../types/global";
 import ChimeSdkWrapper, { RosterMap } from "../../chime/ChimeSdkWrapper";
 import { VotingOpenContext } from "../../contexts/VotingOpenContext";
 import Voting from "./Voting";
@@ -95,7 +90,7 @@ export const VotingContainer = ({ attendeeId, chime, votings }: Props) => {
 
     useGlobalKeyHandler(
         "Escape",
-        React.useCallback(() => setIsOpen(false), []),
+        React.useCallback(() => setIsOpen(false), [setIsOpen]),
     );
 
     const updateTip = (hostTip: number, guestTip: number) => {
