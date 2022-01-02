@@ -70,11 +70,19 @@
             max-height: 30px;
 
             .MinifiedControlButtonCell {
+                height: 21px !important;
+                width: 21px !important;
                 .Button {
                     height: 100%;
                     pointer-events: none;
 
                     margin: 0;
+                }
+
+                > div {
+                    height: 21px !important;
+                    width: 21px !important;
+                    margin: 0 !important;
                 }
             }
         }
