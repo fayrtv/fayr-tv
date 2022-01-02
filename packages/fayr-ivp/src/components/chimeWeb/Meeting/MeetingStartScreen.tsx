@@ -9,10 +9,9 @@ import {
     IChimeAudioVideoProvider,
     IChimeDevicePicker,
 } from "components/chime/ChimeSdkWrapper";
-import MaterialIcon from "components/common/MaterialIcon";
 
 // Components
-import { Grid, Cell, Flex } from "@fayr/shared-components";
+import { Grid, Cell, Flex, MaterialIcon } from "@fayr/shared-components";
 
 // Styles
 import styles from "./MeetingStartScreen.module.scss";

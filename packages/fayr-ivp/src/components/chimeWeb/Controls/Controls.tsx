@@ -24,11 +24,11 @@ import { Flex } from "@fayr/shared-components";
 
 import styles from "./Controls.module.scss";
 
-import * as config from "../../config";
-import useGlobalKeyHandler from "../../hooks/useGlobalKeyHandler";
-import store from "../../redux/store";
-import { ChatOpenContext } from "../contexts/ChatOpenContext";
-import { VotingOpenContext } from "../contexts/VotingOpenContext";
+import * as config from "../../../config";
+import useGlobalKeyHandler from "../../../hooks/useGlobalKeyHandler";
+import store from "../../../redux/store";
+import { ChatOpenContext } from "../../contexts/ChatOpenContext";
+import { VotingOpenContext } from "../../contexts/VotingOpenContext";
 import { MeetingMetaData } from "../Meeting/meetingTypes";
 import CamToggle from "./Buttons/CamToggle";
 import MicrophoneToggle from "./Buttons/MicrophoneToggle";
@@ -438,8 +438,8 @@ const Controls: React.FC<Props & ReduxProps> = ({
                     <Grid
                         className={styles.ControlsMinifiedBlock}
                         gridProperties={{
-                            gridTemplateRows: "1fr 1fr",
-                            gridTemplateColumns: "1fr 1fr",
+                            gridTemplateRows: "50% 50%",
+                            gridTemplateColumns: "50% 50%",
                             gap: 0,
                         }}
                     >

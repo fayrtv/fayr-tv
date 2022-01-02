@@ -2,4 +2,6 @@
 
 .Button {
     @include commonControls.CommonButton;
+    height: 42px;
+    width: 42px;
 }
