@@ -4,6 +4,8 @@ import { useMediaQuery } from "react-responsive";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { GlobalResetAction, ReduxStore } from "redux/store";
 
+import usePersistedState from "hooks/usePersistedState";
+
 import { Message } from "components/chat/types";
 import {
     IChimeAudioVideoProvider,
@@ -27,6 +29,7 @@ import useGlobalKeyHandler from "../../hooks/useGlobalKeyHandler";
 import store from "../../redux/store";
 import { ChatOpenContext } from "../contexts/ChatOpenContext";
 import { VotingOpenContext } from "../contexts/VotingOpenContext";
+import { MeetingMetaData } from "../Meeting/meetingTypes";
 import CamToggle from "./Buttons/CamToggle";
 import MicrophoneToggle from "./Buttons/MicrophoneToggle";
 
@@ -62,6 +65,8 @@ const Controls: React.FC<Props & ReduxProps> = ({
     const { isOpen: isChatOpen, set: setChatOpen } = React.useContext(ChatOpenContext);
     const { isOpen: isVotingOpen, set: setVotingOpen } = React.useContext(VotingOpenContext);
 
+    const [meetingMetaData, setMeetingMetaData] = usePersistedState<MeetingMetaData>(ssName);
+
     const [localMuted, setLocalMuted] = React.useState(!chime.currentAudioInputDevice);
     const [videoStatus, setVideoStatus] = React.useState(
         chime.currentVideoInputDevice == null ? VideoStatus.Disabled : VideoStatus.Enabled,
@@ -90,13 +95,30 @@ const Controls: React.FC<Props & ReduxProps> = ({
             const audioInputs = await chime.audioVideo.listAudioInputDevices();
             if (audioInputs && audioInputs.length > 0 && audioInputs[0].deviceId) {
                 await chime.audioVideo?.chooseAudioInputDevice(audioInputs[0].deviceId);
+                setMeetingMetaData({
+                    ...meetingMetaData,
+                    meetingInputOutputDevices: {
+                        ...meetingMetaData.meetingInputOutputDevices,
+                        audioInput: {
+                            value: audioInputs[0].deviceId,
+                            label: audioInputs[0].label,
+                        },
+                    },
+                });
+                chime.audioVideo.realtimeUnmuteLocalAudio();
+                setLocalMuted(false);
             }
-            chime.audioVideo.realtimeUnmuteLocalAudio();
         } else {
+            setLocalMuted(!localMuted);
+            setMeetingMetaData({
+                ...meetingMetaData,
+                meetingInputOutputDevices: {
+                    ...meetingMetaData.meetingInputOutputDevices,
+                    audioInput: undefined,
+                },
+            });
             chime.audioVideo.realtimeMuteLocalAudio();
         }
-
-        setLocalMuted(!localMuted);
 
         return Promise.resolve();
     };
@@ -112,16 +134,36 @@ const Controls: React.FC<Props & ReduxProps> = ({
 
             try {
                 if (!chime.currentVideoInputDevice) {
-                    console.error("currentVideoInputDevice does not exist");
-                    setVideoStatus(VideoStatus.Disabled);
-                    return;
+                    const videoInputs = await chime.audioVideo?.listVideoInputDevices();
+                    const fallbackDevice = {
+                        label: videoInputs[0].label,
+                        value: videoInputs[0].deviceId,
+                    };
+                    await chime.chooseVideoInputDevice(fallbackDevice);
                 }
 
                 try {
                     await chime.chooseVideoInputDevice(chime.currentVideoInputDevice);
+                    setMeetingMetaData({
+                        ...meetingMetaData,
+                        meetingInputOutputDevices: {
+                            ...meetingMetaData.meetingInputOutputDevices,
+                            cam: chime.currentVideoInputDevice!,
+                        },
+                    });
                 } catch (err) {
                     const videoInputDevices = await chime.audioVideo.listVideoInputDevices();
                     await chime.audioVideo.chooseVideoInputDevice(videoInputDevices[0].deviceId);
+                    setMeetingMetaData({
+                        ...meetingMetaData,
+                        meetingInputOutputDevices: {
+                            ...meetingMetaData.meetingInputOutputDevices,
+                            cam: {
+                                label: videoInputDevices[0].label,
+                                value: videoInputDevices[0].deviceId,
+                            },
+                        },
+                    });
                 }
 
                 chime.audioVideo.startLocalVideoTile();
@@ -131,11 +173,27 @@ const Controls: React.FC<Props & ReduxProps> = ({
                 // eslint-disable-next-line
                 console.error(error);
                 setVideoStatus(VideoStatus.Disabled);
+
+                setMeetingMetaData({
+                    ...meetingMetaData,
+                    meetingInputOutputDevices: {
+                        ...meetingMetaData.meetingInputOutputDevices,
+                        cam: undefined,
+                    },
+                });
             }
         } else if (videoStatus === VideoStatus.Enabled) {
             setVideoStatus(VideoStatus.Loading);
             chime.audioVideo.stopLocalVideoTile();
             setVideoStatus(VideoStatus.Disabled);
+
+            setMeetingMetaData({
+                ...meetingMetaData,
+                meetingInputOutputDevices: {
+                    ...meetingMetaData.meetingInputOutputDevices,
+                    cam: undefined,
+                },
+            });
         }
     };
 

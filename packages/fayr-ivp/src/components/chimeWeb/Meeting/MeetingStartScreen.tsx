@@ -21,15 +21,23 @@ import CamToggle from "../Controls/Buttons/CamToggle";
 import MicrophoneToggle from "../Controls/Buttons/MicrophoneToggle";
 import { CameraSelection, MicrophoneSelection } from "../Controls/Selection/DeviceSelection";
 import AudioSensitivityBar from "./AudioSensitivityBar";
+import { MeetingInputOutputDevices } from "./meetingTypes";
 
 type Props = {
     audioVideo: AudioVideoFacade;
     attendeeId: string | null | undefined;
     chime: IChimeDevicePicker & IChimeAudioVideoProvider;
+    updateMeetingInputOutputDevices(data: Partial<MeetingInputOutputDevices>): void;
     onContinue(): void;
 };
 
-export const MeetingStartScreen = ({ audioVideo, attendeeId, chime, onContinue }: Props) => {
+export const MeetingStartScreen = ({
+    audioVideo,
+    attendeeId,
+    chime,
+    onContinue,
+    updateMeetingInputOutputDevices,
+}: Props) => {
     const videoRef = React.useRef<HTMLVideoElement>(null);
 
     const [currentCam, setCurrentCam] = React.useState<string>(
@@ -66,12 +74,14 @@ export const MeetingStartScreen = ({ audioVideo, attendeeId, chime, onContinue }
                 audioVideo.realtimeUnmuteLocalAudio();
 
                 setCurrentMic(deviceInfos[0].label);
+                updateMeetingInputOutputDevices({ audioInput: deviceInfos[0] });
                 setAudioInputDevices(deviceInfos);
             }
         } else {
             await chime.chooseAudioInputDevice(null);
             audioVideo.realtimeMuteLocalAudio();
             setAudioInputDevices([]);
+            updateMeetingInputOutputDevices({ audioInput: undefined });
             setCurrentMic("");
         }
     };
@@ -96,12 +106,14 @@ export const MeetingStartScreen = ({ audioVideo, attendeeId, chime, onContinue }
                 audioVideo.startLocalVideoTile();
 
                 setCurrentCam(deviceInfos[0].label);
+                updateMeetingInputOutputDevices({ cam: deviceInfos[0] });
                 setCamDevices(deviceInfos);
             }
         } else {
             await chime.chooseVideoInputDevice(null);
             audioVideo.stopLocalVideoTile();
             setCamDevices([]);
+            updateMeetingInputOutputDevices({ cam: undefined });
             setCurrentCam("");
         }
     };
@@ -112,7 +124,7 @@ export const MeetingStartScreen = ({ audioVideo, attendeeId, chime, onContinue }
             audioVideo.bindVideoElement(currentTile.tileId, videoRef.current!);
             audioVideo.startLocalVideoTile();
         }
-    }, [camEnabled]);
+    }, [camEnabled, audioVideo]);
 
     React.useEffect(() => {
         if (micEnabled && audioVideo && attendeeId) {
@@ -122,32 +134,7 @@ export const MeetingStartScreen = ({ audioVideo, attendeeId, chime, onContinue }
 
             return () => audioVideo.realtimeUnsubscribeFromVolumeIndicator(attendeeId);
         }
-    }, [micEnabled, audioVideo]);
-
-    // React.useEffect(() => {
-    //     const check = async () => {
-    //         if (await hasCameraPermission()) {
-    //             const devices = await audioVideo.listVideoInputDevices();
-
-    //             const deviceInfos: Array<DeviceInfo> = devices.map((x) => ({
-    //                 label: x.label,
-    //                 value: x.deviceId,
-    //             }));
-    //             setCamDevices(deviceInfos);
-    //             setSelectedCamera(devices[0].deviceId);
-
-    //             window.navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
-    //                 if (videoRef.current && stream) {
-    //                     videoRef.current.srcObject = stream;
-    //                     videoRef.current.onloadedmetadata = (e) => {
-    //                         videoRef.current!.play();
-    //                     };
-    //                 }
-    //             });
-    //         }
-    //     };
-    //     check();
-    // }, []);
+    }, [micEnabled, audioVideo, attendeeId]);
 
     return (
         <Grid
@@ -181,7 +168,7 @@ export const MeetingStartScreen = ({ audioVideo, attendeeId, chime, onContinue }
                 </Flex>
             </Cell>
             <Cell className={styles.VolumeSensitivity} gridArea="VolumeSensitivity">
-                <AudioSensitivityBar segments={10} volume={volume} />
+                <AudioSensitivityBar segments={20} volume={volume} />
             </Cell>
             <Cell className={styles.Selection} gridArea="Selection">
                 <Flex direction="Column">

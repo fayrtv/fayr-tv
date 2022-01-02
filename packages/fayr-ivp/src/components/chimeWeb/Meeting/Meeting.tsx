@@ -2,7 +2,7 @@ import React, { SetStateAction } from "react";
 
 import ChimeSdkWrapper from "components/chime/ChimeSdkWrapper";
 import Error from "components/chimeWeb/Error";
-import { MeetingStatus, SSData } from "components/chimeWeb/Meeting/meetingTypes";
+import { MeetingStatus, MeetingMetaData } from "components/chimeWeb/Meeting/meetingTypes";
 import { formatMeetingSsKey } from "components/chimeWeb/Meeting/storage";
 import { JoinInfo } from "components/chimeWeb/types";
 
@@ -24,7 +24,7 @@ type PublicProps = {
     roomTitle: string;
 };
 
-type Props = SSData &
+type Props = MeetingMetaData &
     PublicProps & {
         joinInfo: JoinInfo;
         meetingStatus: MeetingStatus | null;
