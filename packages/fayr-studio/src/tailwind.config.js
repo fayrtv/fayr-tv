@@ -2,6 +2,7 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 const plugin = require("tailwindcss/plugin");
 
 module.exports = {
+    mode: "jit",
     content: ["./src/**/*.{js,jsx,ts,tsx}"],
     theme: {
         extend: {
@@ -10,7 +11,8 @@ module.exports = {
                 neutral: "#D9D9D9",
                 white: "#ffffff",
                 primary: "#fa7751",
-                gray: "#181F29",
+                gray: "#C4C4C4",
+                blueish: "#181F29",
             },
             fontFamily: {
                 sans: ["WinnerSans", defaultTheme.fontFamily.sans],

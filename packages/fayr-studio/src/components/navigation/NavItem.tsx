@@ -1,4 +1,3 @@
-import { MaterialIcon } from "@fayr/shared-components";
 import { Disclosure } from "@headlessui/react";
 import classNames from "classnames";
 import React from "react";
@@ -7,49 +6,34 @@ type NavItemProps = {
     name: string;
     href: string;
     isSelected: boolean;
-    iconProps: React.ComponentProps<typeof MaterialIcon>;
+    icon: React.FunctionComponent<React.ComponentProps<"svg">>;
     children?: NavItemProps[];
 };
 
-export default function NavItem({ href, iconProps, isSelected, name, children }: NavItemProps) {
+export default function NavItem({ href, icon, isSelected, name, children }: NavItemProps) {
     return !children ? (
         <div key={name}>
             <a
                 href={href}
-                className={classNames(
-                    isSelected
-                        ? "bg-primary-100 text-primary-900"
-                        : "bg-white text-white-600 hover:bg-primary-50 hover:text-gray-900",
-                    "group w-full flex items-center pl-2 py-2 text-sm font-medium rounded-md",
-                )}
+                className="group text-white w-full flex items-center pl-2 py-2 text-sm font-medium"
             >
-                <MaterialIcon
-                    className="mr-3 flex-shrink-0 h-6 w-6 text-indigo-300"
-                    {...iconProps}
-                />
+                {React.createElement(icon, { className: "mr-3 flex-shrink-0 h-6 w-6 text-white" })}
+                {name}
             </a>
         </div>
     ) : (
         <Disclosure as="div" key={name} className="space-y-1">
             {({ open }) => (
                 <>
-                    <Disclosure.Button
-                        className={classNames(
-                            isSelected
-                                ? "bg-gray-100 text-gray-900"
-                                : "bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900",
-                            "group w-full flex items-center pl-2 pr-1 py-2 text-left text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500",
-                        )}
-                    >
-                        <MaterialIcon
-                            className="mr-3 flex-shrink-0 h-6 w-6 text-indigo-300"
-                            {...iconProps}
-                        />
+                    <Disclosure.Button className="group w-full flex items-center pl-2 pr-1 py-2 text-left text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 text-white">
+                        {React.createElement(icon, {
+                            className: "mr-3 flex-shrink-0 h-6 w-6 text-white",
+                        })}
                         <span className="flex-1">{name}</span>
                         <svg
                             className={classNames(
-                                open ? "text-gray-400 rotate-90" : "text-gray-300",
-                                "ml-3 flex-shrink-0 h-5 w-5 transform group-hover:text-gray-400 transition-colors ease-in-out duration-150",
+                                open ? "rotate-90" : "",
+                                "text-white ml-3 flex-shrink-0 h-5 w-5 transform group-hover:text-gray-400 transition-colors ease-in-out duration-150",
                             )}
                             viewBox="0 0 20 20"
                             aria-hidden="true"
@@ -63,7 +47,7 @@ export default function NavItem({ href, iconProps, isSelected, name, children }:
                                 key={subItem.name}
                                 as="a"
                                 href={subItem.href}
-                                className="group w-full flex items-center pl-11 pr-2 py-2 text-sm font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50"
+                                className="text-white group w-full flex items-center pl-11 pr-2 py-2 text-sm font-medium"
                             >
                                 {subItem.name}
                             </Disclosure.Button>
