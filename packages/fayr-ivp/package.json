@@ -22,7 +22,6 @@
         "react-redux": "^7.2.4",
         "react-responsive": "^9.0.0-beta.3",
         "react-router-dom": "^5.2.0",
-        "react-scripts": "5.0.0-next.58",
         "react-transition-group": "^4.4.2",
         "redux": "^4.1.0",
         "serialize-javascript": ">=3.1.0",
@@ -61,6 +60,7 @@
         "@types/react-transition-group": "^4.4.4",
         "@types/styled-components": "^5.1.15",
         "aws-sdk": "^2.1037.0",
+        "react-scripts": "^5.0.0",
         "sass": "^1.39.2",
         "sass-loader": "^12.1.0"
     }
