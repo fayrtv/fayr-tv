@@ -1,4 +1,4 @@
-import { BellIcon, EyeIcon, ViewGridIcon } from "@heroicons/react/solid";
+import { BellIcon, EyeIcon, UserCircleIcon, ViewGridIcon } from "@heroicons/react/solid";
 import React, { PropsWithChildren } from "react";
 
 const IconElement = ({ children }: PropsWithChildren<{}>) => (
@@ -30,7 +30,7 @@ const Header = () => (
             </IconElement>
 
             <IconElement>
-                <EyeIcon className="h-6 w-6" aria-hidden="true" />
+                <UserCircleIcon className="h-6 w-6" aria-hidden="true" />
             </IconElement>
         </div>
     </div>

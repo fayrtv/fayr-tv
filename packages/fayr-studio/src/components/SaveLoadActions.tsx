@@ -29,7 +29,7 @@ export const SaveLoadActions = () => {
     const [stateToLoad, setStateToLoad] = useState<string | null>(null);
 
     return (
-        <Box px={1} py={1} mt={3} mb={1}>
+        <Box px={1} py={1} mb={1}>
             <Grid container alignItems="center">
                 <Grid item xs>
                     <FormControlLabel

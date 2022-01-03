@@ -6,18 +6,31 @@ type NavItemProps = {
     name: string;
     href: string;
     isSelected: boolean;
-    icon: React.FunctionComponent<React.ComponentProps<"svg">>;
+    icon?: React.FunctionComponent<React.ComponentProps<"svg">>;
     children?: NavItemProps[];
 };
 
 export default function NavItem({ href, icon, isSelected, name, children }: NavItemProps) {
+    const colorClass = isSelected ? "text-white" : "text-neutral";
+
     return !children ? (
         <div key={name}>
             <a
                 href={href}
-                className="group text-white w-full flex items-center pl-2 py-2 text-sm font-medium"
+                className={classNames(
+                    "group w-full flex items-center pl-2 py-2 text-sm font-medium",
+                    colorClass,
+                    "group-hover:text-primary",
+                )}
             >
-                {React.createElement(icon, { className: "mr-3 flex-shrink-0 h-6 w-6 text-white" })}
+                {icon &&
+                    React.createElement(icon, {
+                        className: classNames(
+                            "mr-3 flex-shrink-0 h-6 w-6 text-neutral",
+                            colorClass,
+                            "group-hover:text-primary",
+                        ),
+                    })}
                 {name}
             </a>
         </div>
@@ -25,15 +38,22 @@ export default function NavItem({ href, icon, isSelected, name, children }: NavI
         <Disclosure as="div" key={name} className="space-y-1">
             {({ open }) => (
                 <>
-                    <Disclosure.Button className="group w-full flex items-center pl-2 pr-1 py-2 text-left text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 text-white">
-                        {React.createElement(icon, {
-                            className: "mr-3 flex-shrink-0 h-6 w-6 text-white",
-                        })}
+                    <Disclosure.Button
+                        className={classNames(
+                            "group w-full flex items-center pl-2 pr-1 py-2 text-left text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500",
+                            colorClass,
+                            "group-hover:text-primary",
+                        )}
+                    >
+                        {icon &&
+                            React.createElement(icon, {
+                                className: classNames("mr-3 flex-shrink-0 h-6 w-6", colorClass),
+                            })}
                         <span className="flex-1">{name}</span>
                         <svg
                             className={classNames(
                                 open ? "rotate-90" : "",
-                                "text-white ml-3 flex-shrink-0 h-5 w-5 transform group-hover:text-gray-400 transition-colors ease-in-out duration-150",
+                                "text-neutral ml-3 flex-shrink-0 h-5 w-5 transform group-hover:text-primary transition-colors ease-in-out duration-150",
                             )}
                             viewBox="0 0 20 20"
                             aria-hidden="true"
@@ -47,7 +67,11 @@ export default function NavItem({ href, icon, isSelected, name, children }: NavI
                                 key={subItem.name}
                                 as="a"
                                 href={subItem.href}
-                                className="text-white group w-full flex items-center pl-11 pr-2 py-2 text-sm font-medium"
+                                className={classNames(
+                                    "group w-full flex items-center pl-11 pr-2 py-2 text-sm font-medium",
+                                    colorClass,
+                                    "group-hover:text-primary",
+                                )}
                             >
                                 {subItem.name}
                             </Disclosure.Button>

@@ -1,14 +1,13 @@
 import { CheckIcon } from "@heroicons/react/solid";
 import React, { Dispatch, SetStateAction } from "react";
 
-type Status = undefined | "complete" | "current";
-
-type StepInfo = {
+export type StepInfo = {
     id: string;
     name: string;
-    description: string;
+    description?: string;
     href: string;
     renderBody?: () => JSX.Element;
+    isComplete: boolean;
 };
 
 type Props = {
@@ -21,17 +20,17 @@ function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(" ");
 }
 
-function Bubble({ status }: { status: Status }) {
+function Bubble({ isComplete, isCurrent }: { isComplete: boolean; isCurrent: boolean }) {
     const dot = <span className="h-2.5 w-2.5 bg-neutral rounded-full" />;
     return (
         <>
-            {status === "complete" ? (
+            {isComplete ? (
                 <span className="h-9 flex items-center">
                     <span className="relative z-10 w-8 h-8 flex items-center justify-center bg-primary rounded-full">
                         <CheckIcon className="w-5 h-5 text-white" aria-hidden="true" />
                     </span>
                 </span>
-            ) : status === "current" ? (
+            ) : isCurrent ? (
                 <span className="h-9 flex items-center" aria-hidden="true">
                     <span className="relative z-10 w-8 h-8 flex items-center justify-center bg-blueish border-2 border-primary rounded-full">
                         {dot}
@@ -52,10 +51,10 @@ function Text({ description, name }: Pick<StepInfo, "description" | "name">) {
     return (
         <>
             <span className="min-w-0 flex flex-col">
-                <span className="text-lg font-semibold tracking-wide uppercase text-primary">
+                <span className="text-lg tracking-wide font-upper text-primary hover:text-primary-light">
                     {name}
                 </span>
-                <span className="text-sm text-neutral">{description}</span>
+                {description && <span className="text-md text-neutral">{description}</span>}
             </span>
         </>
     );
@@ -74,28 +73,12 @@ function ConnectorLine({ highlighted }: { highlighted: boolean }) {
 }
 
 export default function VerticalSteps({ currentStepId, setCurrentStepId, steps }: Props) {
-    const stepsWithStatus = React.useMemo(() => {
-        const result: (StepInfo & { status: Status })[] = [];
-        let foundCurrent = false;
-        for (const step of steps) {
-            if (foundCurrent) {
-                result.push({ ...step, status: undefined });
-            } else if (step.id === currentStepId) {
-                result.push({ ...step, status: "current" });
-                foundCurrent = true;
-            } else {
-                result.push({ ...step, status: "complete" });
-            }
-        }
-        return result;
-    }, [currentStepId, steps]);
-
-    // const [expandedStepId, setExpandedStepId] = React.useState<string>(currentStepId);
+    const isCurrentStep = (step: StepInfo) => step.id === currentStepId;
 
     return (
         <nav aria-label="Progress">
             <ol className="overflow-hidden">
-                {stepsWithStatus.map((step, stepIdx) => (
+                {steps.map((step, stepIdx) => (
                     <li
                         onClick={() => setCurrentStepId(step.id)}
                         key={step.name}
@@ -105,11 +88,11 @@ export default function VerticalSteps({ currentStepId, setCurrentStepId, steps }
                         )}
                     >
                         {stepIdx !== steps.length - 1 ? (
-                            <ConnectorLine highlighted={step.status === "complete"} />
+                            <ConnectorLine highlighted={step.isComplete} />
                         ) : null}
 
                         <div className="relative flex items-start group">
-                            <Bubble status={step.status} />
+                            <Bubble isComplete={step.isComplete} isCurrent={isCurrentStep(step)} />
                             <div className="ml-4 w-full block flex-row">
                                 <div
                                     className={classNames(
@@ -123,8 +106,8 @@ export default function VerticalSteps({ currentStepId, setCurrentStepId, steps }
                                         <Text name={step.name} description={step.description} />
                                     </a>
                                 </div>
-                                <div className="w-full block relative bg-black px-8">
-                                    {currentStepId === step.id
+                                <div className="w-full text-sm block relative bg-black">
+                                    {isCurrentStep(step)
                                         ? step.renderBody !== undefined
                                             ? step.renderBody()
                                             : `Content of ${step.name}`
