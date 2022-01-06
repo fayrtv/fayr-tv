@@ -39,7 +39,7 @@ export const MeetingContainer = ({
     const [meetingStatus, setMeetingStatus] = React.useState<MeetingStatus | null>(null);
 
     const [showStartScreen, setShowStartScreen] = React.useState(
-        !meetingMetaData?.meetingInputOutputDevices,
+        config.ShowStartScreen && !meetingMetaData?.meetingInputOutputDevices,
     );
 
     const initializeSession = React.useCallback(
