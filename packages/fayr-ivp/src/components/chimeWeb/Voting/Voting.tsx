@@ -1,10 +1,7 @@
 import * as React from "react";
 import { useMediaQuery } from "react-responsive";
 
-import Cell from "components/common/GridLayout/Cell";
-import Grid from "components/common/GridLayout/Grid";
-
-import { Flex, MaterialIcon } from "@fayr/shared-components";
+import { Cell, Flex, Grid, MaterialIcon } from "@fayr/shared-components";
 
 import styles from "./styles/Voting.module.scss";
 

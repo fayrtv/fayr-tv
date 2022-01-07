@@ -1,16 +1,9 @@
-// Framework
 import * as React from "react";
 
-import Cell from "components/common/GridLayout/Cell";
-// Components
-import Grid from "components/common/GridLayout/Grid";
+import { Cell, Flex, Grid } from "@fayr/shared-components";
 
-import { Flex } from "@fayr/shared-components";
-
-// Styles
 import styles from "./OverviewPage.module.scss";
 
-//Types
 import { VotingData } from "../types";
 
 type Props = {
