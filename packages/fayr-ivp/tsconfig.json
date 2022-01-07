@@ -17,7 +17,8 @@
         "isolatedModules": true,
         "noEmit": true,
         "sourceMap": true,
-        "jsx": "react-jsx"
+        "jsx": "react-jsx",
+        "types": ["node"]
     },
     "include": ["src"],
     "exclude": ["node_modules"]

@@ -1,5 +1,4 @@
-/* This example requires Tailwind CSS v2.0+ */
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch } from "react";
 
 export type Card = {
     key: string;
