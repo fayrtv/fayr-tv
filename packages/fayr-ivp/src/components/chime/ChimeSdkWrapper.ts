@@ -12,10 +12,16 @@ import {
     AudioVideoFacade,
 } from "amazon-chime-sdk-js";
 import throttle from "lodash/throttle";
+import { hasCamPermissions } from "util/permissions/browserPermissionUtil";
 
 import * as config from "../../config";
 import { Nullable, Callback } from "../../types/global";
+import {
+    hasMicPermissions,
+    hasOutputPermissions,
+} from "../../util/permissions/browserPermissionUtil";
 import { JoinInfo } from "../chimeWeb/types";
+import PermissionDeviceController from "./PermissionDeviceController";
 import SocketProvider from "./SocketProvider";
 import { ISocketProvider } from "./types";
 
@@ -79,6 +85,9 @@ export interface IChimeSdkWrapper extends IChimeSocket {
     subscribeToRosterUpdate(callback: RosterUpdateCallback): number;
     unsubscribeFromRosterUpdate(callback: RosterUpdateCallback): void;
 
+    subscribeToDevicesUpdated(callback: DeviceUpdateCallback): void;
+    unsubscribeFromDevicesUpdated(callback: DeviceUpdateCallback): void;
+
     leaveRoom(end: boolean): Promise<void>;
 }
 
@@ -91,10 +100,26 @@ export interface IChimeDevicePicker {
 export interface IChimeAudioVideoProvider {
     currentAudioInputDevice: Nullable<DeviceInfo>;
     currentVideoInputDevice: Nullable<DeviceInfo>;
+    currentAudioOutputDevice: Nullable<DeviceInfo>;
+
+    audioInputDevices: Array<DeviceInfo>;
+    audioOutputDevices: Array<DeviceInfo>;
+    videoInputDevices: Array<DeviceInfo>;
+}
+
+export interface IAudioVideoPermissionGranter {
+    listAudioInputDevices(): Promise<MediaDeviceInfo[]>;
+    listVideoInputDevices(): Promise<MediaDeviceInfo[]>;
+    listAudioOutputDevices(): Promise<MediaDeviceInfo[]>;
 }
 
 export default class ChimeSdkWrapper
-    implements IChimeSdkWrapper, IChimeSocket, IChimeDevicePicker, IChimeAudioVideoProvider
+    implements
+        IChimeSdkWrapper,
+        IChimeSocket,
+        IChimeDevicePicker,
+        IChimeAudioVideoProvider,
+        IAudioVideoPermissionGranter
 {
     private static WEB_SOCKET_TIMEOUT_MS = 10000;
     private static ROSTER_THROTTLE_MS = 400;
@@ -117,19 +142,45 @@ export default class ChimeSdkWrapper
     private name: Nullable<string> = null;
     private region: Nullable<string> = null;
 
+    // Selected devices
     private _currentAudioInputDevice: Nullable<DeviceInfo> = null;
     public get currentAudioInputDevice() {
         return this._currentAudioInputDevice;
     }
-    private currentAudioOutputDevice: Nullable<DeviceInfo> = null;
+    private _currentAudioOutputDevice: Nullable<DeviceInfo> = null;
+    public get currentAudioOutputDevice() {
+        return this._currentVideoInputDevice;
+    }
     private _currentVideoInputDevice: Nullable<DeviceInfo> = null;
     public get currentVideoInputDevice() {
         return this._currentVideoInputDevice;
     }
 
-    private audioInputDevices: Array<DeviceInfo> = [];
-    private audioOutputDevices: Array<DeviceInfo> = [];
-    private videoInputDevices: Array<DeviceInfo> = [];
+    // Available devices
+    private _audioInputDevices: Array<DeviceInfo> = [];
+    public get audioInputDevices() {
+        return this._audioInputDevices;
+    }
+    public set audioInputDevices(devices: Array<DeviceInfo>) {
+        this._audioInputDevices = devices;
+        this.publishDevicesUpdated();
+    }
+    private _audioOutputDevices: Array<DeviceInfo> = [];
+    public get audioOutputDevices() {
+        return this._audioOutputDevices;
+    }
+    public set audioOutputDevices(devices: Array<DeviceInfo>) {
+        this._audioOutputDevices = devices;
+        this.publishDevicesUpdated();
+    }
+    private _videoInputDevices: Array<DeviceInfo> = [];
+    public get videoInputDevices() {
+        return this._videoInputDevices;
+    }
+    public set videoInputDevices(devices: Array<DeviceInfo>) {
+        this._videoInputDevices = devices;
+        this.publishDevicesUpdated();
+    }
 
     private devicesUpdatedCallbacks: Array<DeviceUpdateCallback> = [];
     private roster: RosterMap = {};
@@ -138,6 +189,22 @@ export default class ChimeSdkWrapper
     private messagingSocket: Nullable<ReconnectingPromisedWebSocket> = null;
     private messageUpdateCallbacks: Array<MessageUpdateCallback> = [];
 
+    private _permissionGranter: IAudioVideoPermissionGranter;
+
+    constructor() {
+        this._permissionGranter = new PermissionDeviceController(this);
+    }
+
+    listAudioInputDevices() {
+        return this._permissionGranter.listAudioInputDevices();
+    }
+    listVideoInputDevices(): Promise<MediaDeviceInfo[]> {
+        return this._permissionGranter.listVideoInputDevices();
+    }
+    listAudioOutputDevices(): Promise<MediaDeviceInfo[]> {
+        return this._permissionGranter.listAudioOutputDevices();
+    }
+
     resetFields() {
         this._meetingSession = null;
         this._audioVideo = null;
@@ -145,11 +212,11 @@ export default class ChimeSdkWrapper
         this.name = null;
         this.region = null;
         this._currentAudioInputDevice = null;
-        this.currentAudioOutputDevice = null;
+        this._currentAudioOutputDevice = null;
         this._currentVideoInputDevice = null;
-        this.audioInputDevices = [];
-        this.audioOutputDevices = [];
-        this.videoInputDevices = [];
+        this._audioInputDevices = [];
+        this._audioOutputDevices = [];
+        this._videoInputDevices = [];
         this.devicesUpdatedCallbacks = [];
         this.roster = {};
         this.rosterUpdateCallbacks = [];
@@ -216,15 +283,54 @@ export default class ChimeSdkWrapper
         // this.region = region;
     }
 
+    private initDevicesIfAllowed = async function (
+        permissionChecker: () => Promise<boolean>,
+        deviceGatherer: () => Promise<Array<MediaDeviceInfo>>,
+        field: Array<DeviceInfo>,
+    ) {
+        if (await permissionChecker()) {
+            field = (await deviceGatherer()).map((device) => ({
+                label: device.label,
+                value: device.deviceId,
+            }));
+        }
+    };
+
     async initializeMeetingSession(configuration: MeetingSessionConfiguration) {
         const logger = new ConsoleLogger("SDK", LogLevel.ERROR);
         const deviceController = new DefaultDeviceController(logger);
         this._meetingSession = new DefaultMeetingSession(configuration, logger, deviceController);
         this._audioVideo = this._meetingSession.audioVideo;
 
-        this.audioInputDevices = [];
-        this.audioOutputDevices = [];
-        this.videoInputDevices = [];
+        this._audioInputDevices = [];
+        this._audioOutputDevices = [];
+        this._videoInputDevices = [];
+
+        // How annoying do you want to be? Javascript "this" scope: Yes
+        const that = this;
+        await Promise.all([
+            this.initDevicesIfAllowed(
+                hasMicPermissions,
+                function () {
+                    return that.listAudioInputDevices();
+                },
+                this.audioInputDevices,
+            ),
+            this.initDevicesIfAllowed(
+                hasOutputPermissions,
+                function () {
+                    return that.listAudioOutputDevices();
+                },
+                this.audioOutputDevices,
+            ),
+            this.initDevicesIfAllowed(
+                hasCamPermissions,
+                function () {
+                    return that.listVideoInputDevices();
+                },
+                this.videoInputDevices,
+            ),
+        ]);
 
         this.publishDevicesUpdated();
         this._audioVideo.addDeviceChangeObserver(this);
@@ -404,7 +510,7 @@ export default class ChimeSdkWrapper
     chooseAudioOutputDevice = async (device: Nullable<DeviceInfo>) => {
         try {
             await this._audioVideo?.chooseAudioOutputDevice(device?.value ?? null);
-            this.currentAudioOutputDevice = device;
+            this._currentAudioOutputDevice = device;
         } catch (error) {
             this.logError(error);
         }
@@ -424,7 +530,7 @@ export default class ChimeSdkWrapper
     audioInputsChanged(freshAudioInputDeviceList: Array<MediaDeviceInfo>) {
         let hasCurrentDevice = false;
 
-        this.audioInputDevices = freshAudioInputDeviceList.map((mediaDeviceInfo) => {
+        this._audioInputDevices = freshAudioInputDeviceList.map((mediaDeviceInfo) => {
             if (
                 this.currentAudioInputDevice &&
                 mediaDeviceInfo.deviceId === this.currentAudioInputDevice.value
@@ -439,7 +545,7 @@ export default class ChimeSdkWrapper
 
         if (!hasCurrentDevice) {
             this._currentAudioInputDevice =
-                this.audioInputDevices.length > 0 ? this.audioInputDevices[0] : null;
+                this._audioInputDevices.length > 0 ? this._audioInputDevices[0] : null;
         }
         this.publishDevicesUpdated();
     }
@@ -447,7 +553,7 @@ export default class ChimeSdkWrapper
     audioOutputsChanged(freshAudioOutputDeviceList: Array<MediaDeviceInfo>) {
         let hasCurrentDevice = false;
 
-        this.audioOutputDevices = freshAudioOutputDeviceList.map((mediaDeviceInfo) => {
+        this._audioOutputDevices = freshAudioOutputDeviceList.map((mediaDeviceInfo) => {
             if (
                 this.currentAudioOutputDevice &&
                 mediaDeviceInfo.deviceId === this.currentAudioOutputDevice.value
@@ -462,8 +568,8 @@ export default class ChimeSdkWrapper
         });
 
         if (!hasCurrentDevice) {
-            this.currentAudioOutputDevice =
-                this.audioOutputDevices.length > 0 ? this.audioOutputDevices[0] : null;
+            this._currentAudioOutputDevice =
+                this._audioOutputDevices.length > 0 ? this._audioOutputDevices[0] : null;
         }
         this.publishDevicesUpdated();
     }
@@ -471,7 +577,7 @@ export default class ChimeSdkWrapper
     videoInputsChanged(freshVideoInputDeviceList: Array<MediaDeviceInfo>) {
         let hasCurrentDevice = false;
 
-        this.videoInputDevices = freshVideoInputDeviceList.map((mediaDeviceInfo) => {
+        this._videoInputDevices = freshVideoInputDeviceList.map((mediaDeviceInfo) => {
             if (
                 this._currentVideoInputDevice &&
                 mediaDeviceInfo.deviceId === this._currentVideoInputDevice.value
@@ -487,7 +593,7 @@ export default class ChimeSdkWrapper
 
         if (!hasCurrentDevice) {
             this._currentVideoInputDevice =
-                this.videoInputDevices.length > 0 ? this.videoInputDevices[0] : null;
+                this._videoInputDevices.length > 0 ? this._videoInputDevices[0] : null;
         }
 
         this.publishDevicesUpdated();
@@ -508,12 +614,12 @@ export default class ChimeSdkWrapper
 
     publishDevicesUpdated() {
         const params: DeviceUpdatePayload = {
-            currentAudioInputDevice: this.currentAudioInputDevice,
-            currentAudioOutputDevice: this.currentAudioOutputDevice,
-            currentVideoInputDevice: this.currentVideoInputDevice,
-            audioInputDevices: this.audioInputDevices,
-            audioOutputDevices: this.audioOutputDevices,
-            videoInputDevices: this.videoInputDevices,
+            currentAudioInputDevice: this._currentAudioInputDevice,
+            currentAudioOutputDevice: this._currentAudioOutputDevice,
+            currentVideoInputDevice: this._currentVideoInputDevice,
+            audioInputDevices: this._audioInputDevices,
+            audioOutputDevices: this._audioOutputDevices,
+            videoInputDevices: this._videoInputDevices,
         };
 
         this.devicesUpdatedCallbacks.forEach((cb) => cb(params));

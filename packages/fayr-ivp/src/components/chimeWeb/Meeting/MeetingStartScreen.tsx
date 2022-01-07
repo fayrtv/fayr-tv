@@ -8,6 +8,7 @@ import useTranslations from "hooks/useTranslations";
 // Types
 import {
     DeviceInfo,
+    IAudioVideoPermissionGranter,
     IChimeAudioVideoProvider,
     IChimeDevicePicker,
 } from "components/chime/ChimeSdkWrapper";
@@ -27,7 +28,7 @@ import { MeetingInputOutputDevices } from "./meetingTypes";
 type Props = {
     audioVideo: AudioVideoFacade;
     attendeeId: string | null | undefined;
-    chime: IChimeDevicePicker & IChimeAudioVideoProvider;
+    chime: IChimeDevicePicker & IChimeAudioVideoProvider & IAudioVideoPermissionGranter;
     updateMeetingInputOutputDevices(data: Partial<MeetingInputOutputDevices>): void;
     onContinue(): void;
 };
@@ -61,7 +62,7 @@ export const MeetingStartScreen = ({
         const newMicState = !micEnabled;
 
         if (newMicState) {
-            const devices = await audioVideo.listAudioInputDevices();
+            const devices = await chime.listAudioInputDevices();
 
             // Chime might return an array of devices here, even if no permission is granted, so we
             // have to check again if the queried devices are proper devices
@@ -92,7 +93,7 @@ export const MeetingStartScreen = ({
         const newCamState = !camEnabled;
 
         if (newCamState) {
-            const devices = await audioVideo.listVideoInputDevices();
+            const devices = await chime.listVideoInputDevices();
 
             // Chime might return an array of devices here, even if no permission is granted, so we
             // have to check again if the queried devices are proper devices
