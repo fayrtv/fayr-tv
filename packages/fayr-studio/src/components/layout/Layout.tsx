@@ -1,5 +1,4 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { LockClosedIcon } from "@heroicons/react/outline";
 import {
     CogIcon,
     CollectionIcon,
@@ -10,7 +9,6 @@ import {
     PresentationChartLineIcon,
     ShieldCheckIcon,
     SpeakerphoneIcon,
-    TrendingUpIcon,
     UserGroupIcon,
     XIcon,
 } from "@heroicons/react/solid";

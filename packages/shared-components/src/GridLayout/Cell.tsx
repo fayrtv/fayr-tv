@@ -1,7 +1,6 @@
 // Framework
 import * as React from "react";
 
-import "./styles/Cell.scss";
 import "./styles/Grid.scss";
 
 type CellStyleKeys = "gridColumn" | "gridRow" | "gridArea";

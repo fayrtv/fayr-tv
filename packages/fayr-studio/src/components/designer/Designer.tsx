@@ -2,7 +2,6 @@ import { Editor, Element, Frame } from "@craftjs/core";
 import { SaveLoadActions } from "components/SaveLoadActions";
 import { SettingsPanel } from "components/SettingsPanel";
 import { Toolbox } from "components/Toolbox";
-import Layout from "components/layout/Layout";
 import { Button } from "components/user/Button";
 import { Card, CardBottom, CardTop } from "components/user/Card";
 import { Container } from "components/user/Container";
