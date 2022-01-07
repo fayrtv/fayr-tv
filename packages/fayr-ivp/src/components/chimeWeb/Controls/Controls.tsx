@@ -16,11 +16,9 @@ import ReactionButtonSelection, {
     ReactionsDisabledIcon,
 } from "components/chimeWeb/Controls/emoji-reactions/ReactionButtonSelection";
 import Emoji from "components/common/Emoji";
-import Cell from "components/common/GridLayout/Cell";
-import Grid from "components/common/GridLayout/Grid";
 import { SelectedReactionContext } from "components/contexts/SelectedReactionContext";
 
-import { Flex } from "@fayr/shared-components";
+import { Cell, Flex, Grid } from "@fayr/shared-components";
 
 import styles from "./Controls.module.scss";
 

@@ -6,7 +6,7 @@
         "build": "yarn clean && yarn copy-files && tsc",
         "dev": "tsc -w",
         "clean": "rimraf lib/",
-        "copy-files": "copyfiles -u 1 src/**/*.scss lib/"
+        "copy-files": "copyfiles -u 1 \"src/**/*.scss\" lib/"
     },
     "dependencies": {
         "@types/react-dom": "^17.0.9",

@@ -1,13 +1,7 @@
-// Framework
 import * as React from "react";
 
-import Cell from "components/common/GridLayout/Cell";
-import Grid from "components/common/GridLayout/Grid";
+import { Cell, Flex, Grid } from "@fayr/shared-components";
 
-// Components
-import { Flex } from "@fayr/shared-components";
-
-// Styles
 import styles from "./VotePage.module.scss";
 
 import VoteCounter from "../VoteCounter";
