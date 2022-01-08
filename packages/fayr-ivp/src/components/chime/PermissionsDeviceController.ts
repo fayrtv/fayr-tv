@@ -5,7 +5,7 @@ import {
     IChimeSdkWrapper,
 } from "./ChimeSdkWrapper";
 
-export default class PermissionDeviceController implements IAudioVideoPermissionGranter {
+export default class PermissionsDeviceController implements IAudioVideoPermissionGranter {
     private _chime: IChimeAudioVideoProvider & IChimeSdkWrapper;
 
     constructor(chime: IChimeAudioVideoProvider & IChimeSdkWrapper) {

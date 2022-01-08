@@ -21,7 +21,7 @@ import {
     hasOutputPermissions,
 } from "../../util/permissions/browserPermissionUtil";
 import { JoinInfo } from "../chimeWeb/types";
-import PermissionDeviceController from "./PermissionDeviceController";
+import PermissionsDeviceController from "./PermissionsDeviceController";
 import SocketProvider from "./SocketProvider";
 import { ISocketProvider } from "./types";
 
@@ -192,7 +192,7 @@ export default class ChimeSdkWrapper
     private _permissionGranter: IAudioVideoPermissionGranter;
 
     constructor() {
-        this._permissionGranter = new PermissionDeviceController(this);
+        this._permissionGranter = new PermissionsDeviceController(this);
     }
 
     listAudioInputDevices() {

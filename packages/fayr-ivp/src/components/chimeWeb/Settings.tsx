@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Nullable } from "types/global";
 
 import useGlobalKeyHandler from "hooks/useGlobalKeyHandler";
 
@@ -20,7 +21,12 @@ import { JoinInfo } from "./types";
 type Props = {
     chime: IChimeDevicePicker & IChimeAudioVideoProvider & IChimeSdkWrapper;
     joinInfo: JoinInfo;
-    saveSettings(playbackUrl: string, microphone: string, speaker: string, camera: string): void;
+    saveSettings(
+        playbackUrl: string,
+        microphone: Nullable<string>,
+        speaker: Nullable<string>,
+        camera: Nullable<string>,
+    ): void;
     closeSettings(): void;
 };
 
@@ -29,13 +35,15 @@ export const Settings = ({ chime, closeSettings, joinInfo, saveSettings }: Props
     const availableSpeakers = chime.audioOutputDevices;
     const availableCams = chime.videoInputDevices;
 
-    const [microphone, setMicrophone] = React.useState<string>(
-        chime.currentAudioInputDevice?.value ?? "",
+    const [microphone, setMicrophone] = React.useState<Nullable<string>>(
+        chime.currentAudioInputDevice?.value ?? null,
     );
-    const [speaker, setSpeaker] = React.useState<string>(
-        chime.currentAudioOutputDevice?.value ?? "",
+    const [speaker, setSpeaker] = React.useState<Nullable<string>>(
+        chime.currentAudioOutputDevice?.value ?? null,
     );
-    const [camera, setCamera] = React.useState<string>(chime.currentVideoInputDevice?.value ?? "");
+    const [camera, setCamera] = React.useState<Nullable<string>>(
+        chime.currentVideoInputDevice?.value ?? null,
+    );
 
     useGlobalKeyHandler("Escape", closeSettings);
 

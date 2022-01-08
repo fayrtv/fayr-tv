@@ -3,11 +3,16 @@ import { useState } from "react";
 
 type InitialState<T> = T | (() => T);
 
+/**
+ * Like useState, but allows to decorate the setter with another side effect callback
+ * @param  {InitialState<T>} initialValue Initial value of the state
+ * @param  {(val: T) => void} decoratedCb Initial value of the state
+ */
 export const useDecoratedState = <T>(
-    initialState: InitialState<T>,
+    initialValue: InitialState<T>,
     decoratedCb: (val: T) => void,
 ) => {
-    const [state, setState] = useState<T>();
+    const [state, setState] = useState<T>(initialValue);
 
     const decoratedSetter = (val: T) => {
         decoratedCb(val);
