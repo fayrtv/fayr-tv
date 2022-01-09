@@ -3,6 +3,8 @@ import { AudioVideoFacade } from "amazon-chime-sdk-js";
 import classNames from "classnames";
 import * as React from "react";
 
+import useTranslations from "hooks/useTranslations";
+
 // Types
 import {
     DeviceInfo,
@@ -37,6 +39,7 @@ export const MeetingStartScreen = ({
     onContinue,
     updateMeetingInputOutputDevices,
 }: Props) => {
+    const translations = useTranslations();
     const videoRef = React.useRef<HTMLVideoElement>(null);
 
     const [currentCam, setCurrentCam] = React.useState<string>(
@@ -151,7 +154,7 @@ export const MeetingStartScreen = ({
             }}
         >
             <Cell className={styles.Header} gridArea="Header">
-                <span>Geräteauswahl</span>
+                <span>{translations.StartScreenDeviceSelection}</span>
             </Cell>
             <Cell className={styles.CamPreviewCell} gridArea="CamPreview">
                 <Flex className={styles.VideoPreviewContainer} direction="Column">
