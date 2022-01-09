@@ -1,6 +1,7 @@
 import { Disclosure } from "@headlessui/react";
 import classNames from "classnames";
 import React from "react";
+import { Link } from "react-router-dom";
 
 type NavItemProps = {
     name: string;
@@ -15,8 +16,8 @@ export default function NavItem({ href, icon, isSelected, name, children }: NavI
 
     return !children ? (
         <div key={name}>
-            <a
-                href={href}
+            <Link
+                to={href}
                 className={classNames(
                     "group w-full flex items-center pl-2 py-2 text-sm font-medium",
                     colorClass,
@@ -32,7 +33,7 @@ export default function NavItem({ href, icon, isSelected, name, children }: NavI
                         ),
                     })}
                 {name}
-            </a>
+            </Link>
         </div>
     ) : (
         <Disclosure as="div" key={name} className="space-y-1">

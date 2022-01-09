@@ -15,19 +15,22 @@ import {
 import Header from "components/layout/Header";
 import SidebarNav from "components/navigation/SidebarNav";
 import React, { Fragment, PropsWithChildren, useState } from "react";
+import { Link } from "react-router-dom";
 
 function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(" ");
 }
 
 const FayrLogo = () => (
-    <img
-        src="https://fayr-logo-v001.s3.eu-central-1.amazonaws.com/svg/fayr_logo_main.svg"
-        className="h-8 w-auto"
-        alt="fayrtv-logo"
-        height="70"
-        style={{ border: "none" }}
-    />
+    <Link to="home">
+        <img
+            src="https://fayr-logo-v001.s3.eu-central-1.amazonaws.com/svg/fayr_logo_main.svg"
+            className="h-8 w-auto"
+            alt="fayrtv-logo"
+            height="70"
+            style={{ border: "none" }}
+        />
+    </Link>
 );
 
 export default function Layout({ children }: PropsWithChildren<{}>) {
@@ -50,36 +53,36 @@ export default function Layout({ children }: PropsWithChildren<{}>) {
                                 items={[
                                     {
                                         name: "Home",
-                                        href: "#",
+                                        href: "home",
                                         icon: HomeIcon,
                                         isSelected: true,
                                         children: [
                                             {
                                                 name: "Dashboard",
-                                                href: "#",
+                                                href: "home",
                                                 isSelected: true,
                                             },
                                             {
                                                 name: "Health Status",
-                                                href: "#",
+                                                href: "home",
                                                 isSelected: true,
                                             },
                                         ],
                                     },
                                     {
                                         name: "Stream Manager",
-                                        href: "#",
+                                        href: "stream-manager",
                                         icon: MicrophoneIcon,
                                         isSelected: false,
                                         children: [
                                             {
                                                 name: "Streaming Tools",
-                                                href: "#",
+                                                href: "stream-manager",
                                                 isSelected: true,
                                             },
                                             {
                                                 name: "Devices",
-                                                href: "#",
+                                                href: "stream-manager",
                                                 isSelected: true,
                                             },
                                         ],
@@ -104,18 +107,18 @@ export default function Layout({ children }: PropsWithChildren<{}>) {
                                     },
                                     {
                                         name: "Insights",
-                                        href: "#",
+                                        href: "insights",
                                         icon: PresentationChartLineIcon,
                                         isSelected: false,
                                         children: [
                                             {
                                                 name: "Summary",
-                                                href: "#",
+                                                href: "insights",
                                                 isSelected: false,
                                             },
                                             {
                                                 name: "Analytics",
-                                                href: "#",
+                                                href: "insights",
                                                 isSelected: false,
                                             },
                                             {
@@ -132,36 +135,36 @@ export default function Layout({ children }: PropsWithChildren<{}>) {
                                     },
                                     {
                                         name: "Community",
-                                        href: "#",
+                                        href: "community",
                                         icon: UserGroupIcon,
                                         isSelected: false,
                                         children: [
                                             {
                                                 name: "Followers",
-                                                href: "#",
+                                                href: "community",
                                                 isSelected: false,
                                             },
                                             {
                                                 name: "Partners",
-                                                href: "#",
+                                                href: "community",
                                                 isSelected: false,
                                             },
                                         ],
                                     },
                                     {
                                         name: "Marketing",
-                                        href: "#",
+                                        href: "marketing",
                                         icon: SpeakerphoneIcon,
                                         isSelected: false,
                                         children: [
                                             {
                                                 name: "Advertising",
-                                                href: "#",
+                                                href: "marketing",
                                                 isSelected: false,
                                             },
                                             {
                                                 name: "Campaigns",
-                                                href: "#",
+                                                href: "marketing",
                                                 isSelected: false,
                                             },
                                             {
@@ -173,41 +176,41 @@ export default function Layout({ children }: PropsWithChildren<{}>) {
                                     },
                                     {
                                         name: "Security",
-                                        href: "#",
+                                        href: "security",
                                         icon: ShieldCheckIcon,
                                         isSelected: false,
                                         children: [
                                             {
                                                 name: "Protection",
-                                                href: "#",
+                                                href: "security",
                                                 isSelected: false,
                                             },
                                             {
                                                 name: "Encryption",
-                                                href: "#",
+                                                href: "security",
                                                 isSelected: false,
                                             },
                                             {
                                                 name: "GDPR",
-                                                href: "#",
+                                                href: "security",
                                                 isSelected: false,
                                             },
                                         ],
                                     },
                                     {
                                         name: "Monetization",
-                                        href: "#",
+                                        href: "monetization",
                                         icon: CurrencyDollarIcon,
                                         isSelected: false,
                                         children: [
                                             {
                                                 name: "Health Status",
-                                                href: "#",
+                                                href: "monetization",
                                                 isSelected: false,
                                             },
                                             {
                                                 name: "Dashboard",
-                                                href: "#",
+                                                href: "monetization",
                                                 isSelected: false,
                                             },
                                         ],
@@ -290,9 +293,9 @@ export default function Layout({ children }: PropsWithChildren<{}>) {
                                                         current: false,
                                                     },
                                                 ].map((item) => (
-                                                    <a
+                                                    <Link
                                                         key={item.name}
-                                                        href={item.href}
+                                                        to={item.href}
                                                         className={classNames(
                                                             item.current
                                                                 ? "bg-indigo-800 text-white"
@@ -313,7 +316,7 @@ export default function Layout({ children }: PropsWithChildren<{}>) {
                                                             aria-hidden="true"
                                                         />
                                                         <span>{item.name}</span>
-                                                    </a>
+                                                    </Link>
                                                 ))}
                                             </div>
                                         </nav>
