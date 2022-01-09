@@ -21,7 +21,7 @@ import {
     hasOutputPermissions,
 } from "../../util/permissions/browserPermissionUtil";
 import { JoinInfo } from "../chimeWeb/types";
-import PermissionsDeviceController from "./PermissionsDeviceController";
+import DeviceProviderDeviceTrackingDecorator from "./DeviceProviderDeviceTrackingDecorator";
 import SocketProvider from "./SocketProvider";
 import { ISocketProvider } from "./types";
 
@@ -107,7 +107,7 @@ export interface IChimeAudioVideoProvider {
     videoInputDevices: Array<DeviceInfo>;
 }
 
-export interface IAudioVideoPermissionGranter {
+export interface IDeviceProvider {
     listAudioInputDevices(): Promise<MediaDeviceInfo[]>;
     listVideoInputDevices(): Promise<MediaDeviceInfo[]>;
     listAudioOutputDevices(): Promise<MediaDeviceInfo[]>;
@@ -119,7 +119,7 @@ export default class ChimeSdkWrapper
         IChimeSocket,
         IChimeDevicePicker,
         IChimeAudioVideoProvider,
-        IAudioVideoPermissionGranter
+        IDeviceProvider
 {
     private static WEB_SOCKET_TIMEOUT_MS = 10000;
     private static ROSTER_THROTTLE_MS = 400;
@@ -189,10 +189,10 @@ export default class ChimeSdkWrapper
     private messagingSocket: Nullable<ReconnectingPromisedWebSocket> = null;
     private messageUpdateCallbacks: Array<MessageUpdateCallback> = [];
 
-    private _permissionGranter: IAudioVideoPermissionGranter;
+    private _permissionGranter: IDeviceProvider;
 
     constructor() {
-        this._permissionGranter = new PermissionsDeviceController(this);
+        this._permissionGranter = new DeviceProviderDeviceTrackingDecorator(this);
     }
 
     listAudioInputDevices() {

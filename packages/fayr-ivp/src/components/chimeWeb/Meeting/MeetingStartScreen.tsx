@@ -8,7 +8,7 @@ import useTranslations from "hooks/useTranslations";
 // Types
 import {
     DeviceInfo,
-    IAudioVideoPermissionGranter,
+    IDeviceProvider,
     IChimeAudioVideoProvider,
     IChimeDevicePicker,
 } from "components/chime/ChimeSdkWrapper";
@@ -28,7 +28,7 @@ import { MeetingInputOutputDevices } from "./meetingTypes";
 type Props = {
     audioVideo: AudioVideoFacade;
     attendeeId: string | null | undefined;
-    chime: IChimeDevicePicker & IChimeAudioVideoProvider & IAudioVideoPermissionGranter;
+    chime: IChimeDevicePicker & IChimeAudioVideoProvider & IDeviceProvider;
     updateMeetingInputOutputDevices(data: Partial<MeetingInputOutputDevices>): void;
     onContinue(): void;
 };

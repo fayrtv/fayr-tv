@@ -25,7 +25,7 @@ import styles from "./Controls.module.scss";
 import * as config from "../../../config";
 import useGlobalKeyHandler from "../../../hooks/useGlobalKeyHandler";
 import store from "../../../redux/store";
-import { IAudioVideoPermissionGranter } from "../../chime/ChimeSdkWrapper";
+import { IDeviceProvider } from "../../chime/ChimeSdkWrapper";
 import { ChatOpenContext } from "../../contexts/ChatOpenContext";
 import { VotingOpenContext } from "../../contexts/VotingOpenContext";
 import { MeetingMetaData } from "../Meeting/meetingTypes";
@@ -39,10 +39,7 @@ enum VideoStatus {
 }
 
 type Props = RouteComponentProps & {
-    chime: IChimeSdkWrapper &
-        IChimeAudioVideoProvider &
-        IChimeDevicePicker &
-        IAudioVideoPermissionGranter;
+    chime: IChimeSdkWrapper & IChimeAudioVideoProvider & IChimeDevicePicker & IDeviceProvider;
     title: string;
     openSettings(): void;
     role: string;

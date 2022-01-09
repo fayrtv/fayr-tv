@@ -1,11 +1,11 @@
 import {
     DeviceInfo,
-    IAudioVideoPermissionGranter,
+    IDeviceProvider,
     IChimeAudioVideoProvider,
     IChimeSdkWrapper,
 } from "./ChimeSdkWrapper";
 
-export default class PermissionsDeviceController implements IAudioVideoPermissionGranter {
+export default class DeviceProviderDeviceTrackingDecorator implements IDeviceProvider {
     private _chime: IChimeAudioVideoProvider & IChimeSdkWrapper;
 
     constructor(chime: IChimeAudioVideoProvider & IChimeSdkWrapper) {
