@@ -14,8 +14,8 @@ type Props = { items: Array<NavEntry> };
 export default function SidebarNav({ items }: Props) {
     return (
         <div className="flex-column space-y-1">
-            {items.map((item) => (
-                <NavItem {...item} />
+            {items.map((item, idx) => (
+                <NavItem key={idx} {...item} />
             ))}
         </div>
     );

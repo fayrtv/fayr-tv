@@ -1,5 +1,6 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { SpeakerphoneIcon, XIcon } from "@heroicons/react/outline";
+import { Link } from "react-router-dom";
 
 export default function Banner() {
     return (
@@ -24,13 +25,13 @@ export default function Banner() {
                         </div>
                         <div className="order-3 mt-2 flex-shrink-0 w-full sm:order-2 sm:mt-0 sm:w-auto">
                             {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                            <a
-                                href="#"
+                            <Link
+                                to="/promotion"
                                 className="flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm
                                 font-medium text-black bg-primary hover:ring-2 hover:ring-white hover:bg-primary-light"
                             >
                                 Select a plan
-                            </a>
+                            </Link>
                         </div>
                         <div className="order-2 flex-shrink-0 sm:order-3 sm:ml-2">
                             <button
