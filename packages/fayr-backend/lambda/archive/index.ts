@@ -663,7 +663,7 @@ export const end: Handler<APIGatewayProxyEvent> = async (event, context, callbac
     }
 
     response.statusCode = 200;
-    response.body = JSON.stringify(endMeeting(title));
+    response.body = JSON.stringify(await endMeeting(title));
 
     console.info("end event > response:", JSON.stringify(response, null, 2));
 

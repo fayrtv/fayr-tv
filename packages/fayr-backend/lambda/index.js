@@ -101,7 +101,7 @@ const endMeeting = async (title) => {
 
     console.info("deleteMeeting > params:", JSON.stringify(params, null, 2));
 
-    const result = await ddb.delete(params).promise();
+    const result = await ddb.deleteItem(params).promise();
 
     console.info("deleteMeeting > result:", JSON.stringify(result, null, 2));
 
@@ -553,7 +553,7 @@ exports.end = async (event, context, callback) => {
     const title = simplifyTitle(event.queryStringParameters.title);
 
     response.statusCode = 200;
-    response.body = JSON.stringify(endMeeting(title));
+    response.body = JSON.stringify(await endMeeting(title));
 
     console.info("end event > response:", JSON.stringify(response, null, 2));
 
