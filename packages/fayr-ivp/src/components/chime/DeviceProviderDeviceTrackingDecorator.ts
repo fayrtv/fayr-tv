@@ -22,18 +22,7 @@ export default class DeviceProviderDeviceTrackingDecorator implements IDevicePro
             }));
         }
 
-        return devices;
-    }
-
-    public async listVideoInputDevices(): Promise<MediaDeviceInfo[]> {
-        const devices = await this._chime.audioVideo.listVideoInputDevices();
-
-        if (devices.length) {
-            this._chime.videoInputDevices = devices.map<DeviceInfo>((device) => ({
-                label: device.label,
-                value: device.deviceId,
-            }));
-        }
+        await this.listAudioOutputDevices();
 
         return devices;
     }
@@ -43,6 +32,21 @@ export default class DeviceProviderDeviceTrackingDecorator implements IDevicePro
 
         if (devices.length) {
             this._chime.audioOutputDevices = devices.map<DeviceInfo>((device) => ({
+                label: device.label,
+                value: device.deviceId,
+            }));
+        }
+
+        await this.listAudioInputDevices();
+
+        return devices;
+    }
+
+    public async listVideoInputDevices(): Promise<MediaDeviceInfo[]> {
+        const devices = await this._chime.audioVideo.listVideoInputDevices();
+
+        if (devices.length) {
+            this._chime.videoInputDevices = devices.map<DeviceInfo>((device) => ({
                 label: device.label,
                 value: device.deviceId,
             }));
