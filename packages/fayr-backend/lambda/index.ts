@@ -111,7 +111,7 @@ const endMeeting = async (title: string) => {
             .promise();
     } catch (err) {
         console.info("endMeeting > try/catch:", JSON.stringify(err, null, 2));
-        // return null;
+        return null;
     }
 
     const params = {
@@ -146,7 +146,7 @@ const getAttendee = async (title: string, attendeeId: string): Promise<AttendeeE
     if (!result.Item) {
         return null;
     }
-    return result.Item;
+    return result.Item as AttendeeEntity;
 };
 
 const getAttendees = async (title: string) => {
@@ -276,13 +276,14 @@ export const authorize: Handler<APIGatewayProxyEvent & { methodArn: string }> = 
                     "failed to authenticate with join token (skipping due to strictVerify=false)",
                 );
             }
-        } catch (e: any) {
+        } catch (e) {
+            const parsedException = e as { message: string };
             if (strictVerify) {
-                console.error(`failed to authenticate with join token: ${e.message}`);
+                console.error(`failed to authenticate with join token: ${parsedException.message}`);
             } else {
                 passedAuthCheck = true;
                 console.warn(
-                    `failed to authenticate with join token (skipping due to strictVerify=false): ${e.message}`,
+                    `failed to authenticate with join token (skipping due to strictVerify=false): ${parsedException.message}`,
                 );
             }
         }
@@ -358,8 +359,9 @@ export const sendmessage: APIGatewayProxyHandler = async (event) => {
                 TableName: CONNECTIONS_TABLE_NAME,
             })
             .promise();
-    } catch (e: any) {
-        return { statusCode: 500, body: e.stack };
+    } catch (e) {
+        const parsedException = e as { stack: any };
+        return { statusCode: 500, body: parsedException.stack };
     }
     const apigwManagementApi = new AWS.ApiGatewayManagementApi({
         apiVersion: "2018-11-29",
@@ -382,19 +384,23 @@ export const sendmessage: APIGatewayProxyHandler = async (event) => {
             await apigwManagementApi
                 .postToConnection({ ConnectionId: connectionId!, Data: postData })
                 .promise();
-        } catch (e: any) {
-            if (e.statusCode === 410) {
+        } catch (e) {
+            const parsedException = e as { statusCode: number; message: string };
+            if (parsedException.statusCode === 410) {
                 console.log(`found stale connection, skipping ${connectionId}`);
             } else {
-                console.error(`error posting to connection ${connectionId}: ${e.message}`);
+                console.error(
+                    `error posting to connection ${connectionId}: ${parsedException.message}`,
+                );
             }
         }
     });
     try {
         await Promise.all(postCalls);
-    } catch (e: any) {
-        console.error(`failed to post: ${e.message}`);
-        return { statusCode: 500, body: e.stack };
+    } catch (e) {
+        const parsedException = e as { message: string; stack: any };
+        console.error(`failed to post: ${parsedException.message}`);
+        return { statusCode: 500, body: parsedException.stack };
     }
     return { statusCode: 200, body: "Data sent." };
 };
@@ -601,8 +607,8 @@ export const attendee: Handler<APIGatewayProxyEvent> = async (event, context, ca
     const attendeeInfo = {
         AttendeeInfo: {
             AttendeeId: attendeeId,
-            Name: attendeeEntity.Name.S,
-            Role: attendeeEntity.Role.S,
+            Name: attendeeEntity!.Name.S,
+            Role: attendeeEntity!.Role.S,
         } as AttendeeInfo,
     };
 
@@ -663,7 +669,7 @@ export const end: Handler<APIGatewayProxyEvent> = async (event, context, callbac
     }
 
     response.statusCode = 200;
-    response.body = JSON.stringify(endMeeting(title));
+    response.body = JSON.stringify(await endMeeting(title));
 
     console.info("end event > response:", JSON.stringify(response, null, 2));
 

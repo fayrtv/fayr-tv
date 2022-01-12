@@ -1,29 +1,10 @@
-// noinspection JSUnusedGlobalSymbols
-import { APIGatewayProxyHandler, Handler } from "aws-lambda";
-import { APIGatewayProxyEvent } from "aws-lambda/trigger/api-gateway-proxy";
-import AWS, { DynamoDB } from "aws-sdk";
-import { Meeting } from "aws-sdk/clients/chime";
-
-type DynamoNumber = { N: string };
-type DynamoString = { S: string };
-
+const AWS = require("aws-sdk");
 const ddb = new AWS.DynamoDB();
 const { CONNECTIONS_TABLE_NAME, MEETINGS_TABLE_NAME, ATTENDEES_TABLE_NAME } = process.env;
-
-if (!CONNECTIONS_TABLE_NAME) {
-    throw new Error("Must provide a value for 'CONNECTIONS_TABLE_NAME' in env vars.");
-}
-if (!MEETINGS_TABLE_NAME) {
-    throw new Error("Must provide a value for 'MEETINGS_TABLE_NAME' in env vars.");
-}
-if (!ATTENDEES_TABLE_NAME) {
-    throw new Error("Must provide a value for 'ATTENDEES_TABLE_NAME' in env vars.");
-}
-
 const chime = new AWS.Chime({ region: "us-east-1" }); // Must be in us-east-1
 chime.endpoint = new AWS.Endpoint("https://service.chime.aws.amazon.com/console");
 
-const oneDayFromNow = () => Math.floor(Date.now() / 1000) + 60 * 60 * 24;
+const oneDayFromNow = Math.floor(Date.now() / 1000) + 60 * 60 * 24;
 const strictVerify = true;
 
 const response = {
@@ -37,20 +18,15 @@ const response = {
     isBase64Encoded: false,
 };
 
-// Actually a `GetMeetingResponse`
-type MeetingInfo = {
-    Meeting?: Meeting;
-};
-
 function uuid() {
     return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
-        const r = (Math.random() * 16) | 0;
-        const v = c === "x" ? r : (r & 0x3) | 0x8;
+        var r = (Math.random() * 16) | 0,
+            v = c === "x" ? r : (r & 0x3) | 0x8;
         return v.toString(16);
     });
 }
 
-const getMeeting = async (meetingTitle: string) => {
+const getMeeting = async (meetingTitle) => {
     const filter = {
         TableName: MEETINGS_TABLE_NAME,
         Key: {
@@ -69,7 +45,7 @@ const getMeeting = async (meetingTitle: string) => {
     if (!result.Item) {
         return null;
     }
-    const meetingData = JSON.parse(result.Item.Data.S!);
+    const meetingData = JSON.parse(result.Item.Data.S);
     meetingData.PlaybackURL = result.Item.PlaybackURL.S;
     try {
         await chime
@@ -84,7 +60,7 @@ const getMeeting = async (meetingTitle: string) => {
     return meetingData;
 };
 
-const putMeeting = async (title: string, meetingInfo: MeetingInfo, playbackURL?: string) => {
+const putMeeting = async (title, playbackURL, meetingInfo) => {
     await ddb
         .putItem({
             TableName: MEETINGS_TABLE_NAME,
@@ -93,14 +69,14 @@ const putMeeting = async (title: string, meetingInfo: MeetingInfo, playbackURL?:
                 PlaybackURL: { S: playbackURL },
                 Data: { S: JSON.stringify(meetingInfo) },
                 TTL: {
-                    N: "" + oneDayFromNow(),
+                    N: "" + oneDayFromNow,
                 },
             },
         })
         .promise();
 };
 
-const endMeeting = async (title: string) => {
+const endMeeting = async (title) => {
     const meetingInfo = await getMeeting(title);
 
     try {
@@ -132,7 +108,7 @@ const endMeeting = async (title: string) => {
     return result;
 };
 
-const getAttendee = async (title: string, attendeeId: string): Promise<AttendeeEntity | null> => {
+const getAttendee = async (title, attendeeId) => {
     const result = await ddb
         .getItem({
             TableName: ATTENDEES_TABLE_NAME,
@@ -149,7 +125,7 @@ const getAttendee = async (title: string, attendeeId: string): Promise<AttendeeE
     return result.Item;
 };
 
-const getAttendees = async (title: string) => {
+const getAttendees = async (title) => {
     const filter = {
         TableName: ATTENDEES_TABLE_NAME,
         FilterExpression: "begins_with(AttendeeId, :title)",
@@ -184,40 +160,30 @@ const getAttendees = async (title: string) => {
     return filteredItems;
 };
 
-type AttendeeEntity = {
-    AttendeeId: DynamoString;
-    Name: DynamoString;
-    TTL: DynamoNumber;
-    Role: DynamoString;
-};
-
-const putAttendee = async (title: string, attendeeId: string, name: string, role: string) => {
-    const item: AttendeeEntity = {
-        AttendeeId: {
-            S: `${title}/${attendeeId}`,
-        },
-        Name: { S: name },
-        TTL: {
-            N: "" + oneDayFromNow(),
-        },
-        Role: {
-            S: role,
-        },
-    };
-
+const putAttendee = async (title, attendeeId, name, role) => {
     await ddb
         .putItem({
             TableName: ATTENDEES_TABLE_NAME,
-            Item: item,
+            Item: {
+                AttendeeId: {
+                    S: `${title}/${attendeeId}`,
+                },
+                Name: { S: name },
+                TTL: {
+                    N: "" + oneDayFromNow,
+                },
+                Role: {
+                    S: role,
+                },
+            },
         })
         .promise();
 };
 
-function simplifyTitle(title: string): string | null {
+function simplifyTitle(title) {
     // Strip out most symbolic characters and whitespace and make case insensitive,
     // but preserve any Unicode characters outside of the ASCII range.
     return (
-        // eslint-disable-next-line no-useless-escape
         (title || "").replace(/[\s()!@#$%^&*`~_=+{}|\\;:'",.<>/?\[\]-]+/gu, "").toLowerCase() ||
         null
     );
@@ -225,37 +191,29 @@ function simplifyTitle(title: string): string | null {
 
 // Websocket
 
-export const authorize: Handler<APIGatewayProxyEvent & { methodArn: string }> = async (event) => {
+exports.authorize = async (event, context, callback) => {
     console.log("authorize event:", JSON.stringify(event, null, 2));
 
-    const generatePolicy = (
-        principalId: string,
-        effect: "Allow" | "Deny",
-        resource: string,
-        context: { MeetingId?: string; AttendeeId?: string },
-    ) => {
-        return {
-            principalId,
-            context,
-            ...(effect && resource
-                ? {
-                      policyDocument: {
-                          Version: "2012-10-17",
-                          Statement: [
-                              {
-                                  Action: "execute-api:Invoke",
-                                  Effect: effect,
-                                  Resource: resource,
-                              },
-                          ],
-                      },
-                  }
-                : {}),
-        };
+    const generatePolicy = (principalId, effect, resource, context) => {
+        const authResponse = {};
+        authResponse.principalId = principalId;
+        if (effect && resource) {
+            const policyDocument = {};
+            policyDocument.Version = "2012-10-17";
+            policyDocument.Statement = [];
+            const statementOne = {};
+            statementOne.Action = "execute-api:Invoke";
+            statementOne.Effect = effect;
+            statementOne.Resource = resource;
+            policyDocument.Statement[0] = statementOne;
+            authResponse.policyDocument = policyDocument;
+        }
+        authResponse.context = context;
+        return authResponse;
     };
     let passedAuthCheck = false;
     if (
-        !!event.queryStringParameters?.MeetingId &&
+        !!event.queryStringParameters.MeetingId &&
         !!event.queryStringParameters.AttendeeId &&
         !!event.queryStringParameters.JoinToken
     ) {
@@ -266,7 +224,7 @@ export const authorize: Handler<APIGatewayProxyEvent & { methodArn: string }> = 
                     AttendeeId: event.queryStringParameters.AttendeeId,
                 })
                 .promise();
-            if (attendeeInfo.Attendee?.JoinToken === event.queryStringParameters.JoinToken) {
+            if (attendeeInfo.Attendee.JoinToken === event.queryStringParameters.JoinToken) {
                 passedAuthCheck = true;
             } else if (strictVerify) {
                 console.error("failed to authenticate with join token");
@@ -276,7 +234,7 @@ export const authorize: Handler<APIGatewayProxyEvent & { methodArn: string }> = 
                     "failed to authenticate with join token (skipping due to strictVerify=false)",
                 );
             }
-        } catch (e: any) {
+        } catch (e) {
             if (strictVerify) {
                 console.error(`failed to authenticate with join token: ${e.message}`);
             } else {
@@ -290,28 +248,27 @@ export const authorize: Handler<APIGatewayProxyEvent & { methodArn: string }> = 
         console.error("missing MeetingId, AttendeeId, JoinToken parameters");
     }
     return generatePolicy("me", passedAuthCheck ? "Allow" : "Deny", event.methodArn, {
-        MeetingId: event.queryStringParameters!.MeetingId,
-        AttendeeId: event.queryStringParameters!.AttendeeId,
+        MeetingId: event.queryStringParameters.MeetingId,
+        AttendeeId: event.queryStringParameters.AttendeeId,
     });
 };
 
-export const onconnect: APIGatewayProxyHandler = async (event) => {
+exports.onconnect = async (event) => {
     console.log("onconnect event:", JSON.stringify(event, null, 2));
 
     try {
         await ddb
             .putItem({
-                TableName: CONNECTIONS_TABLE_NAME,
+                TableName: process.env.CONNECTIONS_TABLE_NAME,
                 Item: {
-                    MeetingId: { S: event.requestContext.authorizer?.MeetingId },
-                    AttendeeId: { S: event.requestContext.authorizer?.AttendeeId },
+                    MeetingId: { S: event.requestContext.authorizer.MeetingId },
+                    AttendeeId: { S: event.requestContext.authorizer.AttendeeId },
                     ConnectionId: { S: event.requestContext.connectionId },
-                    TTL: { N: `${oneDayFromNow()}` },
+                    TTL: { N: `${oneDayFromNow}` },
                 },
             })
             .promise();
     } catch (err) {
-        // @ts-ignore
         console.error(`error connecting: ${err.message}`);
         return {
             statusCode: 500,
@@ -321,16 +278,16 @@ export const onconnect: APIGatewayProxyHandler = async (event) => {
     return { statusCode: 200, body: "Connected." };
 };
 
-export const ondisconnect: APIGatewayProxyHandler = async (event) => {
+exports.ondisconnect = async (event) => {
     console.log("ondisconnect event:", JSON.stringify(event, null, 2));
 
     try {
         await ddb
             .deleteItem({
-                TableName: CONNECTIONS_TABLE_NAME,
+                TableName: process.env.CONNECTIONS_TABLE_NAME,
                 Key: {
-                    MeetingId: { S: event.requestContext.authorizer?.MeetingId },
-                    AttendeeId: { S: event.requestContext.authorizer?.AttendeeId },
+                    MeetingId: { S: event.requestContext.authorizer.MeetingId },
+                    AttendeeId: { S: event.requestContext.authorizer.AttendeeId },
                 },
             })
             .promise();
@@ -343,46 +300,36 @@ export const ondisconnect: APIGatewayProxyHandler = async (event) => {
     return { statusCode: 200, body: "Disconnected." };
 };
 
-export const sendmessage: APIGatewayProxyHandler = async (event) => {
+exports.sendmessage = async (event) => {
     console.log("sendmessage event:", JSON.stringify(event, null, 2));
 
-    let attendees: DynamoDB.QueryOutput;
+    let attendees = {};
     try {
         attendees = await ddb
             .query({
                 ExpressionAttributeValues: {
-                    ":meetingId": { S: event.requestContext.authorizer?.MeetingId },
+                    ":meetingId": { S: event.requestContext.authorizer.MeetingId },
                 },
                 KeyConditionExpression: "MeetingId = :meetingId",
                 ProjectionExpression: "ConnectionId",
                 TableName: CONNECTIONS_TABLE_NAME,
             })
             .promise();
-    } catch (e: any) {
+    } catch (e) {
         return { statusCode: 500, body: e.stack };
     }
     const apigwManagementApi = new AWS.ApiGatewayManagementApi({
         apiVersion: "2018-11-29",
         endpoint: `${event.requestContext.domainName}/${event.requestContext.stage}`,
     });
-
-    if (!event.body) {
-        return { statusCode: 400, body: "No request body provided" };
-    }
-
     const postData = JSON.parse(event.body).data;
-
-    if (!attendees.Items) {
-        return { statusCode: 201, body: "No attendees found in the meeting" };
-    }
-
     const postCalls = attendees.Items.map(async (connection) => {
         const connectionId = connection.ConnectionId.S;
         try {
             await apigwManagementApi
-                .postToConnection({ ConnectionId: connectionId!, Data: postData })
+                .postToConnection({ ConnectionId: connectionId, Data: postData })
                 .promise();
-        } catch (e: any) {
+        } catch (e) {
             if (e.statusCode === 410) {
                 console.log(`found stale connection, skipping ${connectionId}`);
             } else {
@@ -392,7 +339,7 @@ export const sendmessage: APIGatewayProxyHandler = async (event) => {
     });
     try {
         await Promise.all(postCalls);
-    } catch (e: any) {
+    } catch (e) {
         console.error(`failed to post: ${e.message}`);
         return { statusCode: 500, body: e.stack };
     }
@@ -401,19 +348,15 @@ export const sendmessage: APIGatewayProxyHandler = async (event) => {
 
 // API
 
-export const createMeeting: Handler<APIGatewayProxyEvent> = async (event, context, callback) => {
+exports.createMeeting = async (event, context, callback) => {
     console.log("createMeeting event:", JSON.stringify(event, null, 2));
-
-    if (!event.body) {
-        return { statusCode: 400, body: "No request body provided." };
-    }
 
     let payload;
     try {
         payload = JSON.parse(event.body);
     } catch (err) {
         console.log("createMeeting event > parse payload:", JSON.stringify(err, null, 2));
-        response.statusCode = 400;
+        response.statusCode = 500;
         response.body = JSON.stringify(err);
         callback(null, response);
         return;
@@ -427,13 +370,6 @@ export const createMeeting: Handler<APIGatewayProxyEvent> = async (event, contex
         return;
     }
     const title = simplifyTitle(payload.title);
-    if (!title) {
-        response.statusCode = 400;
-        response.body = "Invalid room title";
-        callback(null, response);
-        return;
-    }
-
     const region = payload.region || "us-east-1";
     let meetingInfo = await getMeeting(title);
     if (!meetingInfo) {
@@ -445,7 +381,6 @@ export const createMeeting: Handler<APIGatewayProxyEvent> = async (event, contex
             "createMeeting event > Creating new meeting: " + JSON.stringify(request, null, 2),
         );
         meetingInfo = await chime.createMeeting(request).promise();
-        // TODO: Playback URL is not being passed here, which might be a bug.
         await putMeeting(title, meetingInfo);
     }
 
@@ -457,29 +392,17 @@ export const createMeeting: Handler<APIGatewayProxyEvent> = async (event, contex
     };
 
     response.statusCode = 201;
-    response.body = JSON.stringify(joinInfo, undefined, 2);
+    response.body = JSON.stringify(joinInfo, "", 2);
 
     console.info("createMeeting event > response:", JSON.stringify(response, null, 2));
 
     callback(null, response);
 };
 
-type JoinPayload = {
-    title: string;
-    name: string;
-    role: string;
-    playbackURL: string;
-    region: string;
-};
-
-export const join: Handler<APIGatewayProxyEvent> = async (event, context, callback) => {
+exports.join = async (event, context, callback) => {
     console.log("join event:", JSON.stringify(event, null, 2));
 
-    if (!event.body) {
-        return { statusCode: 400, body: "No request body provided" };
-    }
-
-    let payload: JoinPayload;
+    let payload;
 
     try {
         payload = JSON.parse(event.body);
@@ -508,13 +431,6 @@ export const join: Handler<APIGatewayProxyEvent> = async (event, context, callba
     }
 
     const title = simplifyTitle(payload.title);
-    if (!title) {
-        response.statusCode = 400;
-        response.body = "Invalid room title";
-        callback(null, response);
-        return;
-    }
-
     const name = payload.name;
     const region = payload.region || "us-east-1";
     let meetingInfo = await getMeeting(title);
@@ -528,7 +444,7 @@ export const join: Handler<APIGatewayProxyEvent> = async (event, context, callba
         console.info("join event > Creating new meeting: " + JSON.stringify(request, null, 2));
         meetingInfo = await chime.createMeeting(request).promise();
         meetingInfo.PlaybackURL = payload.playbackURL;
-        await putMeeting(title, meetingInfo, payload.playbackURL);
+        await putMeeting(title, payload.playbackURL, meetingInfo);
     }
 
     console.info("join event > meetingInfo:", JSON.stringify(meetingInfo, null, 2));
@@ -543,7 +459,7 @@ export const join: Handler<APIGatewayProxyEvent> = async (event, context, callba
 
     console.info("join event > attendeeInfo:", JSON.stringify(attendeeInfo, null, 2));
 
-    await putAttendee(title, attendeeInfo.Attendee!.AttendeeId!, name, payload.role);
+    putAttendee(title, attendeeInfo.Attendee.AttendeeId, name, payload.role);
 
     const joinInfo = {
         JoinInfo: {
@@ -557,23 +473,17 @@ export const join: Handler<APIGatewayProxyEvent> = async (event, context, callba
     console.info("join event > joinInfo:", JSON.stringify(joinInfo, null, 2));
 
     response.statusCode = 200;
-    response.body = JSON.stringify(joinInfo, undefined, 2);
+    response.body = JSON.stringify(joinInfo, "", 2);
 
     console.info("join event > response:", JSON.stringify(response, null, 2));
 
     callback(null, response);
 };
 
-type AttendeeInfo = {
-    AttendeeId: string;
-    Name: string;
-    Role: string;
-};
-
-export const attendee: Handler<APIGatewayProxyEvent> = async (event, context, callback) => {
+exports.attendee = async (event, context, callback) => {
     console.log("attendee event:", JSON.stringify(event, null, 2));
 
-    if (!event.queryStringParameters?.title || !event.queryStringParameters.attendeeId) {
+    if (!event.queryStringParameters.title || !event.queryStringParameters.attendeeId) {
         console.log("attendee event > missing required fields: Must provide title and attendeeId");
         response.statusCode = 400;
         response.body = "Must provide title and attendeeId";
@@ -582,14 +492,7 @@ export const attendee: Handler<APIGatewayProxyEvent> = async (event, context, ca
     }
 
     const title = simplifyTitle(event.queryStringParameters.title);
-    if (!title) {
-        response.statusCode = 400;
-        response.body = "Invalid room title";
-        callback(null, response);
-        return;
-    }
-    const attendeeId = event.queryStringParameters.attendeeId as string;
-
+    const attendeeId = event.queryStringParameters.attendeeId;
     const attendeeEntity = await getAttendee(title, attendeeId);
 
     if (!attendeeEntity) {
@@ -603,21 +506,21 @@ export const attendee: Handler<APIGatewayProxyEvent> = async (event, context, ca
             AttendeeId: attendeeId,
             Name: attendeeEntity.Name.S,
             Role: attendeeEntity.Role.S,
-        } as AttendeeInfo,
+        },
     };
 
     response.statusCode = 200;
-    response.body = JSON.stringify(attendeeInfo, undefined, 2);
+    response.body = JSON.stringify(attendeeInfo, "", 2);
 
     console.info("attendee event > response:", JSON.stringify(response, null, 2));
 
     callback(null, response);
 };
 
-export const attendees: Handler<APIGatewayProxyEvent> = async (event, context, callback) => {
+exports.attendees = async (event, context, callback) => {
     console.log("attendees event:", JSON.stringify(event, null, 2));
 
-    if (!event.queryStringParameters?.title) {
+    if (!event.queryStringParameters.title) {
         console.log("attendees event > missing required fields: Must provide title");
         response.statusCode = 400;
         response.body = "Must provide title";
@@ -626,26 +529,20 @@ export const attendees: Handler<APIGatewayProxyEvent> = async (event, context, c
     }
 
     const title = simplifyTitle(event.queryStringParameters.title);
-    if (!title) {
-        response.statusCode = 400;
-        response.body = "Invalid room title";
-        callback(null, response);
-        return;
-    }
     const attendeeInfo = await getAttendees(title);
 
     response.statusCode = 200;
-    response.body = JSON.stringify(attendeeInfo, undefined, 2);
+    response.body = JSON.stringify(attendeeInfo, "", 2);
 
     console.info("attendees event > response:", JSON.stringify(response, null, 2));
 
     callback(null, response);
 };
 
-export const end: Handler<APIGatewayProxyEvent> = async (event, context, callback) => {
+exports.end = async (event, context, callback) => {
     console.log("end event:", JSON.stringify(event, null, 2));
 
-    if (!event.queryStringParameters?.title) {
+    if (!event.queryStringParameters.title) {
         console.log("end event > missing required fields: Must provide title");
         response.statusCode = 400;
         response.body = "Must provide title";
@@ -654,13 +551,6 @@ export const end: Handler<APIGatewayProxyEvent> = async (event, context, callbac
     }
 
     const title = simplifyTitle(event.queryStringParameters.title);
-
-    if (!title) {
-        response.statusCode = 400;
-        response.body = "Invalid room title";
-        callback(null, response);
-        return;
-    }
 
     response.statusCode = 200;
     response.body = JSON.stringify(await endMeeting(title));

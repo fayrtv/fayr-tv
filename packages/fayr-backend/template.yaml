@@ -85,7 +85,7 @@ Resources:
     Type: 'AWS::Serverless::Function'
     Properties:
       Handler: index.createMeeting
-      CodeUri: lambda/
+      CodeUri: compiled/
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref Meetings
@@ -99,7 +99,7 @@ Resources:
     Type: 'AWS::Serverless::Function'
     Properties:
       Handler: index.join
-      CodeUri: lambda/
+      CodeUri: compiled/
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref Meetings
@@ -115,7 +115,7 @@ Resources:
     Type: 'AWS::Serverless::Function'
     Properties:
       Handler: index.end
-      CodeUri: lambda/
+      CodeUri: compiled/
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref Meetings
@@ -129,7 +129,7 @@ Resources:
     Type: 'AWS::Serverless::Function'
     Properties:
       Handler: index.attendee
-      CodeUri: lambda/
+      CodeUri: compiled/
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref Meetings
@@ -145,7 +145,7 @@ Resources:
     Type: 'AWS::Serverless::Function'
     Properties:
       Handler: index.attendees
-      CodeUri: lambda/
+      CodeUri: compiled/
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref Meetings
@@ -264,7 +264,7 @@ Resources:
   OnConnectFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: lambda/
+      CodeUri: compiled/
       Handler: index.onconnect
       Policies:
       - DynamoDBCrudPolicy:
@@ -281,7 +281,7 @@ Resources:
   AuthorizeFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: lambda/
+      CodeUri: compiled/
       Handler: index.authorize
       Policies:
       - DynamoDBCrudPolicy:
@@ -311,7 +311,7 @@ Resources:
   OnDisconnectFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: lambda/
+      CodeUri: compiled/
       Handler: index.ondisconnect
       Policies:
       - DynamoDBCrudPolicy:
@@ -328,7 +328,7 @@ Resources:
   SendMessageFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: lambda/
+      CodeUri: compiled/
       Handler: index.sendmessage
       Policies:
       - DynamoDBCrudPolicy:
