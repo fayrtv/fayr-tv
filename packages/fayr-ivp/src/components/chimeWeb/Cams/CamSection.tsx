@@ -5,6 +5,7 @@ import * as config from "config";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { replaceParticipantVideoRoster } from "redux/reducers/participantVideoReducer";
+import { updatePinnedHost } from "redux/reducers/pinnedHostReducer";
 import { ReduxStore } from "redux/store";
 import { Nullable } from "types/global";
 
@@ -32,9 +33,17 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
     const [roster, setRoster] = React.useState<Roster>([]);
     const previousRoster = React.useRef<Roster>([]);
 
-    const [pinnedHostIdentifier, setPinnedHostIdentifier] = React.useState<Nullable<string>>(null);
+    const pinnedHostIdentifier = useSelector<ReduxStore, Nullable<string>>(
+        (x) => x.pinnedHostReducer,
+    );
 
     const dispatch = useDispatch();
+    const setPinnedHostIdentifier = React.useCallback(
+        (newHost) => {
+            dispatch(updatePinnedHost(newHost));
+        },
+        [dispatch],
+    );
     const storedRoster = useSelector<ReduxStore, Roster>((x) => x.participantVideoReducer);
 
     const findRosterSlot = React.useCallback((attendeeId: string, localRoster: Roster) => {
