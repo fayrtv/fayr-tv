@@ -9,9 +9,9 @@ type Context = {
 };
 
 const defaultValues = {
-    selectedEmojiReaction: "<3",
+    selectedEmojiReaction: ":heart:",
     setSelectedEmojiReaction: (_: string) => void 0,
-    reactionsDisabled: false,
+    reactionsDisabled: true,
     setReactionsDisabled: (_: boolean) => void 0,
 };
 
