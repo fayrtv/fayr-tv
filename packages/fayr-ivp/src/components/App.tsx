@@ -5,12 +5,9 @@ import store from "redux/store";
 import End from "components/chimeWeb/End";
 import Welcome from "components/chimeWeb/Welcome";
 
-import TranslationContextProvider from "@fayr/shared-components/lib/translations/TranslationContextProvider";
-
 import styles from "./App.module.scss";
 
 import * as config from "../config";
-import { Translations } from "../types/translations";
 // import './App.css';
 import ChimeSdkWrapper from "./chime/ChimeSdkWrapper";
 import SocketContextProvider from "./chime/SocketContextProvider";
