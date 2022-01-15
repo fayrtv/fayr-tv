@@ -5,6 +5,7 @@
 **/lib/
 **/dist/
 **/build/
+packages/fayr-meeting
 
 # For some reason this causes trouble
 packages/fayr-ivp/src/index.js
