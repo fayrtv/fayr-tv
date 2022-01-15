@@ -1,0 +1,30 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.183.0/containers/docker-existing-dockerfile
+{
+    "name": "fayr_tv_live",
+    "image": "mcr.microsoft.com/vscode/devcontainers/typescript-node:0-14",
+
+    // Add the IDs of extensions you want installed when the container is created.
+    "extensions": [
+        // TypeScript
+        "dbaeumer.vscode-eslint",
+        // Global
+        "editorconfig.editorconfig",
+        "eamodio.gitlens",
+        // Front
+        "naumovs.color-highlight",
+        "octref.vetur",
+        "esbenp.prettier-vscode",
+        // Docker
+        "ms-azuretools.vscode-docker"
+    ],
+
+    // Use 'forwardPorts' to make a list of ports inside the container available locally.
+    // "forwardPorts": [],
+
+    // Uncomment the next line to run commands after the container is created - for example installing curl.
+    "postCreateCommand": "yarn setup"
+
+    // Uncomment when using a ptrace-based debugger like C++, Go, and Rust
+    // "runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
+}
