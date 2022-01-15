@@ -10,7 +10,7 @@
     "scripts": {
         "setup": "npx lerna bootstrap && yarn install && yarn build && yarn prepare",
         "prepare": "husky install",
-        "build": "lerna run build",
+        "build": "lerna run build --ignore chime-sdk-meeting-demo",
         "format": "prettylint \"**/*.{ts,js,html,jsx,tsx,css,less,scss,json}\" --fix",
         "format-check": "prettylint \"**/*.{ts,js,html,jsx,tsx,css,less,scss,json}\"",
         "test": "lerna run test"
