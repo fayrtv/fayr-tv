@@ -152,7 +152,14 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
                 });
             }
         },
-        [dispatch, roster, findRosterSlot, joinInfo.Attendee.AttendeeId, pinnedHostIdentifier],
+        [
+            dispatch,
+            roster,
+            findRosterSlot,
+            joinInfo.Attendee.AttendeeId,
+            pinnedHostIdentifier,
+            setPinnedHostIdentifier,
+        ],
     );
 
     React.useEffect(() => {
