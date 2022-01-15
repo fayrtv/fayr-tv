@@ -431,6 +431,11 @@ const Controls: React.FC<Props & ReduxProps> = ({
             }}
             ref={controlsRef}
         >
+            <img
+                className={styles.FayrIcon}
+                src="https://fayr-logo-v001.s3.eu-central-1.amazonaws.com/svg/fayr_logo_main.svg"
+                alt="fayrtv-logo"
+            />
             {isMobile && isChatOpen && (
                 <Flex direction="Row" mainAlign="Start" className={styles.ControlsMinified}>
                     <Grid
