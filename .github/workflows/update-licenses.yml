@@ -1,0 +1,35 @@
+name: Update licenses
+on:
+  push:
+    branches:
+      - main
+jobs:
+  create-licenses-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Update licenses
+        # In the long run, we should decide which of these tools we want to use. For now, save output of all to
+        # be able to compare.
+        # The license-checker package seems kind of stupid because it prints the absolute file paths into the output,
+        # rather than relative ones or just ommitting them altogether. It's not configurable. So if we decide that the
+        # yarn license output is enough, this tool will be the first to go.
+        #
+        # Note that `yarn licenses generate-disclaimer` for yarn workspaces outputs "workspace aggregator" for the
+        # application. This is wrong, but only fixed in Yarn V2:
+        # https://github.com/yarnpkg/yarn/issues/6435#issuecomment-753661454
+        #
+        run: |
+          yarn install
+          npx license-checker-rseidelsohn --excludePrivatePackages --json --out licensing/licenses.json
+          yarn licenses list > licensing/yarn-licenses.json
+          yarn licenses generate-disclaimer > licensing/yarn-disclaimer.json
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          commit-message: Update Licenses
+          title: Update Licenses
+          body: New licenses detected in dependencies, updated licenses.json
+          branch: update-licenses
