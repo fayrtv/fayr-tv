@@ -1,0 +1,38 @@
+@use "../../../../styles/animations";
+@use "../../../mediaQueries" as mq;
+
+.VotingContainer {
+    position: absolute;
+
+    display: grid;
+    place-items: center;
+
+    height: 100%;
+    width: 100%;
+
+    z-index: 99999;
+
+    animation: fadeIn 0.5s;
+
+    * span,
+    img {
+        user-select: none;
+    }
+
+    &.VotingActive {
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
+    }
+
+    .VotingWrapper {
+        height: 60vh;
+        width: 90%;
+        max-width: 1000px;
+
+        position: relative;
+
+        @media (max-width: mq.$mobile) {
+            height: 45vh;
+        }
+    }
+}

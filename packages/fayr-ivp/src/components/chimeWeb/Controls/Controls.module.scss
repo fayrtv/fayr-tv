@@ -1,0 +1,169 @@
+@use "../../mediaQueries" as mq;
+
+@mixin CommonButton {
+    margin: 0 1rem;
+    display: flex;
+
+    flex-grow: 1;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+
+    max-width: 42px;
+
+    cursor: pointer;
+    margin: 0;
+
+    @media (min-width: 1025px) {
+        margin: 0 0.5rem;
+    }
+
+    @media (max-width: 365px) {
+        max-height: 10vw;
+        max-width: 10vw;
+    }
+
+    svg {
+        height: calc(100% - 2rem);
+        width: calc(100% - 2rem);
+    }
+
+    @media (max-width: 1024px) {
+        margin: 0 0.5rem;
+
+        svg {
+            height: calc(100% - 1rem);
+            width: calc(100% - 1rem);
+        }
+    }
+
+    &.Active {
+        background-color: var(--color--destructive);
+    }
+}
+
+.Controls {
+    position: relative;
+    padding: 2rem;
+
+    @media (max-width: 1024px) {
+        padding: 0.5rem;
+    }
+
+    top: 0px;
+    left: 0px;
+
+    overflow-x: clip;
+
+    transition: transform 0.5s ease-in-out;
+
+    .FayrIcon {
+        height: 35px;
+        position: absolute;
+        left: 25px;
+
+        @media (max-width: mq.$largeScreens) {
+            display: none;
+        }
+    }
+
+    .ControlsMinified {
+        height: 100%;
+        width: 100%;
+
+        .ControlsMinifiedBlock {
+            left: 0%;
+            transform: none;
+            position: relative;
+
+            min-height: 100%;
+            width: auto;
+
+            max-height: 30px;
+
+            .MinifiedControlButtonCell {
+                height: 21px !important;
+                width: 21px !important;
+                .Button {
+                    height: 100%;
+                    pointer-events: none;
+
+                    margin: 0;
+                }
+
+                > div {
+                    height: 21px !important;
+                    width: 21px !important;
+                    margin: 0 !important;
+                }
+            }
+        }
+    }
+
+    .Button {
+        @include CommonButton;
+
+        &.ChatContainer {
+            position: relative;
+
+            .UnreadTag {
+                position: absolute;
+                top: -5px;
+                left: calc(100% - 1rem - 5px);
+                margin: 0;
+                height: auto;
+                width: 24px;
+
+                color: black;
+
+                border-radius: 15px;
+
+                background: lightgrey;
+                z-index: 5;
+            }
+        }
+
+        &.ReactionButton {
+            position: relative;
+            z-index: 2;
+
+            > span {
+                font-size: 1.5em;
+            }
+
+            * span {
+                user-select: none;
+            }
+
+            &:active {
+                .ReactionRow {
+                    top: -47px;
+                    right: -2px;
+                }
+            }
+
+            .ReactionRow {
+                position: absolute;
+
+                top: -45px;
+                right: 0px;
+                height: 42px;
+            }
+        }
+
+        &.VotingButton {
+            cursor: pointer;
+
+            > span {
+                cursor: pointer !important;
+            }
+        }
+    }
+}
+
+.btn__svg--sm {
+    height: 16px;
+    width: 16px;
+    position: relative;
+    top: 2px;
+}

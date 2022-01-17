@@ -1,0 +1,37 @@
+@use "../../../mediaQueries" as mq;
+
+.VoteCounter {
+    height: 100%;
+    width: 100%;
+
+    .CountDisplay {
+        background: grey;
+        height: 80%;
+        width: 50%;
+
+        display: grid;
+        place-items: center;
+
+        span {
+            font-size: 5rem;
+
+            @media (min-width: mq.$largeScreens) {
+                font-size: 10rem;
+            }
+
+            font-weight: bolder;
+        }
+    }
+
+    .CountButton {
+        text-align: center;
+
+        font-size: 64px !important;
+
+        @media (max-width: mq.$largeScreens) {
+            font-size: 32px !important;
+        }
+
+        width: 20%;
+    }
+}

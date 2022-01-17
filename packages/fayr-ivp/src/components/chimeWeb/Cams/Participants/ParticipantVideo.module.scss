@@ -1,0 +1,23 @@
+.ParticipantVideoEmojiEnter {
+    opacity: 0;
+}
+
+.ParticipantVideoEmojiEnterActive {
+    opacity: 1;
+    transition: all 1s;
+}
+
+.ParticipantVideoEmojiExit {
+    opacity: 1;
+}
+
+.ParticipantVideoEmojiExitActive {
+    opacity: 0;
+    transition: all 1s;
+}
+
+@media (max-width: 960px) {
+    .ParticipantControls {
+        //flex-direction: column;
+    }
+}

@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "baseUrl": "./src",
+        "outDir": "lib",
+        "module": "es6",
+        "target": "es5",
+        "declaration": true,
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+        "sourceMap": true,
+        "jsx": "react",
+        "types": ["node"]
+    },
+    "include": ["src"],
+    "exclude": ["node_modules", "lib"]
+}

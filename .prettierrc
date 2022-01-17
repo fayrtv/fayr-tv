@@ -1,0 +1,22 @@
+{
+    "arrowParens": "always",
+    "endOfLine": "auto",
+    "bracketSpacing": true,
+    "embeddedLanguageFormatting": "auto",
+    "htmlWhitespaceSensitivity": "css",
+    "singleQuote": false,
+    "insertPragma": false,
+    "printWidth": 100,
+    "proseWrap": "preserve",
+    "tabWidth": 4,
+    "trailingComma": "all",
+    "useTabs": false,
+    "importOrder": [
+        "^hooks/?(.*)$",
+        "(^components/(.*)$)",
+        "^@fayr/shared-components/?(.*)$",
+        "(\\.styles|\\.less|\\.scss)$",
+        "^[\\./]"
+    ],
+    "importOrderSeparation": true
+}

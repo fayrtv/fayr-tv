@@ -1,0 +1,26 @@
+.AudioSensitivityBar {
+    position: relative;
+    height: 100%;
+    width: 100%;
+
+    .Segment {
+        height: 5px;
+        width: 30px;
+        background-color: black;
+        z-index: 1;
+        border-radius: 4px;
+
+        &.Active {
+            background-color: green;
+        }
+    }
+
+    .VerticalLine {
+        position: absolute;
+        height: 100%;
+        width: 1px;
+        background-color: white;
+        left: 50%;
+        right: 50%;
+    }
+}

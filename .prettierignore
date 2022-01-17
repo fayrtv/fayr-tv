@@ -1,0 +1,16 @@
+**/.vscode/
+.husky/
+**/.idea/
+**/node_modules/
+**/lib/
+**/dist/
+**/build/
+licensing/
+
+# For some reason this causes trouble
+packages/fayr-ivp/src/index.js
+
+# Gets dynamically built
+packages/fayr-studio/src/assets/styles.css
+
+packages/fayr-meeting

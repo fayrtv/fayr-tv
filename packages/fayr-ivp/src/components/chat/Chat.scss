@@ -1,0 +1,138 @@
+@use "../mediaQueries" as mq;
+
+:root {
+    --chat-row-template: 1fr 8rem;
+    --room-link-label-font-size: 1.6rem;
+    --composer-font-size: var(--room-link-label-font-size);
+}
+
+@media (max-width: mq.$largeScreens) {
+    /* Large Screens and below */
+    :root {
+        --chat-row-template: 1fr 5rem;
+        --room-link-label-font-size: 1.4rem;
+    }
+}
+
+/* Popup container - to display Room link is copied to clipboard */
+.popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* The actual popup */
+.popup .popuptext {
+    visibility: hidden;
+    width: 200px;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    text-align: center;
+    padding: 0.8rem 0;
+    position: absolute;
+    z-index: 50;
+    bottom: 70px;
+}
+
+.popup .show {
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s;
+}
+
+/* Chat */
+.Chat {
+    /* background: var(--color--tertiary); */
+    display: grid;
+    grid-template-rows: var(--chat-row-template);
+
+    transition: transform 0.5s ease-in-out;
+
+    height: 50%;
+
+    z-index: 1;
+
+    width: 25%;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+
+    @media (max-width: 1024px) {
+        width: 60%;
+    }
+
+    &.Closed {
+        transform: translateX(100%);
+    }
+
+    &.NoMessages {
+        height: 10%;
+    }
+
+    .ChatWrapper {
+        overflow: hidden;
+        position: absolute;
+
+        .Messages {
+            position: absolute;
+            overflow-x: hidden;
+            overflow-y: auto;
+            background-color: rgba(0, 0, 0, 0);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            &::-webkit-scrollbar {
+                border-radius: 15px;
+                width: 11px;
+            }
+
+            &::-webkit-scrollbar-track {
+                background: var(--color--redshade);
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: #9b9a9a;
+                border: 1px solid black;
+                box-shadow: 0px 0px 20px 0px #000000;
+                border-radius: 5px;
+            }
+
+            &::-webkit-scrollbar-thumb:hover {
+                background: #636262;
+            }
+        }
+    }
+}
+
+.chat__room-link {
+    display: inline-flex;
+    place-content: center;
+    place-items: center;
+}
+
+.room-link {
+    background: var(--color-bg-input);
+    padding: 0.5rem 1.5rem;
+    border-radius: 40px;
+    display: inline-flex;
+    place-content: center;
+    place-items: center;
+}
+
+.room-link__label {
+    color: var(--color-text-base);
+    font-size: var(--room-link-label-font-size);
+    padding: 0 1rem 0 0;
+}
+
+.chime-web-composer {
+    font-size: var(--composer-font-size);
+    background: var(--color-bg-chat);
+    padding: 1.5rem;
+}

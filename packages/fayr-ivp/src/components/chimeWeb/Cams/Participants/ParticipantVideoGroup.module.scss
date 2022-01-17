@@ -1,0 +1,23 @@
+@use "../../../mediaQueries" as mq;
+
+.ParticipantVideoGroup {
+    height: 100%;
+
+    @media (max-width: mq.$mobile) {
+        .cam {
+            display: flex;
+            flex-direction: row;
+
+            .cam__meta {
+                display: flex;
+                flex-direction: column;
+
+                .cam__meta_name {
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    max-width: 100%;
+                }
+            }
+        }
+    }
+}

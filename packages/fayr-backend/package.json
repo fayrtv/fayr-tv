@@ -1,0 +1,17 @@
+{
+    "name": "fayr-backend",
+    "version": "1.0.0",
+    "description": "Backend for fayr-ivp",
+    "main": "index.js",
+    "scripts": {
+        "compile": "tsc"
+    },
+    "devDependencies": {
+        "aws-sdk": "^2.655.0",
+        "@types/aws-lambda": "^8.10.51",
+        "@types/node": "^13.13.5",
+        "typescript": "^3.8.3"
+    },
+    "author": "",
+    "license": "ISC"
+}

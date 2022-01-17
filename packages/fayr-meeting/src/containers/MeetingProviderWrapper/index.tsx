@@ -1,0 +1,126 @@
+// Copyright 2020-2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: MIT-0
+import {
+    BackgroundBlurProvider,
+    MeetingProvider,
+    useVoiceFocus,
+    VoiceFocusProvider,
+} from "amazon-chime-sdk-component-library-react";
+import { AudioTransformDevice, Device, VoiceFocusTransformDevice } from "amazon-chime-sdk-js";
+import React from "react";
+import { Route, Switch } from "react-router-dom";
+
+import routes from "../../constants/routes";
+import meetingConfig from "../../meetingConfig";
+import { useAppState } from "../../providers/AppStateProvider";
+import { NavigationProvider } from "../../providers/NavigationProvider";
+import { BlurValues } from "../../types";
+import { Meeting, Home, DeviceSetup } from "../../views";
+import MeetingEventObserver from "../MeetingEventObserver";
+import NoMeetingRedirect from "../NoMeetingRedirect";
+
+const MeetingProviderWithDeviceReplacement: React.FC = ({ children }) => {
+    const { addVoiceFocus } = useVoiceFocus();
+
+    const onDeviceReplacement = (
+        nextDevice: string,
+        currentDevice: Device | AudioTransformDevice,
+    ): Promise<Device | VoiceFocusTransformDevice> => {
+        if (currentDevice instanceof VoiceFocusTransformDevice) {
+            return addVoiceFocus(nextDevice);
+        }
+        return Promise.resolve(nextDevice);
+    };
+
+    const meetingConfigValue = {
+        ...meetingConfig,
+        enableWebAudio: true,
+        onDeviceReplacement,
+    };
+
+    return <MeetingProvider {...meetingConfigValue}>{children}</MeetingProvider>;
+};
+
+const MeetingProviderWrapper: React.FC = () => {
+    const { isWebAudioEnabled, blurOption } = useAppState();
+    const isBackgroundBlurEnabled = blurOption !== BlurValues.blurDisabled;
+
+    const meetingConfigValue = {
+        ...meetingConfig,
+        enableWebAudio: isWebAudioEnabled,
+    };
+
+    const getMeetingProviderWrapper = () => {
+        return (
+            <>
+                <NavigationProvider>
+                    <Switch>
+                        <Route exact path={routes.HOME} component={Home} />
+                        <Route path={routes.DEVICE}>
+                            <NoMeetingRedirect>
+                                <DeviceSetup />
+                            </NoMeetingRedirect>
+                        </Route>
+                        <Route path={routes.MEETING}>
+                            <NoMeetingRedirect>
+                                <MeetingModeSelector />
+                            </NoMeetingRedirect>
+                        </Route>
+                    </Switch>
+                </NavigationProvider>
+                <MeetingEventObserver />
+            </>
+        );
+    };
+
+    const getMeetingProviderWrapperWithVF = (children: React.ReactNode) => {
+        return (
+            <VoiceFocusProvider>
+                <MeetingProviderWithDeviceReplacement>
+                    {children}
+                </MeetingProviderWithDeviceReplacement>
+            </VoiceFocusProvider>
+        );
+    };
+
+    const getMeetingProviderWrapperWithBGBlur = (children: React.ReactNode) => {
+        let filterCPUUtilization = parseInt(blurOption, 10);
+        if (!filterCPUUtilization) {
+            filterCPUUtilization = 40;
+        }
+        console.log(`Using ${filterCPUUtilization} CPU utilization for background blur`);
+        return (
+            <BackgroundBlurProvider options={{ filterCPUUtilization }}>
+                {children}
+            </BackgroundBlurProvider>
+        );
+    };
+
+    const getMeetingProvider = (children: React.ReactNode) => {
+        return <MeetingProvider {...meetingConfigValue}>{children}</MeetingProvider>;
+    };
+
+    const getMeetingProviderWithFeatures = (): React.ReactNode => {
+        let children = getMeetingProviderWrapper();
+
+        if (isBackgroundBlurEnabled) {
+            children = getMeetingProviderWrapperWithBGBlur(children);
+        }
+        if (isWebAudioEnabled) {
+            children = getMeetingProviderWrapperWithVF(children);
+        } else {
+            children = getMeetingProvider(children);
+        }
+        return children;
+    };
+
+    return <>{getMeetingProviderWithFeatures()}</>;
+};
+
+const MeetingModeSelector: React.FC = () => {
+    const { meetingMode } = useAppState();
+
+    return <Meeting mode={meetingMode} />;
+};
+
+export default MeetingProviderWrapper;
