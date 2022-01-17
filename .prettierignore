@@ -5,6 +5,7 @@
 **/lib/
 **/dist/
 **/build/
+licensing/
 
 # For some reason this causes trouble
 packages/fayr-ivp/src/index.js
