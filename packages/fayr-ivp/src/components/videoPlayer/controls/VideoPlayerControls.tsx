@@ -89,7 +89,7 @@ export const VideoPlayerControls = ({ fullScreen, player, video }: Props) => {
                 {/* Button: Play/Pause  */}
                 <button
                     id="play"
-                    className={`mg-x-1 player-btn player-btn--icon ${
+                    className={`mg-x-1 player-btn player-btn--icon bottom-0 relative ${
                         paused ? "player-btn--pause" : "player-btn--play"
                     }`}
                     onClick={onPauseClick}
@@ -116,7 +116,7 @@ export const VideoPlayerControls = ({ fullScreen, player, video }: Props) => {
                 {/* Button: Fullscreen  */}
                 <button
                     id="fullscreen"
-                    className="mg-x-1 player-btn player-btn--icon"
+                    className="mg-x-1 player-btn player-btn--icon bottom-0 relative"
                     onClick={toggleFullScreen}
                 >
                     <svg
