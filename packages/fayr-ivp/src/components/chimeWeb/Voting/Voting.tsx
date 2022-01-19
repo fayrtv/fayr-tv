@@ -1,10 +1,15 @@
 import * as React from "react";
 import { useMediaQuery } from "react-responsive";
+import styled from "styled-components";
+
+import useSlidingTimeout from "hooks/useSlidingTimeout";
 
 import { Cell, Flex, Grid, MaterialIcon } from "@fayr/shared-components";
+import EaseInOutCheckmark from "@fayr/shared-components/lib/accessibility/EaseInOutCheckmark";
 
 import styles from "./styles/Voting.module.scss";
 
+import useTranslations from "../../../hooks/useTranslations";
 import OverviewPage from "./SubPages/OverviewPage";
 import SurveyPage from "./SubPages/SurveyPage";
 import VotePage from "./SubPages/VotePage";
@@ -24,11 +29,20 @@ type MenuEntry = {
     page: VotingPage;
 };
 
+const PositionedCheckMark = styled(EaseInOutCheckmark)`
+    position: absolute;
+    right: 2rem;
+`;
+
 export const Voting = ({ votingRef, closeVoting, voting, updateTip }: Props) => {
     const [hostTip, setHostTip] = React.useState(0);
     const [guestTip, setGuestTip] = React.useState(0);
     const [votingPage, setVotingPage] = React.useState(VotingPage.Vote);
+    const [showTipFeedback, setShowTipFeedback] = React.useState(false);
     const isDesktop = useMediaQuery({ minWidth: 961 });
+
+    const tl = useTranslations();
+    const setSlidingTimeout = useSlidingTimeout();
 
     const onTip = () => {
         if (votingPage !== VotingPage.Vote) {
@@ -37,6 +51,8 @@ export const Voting = ({ votingRef, closeVoting, voting, updateTip }: Props) => 
         }
 
         updateTip(hostTip, guestTip);
+        setShowTipFeedback(true);
+        setSlidingTimeout(() => setShowTipFeedback(false), 1000);
     };
 
     const menuEntries = React.useMemo(
@@ -67,8 +83,7 @@ export const Voting = ({ votingRef, closeVoting, voting, updateTip }: Props) => 
                     page: VotingPage.Survey,
                 },
             ),
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [],
+        [isDesktop],
     );
 
     return (
@@ -133,7 +148,10 @@ export const Voting = ({ votingRef, closeVoting, voting, updateTip }: Props) => 
                 >
                     <Flex direction="Row" mainAlign="Center" crossAlign="Center">
                         <div onClick={onTip} className={styles.TipButton}>
-                            <span>TIP SETZEN</span>
+                            <span>{tl.VotingSetTip}</span>
+                            {showTipFeedback && (
+                                <PositionedCheckMark size="6rem" color="darkgreen" />
+                            )}
                         </div>
                         <div className={styles.CloseButton} onClick={closeVoting}>
                             <MaterialIcon size={30} color="white" iconName="close" />
