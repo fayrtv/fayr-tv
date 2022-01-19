@@ -1,32 +1,49 @@
 import * as React from "react";
+import { Nullable } from "types/global";
 
 import useGlobalKeyHandler from "hooks/useGlobalKeyHandler";
+
+import { IChimeDevicePicker, IChimeSdkWrapper } from "components/chime/ChimeSdkWrapper";
 
 import { MaterialIcon } from "@fayr/shared-components";
 
 import styles from "./Settings.module.scss";
 
 import * as config from "../../config";
+import { IChimeAudioVideoProvider } from "../chime/ChimeSdkWrapper";
+import {
+    MicrophoneSelection,
+    CameraSelection,
+    SpeakerSelection,
+} from "./Controls/Selection/DeviceSelection";
 import { JoinInfo } from "./types";
 
 type Props = {
-    chime: any;
+    chime: IChimeDevicePicker & IChimeAudioVideoProvider & IChimeSdkWrapper;
     joinInfo: JoinInfo;
-    saveSettings(playbackUrl: string, microphone: string, speaker: string, camera: string): void;
+    saveSettings(
+        playbackUrl: string,
+        microphone: Nullable<string>,
+        speaker: Nullable<string>,
+        camera: Nullable<string>,
+    ): void;
     closeSettings(): void;
 };
 
 export const Settings = ({ chime, closeSettings, joinInfo, saveSettings }: Props) => {
-    const currentMic = chime.currentAudioInputDevice;
-    const currentSpeaker = chime.currentAudioOutputDevice;
-    const currentCam = chime.currentVideoInputDevice;
     const availableMics = chime.audioInputDevices;
     const availableSpeakers = chime.audioOutputDevices;
     const availableCams = chime.videoInputDevices;
 
-    const [microphone, setMicrophone] = React.useState<string>(currentMic?.value);
-    const [speaker, setSpeaker] = React.useState<string>(currentSpeaker?.value);
-    const [camera, setCamera] = React.useState<string>(currentCam?.value);
+    const [microphone, setMicrophone] = React.useState<Nullable<string>>(
+        chime.currentAudioInputDevice?.value ?? null,
+    );
+    const [speaker, setSpeaker] = React.useState<Nullable<string>>(
+        chime.currentAudioOutputDevice?.value ?? null,
+    );
+    const [camera, setCamera] = React.useState<Nullable<string>>(
+        chime.currentVideoInputDevice?.value ?? null,
+    );
 
     useGlobalKeyHandler("Escape", closeSettings);
 
@@ -41,69 +58,11 @@ export const Settings = ({ chime, closeSettings, joinInfo, saveSettings }: Props
         return () => chime.unsubscribeFromDevicesUpdated(devicesUpdatedCallback);
     });
 
-    const handleMicrophoneChange: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
-        const value = e.target.value;
-        setMicrophone(value);
-
-        if (chime.audioInputDevices.length) {
-            for (let o in chime.audioInputDevices) {
-                if (chime.audioInputDevices[o].value === value) {
-                    chime.chooseAudioInputDevice(chime.audioInputDevices[o]);
-                    break;
-                }
-            }
-        }
-    };
-
-    const handleSpeakerChange: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
-        const value = e.target.value;
-        setSpeaker(value);
-
-        if (chime.audioOutputDevices.length) {
-            for (let o in chime.audioOutputDevices) {
-                if (chime.audioOutputDevices[o].value === value) {
-                    chime.chooseAudioOutputDevice(chime.audioOutputDevices[o]);
-                    break;
-                }
-            }
-        }
-    };
-
-    const handleCameraChange: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
-        const value = e.target.value;
-        setCamera(value);
-
-        if (chime.videoInputDevices.length) {
-            for (let o in chime.videoInputDevices) {
-                if (chime.videoInputDevices[o].value === value) {
-                    chime.chooseVideoInputDevice(chime.videoInputDevices[o]);
-                    break;
-                }
-            }
-        }
-    };
-
     const handleSave: React.MouseEventHandler<HTMLButtonElement> = (e) => {
         e.stopPropagation();
         e.preventDefault();
 
         saveSettings(joinInfo.PlaybackURL, microphone, speaker, camera);
-    };
-
-    const renderDevices = (devices: any[], label: string) => {
-        if (devices && devices.length) {
-            return devices.map((device) => (
-                <option key={device.value} value={device.value}>
-                    {`${device.label}`}
-                </option>
-            ));
-        } else {
-            return (
-                <option value="no-permission">
-                    {`Permission not granted to access ${label} devices`}
-                </option>
-            );
-        }
     };
 
     return (
@@ -113,38 +72,26 @@ export const Settings = ({ chime, closeSettings, joinInfo, saveSettings }: Props
                 <form>
                     <fieldset>
                         <h2 className="mg-b-2">Mikrofon</h2>
-                        <select
-                            title="Mikrofon"
-                            name="microphone"
-                            className="select__field"
-                            onChange={handleMicrophoneChange}
-                            value={microphone}
-                            disabled={!availableMics.length}
-                        >
-                            {renderDevices(availableMics, "microphone")}
-                        </select>
+                        <MicrophoneSelection
+                            selectedDevice={microphone}
+                            setSelectedDevice={setMicrophone}
+                            availableDevices={availableMics}
+                            chimeDevicePicker={chime}
+                        />
                         <h2 className="mg-b-2">Lautsprecher</h2>
-                        <select
-                            title="Lautsprecher"
-                            name="speaker"
-                            className="select__field"
-                            onChange={handleSpeakerChange}
-                            value={speaker}
-                            disabled={!availableSpeakers.length}
-                        >
-                            {renderDevices(availableSpeakers, "speaker")}
-                        </select>
+                        <SpeakerSelection
+                            selectedDevice={speaker}
+                            setSelectedDevice={setSpeaker}
+                            availableDevices={availableSpeakers}
+                            chimeDevicePicker={chime}
+                        />
                         <h2 className="mg-b-2">Kamera</h2>
-                        <select
-                            title="Kamera"
-                            name="camera"
-                            className="select__field"
-                            onChange={handleCameraChange}
-                            value={camera}
-                            disabled={!availableCams.length}
-                        >
-                            {renderDevices(availableCams, "camera")}
-                        </select>
+                        <CameraSelection
+                            selectedDevice={camera}
+                            setSelectedDevice={setCamera}
+                            availableDevices={availableCams}
+                            chimeDevicePicker={chime}
+                        />
                         <button className="btn btn--primary mg-t-2" onClick={handleSave}>
                             Speichern
                         </button>

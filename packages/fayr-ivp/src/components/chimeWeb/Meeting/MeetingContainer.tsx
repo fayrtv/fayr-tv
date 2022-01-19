@@ -115,11 +115,20 @@ export const MeetingContainer = ({
         }
     }, [chime, audioElementRef, meetingStatus]);
 
+    // TODO: Retry this once this is available in all browsers (LOOKING AT YOU SAFARI)
+    // React.useEffect(() => {
+    //     const permissionWatcher = new PermissionDeviceWatcher(chime);
+    //     permissionWatcher.start();
+    //     return () => permissionWatcher.stop();
+    // }, [chime]);
+
     React.useEffect(() => {
         // Perform cleanup
         return () => {
             chime.leaveRoom(meetingMetaData?.role === "host").then((_) => {
-                if (config.DEBUG) console.debug("Left room");
+                if (config.DEBUG) {
+                    console.debug("Left room");
+                }
             });
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -5,6 +5,7 @@
 **/lib/
 **/dist/
 **/build/
+packages/fayr-meeting/
 licensing/
 
 # For some reason this causes trouble

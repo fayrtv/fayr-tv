@@ -1,11 +1,12 @@
 // Framework
 import * as React from "react";
+import { Nullable } from "types/global";
 
 // Styles
 import { DeviceInfo, IChimeDevicePicker } from "components/chime/ChimeSdkWrapper";
 
 type CommonProps = {
-    selectedDevice: string;
+    selectedDevice: Nullable<string>;
     setSelectedDevice(device: string): void;
     chimeUpdateCb(device: DeviceInfo): void;
     availableDevices: Array<DeviceInfo>;
@@ -57,7 +58,7 @@ const DeviceSelection = ({
             name={name}
             className="select__field"
             onChange={handleChange}
-            value={selectedDevice}
+            value={selectedDevice ?? undefined}
             disabled={!availableDevices.length}
         >
             {renderDevices(availableDevices, name)}

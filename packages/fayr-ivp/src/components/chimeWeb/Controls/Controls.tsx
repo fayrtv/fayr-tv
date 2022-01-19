@@ -25,6 +25,7 @@ import styles from "./Controls.module.scss";
 import * as config from "../../../config";
 import useGlobalKeyHandler from "../../../hooks/useGlobalKeyHandler";
 import store from "../../../redux/store";
+import { IDeviceProvider } from "../../chime/ChimeSdkWrapper";
 import { ChatOpenContext } from "../../contexts/ChatOpenContext";
 import { VotingOpenContext } from "../../contexts/VotingOpenContext";
 import { MeetingMetaData } from "../Meeting/meetingTypes";
@@ -38,7 +39,7 @@ enum VideoStatus {
 }
 
 type Props = RouteComponentProps & {
-    chime: IChimeSdkWrapper & IChimeAudioVideoProvider & IChimeDevicePicker;
+    chime: IChimeSdkWrapper & IChimeAudioVideoProvider & IChimeDevicePicker & IDeviceProvider;
     title: string;
     openSettings(): void;
     role: string;
@@ -90,7 +91,7 @@ const Controls: React.FC<Props & ReduxProps> = ({
 
     const toggleMute = async () => {
         if (localMuted) {
-            const audioInputs = await chime.audioVideo.listAudioInputDevices();
+            const audioInputs = await chime.listAudioInputDevices();
             if (audioInputs && audioInputs.length > 0 && audioInputs[0].deviceId) {
                 await chime.audioVideo?.chooseAudioInputDevice(audioInputs[0].deviceId);
                 setMeetingMetaData({
@@ -132,7 +133,7 @@ const Controls: React.FC<Props & ReduxProps> = ({
 
             try {
                 if (!chime.currentVideoInputDevice) {
-                    const videoInputs = await chime.audioVideo?.listVideoInputDevices();
+                    const videoInputs = await chime.listVideoInputDevices();
                     const fallbackDevice = {
                         label: videoInputs[0].label,
                         value: videoInputs[0].deviceId,
