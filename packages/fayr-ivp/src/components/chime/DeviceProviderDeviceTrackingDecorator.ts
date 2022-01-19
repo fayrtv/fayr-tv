@@ -13,6 +13,31 @@ export default class DeviceProviderDeviceTrackingDecorator implements IDevicePro
     }
 
     public async listAudioInputDevices(): Promise<MediaDeviceInfo[]> {
+        const inputDevices = await this.listAudioInputDevicesInternal();
+        await this.listAudioOutputDevicesInternal();
+        return inputDevices;
+    }
+
+    public async listAudioOutputDevices(): Promise<MediaDeviceInfo[]> {
+        const outputDevices = await this.listAudioOutputDevicesInternal();
+        await this.listAudioInputDevicesInternal();
+        return outputDevices;
+    }
+
+    public async listVideoInputDevices(): Promise<MediaDeviceInfo[]> {
+        const devices = await this._chime.audioVideo.listVideoInputDevices();
+
+        if (devices.length) {
+            this._chime.videoInputDevices = devices.map<DeviceInfo>((device) => ({
+                label: device.label,
+                value: device.deviceId,
+            }));
+        }
+
+        return devices;
+    }
+
+    private async listAudioInputDevicesInternal(): Promise<MediaDeviceInfo[]> {
         const devices = await this._chime.audioVideo.listAudioInputDevices();
 
         if (devices.length) {
@@ -22,31 +47,14 @@ export default class DeviceProviderDeviceTrackingDecorator implements IDevicePro
             }));
         }
 
-        await this.listAudioOutputDevices();
-
         return devices;
     }
 
-    public async listAudioOutputDevices(): Promise<MediaDeviceInfo[]> {
+    private async listAudioOutputDevicesInternal(): Promise<MediaDeviceInfo[]> {
         const devices = await this._chime.audioVideo.listAudioOutputDevices();
 
         if (devices.length) {
             this._chime.audioOutputDevices = devices.map<DeviceInfo>((device) => ({
-                label: device.label,
-                value: device.deviceId,
-            }));
-        }
-
-        await this.listAudioInputDevices();
-
-        return devices;
-    }
-
-    public async listVideoInputDevices(): Promise<MediaDeviceInfo[]> {
-        const devices = await this._chime.audioVideo.listVideoInputDevices();
-
-        if (devices.length) {
-            this._chime.videoInputDevices = devices.map<DeviceInfo>((device) => ({
                 label: device.label,
                 value: device.deviceId,
             }));
