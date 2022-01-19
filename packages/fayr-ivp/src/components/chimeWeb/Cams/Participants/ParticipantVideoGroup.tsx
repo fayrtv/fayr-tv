@@ -10,16 +10,24 @@ type Props = {
 };
 
 export const ParticipantVideoGroup = ({ localVideoInfo, participantVideos }: Props) => {
+    const participants = Array.from(participantVideos);
+
+    const participantCount = participants.length;
+
+    const slotsRequired = Math.ceil(participantCount / 2);
+
+    const rowPercentage = (100 / slotsRequired).toPrecision(2);
+
     return (
         <Grid
             gridProperties={{
                 gap: 0,
-                gridTemplateRows: "repeat(5, 20%)",
+                gridTemplateRows: `repeat(${slotsRequired}, ${rowPercentage}%)`,
                 gridTemplateColumns: "repeat(2, 50%)",
             }}
             className={styles.ParticipantVideoGroup}
         >
-            {Array.from(participantVideos).map((video, index) => {
+            {participants.map((video, index) => {
                 if (localVideoInfo.replace && index === localVideoInfo.tile) {
                     return <Cell key={index}>{localVideoInfo.node}</Cell>;
                 }
