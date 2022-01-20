@@ -7631,7 +7631,7 @@ yarn licenses v1.22.17
 │  │  ├─ URL: http:///
 │  │  └─ VendorUrl: http:///
 │  ├─ chime-sdk-meeting-demo@0.1.0
-│  └─ workspace-aggregator-06021b16-4164-4852-b1e3-3eb799772e25@1.0.0
+│  └─ workspace-aggregator-7f7ce00b-05cb-4539-9545-c328d4bb5b9e@1.0.0
 ├─ unlicense
 │  └─ emoji-picker-react@3.4.8
 │     ├─ URL: git+https://github.com/ealush/emoji-picker-react.git
@@ -7646,4 +7646,4 @@ yarn licenses v1.22.17
       ├─ URL: https://github.com/dchest/tweetnacl-js.git
       ├─ VendorName: TweetNaCl-js contributors
       └─ VendorUrl: https://tweetnacl.js.org/
-Done in 1.86s.
+Done in 1.96s.
