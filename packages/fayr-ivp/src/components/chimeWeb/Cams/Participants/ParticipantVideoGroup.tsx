@@ -14,7 +14,7 @@ export const ParticipantVideoGroup = ({ localVideoInfo, participantVideos }: Pro
 
     const participantCount = participants.length;
 
-    const slotsRequired = Math.ceil(participantCount / 2);
+    const slotsRequired = Math.floor(participantCount / 2);
 
     const rowPercentage = (100 / slotsRequired).toPrecision(2);
 
