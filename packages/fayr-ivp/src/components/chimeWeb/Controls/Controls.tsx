@@ -20,6 +20,7 @@ import Emoji from "components/common/Emoji";
 import { SelectedReactionContext } from "components/contexts/SelectedReactionContext";
 
 import { Cell, Flex, Grid } from "@fayr/shared-components";
+import FayrLogo from "@fayr/shared-components/lib/FayrLogo";
 
 import styles from "./Controls.module.scss";
 
@@ -438,11 +439,7 @@ const Controls: React.FC<Props & ReduxProps> = ({
             }}
             ref={controlsRef}
         >
-            <img
-                className={styles.FayrIcon}
-                src="https://fayr-logo-v001.s3.eu-central-1.amazonaws.com/svg/fayr_logo_main.svg"
-                alt="fayrtv-logo"
-            />
+            <FayrLogo className={styles.FayrIcon} />
             {isMobile && isChatOpen && (
                 <Flex direction="Row" mainAlign="Start" className={styles.ControlsMinified}>
                     <Grid

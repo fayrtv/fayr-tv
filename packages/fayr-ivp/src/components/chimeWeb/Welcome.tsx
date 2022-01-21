@@ -4,6 +4,8 @@ import { RoomMemberRole } from "types/Room";
 
 import { IChimeSdkWrapper } from "components/chime/ChimeSdkWrapper";
 
+import FayrLogo from "@fayr/shared-components/lib/FayrLogo";
+
 import * as config from "../../config";
 import Error from "./Error";
 import { JoinInfoForm } from "./JoinInfoForm";
@@ -91,12 +93,7 @@ class Welcome extends Component<Props, State> {
                 <div className="welcome form-grid">
                     <div className="welcome__intro">
                         <div className="intro__inner formatted-text">
-                            <img
-                                src="https://fayr-logo-v001.s3.eu-central-1.amazonaws.com/svg/fayr_logo_main.svg"
-                                alt="fayrtv-logo"
-                                height="70"
-                                style={{ border: "none" }}
-                            />
+                            <FayrLogo height="70" style={{ border: "none" }} />
                             <br />
                             <h2>Erlebe Live- und Sportevents wie noch nie zuvor!</h2>
                             <h3>
