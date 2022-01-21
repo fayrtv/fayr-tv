@@ -8,13 +8,14 @@ import useTranslations from "hooks/useTranslations";
 // Types
 import {
     DeviceInfo,
-    IDeviceProvider,
     IChimeAudioVideoProvider,
     IChimeDevicePicker,
+    IDeviceProvider,
 } from "components/chime/ChimeSdkWrapper";
+import { VideoStatus } from "components/chimeWeb/Controls/Controls";
 
 // Components
-import { Grid, Cell, Flex, MaterialIcon } from "@fayr/shared-components";
+import { Cell, Flex, Grid, MaterialIcon } from "@fayr/shared-components";
 
 // Styles
 import styles from "./MeetingStartScreen.module.scss";
@@ -46,6 +47,9 @@ export const MeetingStartScreen = ({
     const [currentCam, setCurrentCam] = React.useState<string>(
         () => chime.currentVideoInputDevice?.value ?? "",
     );
+    const [videoStatus, setVideoStatus] = React.useState(
+        chime.currentVideoInputDevice == null ? VideoStatus.Disabled : VideoStatus.Enabled,
+    );
     const [camDevices, setCamDevices] = React.useState<Array<DeviceInfo>>([]);
 
     const [currentMic, setCurrentMic] = React.useState<string>(
@@ -55,7 +59,6 @@ export const MeetingStartScreen = ({
 
     const [volume, setVolume] = React.useState<number>(0);
 
-    const camEnabled = currentCam !== "";
     const micEnabled = currentMic !== "";
 
     const onMicToggleClick = async () => {
@@ -90,9 +93,8 @@ export const MeetingStartScreen = ({
     };
 
     const onCamToggleClick = async () => {
-        const newCamState = !camEnabled;
-
-        if (newCamState) {
+        if (videoStatus === VideoStatus.Disabled) {
+            setVideoStatus(VideoStatus.Loading);
             const devices = await chime.listVideoInputDevices();
 
             // Chime might return an array of devices here, even if no permission is granted, so we
@@ -108,11 +110,13 @@ export const MeetingStartScreen = ({
 
                 audioVideo.startLocalVideoTile();
 
+                setVideoStatus(VideoStatus.Enabled);
                 setCurrentCam(deviceInfos[0].label);
                 updateMeetingInputOutputDevices({ cam: deviceInfos[0] });
                 setCamDevices(deviceInfos);
             }
         } else {
+            setVideoStatus(VideoStatus.Disabled);
             await chime.chooseVideoInputDevice(null);
             audioVideo.stopLocalVideoTile();
             setCamDevices([]);
@@ -122,12 +126,12 @@ export const MeetingStartScreen = ({
     };
 
     React.useEffect(() => {
-        if (camEnabled && videoRef.current) {
+        if (videoStatus === VideoStatus.Enabled && videoRef.current) {
             const currentTile = (audioVideo as any).videoTileController.currentLocalTile.tileState;
             audioVideo.bindVideoElement(currentTile.tileId, videoRef.current!);
             audioVideo.startLocalVideoTile();
         }
-    }, [camEnabled, audioVideo]);
+    }, [videoStatus, audioVideo]);
 
     React.useEffect(() => {
         if (micEnabled && audioVideo && attendeeId) {
@@ -160,7 +164,7 @@ export const MeetingStartScreen = ({
             <Cell className={styles.CamPreviewCell} gridArea="CamPreview">
                 <Flex className={styles.VideoPreviewContainer} direction="Column">
                     <video ref={videoRef} id="TestVideo" autoPlay playsInline />
-                    {!camEnabled && (
+                    {videoStatus !== VideoStatus.Enabled && (
                         <div className={styles.NoCamSelected}>
                             <Flex direction="Column" crossAlign="Center">
                                 <span>Noch keine Kamera ausgewählt</span>
@@ -185,7 +189,7 @@ export const MeetingStartScreen = ({
                         />
                     </Flex>
                     <Flex direction="Row">
-                        <CamToggle toggleState={camEnabled} onClick={onCamToggleClick} />
+                        <CamToggle toggleState={videoStatus} onClick={onCamToggleClick} />
                         <CameraSelection
                             selectedDevice={currentCam}
                             setSelectedDevice={setCurrentCam}

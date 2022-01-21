@@ -33,7 +33,7 @@ import { MeetingMetaData } from "../Meeting/meetingTypes";
 import CamToggle from "./Buttons/CamToggle";
 import MicrophoneToggle from "./Buttons/MicrophoneToggle";
 
-enum VideoStatus {
+export enum VideoStatus {
     Loading,
     Enabled,
     Disabled,
@@ -331,11 +331,7 @@ const Controls: React.FC<Props & ReduxProps> = ({
         <MicrophoneToggle toggleState={!localMuted} onClick={toggleMute} key="mictoggle" />,
         // {/* Camera button */}
         // {/* <!-- on click, toggle this control between .${styles.Button}--cam_on and .${styles.Button}--cam_off --> */}
-        <CamToggle
-            toggleState={videoStatus === VideoStatus.Enabled}
-            onClick={toggleVideo}
-            key="camtoggle"
-        />,
+        <CamToggle toggleState={videoStatus} onClick={toggleVideo} key="camtoggle" />,
         // {/* Setting button */}
         <div
             key="SettingsButton"
