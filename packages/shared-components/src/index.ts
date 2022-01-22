@@ -6,3 +6,5 @@ import LoadingAnimation from "./interactivity/LoadingAnimation";
 import TranslationContextProvider from "./translations/TranslationContext";
 
 export { Flex, Cell, Grid, LoadingAnimation, MaterialIcon, TranslationContextProvider };
+
+export * from "./theming";

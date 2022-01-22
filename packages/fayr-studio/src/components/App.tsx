@@ -1,4 +1,5 @@
 import "../assets/tailwind.css";
+import { applyTheme, FAYR_THEME } from "@fayr/shared-components";
 import Layout from "components/layout/Layout";
 import Community from "pages/Community";
 import Home from "pages/Home";
@@ -9,6 +10,13 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 export default function App() {
+    // https://dev.to/ohitslaurence/creating-dynamic-themes-with-react-tailwindcss-59cl
+    const [theme] = React.useState(FAYR_THEME);
+
+    React.useEffect(() => {
+        applyTheme(theme);
+    }, [theme]);
+
     return (
         <BrowserRouter>
             <Layout>

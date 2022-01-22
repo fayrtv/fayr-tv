@@ -1,3 +1,7 @@
+/*
+For reference, the default Tailwind config can be found at:
+https://github.com/tailwindlabs/tailwindcss/blob/master/stubs/defaultConfig.stub.js
+ */
 const defaultTheme = require("tailwindcss/defaultTheme");
 const plugin = require("tailwindcss/plugin");
 
@@ -10,14 +14,14 @@ module.exports = {
                 base: "1rem",
             },
             colors: {
-                background: "#07090C",
-                neutral: "#D9D9D9",
-                white: "#ffffff",
-                primary: "#fa7751",
-                "primary-dark": "#d96242",
-                "primary-light": "#fa8966",
-                gray: "#C4C4C4",
-                blueish: "#181F29",
+                background: "var(--color-background)",
+                neutral: "var(--color-neutral)",
+                white: "var(--color-white)",
+                primary: "var(--color-primary)",
+                "primary-dark": "var(--color-primary-dark)",
+                "primary-light": "var(--color-primary-light)",
+                gray: "var(--color-gray)",
+                blueish: "var(--color-blueish)",
             },
             fontFamily: {
                 sans: ['"Segoe UI"'],
