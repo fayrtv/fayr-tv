@@ -14,7 +14,7 @@ export default function App() {
     const [theme] = React.useState(FAYR_THEME);
 
     React.useEffect(() => {
-        applyTheme(theme);
+        applyTheme(theme, document.documentElement);
     }, [theme]);
 
     return (
