@@ -5,11 +5,11 @@ import React from "react";
 import { Redirect, RouteComponentProps, withRouter } from "react-router-dom";
 
 import useLoadingGuard from "hooks/useLoadingGuard";
-import { usePersistedState } from "hooks/usePersistedState";
+import usePersistedState from "hooks/usePersistedState";
 
 import ChimeSdkWrapper from "components/chime/ChimeSdkWrapper";
 import Meeting from "components/chimeWeb/Meeting/Meeting";
-import { MeetingStatus, MeetingMetaData } from "components/chimeWeb/Meeting/meetingTypes";
+import { MeetingMetaData, MeetingStatus } from "components/chimeWeb/Meeting/meetingTypes";
 import { formatMeetingSsKey } from "components/chimeWeb/Meeting/storage";
 import { JoinInfo } from "components/chimeWeb/types";
 

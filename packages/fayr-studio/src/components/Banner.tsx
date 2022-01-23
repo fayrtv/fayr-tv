@@ -1,9 +1,13 @@
-/* This example requires Tailwind CSS v2.0+ */
 import { SpeakerphoneIcon, XIcon } from "@heroicons/react/outline";
 import { A } from "components/A";
+import React from "react";
 
 export default function Banner() {
-    return (
+    const [isAcknowledged, setAcknowledged] = React.useState<boolean>(false);
+
+    return isAcknowledged ? (
+        <></>
+    ) : (
         <div className="inset-x-0 pb-2 sm:pb-5">
             <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
                 <div className="p-2 rounded-lg bg-gray shadow-lg sm:p-3">
@@ -37,6 +41,7 @@ export default function Banner() {
                             <button
                                 type="button"
                                 className="-mr-1 flex p-2 rounded-md hover:bg-gray focus:outline-none focus:ring-2 focus:ring-white"
+                                onClick={() => setAcknowledged(true)}
                             >
                                 <span className="sr-only">Dismiss</span>
                                 <XIcon className="h-6 w-6 text-black" aria-hidden="true" />
