@@ -98,7 +98,7 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
         for (let tile of tiles) {
             videoTileDidUpdateCallback(tile.state());
         }
-    }, [chime]);
+    }, [chime, videoTileDidUpdateCallback]);
 
     const videoTileWasRemovedCallback = React.useCallback((tileId: number) => {
         setRoster((currentRoster) => {
