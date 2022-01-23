@@ -1,3 +1,4 @@
+import { applyTheme, FAYR_THEME } from "@fayr/shared-components";
 import { Dialog, Transition } from "@headlessui/react";
 import {
     CogIcon,
@@ -12,17 +13,17 @@ import {
     UserGroupIcon,
     XIcon,
 } from "@heroicons/react/solid";
+import { A } from "components/A";
 import Header from "components/layout/Header";
 import SidebarNav from "components/navigation/SidebarNav";
 import React, { Fragment, PropsWithChildren, useState } from "react";
-import { Link } from "react-router-dom";
 
 function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(" ");
 }
 
 const FayrLogo = () => (
-    <Link to="home">
+    <A href="home">
         <img
             src="https://fayr-logo-v001.s3.eu-central-1.amazonaws.com/svg/fayr_logo_main.svg"
             className="h-8 w-auto"
@@ -30,10 +31,17 @@ const FayrLogo = () => (
             height="70"
             style={{ border: "none" }}
         />
-    </Link>
+    </A>
 );
 
-export default function Layout({ children }: PropsWithChildren<{}>) {
+export default function FayrStudioLayout({ children }: PropsWithChildren<{}>) {
+    // https://dev.to/ohitslaurence/creating-dynamic-themes-with-react-tailwindcss-59cl
+    const [theme] = React.useState(FAYR_THEME);
+
+    React.useEffect(() => {
+        applyTheme(theme, document.documentElement);
+    }, [theme]);
+
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     return (
@@ -293,9 +301,9 @@ export default function Layout({ children }: PropsWithChildren<{}>) {
                                                         current: false,
                                                     },
                                                 ].map((item) => (
-                                                    <Link
+                                                    <A
                                                         key={item.name}
-                                                        to={item.href}
+                                                        href={item.href}
                                                         className={classNames(
                                                             item.current
                                                                 ? "bg-indigo-800 text-white"
@@ -316,7 +324,7 @@ export default function Layout({ children }: PropsWithChildren<{}>) {
                                                             aria-hidden="true"
                                                         />
                                                         <span>{item.name}</span>
-                                                    </Link>
+                                                    </A>
                                                 ))}
                                             </div>
                                         </nav>

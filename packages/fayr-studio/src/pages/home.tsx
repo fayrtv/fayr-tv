@@ -1,15 +1,14 @@
 import Banner from "components/Banner";
+import FayrStudioLayout from "components/layout/FayrStudioLayout";
+import { NextSeo } from "next-seo";
 import PlatformConfigurator from "platform-config/PlatformConfigurator";
 import PlatformConfiguratorContextProvider from "platform-config/PlatformConfiguratorContextProvider";
 import React from "react";
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const Home: React.FC<Props> = () => {
+const Home = () => {
     return (
         <>
+            <NextSeo title="Home" />
             <Banner />
             <div className="p-12">
                 <div>
@@ -29,3 +28,7 @@ const Home: React.FC<Props> = () => {
 };
 
 export default Home;
+
+Home.layoutProps = {
+    Layout: FayrStudioLayout,
+};
