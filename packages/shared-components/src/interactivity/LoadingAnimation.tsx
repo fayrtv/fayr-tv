@@ -36,7 +36,13 @@ export default function LoadingAnimation({ content = "Lade...", fullScreen = fal
     return fullScreen ? (
         <CenteredFullScreen className="loading">{content}</CenteredFullScreen>
     ) : (
-        // TODO: Improve the inline representation
-        <>{content}</>
+        <div className="flex justify-center items-center">
+            <div
+                className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full"
+                role="status"
+            >
+                <span className="visually-hidden">{content}</span>
+            </div>
+        </div>
     );
 }
