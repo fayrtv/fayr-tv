@@ -1854,7 +1854,8 @@
     },
     "@fayr/shared-components@1.0.0": {
         "licenses": "UNKNOWN",
-        "path": "fayr_tv_live/node_modules/@fayr/shared-components"
+        "path": "fayr_tv_live/node_modules/@fayr/shared-components",
+        "licenseFile": "fayr_tv_live/node_modules/@fayr/shared-components/README.md"
     },
     "@gar/promisify@1.1.2": {
         "licenses": "MIT",
