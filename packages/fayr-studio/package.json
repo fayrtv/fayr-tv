@@ -8,10 +8,11 @@
         "debug:dev": "NODE_OPTIONS='--inspect' next dev",
         "build": "next build",
         "test": "craco test --passWithNoTests",
-        "setup-db": "npx fauna-schema-migrate apply all",
+        "start-docker-db": "docker run --rm --name faunadb -p 8443:8443 -p 8084:8084 fauna/faunadb",
         "setup-docker-db": "cross-env FAUNA_ADMIN_KEY=secret FAUNADB_DOMAIN=localhost FAUNADB_SCHEME=http FAUNADB_PORT=8443 npm run setup-db",
-        "clear-db": "node ./src/adapters/fauna/clear-db.mjs",
-        "clear-docker-db": "cross-env USE_FAUNA_DOCKER=true npm run clear-db"
+        "clear-docker-db": "cross-env USE_FAUNA_DOCKER=true npm run clear-db",
+        "setup-db": "npx fauna-schema-migrate apply all",
+        "clear-db": "node ./src/adapters/fauna/clear-db.mjs"
     },
     "dependencies": {
         "@badrap/bar-of-progress": "0.1.2",

@@ -18,11 +18,11 @@ export function PlatformTypeChoice() {
                     title: formatPlatformType(PlatformType.WatchParty),
                     icon: UserGroupIcon,
                     description: (
-                        <div className="flex-col space-y-4">
-                            <p>Streaming together is better</p>
-                            <p>Interactivity tools to keep your audience engaged</p>
-                            <p>Lorem ipsum dolor sit amet</p>
-                        </div>
+                        <ul className="flex-col space-y-4">
+                            <li>Streaming together is better</li>
+                            <li>Interactivity tools to keep your audience engaged</li>
+                            <li>Lorem ipsum dolor sit amet</li>
+                        </ul>
                     ),
                     ctaPrimary: type === PlatformType.WatchParty ? checkedIcon : "Choose",
                     onCtaPrimaryClicked: () => setType(PlatformType.WatchParty),
@@ -32,10 +32,12 @@ export function PlatformTypeChoice() {
                     title: formatPlatformType(PlatformType.VideoOnDemand),
                     icon: CollectionIcon,
                     description: (
-                        <div className="flex-col space-y-4">
-                            <p>Provide your audience with exclusive access to your video content</p>
-                            <p>Create your own streaming portal, akin to YouTube or Netflix</p>
-                        </div>
+                        <ul className="flex-col space-y-4">
+                            <li>
+                                Provide your audience with exclusive access to your video content
+                            </li>
+                            <li>Create your own streaming portal, akin to YouTube or Netflix</li>
+                        </ul>
                     ),
                     ctaPrimary: type === PlatformType.VideoOnDemand ? checkedIcon : "Choose",
                     onCtaPrimaryClicked: () => setType(PlatformType.VideoOnDemand),
@@ -45,10 +47,12 @@ export function PlatformTypeChoice() {
                     title: formatPlatformType(PlatformType.Hybrid),
                     icon: VariableIcon,
                     description: (
-                        <div className="flex-col space-y-4">
-                            <p>Combine the best of Watch Party and VoD</p>
-                            <p>Perfect choice for hybrid events (?) or online learning platforms</p>
-                        </div>
+                        <ul className="flex-col space-y-4">
+                            <li>Combine the best of Watch Party and VoD</li>
+                            <li>
+                                Perfect choice for hybrid events (?) or online learning platforms
+                            </li>
+                        </ul>
                     ),
                     ctaPrimary: type === PlatformType.Hybrid ? checkedIcon : "Choose",
                     onCtaPrimaryClicked: () => setType(PlatformType.Hybrid),

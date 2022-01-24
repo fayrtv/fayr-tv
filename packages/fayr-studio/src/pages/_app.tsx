@@ -1,5 +1,5 @@
-import "../assets/tailwind.css";
 import ProgressBar from "@badrap/bar-of-progress";
+import "assets/tailwind.css";
 import { SEO } from "constants/seo-constants";
 import { Provider } from "next-auth/client";
 import { DefaultSeo } from "next-seo";
@@ -9,6 +9,7 @@ import type { ReactNode } from "react";
 import { Fragment } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import "styles/globals.css";
 
 const progress = new ProgressBar({
     size: 2,
@@ -49,7 +50,7 @@ function FayrStudioApp({ Component, pageProps, router }: AppProps): JSX.Element 
             }
         ).layoutProps?.Layout || Fragment;
     return (
-        <>
+        <Layout>
             <DefaultSeo
                 title={DEFAULT_TITLE}
                 titleTemplate={DEFAULT_TITLE_TEMPLATE}
@@ -83,13 +84,11 @@ function FayrStudioApp({ Component, pageProps, router }: AppProps): JSX.Element 
             />
             <QueryClientProvider client={queryClient}>
                 <Provider session={pageProps.session}>
-                    <Layout>
-                        <Component {...pageProps} />
-                    </Layout>
+                    <Component {...pageProps} />
                     <ReactQueryDevtools initialIsOpen={false} />
                 </Provider>
             </QueryClientProvider>
-        </>
+        </Layout>
     );
 }
 

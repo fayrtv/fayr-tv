@@ -10,9 +10,12 @@ class FayrStudioDocument extends Document {
 
     // eslint-disable-next-line @typescript-eslint/explicit-member-accessibility, @typescript-eslint/explicit-module-boundary-types
     render() {
+        // noinspection HtmlRequiredTitleElement
         return (
-            <Html lang="en">
+            <Html lang="en" className="h-full bg-gray-50">
                 <Head>
+                    <meta charSet="utf-8" />
+                    <link rel="manifest" href="manifest.json" />
                     <script
                         async
                         defer
@@ -20,9 +23,11 @@ class FayrStudioDocument extends Document {
                         src="https://plausible.io/js/plausible.js"
                     />
                 </Head>
-                <body>
-                    <Main />
-                    <NextScript />
+                <body className="h-full">
+                    <div id="root" className="h-full overflow-hidden">
+                        <Main />
+                        <NextScript />
+                    </div>
                 </body>
             </Html>
         );

@@ -52,14 +52,14 @@ export default function ColumnCards({ cards }: Props) {
                     onCtaSecondaryClicked,
                 }) => (
                     <div key={key} className="flex flex-col rounded-sm shadow-lg overflow-hidden">
-                        <div className="flex-1 space-y-2 bg-gray p-4 flex flex-col justify-between">
-                            <p className="text-xl font-upper text-black self-center">
+                        <div className="flex-1 space-y-4 bg-gray p-4 flex flex-col justify-between text-black text-sm">
+                            <div className="text-xl font-upper text-black self-center">
                                 <div className="flex flex-row space-x-2 items-center">
                                     {React.createElement(icon, { className: "w-6 h-6 inline" })}
                                     <span className="select-none">{title}</span>
                                 </div>
-                            </p>
-                            <p className="mt-3 text-sm text-black">{description}</p>
+                            </div>
+                            <span>{description}</span>
                             {ctaSecondary && (
                                 <button
                                     className="block bg-black text-neutral py-2"
