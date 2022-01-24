@@ -15,6 +15,7 @@ import { RosterMap, Attendee, Role } from "components/chime/ChimeSdkWrapper";
 // Styles
 import styles from "./CamSection.module.scss";
 
+import { IChimeSdkWrapper } from "../../chime/ChimeSdkWrapper";
 import { JoinInfo } from "../types";
 // Components
 import LocalVideo from "./LocalVideo/LocalVideo";
@@ -25,7 +26,7 @@ import { Roster } from "./types";
 const MAX_REMOTE_VIDEOS = config.CHIME_ROOM_MAX_ATTENDEE;
 
 type Props = {
-    chime: any;
+    chime: IChimeSdkWrapper;
     joinInfo: JoinInfo;
 };
 
@@ -91,6 +92,13 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
         },
         [findRosterSlot],
     );
+
+    React.useEffect(() => {
+        const tiles = chime.audioVideo.getAllRemoteVideoTiles();
+        for (let tile of tiles) {
+            videoTileDidUpdateCallback(tile.state());
+        }
+    }, [chime, videoTileDidUpdateCallback]);
 
     const videoTileWasRemovedCallback = React.useCallback((tileId: number) => {
         setRoster((currentRoster) => {
@@ -166,7 +174,7 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
         const localRoster: Roster = [];
         previousRoster.current = storedRoster;
 
-        const videoTiles = chime.audioVideo.videoTileController.getAllVideoTiles();
+        const videoTiles = (chime.audioVideo as any).videoTileController.getAllVideoTiles();
 
         for (let i = 0; i < MAX_REMOTE_VIDEOS; ++i) {
             localRoster[i] = storedRoster[i + 1] ?? ({} as Attendee);

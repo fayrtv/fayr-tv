@@ -107,7 +107,6 @@ export const MeetingStartScreen = ({
 
                 await chime.chooseVideoInputDevice(deviceInfos[0]);
                 audioVideo.start();
-
                 audioVideo.startLocalVideoTile();
 
                 setVideoStatus(VideoStatus.Enabled);
