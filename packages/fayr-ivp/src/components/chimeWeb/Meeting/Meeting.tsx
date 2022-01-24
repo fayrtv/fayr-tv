@@ -1,5 +1,7 @@
 import React, { SetStateAction } from "react";
 
+import useSocket from "hooks/useSocket";
+
 import ChimeSdkWrapper from "components/chime/ChimeSdkWrapper";
 import Error from "components/chimeWeb/Error";
 import { MeetingStatus, MeetingMetaData } from "components/chimeWeb/Meeting/meetingTypes";
@@ -54,6 +56,14 @@ const Meeting = ({
     // const setErrorMsg = (errorMsg: string) => {
     //     setErrorState({ message: errorMsg, showError: true });
     // };
+
+    const { setSocket } = useSocket();
+
+    React.useEffect(() => {
+        chime.joinRoomSocket().then((createdSocket) => {
+            setSocket(createdSocket);
+        });
+    }, [chime, setSocket]);
 
     const handleSettingsClick = (event: any) => {
         if (showSettings) {
