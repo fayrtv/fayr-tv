@@ -679,7 +679,11 @@ yarn licenses v1.22.17
 │  │  ├─ URL: https://github.com/browserslist/caniuse-lite.git
 │  │  ├─ VendorName: Ben Briggs
 │  │  └─ VendorUrl: http://beneb.info
-│  └─ caniuse-lite@1.0.30001296
+│  ├─ caniuse-lite@1.0.30001296
+│  │  ├─ URL: https://github.com/browserslist/caniuse-lite.git
+│  │  ├─ VendorName: Ben Briggs
+│  │  └─ VendorUrl: http://beneb.info
+│  └─ caniuse-lite@1.0.30001300
 │     ├─ URL: https://github.com/browserslist/caniuse-lite.git
 │     ├─ VendorName: Ben Briggs
 │     └─ VendorUrl: http://beneb.info
@@ -3244,6 +3248,9 @@ yarn licenses v1.22.17
 │  ├─ autoprefixer@10.4.0
 │  │  ├─ URL: https://github.com/postcss/autoprefixer.git
 │  │  └─ VendorName: Andrey Sitnik
+│  ├─ autoprefixer@10.4.2
+│  │  ├─ URL: https://github.com/postcss/autoprefixer.git
+│  │  └─ VendorName: Andrey Sitnik
 │  ├─ aws4@1.11.0
 │  │  ├─ URL: https://github.com/mhart/aws4.git
 │  │  ├─ VendorName: Michael Hart
@@ -3384,10 +3391,6 @@ yarn licenses v1.22.17
 │  │  ├─ VendorName: TJ Holowaychuk
 │  │  └─ VendorUrl: http://tjholowaychuk.com
 │  ├─ bytes@3.1.0
-│  │  ├─ URL: https://github.com/visionmedia/bytes.js.git
-│  │  ├─ VendorName: TJ Holowaychuk
-│  │  └─ VendorUrl: http://tjholowaychuk.com
-│  ├─ bytes@3.1.1
 │  │  ├─ URL: https://github.com/visionmedia/bytes.js.git
 │  │  ├─ VendorName: TJ Holowaychuk
 │  │  └─ VendorUrl: http://tjholowaychuk.com
@@ -3549,11 +3552,6 @@ yarn licenses v1.22.17
 │  │  ├─ URL: git@github.com:colorjs/color-name.git
 │  │  ├─ VendorName: DY
 │  │  └─ VendorUrl: https://github.com/colorjs/color-name
-│  ├─ color-string@1.9.0
-│  │  ├─ URL: https://github.com/Qix-/color-string.git
-│  │  └─ VendorName: Heather Arthur
-│  ├─ color@4.1.0
-│  │  └─ URL: https://github.com/Qix-/color.git
 │  ├─ colord@2.9.2
 │  │  ├─ URL: https://github.com/omgovich/colord.git
 │  │  └─ VendorName: Vlad Shilov
@@ -3708,10 +3706,6 @@ yarn licenses v1.22.17
 │  │  ├─ URL: https://github.com/sindresorhus/crypto-random-string.git
 │  │  ├─ VendorName: Sindre Sorhus
 │  │  └─ VendorUrl: sindresorhus.com
-│  ├─ css-color-names@0.0.4
-│  │  ├─ URL: git://github.com/bahamas10/css-color-names.git
-│  │  ├─ VendorName: Dave Eddy
-│  │  └─ VendorUrl: http://www.daveeddy.com
 │  ├─ css-loader@6.5.1
 │  │  ├─ URL: https://github.com/webpack-contrib/css-loader.git
 │  │  ├─ VendorName: Tobias Koppers @sokra
@@ -3736,10 +3730,6 @@ yarn licenses v1.22.17
 │  │  ├─ URL: https://github.com/csstree/csstree.git
 │  │  ├─ VendorName: Roman Dvornov
 │  │  └─ VendorUrl: https://github.com/lahmatiy
-│  ├─ css-unit-converter@1.1.2
-│  │  ├─ URL: https://github.com/andyjansson/css-unit-converter.git
-│  │  ├─ VendorName: Andy Jansson
-│  │  └─ VendorUrl: https://github.com/andyjansson/css-unit-converter
 │  ├─ css-vendor@2.0.8
 │  │  ├─ URL: git@github.com:cssinjs/css-vendor.git
 │  │  └─ VendorName: Oleg Slobodskoi
@@ -4563,10 +4553,6 @@ yarn licenses v1.22.17
 │  │  ├─ VendorName: Mathias Bynens
 │  │  └─ VendorUrl: https://mths.be/he
 │  ├─ heroicons@1.0.5
-│  ├─ hex-color-regex@1.1.0
-│  │  ├─ URL: https://github.com/regexps/hex-color-regex.git
-│  │  ├─ VendorName: Charlike Mike Reagent
-│  │  └─ VendorUrl: http://www.tunnckocore.tk
 │  ├─ history@4.10.1
 │  │  ├─ URL: https://github.com/ReactTraining/history.git
 │  │  └─ VendorName: Michael Jackson
@@ -4581,14 +4567,6 @@ yarn licenses v1.22.17
 │  │  ├─ URL: git+ssh://git@github.com/indutny/hpack.js.git
 │  │  ├─ VendorName: Fedor Indutny
 │  │  └─ VendorUrl: https://github.com/indutny/hpack.js#readme
-│  ├─ hsl-regex@1.0.0
-│  │  ├─ URL: https://github.com/regexps/hsl-regex.git
-│  │  ├─ VendorName: John Otander
-│  │  └─ VendorUrl: https://github.com/regexps/hsl-regex
-│  ├─ hsla-regex@1.0.0
-│  │  ├─ URL: https://github.com/regexps/hsla-regex.git
-│  │  ├─ VendorName: John Otander
-│  │  └─ VendorUrl: https://github.com/regexps/hsla-regex
 │  ├─ html-encoding-sniffer@2.0.1
 │  │  ├─ URL: https://github.com/jsdom/html-encoding-sniffer.git
 │  │  ├─ VendorName: Domenic Denicola
@@ -4604,10 +4582,6 @@ yarn licenses v1.22.17
 │  │  ├─ URL: git+https://github.com/terser/html-minifier-terser.git
 │  │  ├─ VendorName: Daniel Ruf
 │  │  └─ VendorUrl: https://terser.org/html-minifier-terser/
-│  ├─ html-tags@3.1.0
-│  │  ├─ URL: https://github.com/sindresorhus/html-tags.git
-│  │  ├─ VendorName: Sindre Sorhus
-│  │  └─ VendorUrl: sindresorhus.com
 │  ├─ html-webpack-plugin@5.5.0
 │  │  ├─ URL: https://github.com/jantimon/html-webpack-plugin.git
 │  │  ├─ VendorName: Jan Nicklas
@@ -4777,10 +4751,6 @@ yarn licenses v1.22.17
 │  │  ├─ URL: https://github.com/qix-/node-is-arrayish.git
 │  │  ├─ VendorName: Qix
 │  │  └─ VendorUrl: http://github.com/qix-
-│  ├─ is-arrayish@0.3.2
-│  │  ├─ URL: https://github.com/qix-/node-is-arrayish.git
-│  │  ├─ VendorName: Qix
-│  │  └─ VendorUrl: http://github.com/qix-
 │  ├─ is-bigint@1.0.4
 │  │  ├─ URL: git+https://github.com/inspect-js/is-bigint.git
 │  │  ├─ VendorName: Jordan Harband
@@ -4804,10 +4774,6 @@ yarn licenses v1.22.17
 │  │  ├─ URL: https://github.com/watson/is-ci.git
 │  │  ├─ VendorName: Thomas Watson Steen
 │  │  └─ VendorUrl: https://github.com/watson/is-ci
-│  ├─ is-color-stop@1.1.0
-│  │  ├─ URL: git+https://github.com/pigcan/is-color-stop.git
-│  │  ├─ VendorName: pigcan
-│  │  └─ VendorUrl: https://github.com/pigcan/is-color-stop#readme
 │  ├─ is-core-module@2.8.0
 │  │  ├─ URL: git+https://github.com/inspect-js/is-core-module.git
 │  │  ├─ VendorName: Jordan Harband
@@ -5363,10 +5329,6 @@ yarn licenses v1.22.17
 │  │  ├─ URL: https://github.com/lodash/lodash.git
 │  │  ├─ VendorName: John-David Dalton
 │  │  └─ VendorUrl: https://lodash.com/
-│  ├─ lodash.topath@4.5.2
-│  │  ├─ URL: https://github.com/lodash/lodash.git
-│  │  ├─ VendorName: John-David Dalton
-│  │  └─ VendorUrl: https://lodash.com/
 │  ├─ lodash.uniq@4.5.0
 │  │  ├─ URL: https://github.com/lodash/lodash.git
 │  │  ├─ VendorName: John-David Dalton
@@ -5539,10 +5501,6 @@ yarn licenses v1.22.17
 │  │  └─ VendorUrl: http://substack.net
 │  ├─ mkdirp@1.0.4
 │  │  └─ URL: https://github.com/isaacs/node-mkdirp.git
-│  ├─ modern-normalize@1.1.0
-│  │  ├─ URL: https://github.com/sindresorhus/modern-normalize.git
-│  │  ├─ VendorName: Sindre Sorhus
-│  │  └─ VendorUrl: https://sindresorhus.com
 │  ├─ modify-values@1.0.1
 │  │  ├─ URL: https://github.com/sindresorhus/modify-values.git
 │  │  ├─ VendorName: Sindre Sorhus
@@ -5604,9 +5562,6 @@ yarn licenses v1.22.17
 │  │  ├─ URL: git://github.com/blakeembrey/change-case.git
 │  │  ├─ VendorName: Blake Embrey
 │  │  └─ VendorUrl: https://github.com/blakeembrey/change-case/tree/master/packages/no-case#readme
-│  ├─ node-emoji@1.11.0
-│  │  ├─ URL: https://github.com/omnidan/node-emoji.git
-│  │  └─ VendorName: Daniel Bugl
 │  ├─ node-fetch@1.7.3
 │  │  ├─ URL: https://github.com/bitinn/node-fetch.git
 │  │  ├─ VendorName: David Frank
@@ -6156,10 +6111,6 @@ yarn licenses v1.22.17
 │  │  ├─ URL: https://github.com/cssnano/cssnano.git
 │  │  ├─ VendorName: Ben Briggs
 │  │  └─ VendorUrl: https://github.com/cssnano/cssnano
-│  ├─ postcss-value-parser@3.3.1
-│  │  ├─ URL: https://github.com/TrySound/postcss-value-parser.git
-│  │  ├─ VendorName: Bogdan Chadkin
-│  │  └─ VendorUrl: https://github.com/TrySound/postcss-value-parser
 │  ├─ postcss-value-parser@4.2.0
 │  │  ├─ URL: https://github.com/TrySound/postcss-value-parser.git
 │  │  ├─ VendorName: Bogdan Chadkin
@@ -6279,10 +6230,6 @@ yarn licenses v1.22.17
 │  │  ├─ URL: https://github.com/bestiejs/punycode.js.git
 │  │  ├─ VendorName: Mathias Bynens
 │  │  └─ VendorUrl: https://mths.be/punycode
-│  ├─ purgecss@4.1.3
-│  │  ├─ URL: git+https://github.com/FullHuman/purgecss.git
-│  │  ├─ VendorName: Ffloriel
-│  │  └─ VendorUrl: https://purgecss.com/
 │  ├─ q@1.5.1
 │  │  ├─ URL: git://github.com/kriskowal/q.git
 │  │  ├─ VendorName: Kris Kowal
@@ -6472,9 +6419,6 @@ yarn licenses v1.22.17
 │  │  ├─ URL: https://github.com/sindresorhus/redent.git
 │  │  ├─ VendorName: Sindre Sorhus
 │  │  └─ VendorUrl: sindresorhus.com
-│  ├─ reduce-css-calc@2.1.8
-│  │  ├─ URL: https://github.com/MoOx/reduce-css-calc.git
-│  │  └─ VendorName: Maxime Thirouin
 │  ├─ redux@4.1.2
 │  │  ├─ URL: https://github.com/reduxjs/redux.git
 │  │  └─ VendorUrl: http://redux.js.org/
@@ -6616,14 +6560,6 @@ yarn licenses v1.22.17
 │  │  ├─ URL: git+https://github.com/mcollina/reusify.git
 │  │  ├─ VendorName: Matteo Collina
 │  │  └─ VendorUrl: https://github.com/mcollina/reusify#readme
-│  ├─ rgb-regex@1.0.1
-│  │  ├─ URL: https://github.com/regexps/rgb-regex.git
-│  │  ├─ VendorName: John Otander
-│  │  └─ VendorUrl: https://github.com/regexps/rgb-regex
-│  ├─ rgba-regex@1.0.0
-│  │  ├─ URL: https://github.com/johnotander/rgba-regex.git
-│  │  ├─ VendorName: John Otander
-│  │  └─ VendorUrl: https://github.com/johnotander/rgba-regex
 │  ├─ rollup-plugin-terser@7.0.2
 │  │  ├─ URL: git+https://github.com/TrySound/rollup-plugin-terser.git
 │  │  └─ VendorName: Bogdan Chadkin
@@ -6769,10 +6705,6 @@ yarn licenses v1.22.17
 │  │  ├─ URL: git+https://github.com/ljharb/side-channel.git
 │  │  ├─ VendorName: Jordan Harband
 │  │  └─ VendorUrl: https://github.com/ljharb/side-channel#readme
-│  ├─ simple-swizzle@0.2.2
-│  │  ├─ URL: https://github.com/qix-/node-simple-swizzle.git
-│  │  ├─ VendorName: Qix
-│  │  └─ VendorUrl: http://github.com/qix-
 │  ├─ sisteransi@1.0.5
 │  │  ├─ URL: https://github.com/terkelg/sisteransi
 │  │  ├─ VendorName: Terkel Gjervig
@@ -7071,9 +7003,6 @@ yarn licenses v1.22.17
 │  │  ├─ URL: https://github.com/jsdom/js-symbol-tree.git
 │  │  ├─ VendorName: Joris van der Wel
 │  │  └─ VendorUrl: https://github.com/jsdom/js-symbol-tree#symbol-tree
-│  ├─ tailwindcss@2.2.19
-│  │  ├─ URL: https://github.com/tailwindlabs/tailwindcss.git
-│  │  └─ VendorUrl: https://tailwindcss.com/
 │  ├─ tailwindcss@3.0.1
 │  │  ├─ URL: https://github.com/tailwindlabs/tailwindcss.git
 │  │  └─ VendorUrl: https://tailwindcss.com/

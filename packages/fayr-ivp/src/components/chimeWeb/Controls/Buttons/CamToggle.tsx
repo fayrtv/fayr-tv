@@ -1,10 +1,14 @@
 // Styles
 import classNames from "classnames";
 
+import { VideoStatus } from "components/chimeWeb/Controls/Controls";
+
+import { LoadingAnimation } from "@fayr/shared-components";
+
 import styles from "./ToggleButton.module.scss";
 
 type Props = {
-    toggleState: boolean;
+    toggleState: VideoStatus;
     onClick(): void | Promise<void>;
 };
 
@@ -12,11 +16,13 @@ export const CamToggle = ({ toggleState, onClick }: Props) => {
     return (
         <div
             key="CamButton"
-            className={classNames("btn rounded", styles.Button, { [styles.Active]: toggleState })}
+            className={classNames("btn rounded", styles.Button, {
+                [styles.Active]: toggleState === VideoStatus.Enabled,
+            })}
             onClick={onClick}
             title="Kamera einschalten"
         >
-            {toggleState ? (
+            {toggleState === VideoStatus.Enabled ? (
                 <svg
                     className={styles.BtnSvg}
                     fill="none"
@@ -28,7 +34,7 @@ export const CamToggle = ({ toggleState, onClick }: Props) => {
                         fill="#07090C"
                     />
                 </svg>
-            ) : (
+            ) : toggleState === VideoStatus.Disabled ? (
                 <svg
                     className={styles.BtnSvg}
                     fill="none"
@@ -40,6 +46,8 @@ export const CamToggle = ({ toggleState, onClick }: Props) => {
                         fill="#D2D2D2"
                     />
                 </svg>
+            ) : (
+                <LoadingAnimation />
             )}
         </div>
     );
