@@ -16,6 +16,7 @@ import {
 import { A } from "components/A";
 import Header from "components/layout/Header";
 import SidebarNav from "components/navigation/SidebarNav";
+import { withRouter, Router } from "next/router";
 import React, { Fragment, PropsWithChildren, useState } from "react";
 
 function classNames(...classes: any[]) {
@@ -66,17 +67,14 @@ export default function FayrStudioLayout({ children }: PropsWithChildren<{}>) {
                                     name: "Home",
                                     href: "home",
                                     icon: HomeIcon,
-                                    isSelected: true,
                                     children: [
                                         {
                                             name: "Dashboard",
                                             href: "home",
-                                            isSelected: true,
                                         },
                                         {
                                             name: "Health Status",
                                             href: "home",
-                                            isSelected: true,
                                         },
                                     ],
                                 },
@@ -84,17 +82,14 @@ export default function FayrStudioLayout({ children }: PropsWithChildren<{}>) {
                                     name: "Stream Manager",
                                     href: "stream-manager",
                                     icon: MicrophoneIcon,
-                                    isSelected: false,
                                     children: [
                                         {
                                             name: "Streaming Tools",
                                             href: "stream-manager",
-                                            isSelected: true,
                                         },
                                         {
                                             name: "Devices",
                                             href: "stream-manager",
-                                            isSelected: true,
                                         },
                                     ],
                                 },
@@ -102,17 +97,14 @@ export default function FayrStudioLayout({ children }: PropsWithChildren<{}>) {
                                     name: "Content",
                                     href: "#",
                                     icon: CollectionIcon,
-                                    isSelected: false,
                                     children: [
                                         {
                                             name: "Library",
                                             href: "#",
-                                            isSelected: false,
                                         },
                                         {
                                             name: "Records",
                                             href: "#",
-                                            isSelected: false,
                                         },
                                     ],
                                 },
@@ -120,27 +112,22 @@ export default function FayrStudioLayout({ children }: PropsWithChildren<{}>) {
                                     name: "Insights",
                                     href: "insights",
                                     icon: PresentationChartLineIcon,
-                                    isSelected: false,
                                     children: [
                                         {
                                             name: "Summary",
                                             href: "insights",
-                                            isSelected: false,
                                         },
                                         {
                                             name: "Analytics",
                                             href: "insights",
-                                            isSelected: false,
                                         },
                                         {
                                             name: "Data",
                                             href: "#",
-                                            isSelected: false,
                                         },
                                         {
                                             name: "Report",
                                             href: "#",
-                                            isSelected: false,
                                         },
                                     ],
                                 },
@@ -148,17 +135,14 @@ export default function FayrStudioLayout({ children }: PropsWithChildren<{}>) {
                                     name: "Community",
                                     href: "community",
                                     icon: UserGroupIcon,
-                                    isSelected: false,
                                     children: [
                                         {
                                             name: "Followers",
                                             href: "community",
-                                            isSelected: false,
                                         },
                                         {
                                             name: "Partners",
                                             href: "community",
-                                            isSelected: false,
                                         },
                                     ],
                                 },
@@ -166,22 +150,18 @@ export default function FayrStudioLayout({ children }: PropsWithChildren<{}>) {
                                     name: "Marketing",
                                     href: "marketing",
                                     icon: SpeakerphoneIcon,
-                                    isSelected: false,
                                     children: [
                                         {
                                             name: "Advertising",
                                             href: "marketing",
-                                            isSelected: false,
                                         },
                                         {
                                             name: "Campaigns",
                                             href: "marketing",
-                                            isSelected: false,
                                         },
                                         {
                                             name: "Social Media",
                                             href: "#",
-                                            isSelected: false,
                                         },
                                     ],
                                 },
@@ -189,22 +169,18 @@ export default function FayrStudioLayout({ children }: PropsWithChildren<{}>) {
                                     name: "Security",
                                     href: "security",
                                     icon: ShieldCheckIcon,
-                                    isSelected: false,
                                     children: [
                                         {
                                             name: "Protection",
                                             href: "security",
-                                            isSelected: false,
                                         },
                                         {
                                             name: "Encryption",
                                             href: "security",
-                                            isSelected: false,
                                         },
                                         {
                                             name: "GDPR",
                                             href: "security",
-                                            isSelected: false,
                                         },
                                     ],
                                 },
@@ -212,17 +188,14 @@ export default function FayrStudioLayout({ children }: PropsWithChildren<{}>) {
                                     name: "Monetization",
                                     href: "monetization",
                                     icon: CurrencyDollarIcon,
-                                    isSelected: false,
                                     children: [
                                         {
                                             name: "Health Status",
                                             href: "monetization",
-                                            isSelected: false,
                                         },
                                         {
                                             name: "Dashboard",
                                             href: "monetization",
-                                            isSelected: false,
                                         },
                                     ],
                                 },

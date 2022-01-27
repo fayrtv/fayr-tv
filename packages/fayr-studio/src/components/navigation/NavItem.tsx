@@ -1,18 +1,22 @@
 import { Disclosure } from "@headlessui/react";
 import classNames from "classnames";
 import { A } from "components/A";
+import { Router, withRouter } from "next/router";
 import React from "react";
 
 type NavItemProps = {
+    router: Router;
     name: string;
     href: string;
-    isSelected: boolean;
     icon?: React.FunctionComponent<React.ComponentProps<"svg">>;
     children?: NavItemProps[];
 };
 
-export default function NavItem({ href, icon, isSelected, name, children }: NavItemProps) {
-    const colorClass = isSelected ? "text-white" : "text-neutral";
+const NavItem = ({ router, href, icon, name, children }: NavItemProps) => {
+    const normalizedHref = `/${href[0] === "/" ? href.substring(1) : href}`;
+    const isCurrentPath = router.pathname === normalizedHref || router.asPath === normalizedHref;
+
+    const colorClass = isCurrentPath ? "text-white" : "text-neutral";
 
     return !children ? (
         <div key={name}>
@@ -36,7 +40,7 @@ export default function NavItem({ href, icon, isSelected, name, children }: NavI
             </A>
         </div>
     ) : (
-        <Disclosure as="div" key={name} className="space-y-1">
+        <Disclosure as="div" key={name} className="space-y-1" defaultOpen={isCurrentPath}>
             {({ open }) => (
                 <>
                     <Disclosure.Button
@@ -82,4 +86,6 @@ export default function NavItem({ href, icon, isSelected, name, children }: NavI
             )}
         </Disclosure>
     );
-}
+};
+
+export default withRouter(NavItem);
