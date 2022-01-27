@@ -1,7 +1,10 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="fayr-studio | start" type="js.build_tools.npm">
+  <configuration default="false" name="fayr-studio | dev" type="js.build_tools.npm">
     <package-json value="$PROJECT_DIR$/packages/fayr-studio/package.json" />
-    <command value="start" />
+    <command value="run" />
+    <scripts>
+      <script value="dev" />
+    </scripts>
     <node-interpreter value="project" />
     <envs />
     <method v="2" />

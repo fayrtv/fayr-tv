@@ -7,4 +7,6 @@ import TranslationContextProvider from "./translations/TranslationContext";
 
 export { Flex, Cell, Grid, LoadingAnimation, MaterialIcon, TranslationContextProvider };
 
+export { isFalsyOrWhitespace } from "./utils/stringUtils";
+
 export * from "./theming";

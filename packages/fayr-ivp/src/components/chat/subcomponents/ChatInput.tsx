@@ -1,14 +1,13 @@
 import Picker from "emoji-picker-react";
 import React, { useState } from "react";
 import { isInRect } from "util/coordinateUtil";
-import { isFalsyOrWhitespace } from "util/stringUtils";
 
 import useGlobalClickHandler from "hooks/useGlobalClickHandler";
 import { useSocket } from "hooks/useSocket";
 
 import Emoji from "components/common/Emoji";
 
-import { LoadingAnimation } from "@fayr/shared-components";
+import { isFalsyOrWhitespace, LoadingAnimation } from "@fayr/shared-components";
 
 import styles from "./ChatInput.module.scss";
 

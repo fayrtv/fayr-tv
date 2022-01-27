@@ -37,7 +37,7 @@ module.exports = {
                 "@font-face": {
                     fontFamily: "WinnerSans",
                     fontWeight: "300",
-                    src: "url(/src/fonts/font.woff)",
+                    src: "url(/fonts/font.woff)",
                 },
             });
         }),

@@ -1,6 +1,6 @@
 import { CheckIcon } from "@heroicons/react/solid";
+import { A } from "components/A";
 import React, { Dispatch, SetStateAction } from "react";
-import { Link } from "react-router-dom";
 
 export type StepInfo = {
     id: string;
@@ -103,9 +103,9 @@ export default function VerticalSteps({ currentStepId, setCurrentStepId, steps }
                                             : "",
                                     )}
                                 >
-                                    <Link to={step.href}>
+                                    <A href={step.href}>
                                         <Text name={step.name} description={step.description} />
-                                    </Link>
+                                    </A>
                                 </div>
                                 <div className="w-full text-sm block relative bg-black">
                                     {isCurrentStep(step)
