@@ -3,7 +3,6 @@ import { env } from "constants/env";
 import { getFaunaClient } from "database";
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
-import slugify from "slugify";
 
 type GitHubEmailResponse = {
     email: string;
@@ -49,56 +48,13 @@ export default NextAuth({
             clientId: env.COGNITO_CLIENT_ID,
             clientSecret: env.COGNITO_CLIENT_SECRET,
             domain: env.COGNITO_DOMAIN,
-            profile: async (profileData, tokens) => {
+            profile: async (profileData) => {
                 return {
                     id: profileData.sub as string,
                     name: profileData.email,
                     email: profileData.email,
                     image: null,
                     username: profileData.username as string,
-                };
-            },
-        }),
-        Providers.LinkedIn({
-            clientId: env.LINKEDIN_ID,
-            clientSecret: env.LINKEDIN_SECRET,
-            scope: "r_liteprofile r_emailaddress",
-            profileUrl:
-                "https://api.linkedin.com/v2/me?projection=(id,localizedFirstName,localizedLastName,profilePicture(displayImage~digitalmediaAsset:playableStreams))",
-            profile: async (profileData, tokens) => {
-                const DISPLAY_IMAGE = "displayImage~";
-                const profileImage =
-                    // @ts-expect-error Object is of type 'unknown'.ts(2571)
-                    profileData?.profilePicture?.[DISPLAY_IMAGE]?.elements?.[3]?.identifiers?.[0]
-                        ?.identifier ??
-                    // @ts-expect-error Object is of type 'unknown'.ts(2571)
-                    profileData?.profilePicture?.[DISPLAY_IMAGE]?.elements?.[2]?.identifiers?.[0]
-                        ?.identifier ??
-                    // @ts-expect-error Object is of type 'unknown'.ts(2571)
-                    profileData?.profilePicture?.[DISPLAY_IMAGE]?.elements?.[1]?.identifiers?.[0]
-                        ?.identifier ??
-                    // @ts-expect-error Object is of type 'unknown'.ts(2571)
-                    profileData?.profilePicture?.[DISPLAY_IMAGE]?.elements?.[0]?.identifiers?.[0]
-                        ?.identifier ??
-                    "";
-                const { id, localizedFirstName, localizedLastName } = profileData;
-                const name = (localizedFirstName as string) + (localizedLastName as string);
-                const username = slugify(`${name} ${id as string}`, { lower: true });
-                const { accessToken } = tokens;
-                const emailResponse = await fetch(
-                    "https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${accessToken}`,
-                        },
-                    },
-                ).then((res) => res.json());
-                return {
-                    id: id as string,
-                    name,
-                    email: emailResponse?.elements?.[0]?.["handle~"]?.emailAddress ?? null,
-                    image: profileImage,
-                    username,
                 };
             },
         }),
