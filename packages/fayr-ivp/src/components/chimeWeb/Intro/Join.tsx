@@ -29,7 +29,7 @@ export const Join = ({ location, history }: RouteComponentProps) => {
             role: "Attendee",
         };
 
-        sessionStorage.setItem(`chime[${title}]`, JSON.stringify(data));
+        sessionStorage.setItem(`chime[${title.toLowerCase()}]`, JSON.stringify(data));
         history.push(`${config.BASE_HREF}/meeting?room=${title}`);
     };
 

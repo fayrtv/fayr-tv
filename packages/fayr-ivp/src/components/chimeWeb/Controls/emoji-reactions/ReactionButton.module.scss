@@ -1,0 +1,34 @@
+@use "../Controls.module.scss" as commonControls;
+
+.Button {
+    @include commonControls.CommonButton;
+
+    &.ReactionButton {
+        position: relative;
+        z-index: 2;
+
+        > span {
+            cursor: inherit !important;
+            font-size: 1.5em;
+        }
+
+        * span {
+            user-select: none;
+        }
+
+        &:active {
+            .ReactionRow {
+                top: -47px;
+                right: -2px;
+            }
+        }
+
+        .ReactionRow {
+            position: absolute;
+
+            top: -45px;
+            right: 0px;
+            height: 42px;
+        }
+    }
+}

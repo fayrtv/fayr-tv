@@ -1,3 +1,5 @@
+import { RoomMemberRole } from "types/Room";
+
 import { DeviceInfo } from "components/chime/ChimeSdkWrapper";
 import { JoinInfo } from "components/chimeWeb/types";
 
@@ -12,8 +14,11 @@ export type MeetingInputOutputDevices = {
 export type MeetingMetaData = {
     username: string;
     title: string;
-    role: string;
+    role: RoomMemberRole;
     joinInfo?: JoinInfo;
     playbackURL: string;
     meetingInputOutputDevices?: MeetingInputOutputDevices;
+
+    muted: boolean;
+    forceMuted: boolean;
 };

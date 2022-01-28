@@ -14,4 +14,6 @@ export enum SocketEventType {
     ChatMessage = 1,
     EmojiReaction = 2,
     AttendeeVote = 3,
+    ForceAttendeeMicChange = 4,
+    ForceAttendeeVideoChange = 5,
 }

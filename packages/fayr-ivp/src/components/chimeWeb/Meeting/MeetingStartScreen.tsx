@@ -179,7 +179,7 @@ export const MeetingStartScreen = ({
             <Cell className={styles.Selection} gridArea="Selection">
                 <Flex direction="Column">
                     <Flex direction="Row">
-                        <MicrophoneToggle toggleState={micEnabled} onClick={onMicToggleClick} />
+                        <MicrophoneToggle enabled={micEnabled} onClick={onMicToggleClick} />
                         <MicrophoneSelection
                             selectedDevice={currentMic}
                             setSelectedDevice={setCurrentMic}

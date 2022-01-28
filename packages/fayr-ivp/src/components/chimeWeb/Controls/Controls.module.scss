@@ -122,42 +122,6 @@
                 z-index: 5;
             }
         }
-
-        &.ReactionButton {
-            position: relative;
-            z-index: 2;
-
-            > span {
-                font-size: 1.5em;
-            }
-
-            * span {
-                user-select: none;
-            }
-
-            &:active {
-                .ReactionRow {
-                    top: -47px;
-                    right: -2px;
-                }
-            }
-
-            .ReactionRow {
-                position: absolute;
-
-                top: -45px;
-                right: 0px;
-                height: 42px;
-            }
-        }
-
-        &.VotingButton {
-            cursor: pointer;
-
-            > span {
-                cursor: pointer !important;
-            }
-        }
     }
 }
 

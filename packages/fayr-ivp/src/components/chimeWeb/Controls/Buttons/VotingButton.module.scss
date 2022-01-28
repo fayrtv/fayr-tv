@@ -1,0 +1,13 @@
+@use "../Controls.module.scss" as commonControls;
+
+.Button {
+    @include commonControls.CommonButton;
+
+    &.VotingButton {
+        cursor: pointer;
+
+        > span {
+            cursor: pointer !important;
+        }
+    }
+}

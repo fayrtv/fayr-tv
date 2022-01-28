@@ -3,19 +3,20 @@ import AudioVideoObserver from "amazon-chime-sdk-js/build/audiovideoobserver/Aud
 import * as config from "config";
 import React from "react";
 import { Redirect, RouteComponentProps, withRouter } from "react-router-dom";
+import { isFalsyOrWhitespace } from "util/stringUtils";
 
 import useLoadingGuard from "hooks/useLoadingGuard";
-import usePersistedState from "hooks/usePersistedState";
 
 import ChimeSdkWrapper from "components/chime/ChimeSdkWrapper";
 import Meeting from "components/chimeWeb/Meeting/Meeting";
 import { MeetingMetaData, MeetingStatus } from "components/chimeWeb/Meeting/meetingTypes";
-import { formatMeetingSsKey } from "components/chimeWeb/Meeting/storage";
 import { JoinInfo } from "components/chimeWeb/types";
 
 import { LoadingAnimation } from "@fayr/shared-components";
 
+import useMeetingMetaData from "../../../hooks/useMeetingMetaData";
 import MeetingStartScreen from "./MeetingStartScreen";
+import { formatMeetingSsKey } from "./storage";
 
 type PublicProps = {
     chime: ChimeSdkWrapper;
@@ -31,9 +32,17 @@ export const MeetingContainer = ({
     // const myVideoElement = React.createRef<HTMLVideoElement>();
 
     // Will be undefined on direct URL loading without previously filling meeting fields
-    const [meetingMetaData, setMeetingMetaData] = usePersistedState<MeetingMetaData | undefined>(
-        formatMeetingSsKey(roomTitle),
-    );
+    const [meetingMetaData, setMeetingMetaData] = useMeetingMetaData(() => {
+        const rawData = sessionStorage.getItem(formatMeetingSsKey(roomTitle));
+        if (!rawData || isFalsyOrWhitespace(rawData)) {
+            return {} as MeetingMetaData;
+        }
+
+        return {
+            ...(JSON.parse(rawData) as MeetingMetaData),
+            muted: true,
+        };
+    });
 
     // Loading, Success or Failed
     const [meetingStatus, setMeetingStatus] = React.useState<MeetingStatus | null>(null);
@@ -73,7 +82,9 @@ export const MeetingContainer = ({
                             promises.push(
                                 (async () => {
                                     await chime.chooseVideoInputDevice(cam);
-                                    chime.audioVideo.start();
+                                    if (!meetingMetaData.muted && !meetingMetaData.forceMuted) {
+                                        chime.audioVideo.start();
+                                    }
                                     chime.audioVideo.startLocalVideoTile();
                                 })(),
                             );
@@ -89,18 +100,17 @@ export const MeetingContainer = ({
                     meetingMetaData.title,
                     meetingMetaData.playbackURL,
                 );
-                setMeetingMetaData((current) => ({
-                    ...current!,
+                setMeetingMetaData({
                     joinInfo,
                     playbackURL: joinInfo.PlaybackURL,
                     title: joinInfo.Title,
-                }));
+                });
             }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [chime],
     );
-    const { isLoading } = useLoadingGuard(true, initializeSession);
+    let { isLoading } = useLoadingGuard(true, initializeSession);
 
     React.useEffect(() => {
         if (meetingStatus === "Success" || meetingStatus === "Loading") {
@@ -156,7 +166,7 @@ export const MeetingContainer = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [roomTitle, meetingMetaData?.role, chime, history]);
 
-    return isLoading ? (
+    return isLoading || !meetingMetaData.joinInfo ? (
         <LoadingAnimation fullScreen={true} />
     ) : meetingMetaData && roomTitle ? (
         showStartScreen ? (
@@ -188,15 +198,12 @@ export const MeetingContainer = ({
             <>
                 <audio ref={audioElementRef} style={{ display: "none" }} />
                 <Meeting
+                    {...meetingMetaData}
                     chime={chime}
                     roomTitle={roomTitle}
                     meetingStatus={meetingStatus}
                     setMeetingStatus={setMeetingStatus}
                     joinInfo={meetingMetaData.joinInfo!}
-                    role={meetingMetaData.role}
-                    title={meetingMetaData.title}
-                    username={meetingMetaData.username}
-                    playbackURL={meetingMetaData.playbackURL}
                 />
             </>
         )

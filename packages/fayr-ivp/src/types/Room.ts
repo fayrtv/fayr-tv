@@ -1,1 +1,1 @@
-export type RoomMemberRole = "host";
+export type RoomMemberRole = "host" | "attendee";

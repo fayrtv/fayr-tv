@@ -18,3 +18,8 @@ export type EmojiReactionTransferObject = {
         relativeY: number;
     };
 };
+
+export type ForceAttendeeDeviceChangeDto = {
+    attendeeId: string;
+    newState: boolean;
+};

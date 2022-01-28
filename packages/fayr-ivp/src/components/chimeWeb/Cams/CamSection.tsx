@@ -3,40 +3,54 @@ import { VideoTileState } from "amazon-chime-sdk-js";
 // Functionality
 import * as config from "config";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { replaceParticipantVideoRoster } from "redux/reducers/participantVideoReducer";
+import { batch, useDispatch, useSelector } from "react-redux";
 import { updatePinnedHost } from "redux/reducers/pinnedHostReducer";
 import { ReduxStore } from "redux/store";
 import { Nullable } from "types/global";
 
+import useSocket from "hooks/useSocket";
+
 // Types
-import { RosterMap, Attendee, Role } from "components/chime/ChimeSdkWrapper";
+import { RosterMap, Role } from "components/chime/ChimeSdkWrapper";
+import { SocketEventType } from "components/chime/types";
 
 // Styles
 import styles from "./CamSection.module.scss";
 
+import { useAttendeeInfo } from "../../../hooks/useAttendeeInfo";
+import useMeetingMetaData from "../../../hooks/useMeetingMetaData";
 import { IChimeSdkWrapper } from "../../chime/ChimeSdkWrapper";
-import { JoinInfo } from "../types";
+import { JoinInfo, ForceAttendeeDeviceChangeDto } from "../types";
 // Components
 import LocalVideo from "./LocalVideo/LocalVideo";
 import ParticipantVideo from "./Participants/ParticipantVideo";
 import ParticipantVideoGroup from "./Participants/ParticipantVideoGroup";
-import { Roster } from "./types";
 
 const MAX_REMOTE_VIDEOS = config.CHIME_ROOM_MAX_ATTENDEE;
 
 type Props = {
     chime: IChimeSdkWrapper;
     joinInfo: JoinInfo;
+    roomTitle: string;
 };
 
-export const CamSection = ({ chime, joinInfo }: Props) => {
-    const [roster, setRoster] = React.useState<Roster>([]);
-    const previousRoster = React.useRef<Roster>([]);
+export const CamSection = ({ chime, joinInfo, roomTitle }: Props) => {
+    const {
+        attendeeMap,
+        updateAttendee,
+        putAttendee,
+        getAttendee,
+        removeAttendeeAtTile,
+        removeAttendee,
+    } = useAttendeeInfo();
+
+    const [{ role, muted }, setMetaData] = useMeetingMetaData();
 
     const pinnedHostIdentifier = useSelector<ReduxStore, Nullable<string>>(
         (x) => x.pinnedHostReducer,
     );
+
+    const { socket } = useSocket();
 
     const dispatch = useDispatch();
     const setPinnedHostIdentifier = React.useCallback(
@@ -45,16 +59,6 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
         },
         [dispatch],
     );
-    const storedRoster = useSelector<ReduxStore, Roster>((x) => x.participantVideoReducer);
-
-    const findRosterSlot = React.useCallback((attendeeId: string, localRoster: Roster) => {
-        for (let index = 0; index < localRoster.length; index++) {
-            if (localRoster[index].attendeeId === attendeeId || !localRoster[index].attendeeId) {
-                return index;
-            }
-        }
-        return localRoster.length;
-    }, []);
 
     const videoTileDidUpdateCallback = React.useCallback(
         (tileState: VideoTileState) => {
@@ -67,103 +71,73 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
                 return;
             }
 
-            setRoster((currentRoster) => {
-                const newRoster = [...currentRoster];
-
-                let index = findRosterSlot(tileState.boundAttendeeId!, newRoster);
-
-                if (config.DEBUG) {
-                    console.log(newRoster[index]);
-                }
-
-                const attendee =
-                    newRoster[index] ??
-                    previousRoster.current.find((x) => x.attendeeId === tileState.boundAttendeeId);
-
-                newRoster[index] = {
-                    ...attendee,
-                    videoEnabled: true,
-                    attendeeId: tileState.boundAttendeeId,
-                    tileId: tileState.tileId,
-                } as Attendee;
-
-                return newRoster;
+            putAttendee({
+                videoEnabled: true,
+                attendeeId: tileState.boundAttendeeId,
+                tileId: tileState.tileId,
             });
         },
-        [findRosterSlot],
+        [putAttendee],
     );
 
-    React.useEffect(() => {
-        const tiles = chime.audioVideo.getAllRemoteVideoTiles();
-        for (let tile of tiles) {
-            videoTileDidUpdateCallback(tile.state());
-        }
-    }, [chime, videoTileDidUpdateCallback]);
+    const onVideoTileWasRemoved = React.useCallback(
+        (tileId: number) => {
+            removeAttendeeAtTile(tileId);
 
-    const videoTileWasRemovedCallback = React.useCallback((tileId: number) => {
-        setRoster((currentRoster) => {
-            // Find the removed tileId in the roster and mark the video as disabled.
-            // eslint-disable-next-line
-            const index = currentRoster.findIndex((o) => o.tileId === tileId);
-
-            if (index === -1) {
-                return currentRoster;
+            if (config.DEBUG) {
+                console.log(`Tile was removed ${tileId}`);
             }
-
-            const newRoster = [...currentRoster];
-            newRoster[index] = {} as Attendee;
-            return newRoster;
-        });
-
-        if (config.DEBUG) {
-            console.log(`Tile was removed ${tileId}`);
-        }
-    }, []);
+        },
+        [removeAttendeeAtTile],
+    );
 
     const onRosterUpdate = React.useCallback(
-        (newRoster: RosterMap) => {
-            if (Object.keys(newRoster).length < previousRoster.current.length) {
-                if (config.DEBUG) {
+        (roster: RosterMap) => {
+            if (config.DEBUG) {
+                if (Object.keys(roster).length < attendeeMap.length) {
                     console.log("Attendee(s) left");
                 }
             }
 
-            previousRoster.current = Object.entries(newRoster).map(([attendeeId, attendee]) => ({
-                ...attendee,
-                attendeeId,
-            }));
-
-            dispatch(replaceParticipantVideoRoster(previousRoster.current));
-
-            for (let attendeeId in newRoster) {
+            const remainingIds = new Set<string>();
+            for (let attendeeId in roster) {
                 // Exclude self & empty names
-                if (attendeeId === joinInfo.Attendee.AttendeeId || !newRoster[attendeeId].name) {
+                if (attendeeId === joinInfo.Attendee.AttendeeId) {
                     continue;
                 }
 
-                const index = findRosterSlot(attendeeId, roster);
+                remainingIds.add(attendeeId);
 
-                const attendee = {
-                    ...roster[index],
-                    ...newRoster[attendeeId],
-                    attendeeId: attendeeId,
-                };
-
-                if (config.PinHost && !pinnedHostIdentifier && attendee.role === Role.Host) {
-                    setPinnedHostIdentifier(attendee.attendeeId);
+                if (!roster[attendeeId].name) {
+                    continue;
                 }
 
-                setRoster((currentRoster) => {
-                    const newRoster = [...currentRoster];
-                    newRoster[index] = attendee;
-                    return newRoster;
+                if (
+                    config.PinHost &&
+                    !pinnedHostIdentifier &&
+                    roster[attendeeId].role === Role.Host
+                ) {
+                    setPinnedHostIdentifier(attendeeId);
+                }
+
+                putAttendee({
+                    ...roster[attendeeId],
+                    attendeeId: attendeeId,
                 });
             }
+
+            batch(() => {
+                for (const removedAttendee of attendeeMap.filter(
+                    (x) => !remainingIds.has(x.attendeeId),
+                )) {
+                    removeAttendee(removedAttendee);
+                }
+            });
         },
         [
-            dispatch,
-            roster,
-            findRosterSlot,
+            removeAttendee,
+            putAttendee,
+            attendeeMap,
             joinInfo.Attendee.AttendeeId,
             pinnedHostIdentifier,
             setPinnedHostIdentifier,
@@ -171,32 +145,11 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
     );
 
     React.useEffect(() => {
-        const localRoster: Roster = [];
-        previousRoster.current = storedRoster;
-
-        const videoTiles = (chime.audioVideo as any).videoTileController.getAllVideoTiles();
-
-        for (let i = 0; i < MAX_REMOTE_VIDEOS; ++i) {
-            localRoster[i] = storedRoster[i + 1] ?? ({} as Attendee);
-            const boundTile = videoTiles.find(
-                (x: any) => x.tileState.boundAttendeeId === localRoster[i].attendeeId,
-            );
-
-            if (boundTile) {
-                localRoster[i].tileId = boundTile.tileState.tileId;
-            }
-        }
-
-        setRoster(localRoster);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [chime]);
-
-    React.useEffect(() => {
         const audioVideo = chime.audioVideo;
 
         const observer = {
             videoTileDidUpdate: videoTileDidUpdateCallback,
-            videoTileWasRemoved: videoTileWasRemovedCallback,
+            videoTileWasRemoved: onVideoTileWasRemoved,
         };
 
         if (audioVideo) {
@@ -222,6 +175,66 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [chime, onRosterUpdate]);
 
+    const isSelfHost = role === "host";
+
+    const onMicClick = React.useCallback(
+        (attendeeId: string) => {
+            // We need to be the host to be allowed to enable / disable mics, and it shouldn't be on ourself
+            if (!isSelfHost || attendeeId === joinInfo.Attendee.AttendeeId) {
+                return;
+            }
+
+            socket?.send<ForceAttendeeDeviceChangeDto>({
+                messageType: SocketEventType.ForceAttendeeMicChange,
+                payload: {
+                    attendeeId,
+                    newState: !getAttendee(attendeeId)?.forceMuted ?? true,
+                },
+            });
+        },
+        [isSelfHost, joinInfo.Attendee.AttendeeId, getAttendee, socket],
+    );
+
+    React.useEffect(() => {
+        if (!socket) {
+            return;
+        }
+
+        return socket.addListener<ForceAttendeeDeviceChangeDto>(
+            SocketEventType.ForceAttendeeMicChange,
+            ({ attendeeId, newState }) => {
+                if (attendeeId === joinInfo.Attendee.AttendeeId) {
+                    setMetaData({
+                        forceMuted: newState,
+                    });
+
+                    if (newState) {
+                        chime.audioVideo.realtimeMuteLocalAudio();
+                    } else if (!muted) {
+                        // Only unmute if we didn't mute ourself locally
+                        chime.audioVideo.realtimeUnmuteLocalAudio();
+                    }
+
+                    return Promise.resolve();
+                }
+
+                updateAttendee({
+                    attendeeId,
+                    forceMuted: newState,
+                });
+
+                return Promise.resolve();
+            },
+        );
+    }, [
+        socket,
+        updateAttendee,
+        setMetaData,
+        joinInfo.Attendee.AttendeeId,
+        chime.audioVideo,
+        muted,
+    ]);
+
     const localVideo = (
         <LocalVideo
             key="LocalVideo"
@@ -234,13 +247,16 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
     const participantVideos = React.useMemo(() => {
         const participantVideoMap = new Map<string, JSX.Element>();
 
-        roster.forEach((attendee) => {
+        attendeeMap.forEach((attendee) => {
             participantVideoMap.set(
                 attendee.attendeeId,
                 <ParticipantVideo
+                    isSelfHost={isSelfHost}
+                    onMicClick={onMicClick}
                     chime={chime}
                     tileIndex={attendee.tileId}
                     key={attendee.attendeeId}
+                    forceMuted={attendee.forceMuted}
                     attendeeId={attendee.attendeeId}
                     videoEnabled={attendee.videoEnabled}
                     name={attendee.name}
@@ -252,7 +268,7 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
         });
 
         return participantVideoMap;
-    }, [roster, setPinnedHostIdentifier, chime]);
+    }, [attendeeMap, setPinnedHostIdentifier, chime, isSelfHost, onMicClick]);
 
     const highlightVideo = (
         <div className={styles.HighlightVideoWrapper}>
@@ -275,7 +291,9 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
                         : {
                               node: localVideo,
                               replace: true,
-                              tile: roster.findIndex((x) => x.attendeeId === pinnedHostIdentifier),
+                              tile: attendeeMap.findIndex(
+                                  (x) => x.attendeeId === pinnedHostIdentifier,
+                              ),
                           }
                 }
             />
