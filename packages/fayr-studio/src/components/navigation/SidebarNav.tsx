@@ -5,7 +5,6 @@ type NavEntry = {
     name: string;
     href: string;
     icon?: React.FunctionComponent<React.ComponentProps<"svg">>;
-    isSelected: boolean;
     children?: NavEntry[];
 };
 
