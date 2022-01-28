@@ -35,7 +35,6 @@ type ReduxDispatches = {
 };
 
 export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({
-    chimeSocket,
     userName,
     title,
     messages,
@@ -47,13 +46,7 @@ export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({
 
     const { isOpen } = React.useContext(ChatOpenContext);
 
-    const { socket, setSocket } = useSocket();
-
-    React.useEffect(() => {
-        chimeSocket.joinRoomSocket().then((createdSocket) => {
-            setSocket(createdSocket);
-        });
-    }, [chimeSocket, setSocket]);
+    const { socket } = useSocket();
 
     React.useEffect(() => {
         if (!socket) {
