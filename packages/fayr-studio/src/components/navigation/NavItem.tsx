@@ -5,14 +5,13 @@ import { Router, withRouter } from "next/router";
 import React from "react";
 
 type NavItemProps = {
-    router: Router;
     name: string;
     href: string;
     icon?: React.FunctionComponent<React.ComponentProps<"svg">>;
     children?: NavItemProps[];
 };
 
-const NavItem = ({ router, href, icon, name, children }: NavItemProps) => {
+const NavItem = ({ router, href, icon, name, children }: NavItemProps & { router: Router }) => {
     const normalizedHref = `/${href[0] === "/" ? href.substring(1) : href}`;
     const isCurrentPath = router.pathname === normalizedHref || router.asPath === normalizedHref;
 
