@@ -3,7 +3,6 @@ import AudioVideoObserver from "amazon-chime-sdk-js/build/audiovideoobserver/Aud
 import * as config from "config";
 import React from "react";
 import { Redirect, RouteComponentProps, withRouter } from "react-router-dom";
-import { isFalsyOrWhitespace } from "util/stringUtils";
 
 import useLoadingGuard from "hooks/useLoadingGuard";
 
@@ -12,7 +11,7 @@ import Meeting from "components/chimeWeb/Meeting/Meeting";
 import { MeetingMetaData, MeetingStatus } from "components/chimeWeb/Meeting/meetingTypes";
 import { JoinInfo } from "components/chimeWeb/types";
 
-import { LoadingAnimation } from "@fayr/shared-components";
+import { LoadingAnimation, isFalsyOrWhitespace } from "@fayr/shared-components";
 
 import useMeetingMetaData from "../../../hooks/useMeetingMetaData";
 import MeetingStartScreen from "./MeetingStartScreen";
@@ -38,10 +37,14 @@ export const MeetingContainer = ({
             return {} as MeetingMetaData;
         }
 
-        return {
-            ...(JSON.parse(rawData) as MeetingMetaData),
-            muted: true,
-        };
+        try {
+            return {
+                ...(JSON.parse(rawData) as MeetingMetaData),
+                muted: true,
+            };
+        } catch (error) {
+            return {} as MeetingMetaData;
+        }
     });
 
     // Loading, Success or Failed
@@ -110,7 +113,7 @@ export const MeetingContainer = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [chime],
     );
-    let { isLoading } = useLoadingGuard(true, initializeSession);
+    const { isLoading } = useLoadingGuard(true, initializeSession);
 
     React.useEffect(() => {
         if (meetingStatus === "Success" || meetingStatus === "Loading") {
@@ -171,15 +174,6 @@ export const MeetingContainer = ({
     ) : meetingMetaData && roomTitle ? (
         showStartScreen ? (
             <MeetingStartScreen
-                updateMeetingInputOutputDevices={(partialInputOutputDeviceState) => {
-                    setMeetingMetaData({
-                        ...meetingMetaData,
-                        meetingInputOutputDevices: {
-                            ...meetingMetaData.meetingInputOutputDevices,
-                            ...partialInputOutputDeviceState,
-                        },
-                    });
-                }}
                 audioVideo={chime.audioVideo}
                 attendeeId={chime.attendeeId}
                 onContinue={() => {

@@ -20,7 +20,6 @@ export const ReactionButton = () => {
 
     return (
         <div
-            key="ReactionButton"
             className={`${styles.Button} ${styles.ReactionButton} btn rounded`}
             onClick={withoutPropagation(reactionButtonOnClick)}
         >

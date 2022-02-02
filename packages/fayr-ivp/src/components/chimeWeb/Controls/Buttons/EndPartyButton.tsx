@@ -23,7 +23,7 @@ export const EndPartyButton = ({ chime, ssName, role, baseHref, title }: Props) 
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const endButtonOnClick = async () => {
+    const onEndButtonClick = async () => {
         await chime.leaveRoom(role === "host");
         dispatch(GlobalResetAction());
         sessionStorage.removeItem(ssName);
@@ -33,9 +33,8 @@ export const EndPartyButton = ({ chime, ssName, role, baseHref, title }: Props) 
 
     return (
         <div
-            key="EndButton"
             className={classNames(styles.Button, "btn rounded btn--destruct btn--leave")}
-            onClick={withoutPropagation(endButtonOnClick)}
+            onClick={withoutPropagation(onEndButtonClick)}
             title="Verlasse die Watch Party"
         >
             <svg

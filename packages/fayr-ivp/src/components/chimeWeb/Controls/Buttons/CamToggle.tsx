@@ -1,11 +1,11 @@
 // Styles
 import classNames from "classnames";
 
-import { VideoStatus } from "components/chimeWeb/Controls/Controls";
-
 import { LoadingAnimation } from "@fayr/shared-components";
 
 import styles from "./ToggleButton.module.scss";
+
+import { VideoStatus } from "./CamToggleButton";
 
 type Props = {
     toggleState: VideoStatus;

@@ -13,7 +13,6 @@ export const VotingButton = () => {
 
     return (
         <div
-            key="VotingButton"
             className={classNames(
                 styles.Button,
                 styles.VotingButton,

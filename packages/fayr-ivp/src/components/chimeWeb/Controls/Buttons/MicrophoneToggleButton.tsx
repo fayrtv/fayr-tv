@@ -73,14 +73,7 @@ export const MicrophoneToggleButton = ({ chime }: Props) => {
         }
     }, [chime.audioVideo, setMeetingMetaData]);
 
-    return (
-        <MicrophoneToggle
-            enabled={!muted}
-            forceMuted={forceMuted}
-            onClick={toggleMute}
-            key="mictoggle"
-        />
-    );
+    return <MicrophoneToggle enabled={!muted} forceMuted={forceMuted} onClick={toggleMute} />;
 };
 
 export default MicrophoneToggleButton;

@@ -28,7 +28,6 @@ export const ChatButton = () => {
 
     return (
         <div
-            key="ChatButton"
             className={classNames(
                 styles.Button,
                 chat_controls,

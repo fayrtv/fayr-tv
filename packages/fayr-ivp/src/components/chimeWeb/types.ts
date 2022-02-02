@@ -19,7 +19,10 @@ export type EmojiReactionTransferObject = {
     };
 };
 
-export type ForceAttendeeDeviceChangeDto = {
+type ForceAttendeeDeviceChangeDto = {
     attendeeId: string;
-    newState: boolean;
+};
+
+export type ForceMicChangeDto = ForceAttendeeDeviceChangeDto & {
+    isForceMuted: boolean;
 };

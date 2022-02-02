@@ -12,7 +12,6 @@ type Props = {
 export const SettingsButton = ({ openSettings }: Props) => {
     return (
         <div
-            key="SettingsButton"
             className={classNames(styles.Button, "btn rounded")}
             title="Nimm Änderungen an deinen Einstellungen vor"
             onClick={withoutPropagation(openSettings)}

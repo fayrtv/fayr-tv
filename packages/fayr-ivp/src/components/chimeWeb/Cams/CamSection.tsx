@@ -20,7 +20,7 @@ import styles from "./CamSection.module.scss";
 import { useAttendeeInfo } from "../../../hooks/useAttendeeInfo";
 import useMeetingMetaData from "../../../hooks/useMeetingMetaData";
 import { IChimeSdkWrapper } from "../../chime/ChimeSdkWrapper";
-import { JoinInfo, ForceAttendeeDeviceChangeDto } from "../types";
+import { JoinInfo, ForceMicChangeDto } from "../types";
 // Components
 import LocalVideo from "./LocalVideo/LocalVideo";
 import ParticipantVideo from "./Participants/ParticipantVideo";
@@ -80,7 +80,7 @@ export const CamSection = ({ chime, joinInfo, roomTitle }: Props) => {
         [putAttendee],
     );
 
-    const onVideoTileWasRemoved = React.useCallback(
+    const onVideoTileRemoved = React.useCallback(
         (tileId: number) => {
             removeAttendeeAtTile(tileId);
 
@@ -101,7 +101,8 @@ export const CamSection = ({ chime, joinInfo, roomTitle }: Props) => {
 
             const remainingIds = new Set<string>();
             for (let attendeeId in roster) {
-                // Exclude self & empty names
+                // Exclude self (We are not part of the participants, but have our local video)
+                // and empty names (These are likely not valid participants, since entering a session requires setting a non-empty name)
                 if (attendeeId === joinInfo.Attendee.AttendeeId) {
                     continue;
                 }
@@ -113,7 +114,7 @@ export const CamSection = ({ chime, joinInfo, roomTitle }: Props) => {
                 }
 
                 if (
-                    config.PinHost &&
+                    config.HostPinningFeatureEnabled &&
                     !pinnedHostIdentifier &&
                     roster[attendeeId].role === Role.Host
                 ) {
@@ -149,7 +150,7 @@ export const CamSection = ({ chime, joinInfo, roomTitle }: Props) => {
 
         const observer = {
             videoTileDidUpdate: videoTileDidUpdateCallback,
-            videoTileWasRemoved: onVideoTileWasRemoved,
+            videoTileWasRemoved: onVideoTileRemoved,
         };
 
         if (audioVideo) {
@@ -177,18 +178,18 @@ export const CamSection = ({ chime, joinInfo, roomTitle }: Props) => {
 
     const isSelfHost = role === "host";
 
-    const onMicClick = React.useCallback(
+    const onMicClicked = React.useCallback(
         (attendeeId: string) => {
-            // We need to be the host to be allowed to enable / disable mics, and it shouldn't be on ourself
+            // We need to be the host to be allowed to enable / disable mics, and we shouldn't be able to force mute the host while being the host ourselves
             if (!isSelfHost || attendeeId === joinInfo.Attendee.AttendeeId) {
                 return;
             }
 
-            socket?.send<ForceAttendeeDeviceChangeDto>({
+            socket?.send<ForceMicChangeDto>({
                 messageType: SocketEventType.ForceAttendeeMicChange,
                 payload: {
                     attendeeId,
-                    newState: !getAttendee(attendeeId)?.forceMuted ?? true,
+                    isForceMuted: !getAttendee(attendeeId)?.forceMuted ?? true,
                 },
             });
         },
@@ -200,15 +201,15 @@ export const CamSection = ({ chime, joinInfo, roomTitle }: Props) => {
             return;
         }
 
-        return socket.addListener<ForceAttendeeDeviceChangeDto>(
+        return socket.addListener<ForceMicChangeDto>(
             SocketEventType.ForceAttendeeMicChange,
-            ({ attendeeId, newState }) => {
+            ({ attendeeId, isForceMuted: forceMuted }) => {
                 if (attendeeId === joinInfo.Attendee.AttendeeId) {
                     setMetaData({
-                        forceMuted: newState,
+                        forceMuted,
                     });
 
-                    if (newState) {
+                    if (forceMuted) {
                         chime.audioVideo.realtimeMuteLocalAudio();
                     } else if (!muted) {
                         // Only unmute if we didn't mute ourself locally
@@ -220,7 +221,7 @@ export const CamSection = ({ chime, joinInfo, roomTitle }: Props) => {
 
                 updateAttendee({
                     attendeeId,
-                    forceMuted: newState,
+                    forceMuted,
                 });
 
                 return Promise.resolve();
@@ -252,7 +253,7 @@ export const CamSection = ({ chime, joinInfo, roomTitle }: Props) => {
                 attendee.attendeeId,
                 <ParticipantVideo
                     isSelfHost={isSelfHost}
-                    onMicClick={onMicClick}
+                    onMicClick={onMicClicked}
                     chime={chime}
                     tileIndex={attendee.tileId}
                     key={attendee.attendeeId}
@@ -268,7 +269,7 @@ export const CamSection = ({ chime, joinInfo, roomTitle }: Props) => {
         });
 
         return participantVideoMap;
-    }, [attendeeMap, setPinnedHostIdentifier, chime, isSelfHost, onMicClick]);
+    }, [attendeeMap, setPinnedHostIdentifier, chime, isSelfHost, onMicClicked]);
 
     const highlightVideo = (
         <div className={styles.HighlightVideoWrapper}>

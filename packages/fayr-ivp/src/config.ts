@@ -38,5 +38,5 @@ export const DEBUG = false;
 export const RANDOM = makeid(8);
 
 export const HighlightVideoAlignment: "Top" | "Bottom" = "Bottom";
-export const PinHost: boolean = false;
+export const HostPinningFeatureEnabled: boolean = false;
 export const ShowStartScreen: boolean = true;

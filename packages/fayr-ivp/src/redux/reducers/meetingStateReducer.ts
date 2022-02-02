@@ -15,7 +15,7 @@ export const updateMeetingState = (meetingMetaData: MeetingMetaData): MeetingSta
     payload: meetingMetaData,
 });
 
-const initialState: MeetingMetaData = {} as MeetingMetaData;
+const initialState = {} as MeetingMetaData;
 
 export const reducer = (state = initialState, action: MeetingStateAction): MeetingMetaData => {
     switch (action.type) {

@@ -13,7 +13,7 @@ type Props = {
 export const SharePartyButton = ({ title }: Props) => {
     const [showPopUp, setShowPopUp] = React.useState(false);
 
-    const showPopUpTimed = () => {
+    const showTemporaryPopup = React.useCallback(() => {
         // show popup message
         setShowPopUp(true);
 
@@ -21,41 +21,48 @@ export const SharePartyButton = ({ title }: Props) => {
         setTimeout(() => {
             setShowPopUp(false);
         }, 2000);
-    };
+    }, []);
 
-    const copyTextToClipboard = async (text: string) => {
-        if (navigator.clipboard) {
-            try {
-                await navigator.clipboard.writeText(text);
-                showPopUpTimed();
-                if (config.DEBUG) console.log("Room link copied to clipboard");
-            } catch (err) {
-                if (config.DEBUG) console.log("Could not copy text: ", err);
+    const copyTextToClipboard = React.useCallback(
+        async (text: string) => {
+            if (navigator.clipboard) {
+                try {
+                    await navigator.clipboard.writeText(text);
+                    showTemporaryPopup();
+                    if (config.DEBUG) {
+                        console.log("Room link copied to clipboard");
+                    }
+                } catch (err) {
+                    if (config.DEBUG) {
+                        console.log("Could not copy text: ", err);
+                    }
+                }
             }
-        }
-    };
+        },
+        [showTemporaryPopup],
+    );
 
-    const handleRoomClick = () => {
-        const link = `${window.location.origin}${window.location.pathname.replace(
-            "meeting",
-            "index.html",
-        )}?action=join&room=${title}`;
-        if (config.DEBUG) {
-            console.log(link);
-        }
-        copyTextToClipboard(encodeURI(link));
-
-        return Promise.resolve();
-    };
+    const handleRoomClick = React.useCallback(
+        withoutPropagation(() => {
+            const link = `${window.location.origin}${window.location.pathname.replace(
+                "meeting",
+                "index.html",
+            )}?action=join&room=${title}`;
+            if (config.DEBUG) {
+                console.log(link);
+            }
+            copyTextToClipboard(encodeURI(link));
+        }),
+        [],
+    );
 
     const popup = showPopUp ? "show" : "";
 
     return (
         <div
-            key="SharePartyButton"
             className={`${styles.Button} btn rounded popup`}
-            onClick={withoutPropagation(handleRoomClick)}
-            title="Leite den abgespeicherten Link an deine Freunde weiter"
+            onClick={handleRoomClick}
+            title="Teile den Link mit deinen Freunden"
         >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
                 <path
@@ -64,7 +71,7 @@ export const SharePartyButton = ({ title }: Props) => {
                 />
             </svg>
             <span className={`popuptext ${popup}`} id="myPopup">
-                Link gespeichert
+                Link in der Zwischenablage gespeichert
             </span>
         </div>
     );

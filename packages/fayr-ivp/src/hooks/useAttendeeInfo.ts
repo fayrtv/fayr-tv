@@ -1,3 +1,4 @@
+import * as config from "config";
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -56,6 +57,11 @@ export function useAttendeeInfo(): AttendeeInfoData {
             const attendee = attendeeMap.find((x) => x.tileId === tileId);
 
             if (!attendee) {
+                if (config.DEBUG) {
+                    console.log(
+                        `Tried to remove attendee with tile id ${tileId}, but could not find one.`,
+                    );
+                }
                 return;
             }
 

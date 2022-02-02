@@ -13,7 +13,7 @@ import {
 
 import CamToggle from "./CamToggle";
 
-enum VideoStatus {
+export enum VideoStatus {
     Loading,
     Enabled,
     Disabled,
@@ -101,13 +101,7 @@ export const CamToggleButton = ({ chime }: Props) => {
 
     useGlobalKeyHandler(["c", "C", "keyC"], toggleVideo);
 
-    return (
-        <CamToggle
-            toggleState={videoStatus === VideoStatus.Enabled}
-            onClick={toggleVideo}
-            key="camtoggle"
-        />
-    );
+    return <CamToggle toggleState={videoStatus} onClick={toggleVideo} />;
 };
 
 export default CamToggleButton;
