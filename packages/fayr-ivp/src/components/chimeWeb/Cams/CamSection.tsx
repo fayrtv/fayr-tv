@@ -26,8 +26,6 @@ import LocalVideo from "./LocalVideo/LocalVideo";
 import ParticipantVideo from "./Participants/ParticipantVideo";
 import ParticipantVideoGroup from "./Participants/ParticipantVideoGroup";
 
-const MAX_REMOTE_VIDEOS = config.CHIME_ROOM_MAX_ATTENDEE;
-
 type Props = {
     chime: IChimeSdkWrapper;
     joinInfo: JoinInfo;

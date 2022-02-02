@@ -42,26 +42,23 @@ export const SharePartyButton = ({ title }: Props) => {
         [showTemporaryPopup],
     );
 
-    const handleRoomClick = React.useCallback(
-        withoutPropagation(() => {
-            const link = `${window.location.origin}${window.location.pathname.replace(
-                "meeting",
-                "index.html",
-            )}?action=join&room=${title}`;
-            if (config.DEBUG) {
-                console.log(link);
-            }
-            copyTextToClipboard(encodeURI(link));
-        }),
-        [],
-    );
+    const handleRoomClick = React.useCallback(() => {
+        const link = `${window.location.origin}${window.location.pathname.replace(
+            "meeting",
+            "index.html",
+        )}?action=join&room=${title}`;
+        if (config.DEBUG) {
+            console.log(link);
+        }
+        copyTextToClipboard(encodeURI(link));
+    }, []);
 
     const popup = showPopUp ? "show" : "";
 
     return (
         <div
             className={`${styles.Button} btn rounded popup`}
-            onClick={handleRoomClick}
+            onClick={withoutPropagation(handleRoomClick)}
             title="Teile den Link mit deinen Freunden"
         >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
