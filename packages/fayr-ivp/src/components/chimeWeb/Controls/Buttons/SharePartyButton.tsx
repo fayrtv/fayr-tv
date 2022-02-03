@@ -51,7 +51,7 @@ export const SharePartyButton = ({ title }: Props) => {
             console.log(link);
         }
         copyTextToClipboard(encodeURI(link));
-    }, []);
+    }, [copyTextToClipboard, title]);
 
     const popup = showPopUp ? "show" : "";
 
