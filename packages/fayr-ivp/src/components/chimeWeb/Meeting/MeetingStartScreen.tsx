@@ -123,6 +123,7 @@ export const MeetingStartScreen = ({ audioVideo, attendeeId, chime, onContinue }
                         ...meetingInputOutputDevices,
                         cam: deviceInfos[0],
                     },
+                    videoEnabled: true,
                 });
                 setCamDevices(deviceInfos);
             }
@@ -136,6 +137,7 @@ export const MeetingStartScreen = ({ audioVideo, attendeeId, chime, onContinue }
                     ...meetingInputOutputDevices,
                     cam: undefined,
                 },
+                videoEnabled: false,
             });
             setCurrentCam("");
         }
@@ -205,7 +207,7 @@ export const MeetingStartScreen = ({ audioVideo, attendeeId, chime, onContinue }
                         />
                     </Flex>
                     <Flex direction="Row">
-                        <CamToggle toggleState={videoStatus} onClick={onCamToggleClick} />
+                        <CamToggle videoStatus={videoStatus} onClick={onCamToggleClick} />
                         <CameraSelection
                             selectedDevice={currentCam}
                             setSelectedDevice={setCurrentCam}

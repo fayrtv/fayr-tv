@@ -1,8 +1,11 @@
 {
     "NoQualitySettingsAvailable": "No quality selection available",
+    "CamToggle_Enable": "Enable camera",
+    "CamToggle_ForceVideoDisabled": "Your camera was disabled by the host of the watch party",
     "MicToggle_Enable": "Enable microphone",
     "MicToggle_ForceMuted": "Your microphone was disabled by the host of the watch party",
-    "ParticipantVideo_ForceMuted": "This attendee was forcibly muted by you",
+    "ParticipantVideo_ForceMuted": "This attendee's microphone was forcibly disabled by you",
+    "ParticipantVideo_ForceCamDisabled": "This attendee's camera was forcibly disabled by you",
     "StartScreenDeviceSelection": "Device selection",
     "VotingSetTip": "SUBMIT TIP"
 }

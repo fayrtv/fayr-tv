@@ -11,7 +11,12 @@ import { Nullable } from "types/global";
 import useSocket from "hooks/useSocket";
 
 // Types
-import { RosterMap, Role } from "components/chime/ChimeSdkWrapper";
+import {
+    RosterMap,
+    Role,
+    IChimeAudioVideoProvider,
+    IChimeDevicePicker,
+} from "components/chime/ChimeSdkWrapper";
 import { SocketEventType } from "components/chime/types";
 
 // Styles
@@ -20,19 +25,18 @@ import styles from "./CamSection.module.scss";
 import { useAttendeeInfo } from "../../../hooks/useAttendeeInfo";
 import useMeetingMetaData from "../../../hooks/useMeetingMetaData";
 import { IChimeSdkWrapper } from "../../chime/ChimeSdkWrapper";
-import { JoinInfo, ForceMicChangeDto } from "../types";
+import { JoinInfo, ForceMicChangeDto, ForceCamChangeDto } from "../types";
 // Components
 import LocalVideo from "./LocalVideo/LocalVideo";
 import ParticipantVideo from "./Participants/ParticipantVideo";
 import ParticipantVideoGroup from "./Participants/ParticipantVideoGroup";
 
 type Props = {
-    chime: IChimeSdkWrapper;
+    chime: IChimeSdkWrapper & IChimeAudioVideoProvider & IChimeDevicePicker;
     joinInfo: JoinInfo;
-    roomTitle: string;
 };
 
-export const CamSection = ({ chime, joinInfo, roomTitle }: Props) => {
+export const CamSection = ({ chime, joinInfo }: Props) => {
     const {
         attendeeMap,
         updateAttendee,
@@ -42,7 +46,7 @@ export const CamSection = ({ chime, joinInfo, roomTitle }: Props) => {
         removeAttendee,
     } = useAttendeeInfo();
 
-    const [{ role, muted }, setMetaData] = useMeetingMetaData();
+    const [{ role, muted, videoEnabled }, setMetaData] = useMeetingMetaData();
 
     const pinnedHostIdentifier = useSelector<ReduxStore, Nullable<string>>(
         (x) => x.pinnedHostReducer,
@@ -70,7 +74,7 @@ export const CamSection = ({ chime, joinInfo, roomTitle }: Props) => {
             }
 
             putAttendee({
-                videoEnabled: true,
+                videoEnabled: tileState.active,
                 attendeeId: tileState.boundAttendeeId,
                 tileId: tileState.tileId,
             });
@@ -199,7 +203,7 @@ export const CamSection = ({ chime, joinInfo, roomTitle }: Props) => {
             return;
         }
 
-        return socket.addListener<ForceMicChangeDto>(
+        const micChangeDispose = socket.addListener<ForceMicChangeDto>(
             SocketEventType.ForceAttendeeMicChange,
             ({ attendeeId, isForceMuted: forceMuted }) => {
                 if (attendeeId === joinInfo.Attendee.AttendeeId) {
@@ -209,7 +213,7 @@ export const CamSection = ({ chime, joinInfo, roomTitle }: Props) => {
 
                     if (forceMuted) {
                         chime.audioVideo.realtimeMuteLocalAudio();
-                    } else if (!muted) {
+                    } else {
                         // Only unmute if we didn't mute ourself locally
                         chime.audioVideo.realtimeUnmuteLocalAudio();
                     }
@@ -225,13 +229,47 @@ export const CamSection = ({ chime, joinInfo, roomTitle }: Props) => {
                 return Promise.resolve();
             },
         );
+
+        const camChangeDispose = socket.addListener<ForceCamChangeDto>(
+            SocketEventType.ForceAttendeeVideoChange,
+            async ({ attendeeId, forceVideoDisabled }) => {
+                if (attendeeId === joinInfo.Attendee.AttendeeId) {
+                    setMetaData({
+                        forceVideoDisabled,
+                    });
+
+                    if (forceVideoDisabled) {
+                        chime.audioVideo.stopLocalVideoTile();
+                    } else {
+                        await chime.chooseVideoInputDevice(chime.currentVideoInputDevice);
+                        // Only unmute if we didn't mute ourself locally
+                        chime.audioVideo.startLocalVideoTile();
+                    }
+
+                    return Promise.resolve();
+                }
+
+                updateAttendee({
+                    attendeeId,
+                    forceVideoDisabled,
+                });
+
+                return Promise.resolve();
+            },
+        );
+
+        return () => {
+            micChangeDispose();
+            camChangeDispose();
+        };
     }, [
         socket,
         updateAttendee,
         setMetaData,
         joinInfo.Attendee.AttendeeId,
-        chime.audioVideo,
+        chime,
         muted,
+        videoEnabled,
     ]);
 
     const localVideo = (
@@ -256,6 +294,7 @@ export const CamSection = ({ chime, joinInfo, roomTitle }: Props) => {
                     tileIndex={attendee.tileId}
                     key={attendee.attendeeId}
                     forceMuted={attendee.forceMuted}
+                    forceVideoDisabled={attendee.forceVideoDisabled}
                     attendeeId={attendee.attendeeId}
                     videoEnabled={attendee.videoEnabled}
                     name={attendee.name}

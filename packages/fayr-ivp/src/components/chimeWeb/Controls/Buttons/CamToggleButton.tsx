@@ -52,6 +52,7 @@ export const CamToggleButton = ({ chime }: Props) => {
                             ...meetingMetaData.meetingInputOutputDevices,
                             cam: chime.currentVideoInputDevice!,
                         },
+                        videoEnabled: true,
                     });
                 } catch (err) {
                     const videoInputDevices = await chime.audioVideo.listVideoInputDevices();
@@ -65,6 +66,7 @@ export const CamToggleButton = ({ chime }: Props) => {
                                 value: videoInputDevices[0].deviceId,
                             },
                         },
+                        videoEnabled: true,
                     });
                 }
 
@@ -82,6 +84,7 @@ export const CamToggleButton = ({ chime }: Props) => {
                         ...meetingMetaData.meetingInputOutputDevices,
                         cam: undefined,
                     },
+                    videoEnabled: false,
                 });
             }
         } else if (videoStatus === VideoStatus.Enabled) {
@@ -101,7 +104,13 @@ export const CamToggleButton = ({ chime }: Props) => {
 
     useGlobalKeyHandler(["c", "C", "keyC"], toggleVideo);
 
-    return <CamToggle toggleState={videoStatus} onClick={toggleVideo} />;
+    return (
+        <CamToggle
+            videoStatus={videoStatus}
+            forceVideoDisabled={meetingMetaData.forceVideoDisabled}
+            onClick={toggleVideo}
+        />
+    );
 };
 
 export default CamToggleButton;

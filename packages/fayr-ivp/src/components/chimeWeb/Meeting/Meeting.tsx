@@ -82,7 +82,7 @@ const Meeting = ({
         }
     };
 
-    const camSection = <CamSection chime={chime} joinInfo={joinInfo} roomTitle={roomTitle} />;
+    const camSection = <CamSection chime={chime} joinInfo={joinInfo} />;
 
     return (
         <>
@@ -101,7 +101,6 @@ const Meeting = ({
                             chime={chime}
                             baseHref={config.BASE_HREF}
                             ssName={formatMeetingSsKey(roomTitle)}
-                            forceMuted={forceMuted}
                             title={title}
                             openSettings={() => setShowSettings(true)}
                             role={role}

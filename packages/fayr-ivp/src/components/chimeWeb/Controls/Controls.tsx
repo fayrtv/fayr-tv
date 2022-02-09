@@ -28,7 +28,6 @@ type Props = {
     chime: IChimeSdkWrapper & IChimeAudioVideoProvider & IChimeDevicePicker & IDeviceProvider;
     title: string;
     openSettings(): void;
-    forceMuted: boolean;
     role: RoomMemberRole;
     ssName: string;
     baseHref: string;

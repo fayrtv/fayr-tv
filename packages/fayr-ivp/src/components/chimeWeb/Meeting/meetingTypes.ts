@@ -21,4 +21,6 @@ export type MeetingMetaData = {
 
     muted: boolean;
     forceMuted: boolean;
+    videoEnabled: boolean;
+    forceVideoDisabled: boolean;
 };
