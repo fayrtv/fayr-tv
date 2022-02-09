@@ -12,7 +12,6 @@ import {
     IChimeDevicePicker,
     IDeviceProvider,
 } from "components/chime/ChimeSdkWrapper";
-import { VideoStatus } from "components/chimeWeb/Controls/Controls";
 
 // Components
 import { Cell, Flex, Grid, MaterialIcon } from "@fayr/shared-components";
@@ -20,27 +19,23 @@ import { Cell, Flex, Grid, MaterialIcon } from "@fayr/shared-components";
 // Styles
 import styles from "./MeetingStartScreen.module.scss";
 
+import useMeetingMetaData from "../../../hooks/useMeetingMetaData";
 import CamToggle from "../Controls/Buttons/CamToggle";
+import { VideoStatus } from "../Controls/Buttons/CamToggleButton";
 import MicrophoneToggle from "../Controls/Buttons/MicrophoneToggle";
 import { CameraSelection, MicrophoneSelection } from "../Controls/Selection/DeviceSelection";
 import AudioSensitivityBar from "./AudioSensitivityBar";
-import { MeetingInputOutputDevices } from "./meetingTypes";
 
 type Props = {
     audioVideo: AudioVideoFacade;
     attendeeId: string | null | undefined;
     chime: IChimeDevicePicker & IChimeAudioVideoProvider & IDeviceProvider;
-    updateMeetingInputOutputDevices(data: Partial<MeetingInputOutputDevices>): void;
     onContinue(): void;
 };
 
-export const MeetingStartScreen = ({
-    audioVideo,
-    attendeeId,
-    chime,
-    onContinue,
-    updateMeetingInputOutputDevices,
-}: Props) => {
+export const MeetingStartScreen = ({ audioVideo, attendeeId, chime, onContinue }: Props) => {
+    const [{ meetingInputOutputDevices }, setMetaData] = useMeetingMetaData();
+
     const translations = useTranslations();
     const videoRef = React.useRef<HTMLVideoElement>(null);
 
@@ -80,14 +75,26 @@ export const MeetingStartScreen = ({
                 audioVideo.realtimeUnmuteLocalAudio();
 
                 setCurrentMic(deviceInfos[0].label);
-                updateMeetingInputOutputDevices({ audioInput: deviceInfos[0] });
                 setAudioInputDevices(deviceInfos);
+                setMetaData({
+                    muted: false,
+                    meetingInputOutputDevices: {
+                        ...meetingInputOutputDevices,
+                        audioInput: deviceInfos[0],
+                    },
+                });
             }
         } else {
             await chime.chooseAudioInputDevice(null);
             audioVideo.realtimeMuteLocalAudio();
             setAudioInputDevices([]);
-            updateMeetingInputOutputDevices({ audioInput: undefined });
+            setMetaData({
+                muted: true,
+                meetingInputOutputDevices: {
+                    ...meetingInputOutputDevices,
+                    audioInput: undefined,
+                },
+            });
             setCurrentMic("");
         }
     };
@@ -111,7 +118,12 @@ export const MeetingStartScreen = ({
 
                 setVideoStatus(VideoStatus.Enabled);
                 setCurrentCam(deviceInfos[0].label);
-                updateMeetingInputOutputDevices({ cam: deviceInfos[0] });
+                setMetaData({
+                    meetingInputOutputDevices: {
+                        ...meetingInputOutputDevices,
+                        cam: deviceInfos[0],
+                    },
+                });
                 setCamDevices(deviceInfos);
             }
         } else {
@@ -119,7 +131,12 @@ export const MeetingStartScreen = ({
             await chime.chooseVideoInputDevice(null);
             audioVideo.stopLocalVideoTile();
             setCamDevices([]);
-            updateMeetingInputOutputDevices({ cam: undefined });
+            setMetaData({
+                meetingInputOutputDevices: {
+                    ...meetingInputOutputDevices,
+                    cam: undefined,
+                },
+            });
             setCurrentCam("");
         }
     };
@@ -179,7 +196,7 @@ export const MeetingStartScreen = ({
             <Cell className={styles.Selection} gridArea="Selection">
                 <Flex direction="Column">
                     <Flex direction="Row">
-                        <MicrophoneToggle toggleState={micEnabled} onClick={onMicToggleClick} />
+                        <MicrophoneToggle enabled={micEnabled} onClick={onMicToggleClick} />
                         <MicrophoneSelection
                             selectedDevice={currentMic}
                             setSelectedDevice={setCurrentMic}

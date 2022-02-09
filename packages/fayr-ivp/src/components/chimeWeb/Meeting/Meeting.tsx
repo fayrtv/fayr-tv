@@ -41,7 +41,7 @@ const Meeting = ({
     joinInfo,
     playbackURL,
     meetingStatus,
-    setMeetingStatus,
+    forceMuted,
     roomTitle,
 }: Props) => {
     const [showSettings, setShowSettings] = React.useState(false);
@@ -82,7 +82,7 @@ const Meeting = ({
         }
     };
 
-    const camSection = <CamSection chime={chime} joinInfo={joinInfo} />;
+    const camSection = <CamSection chime={chime} joinInfo={joinInfo} roomTitle={roomTitle} />;
 
     return (
         <>
@@ -101,6 +101,7 @@ const Meeting = ({
                             chime={chime}
                             baseHref={config.BASE_HREF}
                             ssName={formatMeetingSsKey(roomTitle)}
+                            forceMuted={forceMuted}
                             title={title}
                             openSettings={() => setShowSettings(true)}
                             role={role}

@@ -1,1 +1,1 @@
-export const formatMeetingSsKey = (roomTitle: string) => `chime[${roomTitle}]`;
+export const formatMeetingSsKey = (roomTitle: string) => `chime[${roomTitle.toLowerCase()}]`;

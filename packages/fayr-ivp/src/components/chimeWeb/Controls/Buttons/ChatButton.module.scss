@@ -1,0 +1,25 @@
+@use "../Controls.module.scss" as commonControls;
+
+.Button {
+    @include commonControls.CommonButton;
+
+    &.ChatContainer {
+        position: relative;
+
+        .UnreadTag {
+            position: absolute;
+            top: -5px;
+            left: calc(100% - 1rem - 5px);
+            margin: 0;
+            height: auto;
+            width: 24px;
+
+            color: black;
+
+            border-radius: 15px;
+
+            background: lightgrey;
+            z-index: 5;
+        }
+    }
+}

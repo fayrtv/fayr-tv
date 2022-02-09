@@ -18,3 +18,11 @@ export type EmojiReactionTransferObject = {
         relativeY: number;
     };
 };
+
+type ForceAttendeeDeviceChangeDto = {
+    attendeeId: string;
+};
+
+export type ForceMicChangeDto = ForceAttendeeDeviceChangeDto & {
+    isForceMuted: boolean;
+};

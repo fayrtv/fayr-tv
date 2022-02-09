@@ -1,5 +1,8 @@
 {
     "NoQualitySettingsAvailable": "No quality selection available",
+    "MicToggle_Enable": "Enable microphone",
+    "MicToggle_ForceMuted": "Your microphone was disabled by the host of the watch party",
+    "ParticipantVideo_ForceMuted": "This attendee was forcibly muted by you",
     "StartScreenDeviceSelection": "Device selection",
     "VotingSetTip": "SUBMIT TIP"
 }

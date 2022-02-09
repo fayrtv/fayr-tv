@@ -1,42 +1,61 @@
 // Framework
+import createSagaMiddleware from "@redux-saga/core";
 import * as redux from "redux";
-import { compose } from "redux";
+import { applyMiddleware, compose } from "redux";
 // Functionality
 import {
     reducer as chatMessageReducer,
     ChatMessageReducerState,
 } from "redux/reducers/chatMessageReducer";
-import {
-    reducer as participantVideoReducer,
-    ParticipantVideoReducerState,
-} from "redux/reducers/participantVideoReducer";
 import { reducer as votingReducer, VotingReducerState } from "redux/reducers/votingReducer";
 
+import { MeetingMetaData } from "../components/chimeWeb/Meeting/meetingTypes";
+import {
+    reducer as attendeeReducer,
+    ReducerState as AttendeeReducerState,
+} from "./reducers/attendeeReducer";
+import {
+    meetingStateReducerSaga,
+    reducer as meetingStateReducer,
+} from "./reducers/meetingStateReducer";
 import { reducer as pinnedHostReducer, PinnedHostReducerState } from "./reducers/pinnedHostReducer";
 
+export const GLOBAL_RESET = "RESET";
+
 export type Reducers = {
+    attendeeReducer: AttendeeReducerState;
     chatMessageReducer: ChatMessageReducerState;
-    participantVideoReducer: ParticipantVideoReducerState;
+    meetingStateReducer: MeetingMetaData;
     pinnedHostReducer: PinnedHostReducerState;
     votingReducer: VotingReducerState;
 };
 
-export type ReduxStore = redux.Store & Reducers;
+export type ReduxStore = redux.Store & {
+    dispatch: unknown;
+} & Reducers;
 
 export const GlobalResetAction = () => ({
-    type: "RESET",
+    type: GLOBAL_RESET,
 });
 
-const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const sagaMiddleWare = createSagaMiddleware();
 
-export const store: ReduxStore = redux.createStore(
+export const store = redux.createStore(
     redux.combineReducers<Reducers>({
+        attendeeReducer,
         chatMessageReducer,
-        participantVideoReducer,
+        meetingStateReducer,
         pinnedHostReducer,
         votingReducer,
     }),
-    composeEnhancers(),
+    compose(
+        applyMiddleware(sagaMiddleWare),
+        (window as any).__REDUX_DEVTOOLS_EXTENSION__
+            ? (window as any).__REDUX_DEVTOOLS_EXTENSION__()
+            : (x: any) => x,
+    ),
 );
+
+sagaMiddleWare.run(meetingStateReducerSaga);
 
 export default store;
