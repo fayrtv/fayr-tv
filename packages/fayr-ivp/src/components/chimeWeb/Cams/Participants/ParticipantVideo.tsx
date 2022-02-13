@@ -80,7 +80,7 @@ const ParticipantVideo = ({
             },
             3000,
         );
-    }, [sendMicChange, attendeeId, getAttendee, isSelfHost]);
+    }, [sendMicChange, attendeeId, getAttendee]);
 
     const onVideoClick = React.useCallback(() => {
         sendVideoChange<ForceCamChangeDto>(
@@ -93,7 +93,7 @@ const ParticipantVideo = ({
             },
             3000,
         );
-    }, [sendVideoChange, attendeeId, getAttendee, isSelfHost]);
+    }, [sendVideoChange, attendeeId, getAttendee]);
 
     React.useEffect(() => {
         if (!chime.audioVideo) {
