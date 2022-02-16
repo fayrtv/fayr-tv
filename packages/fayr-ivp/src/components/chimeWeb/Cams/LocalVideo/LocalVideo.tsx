@@ -1,6 +1,8 @@
 import React from "react";
 import { Nullable } from "types/global";
 
+import useMeetingMetaData from "hooks/useMeetingMetaData";
+
 import { JoinInfo } from "components/chimeWeb/types";
 
 import { Flex, MaterialIcon } from "@fayr/shared-components";
@@ -17,29 +19,12 @@ type Props = {
 const LocalVideo = ({ chime, joinInfo, pin }: Props) => {
     const videoElement = React.useRef<HTMLVideoElement>(null);
 
+    const [{ muted }] = useMeetingMetaData();
+
     const [enabled, setEnabled] = React.useState(false);
-    const [muted, setMuted] = React.useState(false);
     const [showMeta, setShowMeta] = React.useState(true);
-
-    const rosterCallback = React.useCallback(
-        (newRoster: any) => {
-            let attendeeId;
-            for (attendeeId in newRoster) {
-                // Exclude others
-                if (attendeeId !== joinInfo.Attendee.AttendeeId) {
-                    continue;
-                }
-
-                setMuted(newRoster[attendeeId].muted);
-            }
-        },
-        [joinInfo.Attendee.AttendeeId],
-    );
-
     React.useEffect(() => {
         const hideMetaInfoTimeout = setTimeout(() => setShowMeta(false), 2500);
-
-        chime.subscribeToRosterUpdate(rosterCallback);
 
         if (chime.audioVideo) {
             if (!chime.audioVideo.videoTileController.currentLocalTile) {
@@ -69,10 +54,9 @@ const LocalVideo = ({ chime, joinInfo, pin }: Props) => {
         }
 
         return () => {
-            chime.unsubscribeFromRosterUpdate(rosterCallback);
             clearTimeout(hideMetaInfoTimeout);
         };
-    }, [chime, rosterCallback]);
+    }, [chime]);
 
     const handleMouseEnter = React.useCallback(() => setShowMeta(true), []);
 

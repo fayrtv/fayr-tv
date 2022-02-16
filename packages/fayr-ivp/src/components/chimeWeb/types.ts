@@ -26,3 +26,7 @@ type ForceAttendeeDeviceChangeDto = {
 export type ForceMicChangeDto = ForceAttendeeDeviceChangeDto & {
     isForceMuted: boolean;
 };
+
+export type ForceCamChangeDto = ForceAttendeeDeviceChangeDto & {
+    forceVideoDisabled: boolean;
+};

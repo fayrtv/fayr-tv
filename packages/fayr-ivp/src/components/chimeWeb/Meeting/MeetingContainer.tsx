@@ -41,6 +41,7 @@ export const MeetingContainer = ({
             return {
                 ...(JSON.parse(rawData) as MeetingMetaData),
                 muted: true,
+                videoEnabled: false,
             };
         } catch (error) {
             return {} as MeetingMetaData;
@@ -73,21 +74,28 @@ export const MeetingContainer = ({
                         const { audioInput, audioOutput, cam } =
                             meetingMetaData.meetingInputOutputDevices;
 
-                        if (audioInput) {
-                            promises.push(chime.chooseAudioInputDevice(audioInput));
+                        if (audioInput && !meetingMetaData.muted && !meetingMetaData.forceMuted) {
+                            promises.push(
+                                (async () => {
+                                    await chime.chooseAudioInputDevice(audioInput);
+                                    chime.audioVideo.start();
+                                })(),
+                            );
                         }
 
                         if (audioOutput) {
                             promises.push(chime.chooseAudioOutputDevice(audioOutput));
                         }
 
-                        if (cam) {
+                        if (
+                            cam &&
+                            meetingMetaData.videoEnabled &&
+                            !meetingMetaData.forceVideoDisabled
+                        ) {
                             promises.push(
                                 (async () => {
                                     await chime.chooseVideoInputDevice(cam);
-                                    if (!meetingMetaData.muted && !meetingMetaData.forceMuted) {
-                                        chime.audioVideo.start();
-                                    }
+                                    chime.audioVideo.start();
                                     chime.audioVideo.startLocalVideoTile();
                                 })(),
                             );
