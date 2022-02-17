@@ -46,7 +46,7 @@
 
 /* Chat */
 .Chat {
-    /* background: var(--color--tertiary); */
+    /* background: var(--color-tertiary); */
     display: grid;
     grid-template-rows: var(--chat-row-template);
 
@@ -126,7 +126,7 @@
 }
 
 .room-link__label {
-    color: var(--color-text-base);
+    color: var(--color-white);
     font-size: var(--room-link-label-font-size);
     padding: 0 1rem 0 0;
 }

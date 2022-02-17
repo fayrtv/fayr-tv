@@ -16,7 +16,6 @@ import {
 import { A } from "components/A";
 import Header from "components/layout/Header";
 import SidebarNav from "components/navigation/SidebarNav";
-import { withRouter, Router } from "next/router";
 import React, { Fragment, PropsWithChildren, useState } from "react";
 
 function classNames(...classes: any[]) {

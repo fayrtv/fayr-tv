@@ -19,7 +19,7 @@
         background-color: rgba(0, 0, 0, 0.25);
 
         &:focus-within {
-            border: var(--btn-border-size) solid var(--color--primary);
+            border: var(--btn-border-size) solid var(--color-primary);
         }
 
         input {
@@ -38,7 +38,7 @@
 
             cursor: pointer;
 
-            background: #07090c;
+            background: var(--color-background);
             border-radius: 5px;
 
             .EmojiIcon {

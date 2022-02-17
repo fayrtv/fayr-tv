@@ -1,14 +1,16 @@
+import React from "react";
 import { Provider } from "react-redux";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import store from "redux/store";
 
 import End from "components/chimeWeb/End";
 import Welcome from "components/chimeWeb/Welcome";
 
+import { applyTheme, FAYR_THEME, RAINBOW_THEME } from "@fayr/shared-components";
+
 import styles from "./App.module.scss";
 
 import * as config from "../config";
-// import './App.css';
 import ChimeSdkWrapper from "./chime/ChimeSdkWrapper";
 import SocketContextProvider from "./chime/SocketContextProvider";
 import Join from "./chimeWeb/Intro/Join";
@@ -22,8 +24,30 @@ function App() {
     const chime = new ChimeSdkWrapper();
     const baseHref = config.BASE_HREF;
 
+    const selectableThemes = [FAYR_THEME, RAINBOW_THEME];
+    const [theme, setTheme] = React.useState(FAYR_THEME);
+
+    React.useEffect(() => {
+        applyTheme(theme, document.documentElement);
+    }, [theme]);
+
     return (
         <div className={styles.App}>
+            <div>
+                <select
+                    onChange={(option) => {
+                        const newTheme = selectableThemes.find((t) => t.id === option.target.value);
+                        if (newTheme) {
+                            setTheme(newTheme);
+                        }
+                    }}
+                    value={theme.id}
+                >
+                    {selectableThemes.map((t) => (
+                        <option value={t.id}>{t.id}</option>
+                    ))}
+                </select>
+            </div>
             <IvpTranslationContextProvider>
                 <Router>
                     <Switch>
