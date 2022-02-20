@@ -22,6 +22,8 @@ type PropertiesAsCSSVariables<Value> = Value extends Function
     : { [K in keyof Value as CSSVariableCase<K>]: Value[K] };
 //#endregion
 
+// Good ideas for color naming:
+// https://codepen.io/ufosky/pen/yzKRbz
 export interface Theme {
     id: string;
     colorBackground: string;
