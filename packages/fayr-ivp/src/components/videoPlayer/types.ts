@@ -1,5 +1,5 @@
-export type TimeStampHeartBeat = {
+export type HeartBeat = {
     attendeeId: string;
-    position: number;
+    measurement: number;
     measurementTimeUtcInSeconds: number;
 };
