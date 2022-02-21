@@ -16,4 +16,5 @@ export enum SocketEventType {
     AttendeeVote = 3,
     ForceAttendeeMicChange = 4,
     ForceAttendeeVideoChange = 5,
+    TimeStampHeartBeat = 6,
 }
