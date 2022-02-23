@@ -1,7 +1,7 @@
 @use "../../mediaQueries" as mq;
 
 @mixin CamSection {
-    height: 100vh;
+    height: 100%;
 
     .HighlightVideoWrapper {
         height: 25%;
@@ -22,10 +22,30 @@
 }
 
 .Meeting {
-    height: 100vh;
+    height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+
+    @media (max-width: mq.$mobile) {
+        /* Tall Screens and below */
+        flex-direction: column;
+    }
+
     .MainStage {
-        overflow-x: hidden;
+        height: 100%;
         position: relative;
+
+        display: flex;
+        flex-grow: 1;
+        flex-direction: column;
+
+        overflow: hidden;
+
+        audio {
+            display: none;
+        }
 
         @media (max-width: mq.$mobile) {
             flex-grow: 3;
@@ -36,7 +56,7 @@
     .CamContainer {
         @include CamSection();
 
-        height: 100vh;
+        height: 100%;
         width: 355px;
 
         > div {

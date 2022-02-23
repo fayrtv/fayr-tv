@@ -3,7 +3,7 @@
 
 .SettingsContainer {
     @media (max-width: mq.$largeScreens) {
-        height: 100vh;
+        height: 100%;
         overflow-y: auto;
         padding: 1.5rem;
 
@@ -24,12 +24,7 @@
     }
 
     @media (max-width: mq.$mobile) {
-        height: 100vh;
-        width: 100%;
-    }
-
-    @media (max-width: mq.$mobile) {
-        height: 100vh;
+        height: 100%;
         width: 100%;
     }
 

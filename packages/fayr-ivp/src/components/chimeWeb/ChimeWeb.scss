@@ -46,16 +46,8 @@ input:disabled {
     cursor: not-allowed;
 }
 
-.app-grid {
-    height: 100vh;
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    overflow: hidden;
-}
-
 .form-grid {
-    height: 100vh;
+    height: 100%;
     position: relative;
     display: grid;
     grid-template-columns: var(--form-col-template);
@@ -64,7 +56,7 @@ input:disabled {
 }
 
 .welcome {
-    height: 100vh;
+    height: 100%;
     overflow: auto;
 }
 
@@ -108,51 +100,11 @@ input:disabled {
     }
 }
 
-/* Main stage */
-.main-stage {
-    flex-grow: 1;
-    height: 100vh;
-    display: grid;
-    overflow-y: auto;
-    grid-template-rows: 1fr auto auto auto;
-}
-
 @media (min-width: 481px) and (max-width: mq.$largeScreens) {
     /* Large Screens and below */
-
-    .main-stage {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .app-grid {
-        height: 100vh;
-        position: relative;
-        display: flex;
-        flex-direction: row;
-        overflow: hidden;
-    }
-
     .form-grid {
         display: flex;
         flex-direction: row;
-    }
-}
-
-@media (max-width: mq.$mobile) {
-    /* Tall Screens and below */
-
-    .main-stage {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .app-grid {
-        height: 100vh;
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
     }
 }
 
@@ -162,11 +114,6 @@ input:disabled {
 
 .modal__el {
     z-index: 3;
-}
-
-/* Speaker */
-.main-stage audio {
-    display: none;
 }
 
 /* Cams */

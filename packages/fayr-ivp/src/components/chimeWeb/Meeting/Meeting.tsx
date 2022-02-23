@@ -87,8 +87,8 @@ const Meeting = ({
     return (
         <>
             {meetingStatus === "Success" && (
-                <div className={`app-grid ${styles.Meeting}`} onClick={handleSettingsClick}>
-                    <div className={`main-stage ${styles.MainStage}`}>
+                <div className={styles.Meeting} onClick={handleSettingsClick}>
+                    <div className={styles.MainStage}>
                         <VideoPlayer
                             videoStream={playbackURL}
                             fullScreenCamSection={camSection}

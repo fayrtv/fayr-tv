@@ -74,33 +74,35 @@ export const VideoPlayerControls = ({ fullScreen, player, video }: Props) => {
                 {/* Button: Volume */}
                 <StreamVolumeControl player={player} />
 
-                {/* Button: Fullscreen  */}
-                <button
-                    id="fullscreen"
-                    className="mg-x-1 player-btn player-btn--icon bottom-0 relative"
-                    onClick={toggleFullScreen}
-                >
-                    <svg
-                        className="icon player-icon player-icon--fullscreen_on"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 50 50"
+                {/* Button: Fullscreen - Note: As of yet, there's no way to show fullscreen on mobile safari. */}
+                {video && video.requestFullscreen && (
+                    <button
+                        id="fullscreen"
+                        className="mg-x-1 player-btn player-btn--icon bottom-0 relative"
+                        onClick={toggleFullScreen}
                     >
-                        <path
-                            fill="#D2D2D2"
-                            d="M 6 4 C 4.9069372 4 4 4.9069372 4 6 L 4 10 A 1.0001 1.0001 0 1 0 6 10 L 6 6 L 10 6 A 1.0001 1.0001 0 1 0 10 4 L 6 4 z M 20 4 A 1.0001 1.0001 0 1 0 20 6 L 24 6 L 24 10 A 1.0001 1.0001 0 1 0 26 10 L 26 6 C 26 4.9069372 25.093063 4 24 4 L 20 4 z M 4.984375 18.986328 A 1.0001 1.0001 0 0 0 4 20 L 4 24 C 4 25.093063 4.9069372 26 6 26 L 10 26 A 1.0001 1.0001 0 1 0 10 24 L 6 24 L 6 20 A 1.0001 1.0001 0 0 0 4.984375 18.986328 z M 24.984375 18.986328 A 1.0001 1.0001 0 0 0 24 20 L 24 24 L 20 24 A 1.0001 1.0001 0 1 0 20 26 L 24 26 C 25.093063 26 26 25.093063 26 24 L 26 20 A 1.0001 1.0001 0 0 0 24.984375 18.986328 z"
-                        />
-                    </svg>
-                    <svg
-                        className="icon player-icon player-icon--fullscreen_off"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 50 50"
-                    >
-                        <path
-                            fill="#D2D2D2"
-                            d="M 9.984375 3.9863281 A 1.0001 1.0001 0 0 0 9 5 L 9 9 L 5 9 A 1.0001 1.0001 0 1 0 5 11 L 10 11 A 1.0001 1.0001 0 0 0 11 10 L 11 5 A 1.0001 1.0001 0 0 0 9.984375 3.9863281 z M 19.984375 3.9863281 A 1.0001 1.0001 0 0 0 19 5 L 19 10 A 1.0001 1.0001 0 0 0 20 11 L 25 11 A 1.0001 1.0001 0 1 0 25 9 L 21 9 L 21 5 A 1.0001 1.0001 0 0 0 19.984375 3.9863281 z M 5 19 A 1.0001 1.0001 0 1 0 5 21 L 9 21 L 9 25 A 1.0001 1.0001 0 1 0 11 25 L 11 20 A 1.0001 1.0001 0 0 0 10 19 L 5 19 z M 20 19 A 1.0001 1.0001 0 0 0 19 20 L 19 25 A 1.0001 1.0001 0 1 0 21 25 L 21 21 L 25 21 A 1.0001 1.0001 0 1 0 25 19 L 20 19 z"
-                        />
-                    </svg>
-                </button>
+                        <svg
+                            className="icon player-icon player-icon--fullscreen_on"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 50 50"
+                        >
+                            <path
+                                fill="#D2D2D2"
+                                d="M 6 4 C 4.9069372 4 4 4.9069372 4 6 L 4 10 A 1.0001 1.0001 0 1 0 6 10 L 6 6 L 10 6 A 1.0001 1.0001 0 1 0 10 4 L 6 4 z M 20 4 A 1.0001 1.0001 0 1 0 20 6 L 24 6 L 24 10 A 1.0001 1.0001 0 1 0 26 10 L 26 6 C 26 4.9069372 25.093063 4 24 4 L 20 4 z M 4.984375 18.986328 A 1.0001 1.0001 0 0 0 4 20 L 4 24 C 4 25.093063 4.9069372 26 6 26 L 10 26 A 1.0001 1.0001 0 1 0 10 24 L 6 24 L 6 20 A 1.0001 1.0001 0 0 0 4.984375 18.986328 z M 24.984375 18.986328 A 1.0001 1.0001 0 0 0 24 20 L 24 24 L 20 24 A 1.0001 1.0001 0 1 0 20 26 L 24 26 C 25.093063 26 26 25.093063 26 24 L 26 20 A 1.0001 1.0001 0 0 0 24.984375 18.986328 z"
+                            />
+                        </svg>
+                        <svg
+                            className="icon player-icon player-icon--fullscreen_off"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 50 50"
+                        >
+                            <path
+                                fill="#D2D2D2"
+                                d="M 9.984375 3.9863281 A 1.0001 1.0001 0 0 0 9 5 L 9 9 L 5 9 A 1.0001 1.0001 0 1 0 5 11 L 10 11 A 1.0001 1.0001 0 0 0 11 10 L 11 5 A 1.0001 1.0001 0 0 0 9.984375 3.9863281 z M 19.984375 3.9863281 A 1.0001 1.0001 0 0 0 19 5 L 19 10 A 1.0001 1.0001 0 0 0 20 11 L 25 11 A 1.0001 1.0001 0 1 0 25 9 L 21 9 L 21 5 A 1.0001 1.0001 0 0 0 19.984375 3.9863281 z M 5 19 A 1.0001 1.0001 0 1 0 5 21 L 9 21 L 9 25 A 1.0001 1.0001 0 1 0 11 25 L 11 20 A 1.0001 1.0001 0 0 0 10 19 L 5 19 z M 20 19 A 1.0001 1.0001 0 0 0 19 20 L 19 25 A 1.0001 1.0001 0 1 0 21 25 L 21 21 L 25 21 A 1.0001 1.0001 0 1 0 25 19 L 20 19 z"
+                            />
+                        </svg>
+                    </button>
+                )}
 
                 <QualityPicker player={player} />
             </div>

@@ -80,7 +80,7 @@ export default function QualityPicker({ player }: Props) {
 
             {showQualitySettings && availableQualities && (
                 <Flex ref={qualityPickerRef} className={styles.Options} direction="Column">
-                    {availableQualities[0].name === "unknown"
+                    {availableQualities.length === 0 || availableQualities[0].name === "unknown"
                         ? tl.NoQualitySettingsAvailable
                         : availableQualities.map((x) => (
                               <span key={x.name} onClick={(event) => onQualityClick(event, x)}>
