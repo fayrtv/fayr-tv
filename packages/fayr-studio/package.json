@@ -7,7 +7,7 @@
         "dev": "next dev -p 4000",
         "debug:dev": "NODE_OPTIONS='--inspect' next dev",
         "build": "next build",
-        "test": "craco test --passWithNoTests"
+        "test": "jest test --ci --passWithNoTests"
     },
     "dependencies": {
         "@aws-sdk/client-dynamodb": "^3.52.0",
