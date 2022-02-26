@@ -7,37 +7,33 @@ import { useSocket } from "hooks/useSocket";
 
 import Emoji from "components/common/Emoji";
 
-import { isFalsyOrWhitespace, LoadingAnimation } from "@fayr/shared-components";
+import { isFalsyOrWhitespace, LoadingAnimation, uuid } from "@fayr/shared-components";
 
 import styles from "./ChatInput.module.scss";
 
-import { SocketEventType } from "../../chime/types";
 import { MessageTransferObject } from "../types";
 
 type Props = {
     inputRef: React.RefObject<HTMLInputElement>;
     userName: string;
+    sendMessage(data: MessageTransferObject): void;
 };
 
-export const ChatInput = ({ inputRef, userName }: Props) => {
+export const ChatInput = ({ inputRef, userName, sendMessage }: Props) => {
     const [message, setMessage] = useState("");
     const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
     const { socket } = useSocket();
 
     const emojiPickerRef = React.useRef<HTMLDivElement>(null);
 
-    const sendMessage = () => {
+    const trySendMessage = () => {
         if (message) {
-            const data: MessageTransferObject = {
+            const data = {
+                id: uuid(),
                 message: message.replace(/\\/g, "\\\\").replace(/"/g, '\\"'),
                 username: userName,
             };
-
-            socket?.send({
-                messageType: SocketEventType.ChatMessage,
-                payload: data,
-            });
-
+            sendMessage(data);
             setMessage("");
         }
     };
@@ -48,7 +44,7 @@ export const ChatInput = ({ inputRef, userName }: Props) => {
             return;
         }
 
-        sendMessage();
+        trySendMessage();
     };
 
     const onInput: React.ChangeEventHandler<HTMLInputElement> = (event) =>
@@ -120,7 +116,7 @@ export const ChatInput = ({ inputRef, userName }: Props) => {
             <button
                 disabled={sendButtonDisabled}
                 className="btn btn--primary"
-                onClick={sendMessage}
+                onClick={trySendMessage}
             >
                 Senden
             </button>
