@@ -5,8 +5,18 @@ import { MaterialIcon } from "./MaterialIcon";
 import LoadingAnimation from "./interactivity/LoadingAnimation";
 import Spinner from "./interactivity/Spinner";
 import TranslationContextProvider from "./translations/TranslationContext";
+import uuid from "./utils/uuid";
 
-export { Flex, Cell, Grid, LoadingAnimation, MaterialIcon, TranslationContextProvider, Spinner };
+export {
+    Flex,
+    Cell,
+    Grid,
+    LoadingAnimation,
+    MaterialIcon,
+    TranslationContextProvider,
+    Spinner,
+    uuid,
+};
 
 export { isFalsyOrWhitespace } from "./utils/stringUtils";
 

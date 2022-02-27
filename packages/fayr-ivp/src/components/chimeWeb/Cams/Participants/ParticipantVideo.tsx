@@ -37,7 +37,6 @@ type Props = {
 
 const ParticipantVideo = ({
     isSelfHost,
-    onMicClick,
     forceMuted,
     muted,
     attendeeId,

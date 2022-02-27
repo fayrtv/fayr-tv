@@ -1,4 +1,5 @@
 export type Message = {
+    id: string;
     timestamp: number;
     username: string;
     message: string;
@@ -6,6 +7,7 @@ export type Message = {
 };
 
 export type MessageTransferObject = {
+    id: string;
     username: string;
     message: string;
 };

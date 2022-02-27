@@ -79,13 +79,67 @@ select {
     --font-sans: "WinnerSans";
     --font-serif: "WinnerSans";
     --font-mono: "WinnerSans";
-    /* Color tokens */
-    --color--primary: #2b44ff;
-    --color--secondary: #2026a2;
-    --color--tertiary: #8d9ca7;
-    --color--positive: #0fd70b;
-    --color--destructive: #fa7751;
-    --color--redshade: #a34e4e;
+    /* Color tokens (overridden by theme) */
+    --color-background: #00ff00;
+    --color-neutral: #00ff00;
+    --color-white: #00ff00;
+    --color-primary: #00ff00;
+    --color-primary-dark: #00ff00;
+    --color-primary-light: #00ff00;
+    --color-secondary: #00ff00;
+    --color-tertiary: #00ff00;
+    --color-gray: #00ff00;
+    --color-blueish: #00ff00;
+    /* Additional colors */
+    /*--color-text-alt: #4b5358;*/
+    /*--color-text-inverted: #fff;*/
+    /*--color-text-hint: #8d9ca7;*/
+    /*--color-text-primary: var(--color-primary);*/
+    /*--color-text-secondary: var(--color-secondary);*/
+    /*--color-text-tertiary: var(--color-tertiary);*/
+    /*--color-text-positive: var(--color--positive);*/
+    /*--color-text-destructive: var(--color--destructive);*/
+    /*--color-bg-body: #fff;*/
+    /*--color-bg-base: #fff;*/
+    /*--color-bg-alt: #f1f2f3;*/
+    /*--color-bg-alt-2: #e7ecf0;*/
+    /*--color-bg-inverted: #000;*/
+    /*--color-bg-primary: var(--color-primary);*/
+    /*--color-bg-secondary: var(--color-secondary);*/
+    /*--color-bg-tertiary: var(--color-tertiary);*/
+    /*--color-bg-positive: var(--color--positive);*/
+    /*--color-bg-destructive: var(--color--destructive);*/
+    /*--color-bg-header: var(--color-bg-body);*/
+    /*--color-bg-modal: var(--color-bg-body);*/
+    /*--color-bg-modal-overlay: var(--color-secondary);*/
+    /*--color-bg-chat: var(--color-bg-body);*/
+    /*--color-bg-chat-bubble: var(--color-bg-alt);*/
+    /*--color-bg-player: var(--color-bg-alt);*/
+    /*--color-bg-placeholder: var(--color-bg-alt);*/
+    /*--color-bg-button: var(--color-bg-alt);*/
+    /*--color-bg-button-active: var();*/
+    /*--color-bg-button-focus: var();*/
+    /*--color-bg-button-hover: var();*/
+    /*--color-bg-button-inverted: var();*/
+    /*--color-bg-button-inverted-active: var();*/
+    /*--color-bg-button-inverted-focus: var();*/
+    /*--color-bg-button-inverted-hover: var();*/
+    /*--color-bg-button-primary-default: var(--color-primary);*/
+    /*--color-bg-button-primary-active: var();*/
+    /*--color-bg-button-primary-hover: var();*/
+    /*--color-bg-button-secondary-default: var(--color-bg-alt);*/
+    /*--color-bg-button-secondary-active: var();*/
+    /*--color-bg-button-secondary-hover: var();*/
+    /*--color-bg-button-floating: var(--color-primary);*/
+    /*--color-bg-button-floating-active: var();*/
+    /*--color-bg-button-floating-focus: var();*/
+    /*--color-bg-button-floating-hover: var(--color-secondary);*/
+    /*--color-bg-input: var(--color-bg-alt);*/
+    /*--color-bg-input-focus: var();*/
+    /*--color-bg-notice-success: var(--color--positive);*/
+    /*--color-bg-notice-error: var(--color--destructive);*/
+    /*--color-border-base: #dfe5e9;*/
+    /*--color-border-error: var(--color--destructive);*/
     /* Sizing */
     --section-max-width: 800px;
     --input-height: 42px;
@@ -95,57 +149,6 @@ select {
     --btn-floating-size: 56px;
     --btn-floating-icon-size: 40px;
     --btn-border-size: 2px;
-    /* Light theme color assignment */
-    --color-text-base: #000;
-    --color-text-alt: #4b5358;
-    --color-text-inverted: #fff;
-    --color-text-hint: #8d9ca7;
-    --color-text-primary: var(--color--primary);
-    --color-text-secondary: var(--color--secondary);
-    --color-text-tertiary: var(--color--tertiary);
-    --color-text-positive: var(--color--positive);
-    --color-text-destructive: var(--color--destructive);
-    --color-bg-body: #fff;
-    --color-bg-base: #fff;
-    --color-bg-alt: #f1f2f3;
-    --color-bg-alt-2: #e7ecf0;
-    --color-bg-inverted: #000;
-    --color-bg-primary: var(--color--primary);
-    --color-bg-secondary: var(--color--secondary);
-    --color-bg-tertiary: var(--color--tertiary);
-    --color-bg-positive: var(--color--positive);
-    --color-bg-destructive: var(--color--destructive);
-    --color-bg-header: var(--color-bg-body);
-    --color-bg-modal: var(--color-bg-body);
-    --color-bg-modal-overlay: var(--color--secondary);
-    --color-bg-chat: var(--color-bg-body);
-    --color-bg-chat-bubble: var(--color-bg-alt);
-    --color-bg-player: var(--color-bg-alt);
-    --color-bg-placeholder: var(--color-bg-alt);
-    --color-bg-button: var(--color-bg-alt);
-    --color-bg-button-active: var();
-    --color-bg-button-focus: var();
-    --color-bg-button-hover: var();
-    --color-bg-button-inverted: var();
-    --color-bg-button-inverted-active: var();
-    --color-bg-button-inverted-focus: var();
-    --color-bg-button-inverted-hover: var();
-    --color-bg-button-primary-default: var(--color--primary);
-    --color-bg-button-primary-active: var();
-    --color-bg-button-primary-hover: var();
-    --color-bg-button-secondary-default: var(--color-bg-alt);
-    --color-bg-button-secondary-active: var();
-    --color-bg-button-secondary-hover: var();
-    --color-bg-button-floating: var(--color--primary);
-    --color-bg-button-floating-active: var();
-    --color-bg-button-floating-focus: var();
-    --color-bg-button-floating-hover: var(--color--secondary);
-    --color-bg-input: var(--color-bg-alt);
-    --color-bg-input-focus: var();
-    --color-bg-notice-success: var(--color--positive);
-    --color-bg-notice-error: var(--color--destructive);
-    --color-border-base: #dfe5e9;
-    --color-border-error: var(--color--destructive);
     --grid-2-columns: 1fr 1fr;
     --grid-3-columns: 1fr 1fr 1fr;
     --grid-4-columns: 1fr 1fr 1fr 1fr;
@@ -161,9 +164,9 @@ select {
 /* Mediaqueries */
 @media (prefers-color-scheme: dark) {
     :root {
-        /* --color--primary: var(--color--primary-dark);
-		--color--secondary: var(--color--secondary-dark);
-		--color--tertiary: var(--color--tertiary-dark); */
+        /* --color-primary: var(--color-primary-dark);
+		--color-secondary: var(--color-secondary-dark);
+		--color-tertiary: var(--color-tertiary-dark); */
     }
 }
 
@@ -220,7 +223,7 @@ body {
     height: 100%;
     margin: 0;
     padding: 0;
-    color: var(--color-text-base);
+    color: var(--color-white);
     background: var(--color-bg-base);
     line-height: 1.5;
 }
@@ -231,7 +234,7 @@ body {
 }
 
 ::selection {
-    background: var(--color--primary);
+    background: var(--color-primary);
     color: var(--color-text-inverted);
 }
 
@@ -251,7 +254,7 @@ h1 {
 
 h2 {
     font-size: 2.4rem;
-    color: #fa7751;
+    color: var(--color-primary);
 }
 
 h3 {
@@ -296,7 +299,7 @@ em {
 
 /* Utility - Text */
 .color-base {
-    color: var(--color-text-base);
+    color: var(--color-white);
 }
 .color-alt {
     color: var(--color-text-alt);
@@ -1150,7 +1153,7 @@ input:focus,
 textarea:focus,
 .btn:focus,
 .btn:active {
-    border: var(--btn-border-size) solid var(--color--primary);
+    border: var(--btn-border-size) solid var(--color-primary);
 }
 
 select {
@@ -1160,7 +1163,7 @@ select {
 
 select:focus,
 select:active {
-    border: var(--btn-border-size) solid var(--color--primary);
+    border: var(--btn-border-size) solid var(--color-primary);
 }
 
 .btn.rounded,
@@ -1183,12 +1186,12 @@ input.rounded {
 
 .btn--primary:hover,
 .btn--primary:focus {
-    background: var(--color--secondary);
+    background: var(--color-secondary);
 }
 
 .btn--secondary {
     background: var(--color-bg-button-secondary-default);
-    color: var(--color-text-base);
+    color: var(--color-white);
 }
 
 .btn--destruct {
@@ -1236,7 +1239,7 @@ input.rounded {
     display: flex;
     padding: 1rem;
     flex-direction: column;
-    color: var(--color-text-base);
+    color: var(--color-white);
     overflow: hidden;
 }
 
@@ -1254,7 +1257,7 @@ input.rounded {
 }
 
 .interactive:focus {
-    border: var(--btn-border-size) solid var(--color--primary);
+    border: var(--btn-border-size) solid var(--color-primary);
     outline: none;
 }
 
@@ -1320,7 +1323,7 @@ input.rounded {
 
 /* Icons */
 .icon {
-    fill: var(--color-text-base);
+    fill: var(--color-white);
 }
 
 .icon--inverted {

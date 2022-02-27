@@ -2,21 +2,18 @@
 
 :root {
     --section-max-width: 700px;
-    --color--primary: #fff;
-    --color--secondary: #e7ecf0;
-    --color--tertiary: transparent;
-    --color-text-base: #fff;
-    --color-text-hint: #e7ecf0;
-    --color-text-link: #8bb0ff;
+    --color-text-base: var(--color-white);
+    --color-text-hint: var(--color-secondary);
+    --color-text-link: var(--color-primary-dark);
     --color-text-inverted: #000;
     --color-bg-input: blur(4px);
     --color-bg-button: var(--color-bg-input);
-    --color-bg-base: #07090c;
+    --color-bg-base: var(--color-background);
     --color-bg-header: var(--color-bg-base);
     --color-bg-modal: var(--color-bg-base);
     --color-bg-modal-overlay: rgba(0, 0, 0, 0.8);
-    --color-bg-chat: var(--color--tertiary);
-    --color-bg-chat-bubble: var(--color--tertiary);
+    --color-bg-chat: var(--color-tertiary);
+    --color-bg-chat-bubble: var(--color-tertiary);
     --font-weight-bold: 600;
     --btn-size: 3.6rem;
     --form-col-template: minmax(380px, 460px) 1fr;
@@ -203,7 +200,7 @@ input:disabled {
 }
 
 .btn__svg {
-    fill: var(--color-text-base);
+    fill: var(--color-white);
 }
 
 .btn__svg--sm {
@@ -261,7 +258,7 @@ select {
 }
 
 a {
-    color: var(--color-text-base);
+    color: var(--color-white);
     font-weight: 600;
 }
 

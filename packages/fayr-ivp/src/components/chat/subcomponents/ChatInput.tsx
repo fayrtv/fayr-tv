@@ -7,52 +7,51 @@ import { useSocket } from "hooks/useSocket";
 
 import Emoji from "components/common/Emoji";
 
-import { isFalsyOrWhitespace, LoadingAnimation } from "@fayr/shared-components";
+import { isFalsyOrWhitespace, LoadingAnimation, uuid } from "@fayr/shared-components";
 
 import styles from "./ChatInput.module.scss";
 
-import { SocketEventType } from "../../chime/types";
 import { MessageTransferObject } from "../types";
 
 type Props = {
     inputRef: React.RefObject<HTMLInputElement>;
     userName: string;
+    sendMessage(data: MessageTransferObject): void;
 };
 
-export const ChatInput = ({ inputRef, userName }: Props) => {
+export const ChatInput = ({ inputRef, userName, sendMessage }: Props) => {
     const [message, setMessage] = useState("");
     const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
     const { socket } = useSocket();
 
     const emojiPickerRef = React.useRef<HTMLDivElement>(null);
 
-    const sendMessage = () => {
+    const trySendMessage = () => {
         if (message) {
-            const data: MessageTransferObject = {
+            const data = {
+                id: uuid(),
                 message: message.replace(/\\/g, "\\\\").replace(/"/g, '\\"'),
                 username: userName,
             };
-
-            socket?.send({
-                messageType: SocketEventType.ChatMessage,
-                payload: data,
-            });
-
+            sendMessage(data);
             setMessage("");
         }
     };
 
     const onKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
         if (event.keyCode !== 13) {
             // keyCode 13 is carriage return
-            return;
+            return false;
         }
 
-        sendMessage();
+        trySendMessage();
     };
 
-    const onInput: React.ChangeEventHandler<HTMLInputElement> = (event) =>
+    const onInput: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         setMessage(event.target.value);
+    };
 
     useGlobalClickHandler((clickEvent) => {
         if (!emojiPickerOpen && !emojiPickerRef.current) {
@@ -120,7 +119,7 @@ export const ChatInput = ({ inputRef, userName }: Props) => {
             <button
                 disabled={sendButtonDisabled}
                 className="btn btn--primary"
-                onClick={sendMessage}
+                onClick={trySendMessage}
             >
                 Senden
             </button>

@@ -1,53 +1,33 @@
-import Fauna from "adapters/fauna";
+import { DynamoDB, DynamoDBClientConfig } from "@aws-sdk/client-dynamodb";
+import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
+import { DynamoDBAdapter } from "@next-auth/dynamodb-adapter";
 import { env } from "constants/env";
-import { getFaunaClient } from "database";
 import NextAuth from "next-auth";
-import Providers from "next-auth/providers";
+import CognitoProvider from "next-auth/providers/cognito";
 
-type GitHubEmailResponse = {
-    email: string;
-    primary: boolean;
-    verified: true;
-    visibility: string | null;
+const dynamoDBConfig: DynamoDBClientConfig = {
+    credentials: {
+        accessKeyId: process.env.NEXT_AUTH_AWS_ACCESS_KEY as string,
+        secretAccessKey: process.env.NEXT_AUTH_AWS_SECRET_KEY as string,
+    },
+    region: process.env.NEXT_AUTH_AWS_REGION,
 };
+
+const client = DynamoDBDocument.from(new DynamoDB(dynamoDBConfig), {
+    marshallOptions: {
+        convertEmptyValues: true,
+        removeUndefinedValues: true,
+        convertClassInstanceToMap: true,
+    },
+});
 
 export default NextAuth({
     providers: [
-        Providers.Email({
-            server: env.EMAIL_SERVER,
-            from: env.EMAIL_FROM,
-        }),
-        Providers.GitHub({
-            clientId: env.GITHUB_ID,
-            clientSecret: env.GITHUB_SECRET,
-            scope: "user:email",
-            profile: async (profileData, tokens) => {
-                const name = (profileData.name ?? profileData.login) as string;
-                const { accessToken } = tokens;
-                const emails: GitHubEmailResponse[] = await fetch(
-                    "https://api.github.com/user/emails",
-                    {
-                        headers: {
-                            Authorization: `token ${accessToken}`,
-                        },
-                    },
-                ).then((res) => res.json());
-                const primaryEmail = (emails.find((e: GitHubEmailResponse) => e.primary)?.email ??
-                    profileData.email) as string;
-                return {
-                    id: profileData.id as string,
-                    name,
-                    email: primaryEmail,
-                    image: profileData.avatar_url as string,
-                    username: profileData.login as string,
-                };
-            },
-        }),
         // https://next-auth.js.org/providers/cognito
-        Providers.Cognito({
+        CognitoProvider({
             clientId: env.COGNITO_CLIENT_ID,
             clientSecret: env.COGNITO_CLIENT_SECRET,
-            domain: env.COGNITO_DOMAIN,
+            issuer: env.COGNITO_ISSUER,
             profile: async (profileData) => {
                 return {
                     id: profileData.sub as string,
@@ -59,10 +39,10 @@ export default NextAuth({
             },
         }),
     ],
-    secret: env.SECRET,
-    adapter: Fauna.Adapter({ faunaClient: getFaunaClient() }),
+    secret: env.NEXT_AUTH_SECRET,
+    adapter: DynamoDBAdapter(client, { tableName: "studio_auth" }),
     callbacks: {
-        session: async (session, user) => {
+        session: async ({ session, user }) => {
             return Promise.resolve({
                 ...session,
                 user: {
