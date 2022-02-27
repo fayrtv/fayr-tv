@@ -29,6 +29,7 @@
     },
     "scripts": {
         "start": "craco start",
+        "startHttps": "cross-env HTTPS=true craco start",
         "build": "craco build",
         "test": "craco test --passWithNoTests"
     },
@@ -64,6 +65,7 @@
         "@typescript-eslint/parser": "4.0.1",
         "autoprefixer": "^10.4.2",
         "aws-sdk": "^2.1037.0",
+        "cross-env": "^7.0.3",
         "postcss": "^8.4.5",
         "react-scripts": "^5.0.0",
         "sass": "^1.39.2",
