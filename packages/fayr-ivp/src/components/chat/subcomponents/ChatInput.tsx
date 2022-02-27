@@ -39,16 +39,19 @@ export const ChatInput = ({ inputRef, userName, sendMessage }: Props) => {
     };
 
     const onKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
         if (event.keyCode !== 13) {
             // keyCode 13 is carriage return
-            return;
+            return false;
         }
 
         trySendMessage();
     };
 
-    const onInput: React.ChangeEventHandler<HTMLInputElement> = (event) =>
+    const onInput: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         setMessage(event.target.value);
+    };
 
     useGlobalClickHandler((clickEvent) => {
         if (!emojiPickerOpen && !emojiPickerRef.current) {
