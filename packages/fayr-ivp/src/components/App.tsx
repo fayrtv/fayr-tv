@@ -1,5 +1,6 @@
+import React from "react";
 import { Provider } from "react-redux";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import store from "redux/store";
 
 import End from "components/chimeWeb/End";
@@ -8,7 +9,6 @@ import Welcome from "components/chimeWeb/Welcome";
 import styles from "./App.module.scss";
 
 import * as config from "../config";
-// import './App.css';
 import ChimeSdkWrapper from "./chime/ChimeSdkWrapper";
 import SocketContextProvider from "./chime/SocketContextProvider";
 import Join from "./chimeWeb/Intro/Join";

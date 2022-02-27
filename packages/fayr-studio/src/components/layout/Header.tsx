@@ -1,13 +1,19 @@
 import { BellIcon, EyeIcon, UserCircleIcon, ViewGridIcon } from "@heroicons/react/solid";
-import { signIn, signOut, useSession } from "next-auth/client";
-import React, { PropsWithChildren } from "react";
+import classNames from "classnames";
+import { session } from "next-auth/core/routes";
+import { signIn, signOut, useSession } from "next-auth/react";
+import React, { HTMLProps, PropsWithChildren } from "react";
 
-const IconElement = ({ children }: PropsWithChildren<{}>) => (
+const IconElement = ({
+    children,
+    ...props
+}: PropsWithChildren<React.HTMLAttributes<HTMLButtonElement>>) => (
     <button
         className="flex bg-blueish items-center justify-center focus:outline-none
     focus:ring-1 focus:ring-neutral focus:bg-primary focus:text-black
     hover:ring-1 hover:ring-neutral hover:bg-primary hover:text-black
      p-2 text-neutral block"
+        {...props}
     >
         {children}
     </button>
@@ -40,7 +46,13 @@ const ProfileIcon = ({ name, image }: { name?: string | null; image?: string | n
     );
 };
 const Header = () => {
-    const [session, loading] = useSession();
+    const { data } = useSession();
+
+    const [profileExpanded, setProfileExpanded] = React.useState(false);
+
+    const toggleProfileDropdown = () => {
+        setProfileExpanded(!profileExpanded);
+    };
 
     return (
         <div className="bg-background flex-1 flex justify-between px-4 sm:px-6 py-6">
@@ -59,9 +71,9 @@ const Header = () => {
                     <BellIcon className="h-6 w-6" aria-hidden="true" />
                 </IconElement>
 
-                <IconElement>
-                    {session?.user ? (
-                        <ProfileIcon name={session.user.name} image={session.user.image} />
+                <IconElement onMouseEnter={() => data?.user && setProfileExpanded(true)}>
+                    {data?.user ? (
+                        <ProfileIcon name={data.user.name} image={data.user.image} />
                     ) : (
                         <UserCircleIcon
                             className="h-6 w-6"
@@ -70,6 +82,18 @@ const Header = () => {
                         />
                     )}
                 </IconElement>
+                {profileExpanded && (
+                    <div className="relative">
+                        <div className="origin-top-right absolute right-0 mt-6 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                            <button
+                                className="block px-4 py-2 text-sm text-gray-700"
+                                onClick={() => signOut()}
+                            >
+                                Logout
+                            </button>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

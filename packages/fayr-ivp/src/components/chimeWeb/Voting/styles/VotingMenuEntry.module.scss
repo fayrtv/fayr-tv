@@ -10,7 +10,7 @@
     &.Selected {
         margin-right: -1rem;
         padding-right: 1rem;
-        background-color: #07090c;
+        background-color: var(--color-background);
 
         > span {
             color: #fa7751 !important;
