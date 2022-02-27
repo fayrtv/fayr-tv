@@ -4,7 +4,7 @@ import { Message } from "components/chat/types";
 
 import { ReducerAction } from "../types";
 
-const CHAT_ADD_MESSAGE = "CHAT_ADD_MESSAGE";
+const CHAT_ADD_MESSAGE = "CHAT_ADD_MESSAGE"; // Idempotent
 const CHAT_MARK_MESSAGE_AS_SEEN = "CHAT_MARK_MESSAGE_AS_SEEN";
 
 type MessageAction = ReducerAction<CouldBeArray<Message>>;
@@ -32,6 +32,10 @@ export const reducer = (
 
     switch (action.type) {
         case CHAT_ADD_MESSAGE:
+            if (state.find((m) => payloadArray.find((x) => x.id === m.id))) {
+                // The same message has already been added
+                return state;
+            }
             return state.concat(payloadArray);
         case CHAT_MARK_MESSAGE_AS_SEEN:
             const newState = [...state];

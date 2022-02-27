@@ -1,22 +1,19 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Action, Dispatch } from "redux";
-// Functionality
 import { addMessage, markAsSeen } from "redux/reducers/chatMessageReducer";
+import { ReduxStore } from "redux/store";
+import { CouldBeArray } from "util/collectionUtil";
 
 import { useSocket } from "hooks/useSocket";
 
-// Styles
 import "./Chat.scss";
 
-import { ReduxStore } from "../../redux/store";
-import { CouldBeArray } from "../../util/collectionUtil";
 import { IChimeSocket } from "../chime/ChimeSdkWrapper";
 import { SocketEventType } from "../chime/types";
 import { ChatOpenContext } from "../contexts/ChatOpenContext";
 import ChatInput from "./subcomponents/ChatInput";
 import ChatLine from "./subcomponents/ChatLine";
-// Types
 import { Message, MessageTransferObject } from "./types";
 
 type Props = {
@@ -36,7 +33,6 @@ type ReduxDispatches = {
 
 export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({
     userName,
-    title,
     messages,
     addMessages,
     markAsSeen,
@@ -54,17 +50,7 @@ export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({
         }
 
         socket.addListener<MessageTransferObject>(SocketEventType.ChatMessage, (event) => {
-            const { username, message } = event;
-
-            const newMessage: Message = {
-                timestamp: Date.now(),
-                username,
-                message,
-                seen: false,
-            };
-
-            addMessages(newMessage);
-
+            addMessages(createMessageFromTransferObject(event));
             return Promise.resolve();
         });
 
@@ -96,6 +82,15 @@ export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({
         }
     }, [messages, isOpen, markAsSeen]);
 
+    const sendMessage = (data: MessageTransferObject) => {
+        const message = createMessageFromTransferObject(data);
+        addMessages(message);
+        socket?.send({
+            messageType: SocketEventType.ChatMessage,
+            payload: data,
+        });
+    };
+
     return (
         <div
             className={`Chat ${!isOpen ? "Closed" : ""} ${
@@ -109,10 +104,18 @@ export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({
                     ))}
                 </div>
             </div>
-            <ChatInput inputRef={chatRef} userName={userName} />
+            <ChatInput inputRef={chatRef} userName={userName} sendMessage={sendMessage} />
         </div>
     );
 };
+
+const createMessageFromTransferObject = ({ id, username, message }: MessageTransferObject) => ({
+    id,
+    timestamp: Date.now(),
+    username,
+    message,
+    seen: false,
+});
 
 const mapStateToProps = (state: ReduxStore): ReduxProps => ({
     messages: state.chatMessageReducer,
