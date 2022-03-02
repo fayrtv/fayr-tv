@@ -16,6 +16,8 @@ import * as config from "../../config";
 import { SocketEventType } from "../chime/types";
 import { EmojiReactionTransferObject } from "../chimeWeb/types";
 import VideoPlayerControls from "./controls/VideoPlayerControls";
+import useStaticStreamSynchronizer from "./useStaticContentSynchronizer";
+import useStreamContentSynchronizer from "./useStreamContentSynchronizer";
 
 type Props = {
     videoStream: string;
@@ -25,14 +27,36 @@ type Props = {
 
 type EmojiReaction = { emoji: string; relativeXClick: number; relativeYClick: number };
 
-const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) => {
+const VideoPlayerHookSelector = (props: Props) => {
+    let useSynchronizer: (ownId: string, player: MediaPlayer | undefined) => void = (_, __) => {};
+    switch (config.StreamSynchronizationType) {
+        case "LiveStream":
+            useSynchronizer = (ownId, player) => useStreamContentSynchronizer(ownId, player);
+            break;
+        case "Static":
+            useSynchronizer = (ownId, player) => useStaticStreamSynchronizer(ownId, player);
+            break;
+    }
+
+    return <VideoPlayer {...props} useSynchronizer={useSynchronizer} />;
+};
+
+const VideoPlayer = ({
+    videoStream,
+    fullScreenCamSection,
+    attendeeId,
+    useSynchronizer,
+}: Props & {
+    useSynchronizer: (ownId: string, player: MediaPlayer | undefined) => void;
+}) => {
     const videoElement = React.useRef<HTMLDivElement>(null);
     const player = React.useRef<MediaPlayer>();
-
     const [paused, setPaused] = React.useState(false);
     const [fullScreen, setFullScreen] = React.useState(false);
 
     const [reactions, setReactions] = React.useState<Array<React.ReactNode>>([]);
+
+    useSynchronizer(attendeeId, player.current);
 
     const pause = React.useCallback(() => {
         const currentPlayer = player.current!;
@@ -296,4 +320,4 @@ const reactionsEqual = (x: EmojiReaction, y: EmojiReaction) => {
     );
 };
 
-export default VideoPlayer;
+export default VideoPlayerHookSelector;

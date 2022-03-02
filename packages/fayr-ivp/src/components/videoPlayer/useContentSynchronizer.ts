@@ -38,7 +38,7 @@ export default function useContentSynchronizer(
         });
 
         synchronizeCb(utcSanitizedMeasurements);
-    }, [attendeeTsMap, ownId, player, synchronizeCb]);
+    }, [attendeeTsMap, player, synchronizeCb]);
 
     React.useEffect(() => {
         if (!socket) {
