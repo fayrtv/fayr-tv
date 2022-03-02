@@ -19,11 +19,19 @@ export default function useStreamContentSynchronizer(
             const currentLatency = player.getLiveLatency();
             const bestLatency = Math.min(...sanitizedMeasurements);
 
-            // Refresh if our latency is greater than the maximum latency and someone else is already better off than
-            // we are. Otherwise, it is probably better to allow the stream itself to control the latency. This is just a
-            // way to avoid straying off too far from the best latency
+            // Two conditions should be met to start the resynchronization process:
+            // 1. We need to be above an arbitrary border. If we would start synchronizing streams once the stream is even 0.5s past the source, it would get annoying fast
+            // 2. Someone else must be better than we are. If we start synchronizing without having other catch up, then we would already be the best participant, and
+            // would get further ahead on top
+            console.log(currentLatency);
             if (currentLatency > maximumLatencyInSeconds && bestLatency < currentLatency) {
-                player.seekTo(player.getPosition() + 2);
+                player.setPlaybackRate(
+                    130.641 - 129.6778 * Math.pow(Math.E, -0.0002520927 * currentLatency),
+                );
+            }
+
+            if (currentLatency <= maximumLatencyInSeconds) {
+                player.setPlaybackRate(1);
             }
         },
         [player],
