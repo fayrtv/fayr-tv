@@ -23,7 +23,6 @@ export default function useStreamContentSynchronizer(
             // 1. We need to be above an arbitrary border. If we would start synchronizing streams once the stream is even 0.5s past the source, it would get annoying fast
             // 2. Someone else must be better than we are. If we start synchronizing without having other catch up, then we would already be the best participant, and
             // would get further ahead on top
-            console.log(currentLatency);
             if (currentLatency > maximumLatencyInSeconds && bestLatency < currentLatency) {
                 player.setPlaybackRate(
                     130.641 - 129.6778 * Math.pow(Math.E, -0.0002520927 * currentLatency),
