@@ -9,6 +9,9 @@ import useSocket from "hooks/useSocket";
 import { EMOJI_SIZE } from "components/chimeWeb/Controls/emoji-reactions/EmojiReactionButton";
 import Emoji from "components/common/Emoji";
 import { SelectedReactionContext } from "components/contexts/SelectedReactionContext";
+import liveStreamCatchUpStrategy from "components/videoPlayer/driftSyncStrategies/liveStreamCatchUpStrategy";
+import videoCatchUpStrategy from "components/videoPlayer/driftSyncStrategies/videoCatchUpStrategy";
+import useContentSynchronizer from "components/videoPlayer/useContentSynchronizer";
 
 import styles from "./VideoPlayer.module.scss";
 
@@ -16,8 +19,6 @@ import * as config from "../../config";
 import { SocketEventType } from "../chime/types";
 import { EmojiReactionTransferObject } from "../chimeWeb/types";
 import VideoPlayerControls from "./controls/VideoPlayerControls";
-import useStaticStreamSynchronizer from "./useStaticContentSynchronizer";
-import useStreamContentSynchronizer from "./useStreamContentSynchronizer";
 
 type Props = {
     videoStream: string;
@@ -27,28 +28,18 @@ type Props = {
 
 type EmojiReaction = { emoji: string; relativeXClick: number; relativeYClick: number };
 
-const VideoPlayerHookSelector = (props: Props) => {
-    let useSynchronizer: (ownId: string, player: MediaPlayer | undefined) => void = (_, __) => {};
+const selectDriftSyncStrategy = () => {
     switch (config.StreamSynchronizationType) {
         case "LiveStream":
-            useSynchronizer = (ownId, player) => useStreamContentSynchronizer(ownId, player);
-            break;
+            return liveStreamCatchUpStrategy;
         case "Static":
-            useSynchronizer = (ownId, player) => useStaticStreamSynchronizer(ownId, player);
-            break;
+            return videoCatchUpStrategy;
+        default:
+            throw Error("Unknown stream synchronization type");
     }
-
-    return <VideoPlayer {...props} useSynchronizer={useSynchronizer} />;
 };
 
-const VideoPlayer = ({
-    videoStream,
-    fullScreenCamSection,
-    attendeeId,
-    useSynchronizer,
-}: Props & {
-    useSynchronizer: (ownId: string, player: MediaPlayer | undefined) => void;
-}) => {
+const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) => {
     const videoElement = React.useRef<HTMLDivElement>(null);
     const player = React.useRef<MediaPlayer>();
     const [paused, setPaused] = React.useState(false);
@@ -56,7 +47,7 @@ const VideoPlayer = ({
 
     const [reactions, setReactions] = React.useState<Array<React.ReactNode>>([]);
 
-    useSynchronizer(attendeeId, player.current);
+    useContentSynchronizer(attendeeId, player.current, selectDriftSyncStrategy());
 
     const pause = React.useCallback(() => {
         const currentPlayer = player.current!;
@@ -320,4 +311,4 @@ const reactionsEqual = (x: EmojiReaction, y: EmojiReaction) => {
     );
 };
 
-export default VideoPlayerHookSelector;
+export default VideoPlayer;

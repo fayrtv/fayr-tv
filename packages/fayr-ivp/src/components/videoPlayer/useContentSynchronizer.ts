@@ -5,52 +5,44 @@ import React from "react";
 import useSocket from "hooks/useSocket";
 
 import { SocketEventType } from "components/chime/types";
+import {
+    AttendeeDriftMeasurement,
+    IDriftSyncStrategy,
+} from "components/videoPlayer/driftSyncStrategies/interfaces";
 
 import { HeartBeat } from "./types";
 
-type AttendeePositionInfo = {
-    measurement: number;
-    measurementTimeUtcInSeconds: number;
-};
-
-export default function useContentSynchronizer(
+export default function useContentSynchronizer<T>(
     ownId: string,
     player: MediaPlayer | undefined,
-    measureCb: () => number,
-    synchronizeCb: (measurements: Array<number>) => void,
+    strategy: IDriftSyncStrategy<T>,
 ) {
+    const attendeeTsMap = React.useRef(new Map<string, AttendeeDriftMeasurement<T>>());
+
+    React.useEffect(() => {
+        const intervalHandle = window.setInterval(() => {
+            if (!player) {
+                return;
+            }
+            strategy.apply(player, Array.from(attendeeTsMap.current.values()));
+        }, 1000);
+
+        return () => window.clearInterval(intervalHandle);
+    }, [player, strategy]);
+
     const { socket } = useSocket();
-
-    const attendeeTsMap = React.useMemo(() => new Map<string, AttendeePositionInfo>(), []);
-
-    const synchronizeTimeStamps = React.useCallback(() => {
-        if (!player) {
-            return;
-        }
-
-        const currentUtcTime = moment.utc().unix();
-
-        // Sanitize the positions
-        const utcSanitizedMeasurements = Array.from(attendeeTsMap.values()).map((info) => {
-            // This is the difference between the measurements and the current utc time
-            const secondsToSanitize = currentUtcTime - info.measurementTimeUtcInSeconds;
-            return info.measurement + secondsToSanitize;
-        });
-
-        synchronizeCb(utcSanitizedMeasurements);
-    }, [attendeeTsMap, player, synchronizeCb]);
 
     React.useEffect(() => {
         if (!socket) {
             return;
         }
 
-        return socket.addListener<HeartBeat>(
+        return socket.addListener<HeartBeat<T>>(
             SocketEventType.TimeStampHeartBeat,
-            ({ attendeeId, measurement, measurementTimeUtcInSeconds }) => {
-                attendeeTsMap.set(attendeeId, {
+            ({ attendeeId, measurement, eventTimestamp }) => {
+                attendeeTsMap.current.set(attendeeId, {
                     measurement,
-                    measurementTimeUtcInSeconds,
+                    measuredAt: eventTimestamp,
                 });
                 return Promise.resolve();
             },
@@ -66,22 +58,16 @@ export default function useContentSynchronizer(
         // we can then sanitize the actual position when the times are actually synchronized.
         // Otherwise our calculation will also include potential network delays.
         const intervalHandle = window.setInterval(() => {
-            socket.send<HeartBeat>({
+            socket.send<HeartBeat<T>>({
                 messageType: SocketEventType.TimeStampHeartBeat,
                 payload: {
                     attendeeId: ownId,
-                    measurement: measureCb(),
-                    measurementTimeUtcInSeconds: moment.utc().unix(),
+                    measurement: strategy.measureOwn(player),
+                    eventTimestamp: moment.utc().unix(),
                 },
             });
         }, 1000);
 
         return () => window.clearInterval(intervalHandle);
-    }, [socket, player, ownId, measureCb]);
-
-    React.useEffect(() => {
-        const intervalHandle = window.setInterval(synchronizeTimeStamps, 1000);
-
-        return () => window.clearInterval(intervalHandle);
-    }, [synchronizeTimeStamps]);
+    }, [socket, player, ownId, strategy]);
 }

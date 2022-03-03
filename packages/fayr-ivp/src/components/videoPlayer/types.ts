@@ -1,5 +1,9 @@
-export type HeartBeat = {
+export type HeartBeat<T> = {
     attendeeId: string;
-    measurement: number;
-    measurementTimeUtcInSeconds: number;
+    measurement: T;
+
+    /**
+     * Unix timestamp (seconds since epoch) when this measurement was taken
+     */
+    eventTimestamp: number;
 };
