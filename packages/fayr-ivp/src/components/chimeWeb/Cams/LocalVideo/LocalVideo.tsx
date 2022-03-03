@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import { AudioVideoController } from "amazon-chime-sdk-js";
 import React from "react";
 import { Nullable } from "types/global";
 
@@ -26,6 +27,8 @@ type Props = {
 const LocalVideo = ({ chime, joinInfo, pin }: Props) => {
     const videoElement = React.useRef<HTMLVideoElement>(null);
 
+    const audioVideo: AudioVideoController = chime.audioVideo;
+
     const [{ muted }] = useMeetingMetaData();
 
     const { socket } = useSocket();
@@ -33,9 +36,14 @@ const LocalVideo = ({ chime, joinInfo, pin }: Props) => {
     const [activityState, setActivityState] = React.useState(ActivityState.Available);
 
     React.useEffect(() => {
-        if (chime.audioVideo) {
-            if (!chime.audioVideo.videoTileController.currentLocalTile) {
-                chime.audioVideo.addObserver({
+        if (audioVideo) {
+            const currentTile = audioVideo.videoTileController.getLocalVideoTile();
+            if (!currentTile) {
+                return;
+            }
+
+            if (!audioVideo.videoTileController.getLocalVideoTile()) {
+                audioVideo.addObserver({
                     videoTileDidUpdate: (tileState: any) => {
                         if (
                             !tileState.boundAttendeeId ||
@@ -46,13 +54,13 @@ const LocalVideo = ({ chime, joinInfo, pin }: Props) => {
                             return;
                         }
 
-                        chime.audioVideo.bindVideoElement(tileState.tileId, videoElement.current);
+                        currentTile.bindVideoElement(videoElement.current);
                     },
                 });
             } else {
-                const currentTile = chime.audioVideo.videoTileController.currentLocalTile.tileState;
+                const tileState = currentTile.state();
 
-                chime.audioVideo.bindVideoElement(currentTile.tileId, videoElement.current);
+                chime.audioVideo.bindVideoElement(tileState.tileId, videoElement.current);
             }
         }
     }, [chime]);

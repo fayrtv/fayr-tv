@@ -1,15 +1,13 @@
 import {
     ConsoleLogger,
     DefaultDeviceController,
-    DefaultDOMWebSocketFactory,
     DefaultMeetingSession,
     DefaultModality,
-    DefaultPromisedWebSocketFactory,
-    FullJitterBackoff,
     LogLevel,
     MeetingSessionConfiguration,
-    ReconnectingPromisedWebSocket,
     AudioVideoFacade,
+    WebSocketAdapter,
+    DefaultWebSocketAdapter,
 } from "amazon-chime-sdk-js";
 import throttle from "lodash/throttle";
 import { hasCamPermissions } from "util/permissions/browserPermissionUtil";
@@ -79,7 +77,7 @@ type MessageUpdate = {
 type MessageUpdateCallback = Callback<MessageUpdate>;
 
 export interface IChimeSocket {
-    joinRoomSocket(): Promise<Nullable<ISocketProvider>>;
+    joinRoomSocket(): Nullable<ISocketProvider>;
 }
 
 export interface IChimeSdkWrapper extends IChimeSocket {
@@ -191,7 +189,7 @@ export default class ChimeSdkWrapper
     private roster: RosterMap = {};
     private rosterUpdateCallbacks: Array<RosterUpdateCallback> = [];
     private configuration: Nullable<MeetingSessionConfiguration> = null;
-    private messagingSocket: Nullable<ReconnectingPromisedWebSocket> = null;
+    private messagingSocket: Nullable<WebSocketAdapter> = null;
     private messageUpdateCallbacks: Array<MessageUpdateCallback> = [];
 
     private _permissionGranter: IDeviceProvider;
@@ -426,7 +424,7 @@ export default class ChimeSdkWrapper
         this._audioVideo?.start();
     }
 
-    async joinRoomSocket() {
+    joinRoomSocket() {
         if (!this.configuration) {
             this.logError(new Error("configuration does not exist"));
             return null;
@@ -438,15 +436,10 @@ export default class ChimeSdkWrapper
             this.configuration.credentials!.joinToken
         }`;
 
-        this.messagingSocket = new ReconnectingPromisedWebSocket(
-            messagingUrl,
-            [],
-            "arraybuffer",
-            new DefaultPromisedWebSocketFactory(new DefaultDOMWebSocketFactory()),
-            new FullJitterBackoff(1000, 0, 10000),
+        this.messagingSocket = new DefaultWebSocketAdapter(
+            new ConsoleLogger("SDK", LogLevel.ERROR),
         );
-
-        await this.messagingSocket.open(ChimeSdkWrapper.WEB_SOCKET_TIMEOUT_MS);
+        this.messagingSocket.create(messagingUrl, []);
 
         if (config.DEBUG) {
             console.log(this.messagingSocket);

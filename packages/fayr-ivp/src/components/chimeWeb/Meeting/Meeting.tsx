@@ -60,9 +60,8 @@ const Meeting = ({
     const { setSocket } = useSocket();
 
     React.useEffect(() => {
-        chime.joinRoomSocket().then((createdSocket) => {
-            setSocket(createdSocket);
-        });
+        const socket = chime.joinRoomSocket();
+        setSocket(socket);
     }, [chime, setSocket]);
 
     const handleSettingsClick = (event: any) => {
