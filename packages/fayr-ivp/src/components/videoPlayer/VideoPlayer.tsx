@@ -28,17 +28,6 @@ type Props = {
 
 type EmojiReaction = { emoji: string; relativeXClick: number; relativeYClick: number };
 
-const selectDriftSyncStrategy = () => {
-    switch (config.StreamSynchronizationType) {
-        case "LiveStream":
-            return liveStreamCatchUpStrategy;
-        case "Static":
-            return videoCatchUpStrategy;
-        default:
-            throw Error("Unknown stream synchronization type");
-    }
-};
-
 const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) => {
     const videoElement = React.useRef<HTMLDivElement>(null);
     const player = React.useRef<MediaPlayer>();
@@ -47,7 +36,17 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 
     const [reactions, setReactions] = React.useState<Array<React.ReactNode>>([]);
 
-    useContentSynchronizer(attendeeId, player.current, selectDriftSyncStrategy());
+    const driftSyncStrategy = React.useMemo(() => {
+        switch (config.StreamSynchronizationType) {
+            case "LiveStream":
+                return liveStreamCatchUpStrategy;
+            case "Static":
+                return videoCatchUpStrategy;
+            default:
+                throw Error("Unknown stream synchronization type");
+        }
+    }, []);
+    useContentSynchronizer(attendeeId, player.current, driftSyncStrategy);
 
     const pause = React.useCallback(() => {
         const currentPlayer = player.current!;
@@ -113,6 +112,17 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 
         // Setvolume
         initializedPlayer.setVolume(0.3);
+
+        // @ts-ignore
+        window.seek = (aheadOrBehind: number) =>
+            initializedPlayer.seekTo(initializedPlayer.getPosition() + aheadOrBehind);
+
+        window.setInterval(() => {
+            console.log(`Current position: ${initializedPlayer.getPosition()}`);
+            if (initializedPlayer.getState() !== PlayerState.PLAYING) {
+                console.log(`State: ${initializedPlayer.getState()}`);
+            }
+        }, 1000);
 
         // Show/Hide player controls
         playerOverlay.addEventListener(
