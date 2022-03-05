@@ -10,13 +10,9 @@ import { Nullable } from "types/global";
 
 import useSocket from "hooks/useSocket";
 
+import { IAudioVideoManager } from "components/chime/AudioVideoManager";
 // Types
-import {
-    RosterMap,
-    Role,
-    IChimeAudioVideoProvider,
-    IChimeDevicePicker,
-} from "components/chime/ChimeSdkWrapper";
+import { RosterMap, Role, IChimeAudioVideoProvider } from "components/chime/ChimeSdkWrapper";
 import { SocketEventType } from "components/chime/types";
 
 // Styles
@@ -33,7 +29,7 @@ import ParticipantVideoGroup from "./Participants/ParticipantVideoGroup";
 import { ActivityState, ActivityStateChangeDto } from "./types";
 
 type Props = {
-    chime: IChimeSdkWrapper & IChimeAudioVideoProvider & IChimeDevicePicker;
+    chime: IChimeSdkWrapper & IChimeAudioVideoProvider & IAudioVideoManager;
     joinInfo: JoinInfo;
 };
 

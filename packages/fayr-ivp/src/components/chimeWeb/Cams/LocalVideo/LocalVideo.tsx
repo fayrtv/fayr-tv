@@ -27,23 +27,17 @@ type Props = {
 const LocalVideo = ({ chime, joinInfo, pin }: Props) => {
     const videoElement = React.useRef<HTMLVideoElement>(null);
 
-    const audioVideo: AudioVideoController = chime.audioVideo;
-
     const [{ muted }] = useMeetingMetaData();
 
     const { socket } = useSocket();
 
     const [activityState, setActivityState] = React.useState(ActivityState.Available);
 
+    const [cameraBlurred, setCameraBlurred] = React.useState(false);
     React.useEffect(() => {
-        if (audioVideo) {
-            const currentTile = audioVideo.videoTileController.getLocalVideoTile();
-            if (!currentTile) {
-                return;
-            }
-
-            if (!audioVideo.videoTileController.getLocalVideoTile()) {
-                audioVideo.addObserver({
+        if (chime.audioVideo) {
+            if (!chime.audioVideo.videoTileController.currentLocalTile) {
+                chime.audioVideo.addObserver({
                     videoTileDidUpdate: (tileState: any) => {
                         if (
                             !tileState.boundAttendeeId ||
@@ -54,13 +48,13 @@ const LocalVideo = ({ chime, joinInfo, pin }: Props) => {
                             return;
                         }
 
-                        currentTile.bindVideoElement(videoElement.current);
+                        chime.audioVideo.bindVideoElement(tileState.tileId, videoElement.current);
                     },
                 });
             } else {
-                const tileState = currentTile.state();
+                const currentTile = chime.audioVideo.videoTileController.currentLocalTile.tileState;
 
-                chime.audioVideo.bindVideoElement(tileState.tileId, videoElement.current);
+                chime.audioVideo.bindVideoElement(currentTile.tileId, videoElement.current);
             }
         }
     }, [chime]);
@@ -85,6 +79,18 @@ const LocalVideo = ({ chime, joinInfo, pin }: Props) => {
 
         setActivityState(newState);
     }, [joinInfo.Attendee.AttendeeId, socket, activityState]);
+
+    const onBlurClick = React.useCallback(
+        async (newBlurState: boolean) => {
+            if (!enabled) {
+                return;
+            }
+
+            await chime.changeBlurState(newBlurState);
+            setCameraBlurred(newBlurState);
+        },
+        [enabled],
+    );
 
     const micMuteCls = muted ? "controls__btn--mic_on" : "controls__btn--mic_off";
 
@@ -152,6 +158,14 @@ const LocalVideo = ({ chime, joinInfo, pin }: Props) => {
                                     fill="white"
                                 />
                             </svg>
+                        </span>
+                        <span style={{ marginTop: "2px" }}>
+                            <MaterialIcon
+                                size={16}
+                                color="white"
+                                iconName={cameraBlurred ? "blur_on" : "blur_off"}
+                                onClick={() => onBlurClick(!cameraBlurred)}
+                            />
                         </span>
                         <span style={{ marginTop: "2px" }}>
                             <MaterialIcon

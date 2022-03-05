@@ -3,7 +3,8 @@ import { Nullable } from "types/global";
 
 import useGlobalKeyHandler from "hooks/useGlobalKeyHandler";
 
-import { IChimeDevicePicker, IChimeSdkWrapper } from "components/chime/ChimeSdkWrapper";
+import { IAudioVideoManager } from "components/chime/AudioVideoManager";
+import { IChimeSdkWrapper } from "components/chime/ChimeSdkWrapper";
 
 import { MaterialIcon } from "@fayr/shared-components";
 
@@ -19,7 +20,7 @@ import {
 import { JoinInfo } from "./types";
 
 type Props = {
-    chime: IChimeDevicePicker & IChimeAudioVideoProvider & IChimeSdkWrapper;
+    chime: IAudioVideoManager & IChimeAudioVideoProvider & IChimeSdkWrapper;
     joinInfo: JoinInfo;
     saveSettings(
         playbackUrl: string,

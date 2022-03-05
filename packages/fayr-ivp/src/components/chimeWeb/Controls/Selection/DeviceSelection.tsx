@@ -2,8 +2,9 @@
 import * as React from "react";
 import { Nullable } from "types/global";
 
+import { IAudioVideoManager } from "components/chime/AudioVideoManager";
 // Styles
-import { DeviceInfo, IChimeDevicePicker } from "components/chime/ChimeSdkWrapper";
+import { DeviceInfo } from "components/chime/ChimeSdkWrapper";
 
 type CommonProps = {
     selectedDevice: Nullable<string>;
@@ -67,7 +68,7 @@ const DeviceSelection = ({
 };
 
 type SpecializedProps = Omit<
-    CommonProps & { chimeDevicePicker: IChimeDevicePicker },
+    CommonProps & { chimeDevicePicker: IAudioVideoManager },
     "title" | "microphone" | "chimeUpdateCb" | "name"
 >;
 
