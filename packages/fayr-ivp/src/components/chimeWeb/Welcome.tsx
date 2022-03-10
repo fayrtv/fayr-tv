@@ -82,7 +82,7 @@ class Welcome extends Component<Props, State> {
             playbackURL,
             role: this.state.role,
         };
-        sessionStorage.setItem(formatMeetingSsKey(roomTitle), JSON.stringify(data));
+        localStorage.setItem(formatMeetingSsKey(roomTitle), JSON.stringify(data));
         this.props.history.push(this.roomUrlRelative);
     }
 

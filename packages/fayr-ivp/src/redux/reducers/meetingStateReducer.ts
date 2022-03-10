@@ -36,7 +36,7 @@ export function* meetingStateReducerSaga() {
 function* updateMeetingStateAction(action: MeetingStateAction) {
     try {
         const key = formatMeetingSsKey(action.payload.title!);
-        sessionStorage.setItem(key, JSON.stringify(action.payload));
+        localStorage.setItem(key, JSON.stringify(action.payload));
         yield put({
             ...action,
             type: UPDATE_MEETING_STATE_SUCCEEDED,

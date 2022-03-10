@@ -26,7 +26,7 @@ export const EndPartyButton = ({ chime, ssName, role, baseHref, title }: Props) 
     const onEndButtonClick = async () => {
         await chime.leaveRoom(role === "host");
         dispatch(GlobalResetAction());
-        sessionStorage.removeItem(ssName);
+        localStorage.removeItem(ssName);
         const whereTo = `${baseHref}/${role === "host" ? "" : "join?room=" + title}`;
         history.push(whereTo);
     };

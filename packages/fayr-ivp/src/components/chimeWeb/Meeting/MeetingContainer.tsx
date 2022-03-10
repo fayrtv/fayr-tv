@@ -32,7 +32,7 @@ export const MeetingContainer = ({
 
     // Will be undefined on direct URL loading without previously filling meeting fields
     const [meetingMetaData, setMeetingMetaData] = useMeetingMetaData(() => {
-        const rawData = sessionStorage.getItem(formatMeetingSsKey(roomTitle));
+        const rawData = localStorage.getItem(formatMeetingSsKey(roomTitle));
         if (!rawData || isFalsyOrWhitespace(rawData)) {
             return {} as MeetingMetaData;
         }

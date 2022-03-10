@@ -30,6 +30,7 @@ import { JoinInfo, ForceMicChangeDto, ForceCamChangeDto } from "../types";
 import LocalVideo from "./LocalVideo/LocalVideo";
 import ParticipantVideo from "./Participants/ParticipantVideo";
 import ParticipantVideoGroup from "./Participants/ParticipantVideoGroup";
+import { ActivityState, ActivityStateChangeDto } from "./types";
 
 type Props = {
     chime: IChimeSdkWrapper & IChimeAudioVideoProvider & IChimeDevicePicker;
@@ -77,6 +78,7 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
                 videoEnabled: tileState.active,
                 attendeeId: tileState.boundAttendeeId,
                 tileId: tileState.tileId,
+                activityState: ActivityState.Available,
             });
         },
         [putAttendee],
@@ -258,9 +260,24 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
             },
         );
 
+        const activityChangeDispose = socket.addListener<ActivityStateChangeDto>(
+            SocketEventType.ActivityStateChange,
+            async ({ activityState, attendeeId }) => {
+                if (attendeeId === joinInfo.Attendee.AttendeeId) {
+                    return;
+                }
+
+                updateAttendee({
+                    attendeeId,
+                    activityState,
+                });
+            },
+        );
+
         return () => {
             micChangeDispose();
             camChangeDispose();
+            activityChangeDispose();
         };
     }, [
         socket,

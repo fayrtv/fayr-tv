@@ -98,6 +98,7 @@ export const CamToggleButton = ({ chime }: Props) => {
                     ...meetingMetaData.meetingInputOutputDevices,
                     cam: undefined,
                 },
+                videoEnabled: false,
             });
         }
     };

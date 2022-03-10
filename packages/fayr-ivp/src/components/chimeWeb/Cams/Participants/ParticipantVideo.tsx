@@ -15,10 +15,12 @@ import Emoji from "components/common/Emoji";
 
 import { MaterialIcon, Flex, Spinner } from "@fayr/shared-components";
 
-import "../Cam.scss";
+import commonCamStyles from "../Cam.module.scss";
 import styles from "./ParticipantVideo.module.scss";
 
 import { ForceCamChangeDto } from "../../types";
+import CamOverlay from "../CamOverlay";
+import { ActivityState } from "../types";
 
 type Props = {
     isSelfHost: boolean;
@@ -177,14 +179,17 @@ const ParticipantVideo = ({
 
     return (
         <div
-            className={classNames("cam", { hidden: !attendeeId })}
+            className={classNames(commonCamStyles.cam, { hidden: !attendeeId })}
             key={attendeeId}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-            <div className="preview">
-                <div className="video-container pos-relative">
-                    <video ref={videoRef} className="attendee_cam remote-attendee" id={videoId} />
+            <div className={commonCamStyles.preview}>
+                <div className={classNames(commonCamStyles.VideoContainer, "pos-relative")}>
+                    <video ref={videoRef} className={commonCamStyles.AttendeeCam} id={videoId} />
+                    {getAttendee(attendeeId)?.activityState === ActivityState.AwayFromKeyboard && (
+                        <CamOverlay activityState={ActivityState.AwayFromKeyboard} />
+                    )}
                     <CSSTransition
                         in={emojiReaction !== null}
                         timeout={3000}
@@ -200,7 +205,11 @@ const ParticipantVideo = ({
                     >
                         <div>
                             <div className="video-container-fade"></div>
-                            <Flex className="emoji-reaction" mainAlign="Center" crossAlign="Center">
+                            <Flex
+                                className={commonCamStyles.EmojiReaction}
+                                mainAlign="Center"
+                                crossAlign="Center"
+                            >
                                 <Emoji text={emojiReaction ?? ""} />
                             </Flex>
                         </div>
@@ -208,7 +217,11 @@ const ParticipantVideo = ({
                 </div>
             </div>
             <Flex
-                className={`participantMeta${metaCls} ${micTalkingIndicator}`}
+                className={classNames(
+                    commonCamStyles.ParticipantMeta,
+                    metaCls,
+                    micTalkingIndicator,
+                )}
                 direction="Row"
                 space="Between"
             >

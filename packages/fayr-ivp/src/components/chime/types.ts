@@ -17,4 +17,5 @@ export enum SocketEventType {
     ForceAttendeeMicChange = 4,
     ForceAttendeeVideoChange = 5,
     TimeStampHeartBeat = 6,
+    ActivityStateChange = 7,
 }
