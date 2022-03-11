@@ -1,33 +1,34 @@
-import { AudioVideoFacade, BackgroundBlurProcessor, BackgroundBlurVideoFrameProcessor, DefaultVideoTransformDevice, Logger } from "amazon-chime-sdk-js";
+import {
+    AudioVideoFacade,
+    BackgroundBlurProcessor,
+    BackgroundBlurVideoFrameProcessor,
+    DefaultVideoTransformDevice,
+    Logger,
+} from "amazon-chime-sdk-js";
 import { Nullable } from "types/global";
 
 import { DeviceInfo } from "./ChimeSdkWrapper";
 
 export interface IAudioVideoManager {
-	get audioVideo(): Nullable<AudioVideoFacade>;
-	set audioVideo(device: Nullable<AudioVideoFacade>);
-	get currentAudioInputDevice(): Nullable<DeviceInfo>;
-	set currentAudioInputDevice(device: Nullable<DeviceInfo>);
-	get currentAudioOutputDevice(): Nullable<DeviceInfo>
-	set currentAudioOutputDevice(device: Nullable<DeviceInfo>);
-	get currentVideoInputDevice(): Nullable<DeviceInfo>;
-	set currentVideoInputDevice(device: Nullable<DeviceInfo>);
-	
+    audioVideo: Nullable<AudioVideoFacade>;
+    currentAudioInputDevice: Nullable<DeviceInfo>;
+    currentAudioOutputDevice: Nullable<DeviceInfo>;
+    currentVideoInputDevice: Nullable<DeviceInfo>;
 
     chooseAudioInputDevice(device: Nullable<DeviceInfo>): Promise<void>;
     chooseAudioOutputDevice(device: Nullable<DeviceInfo>): Promise<void>;
     chooseVideoInputDevice(device: Nullable<DeviceInfo>, blurBackground?: boolean): Promise<void>;
-	changeBlurState(blurBackground: boolean): Promise<void>;
+    changeBlurState(blurBackground: boolean): Promise<void>;
 }
 
 export class AudioVideoManager implements IAudioVideoManager {
     private _audioVideo: Nullable<AudioVideoFacade> = null;
-	public set audioVideo(device: Nullable<AudioVideoFacade>) {
-		this._audioVideo = device;
-	}
-	public get audioVideo() {
-		return this._audioVideo;
-	}
+    public set audioVideo(device: Nullable<AudioVideoFacade>) {
+        this._audioVideo = device;
+    }
+    public get audioVideo() {
+        return this._audioVideo;
+    }
 
     private _currentAudioInputDevice: Nullable<DeviceInfo> = null;
     public get currentAudioInputDevice() {
@@ -75,30 +76,33 @@ export class AudioVideoManager implements IAudioVideoManager {
         }
     };
 
-    chooseVideoInputDevice = async (device: Nullable<DeviceInfo>, blurBackground: boolean = false) => {
+    chooseVideoInputDevice = async (
+        device: Nullable<DeviceInfo>,
+        blurBackground: boolean = false,
+    ) => {
         try {
-			if (!device?.value) {
-				return;
-			}
+            if (!device?.value) {
+                return;
+            }
 
-			let actualDevice: string | DefaultVideoTransformDevice = device.value;
-			if (blurBackground) {
-				// Background Blur
-				const processors: Array<BackgroundBlurProcessor> = [];
-	
-				if (await BackgroundBlurVideoFrameProcessor.isSupported()) {
-					const blurProcessor = await BackgroundBlurVideoFrameProcessor.create();
-	
-					if (blurProcessor) {
-						processors.push(blurProcessor);
-					}
-				}
-				actualDevice = new DefaultVideoTransformDevice(
-					this._logger,
-					device?.value ?? null,
-					processors,
-				);
-			}
+            let actualDevice: string | DefaultVideoTransformDevice = device.value;
+            if (blurBackground) {
+                // Background Blur
+                const processors: Array<BackgroundBlurProcessor> = [];
+
+                if (await BackgroundBlurVideoFrameProcessor.isSupported()) {
+                    const blurProcessor = await BackgroundBlurVideoFrameProcessor.create();
+
+                    if (blurProcessor) {
+                        processors.push(blurProcessor);
+                    }
+                }
+                actualDevice = new DefaultVideoTransformDevice(
+                    this._logger,
+                    device?.value ?? null,
+                    processors,
+                );
+            }
 
             await this._audioVideo?.chooseVideoInputDevice(actualDevice);
             this._currentVideoInputDevice = device;
@@ -107,7 +111,7 @@ export class AudioVideoManager implements IAudioVideoManager {
         }
     };
 
-	changeBlurState = async (blurBackground: boolean) => {
-		await this.chooseVideoInputDevice(this._currentVideoInputDevice, blurBackground);
-	}
+    changeBlurState = async (blurBackground: boolean) => {
+        await this.chooseVideoInputDevice(this._currentVideoInputDevice, blurBackground);
+    };
 }
