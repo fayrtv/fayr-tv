@@ -1,7 +1,5 @@
-// Framework
 import { ReconnectingPromisedWebSocket } from "amazon-chime-sdk-js";
 
-// Types
 import { ISocketProvider, SocketEventType, SocketMessage } from "./types";
 
 type ListenerCallback = (event: AwsWebsocketMessage) => Promise<void>;
