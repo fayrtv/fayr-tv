@@ -39,13 +39,10 @@ export const ChatInput = ({ inputRef, userName, sendMessage }: Props) => {
     };
 
     const onKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
-        event.preventDefault();
-        event.stopPropagation();
         if (event.keyCode !== 13) {
             // keyCode 13 is carriage return
             return false;
         }
-
         trySendMessage();
     };
 
@@ -88,6 +85,10 @@ export const ChatInput = ({ inputRef, userName, sendMessage }: Props) => {
                             maxLength={510}
                             onChange={onInput}
                             onKeyDown={onKeyDown}
+                            onKeyUp={(event) => {
+                                event.preventDefault();
+                                event.stopPropagation();
+                            }}
                         />
                         <div
                             className={styles.EmojiIconContainer}

@@ -19,8 +19,8 @@ export const useGlobalKeyHandler = (
     );
 
     React.useEffect(() => {
-        window.addEventListener("keydown", filteredCb);
-        return () => window.removeEventListener("keydown", filteredCb);
+        window.addEventListener("keyup", filteredCb);
+        return () => window.removeEventListener("keyup", filteredCb);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filteredCb, ...additionalDeps]);
 };
