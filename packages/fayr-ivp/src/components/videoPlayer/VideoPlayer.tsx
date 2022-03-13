@@ -9,6 +9,9 @@ import useSocket from "hooks/useSocket";
 import { EMOJI_SIZE } from "components/chimeWeb/Controls/emoji-reactions/EmojiReactionButton";
 import Emoji from "components/common/Emoji";
 import { SelectedReactionContext } from "components/contexts/SelectedReactionContext";
+import liveStreamCatchUpStrategy from "components/videoPlayer/driftSyncStrategies/liveStreamCatchUpStrategy";
+import videoCatchUpStrategy from "components/videoPlayer/driftSyncStrategies/videoCatchUpStrategy";
+import useContentSynchronizer from "components/videoPlayer/useContentSynchronizer";
 
 import styles from "./VideoPlayer.module.scss";
 
@@ -28,11 +31,22 @@ type EmojiReaction = { emoji: string; relativeXClick: number; relativeYClick: nu
 const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) => {
     const videoElement = React.useRef<HTMLDivElement>(null);
     const player = React.useRef<MediaPlayer>();
-
     const [paused, setPaused] = React.useState(false);
     const [fullScreen, setFullScreen] = React.useState(false);
 
     const [reactions, setReactions] = React.useState<Array<React.ReactNode>>([]);
+
+    const driftSyncStrategy = React.useMemo(() => {
+        switch (config.StreamSynchronizationType) {
+            case "LiveStream":
+                return liveStreamCatchUpStrategy;
+            case "Static":
+                return videoCatchUpStrategy;
+            default:
+                throw Error("Unknown stream synchronization type");
+        }
+    }, []);
+    useContentSynchronizer(attendeeId, player.current, driftSyncStrategy);
 
     const pause = React.useCallback(() => {
         const currentPlayer = player.current!;
@@ -98,6 +112,17 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 
         // Setvolume
         initializedPlayer.setVolume(0.3);
+
+        // @ts-ignore
+        window.seek = (aheadOrBehind: number) =>
+            initializedPlayer.seekTo(initializedPlayer.getPosition() + aheadOrBehind);
+
+        window.setInterval(() => {
+            console.log(`Current position: ${initializedPlayer.getPosition()}`);
+            if (initializedPlayer.getState() !== PlayerState.PLAYING) {
+                console.log(`State: ${initializedPlayer.getState()}`);
+            }
+        }, 1000);
 
         // Show/Hide player controls
         playerOverlay.addEventListener(
