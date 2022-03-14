@@ -1,4 +1,4 @@
-import { ThemeCSSVariables, Theme, mapTheme } from "./themeMapping";
+import { Theme, mapTheme } from "./themeMapping";
 
 export const applyTheme = (theme: Theme, applyOn: HTMLElement = document.documentElement): void => {
     const mappedTheme = mapTheme(theme);
