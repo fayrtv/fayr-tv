@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { isInRect } from "util/coordinateUtil";
 
 import useGlobalClickHandler from "hooks/useGlobalClickHandler";
-import { useSocket } from "hooks/useSocket";
+import useSocket from "hooks/useSocket";
 
 import Emoji from "components/common/Emoji";
 
