@@ -26,7 +26,7 @@ export default function useContentSynchronizer<T>(
                 return;
             }
             strategy.apply(player, Array.from(attendeeTsMap.current.values()));
-        }, config.StreamSync.SynchronizationInterval);
+        }, config.streamSync.synchronizationInterval);
 
         return () => window.clearInterval(intervalHandle);
     }, [player, strategy]);
@@ -72,7 +72,7 @@ export default function useContentSynchronizer<T>(
                     eventTimestamp: moment.utc().unix(),
                 },
             });
-        }, config.StreamSync.HeartBeatInterval);
+        }, config.streamSync.heartBeatInterval);
 
         return () => window.clearInterval(intervalHandle);
     }, [socket, player, ownId, strategy]);

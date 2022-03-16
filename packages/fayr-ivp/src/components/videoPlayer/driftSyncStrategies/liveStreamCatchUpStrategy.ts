@@ -23,7 +23,7 @@ const liveStreamCatchUpStrategy: IDriftSyncStrategy<number> = {
 
         const ownLatency = player.getLiveLatency();
         const bestAttendeeLatency = Math.min(...utcSanitizedMeasurements);
-        const shouldCatchUp = ownLatency > config.StreamSync.LiveStream.MinimumDrift;
+        const shouldCatchUp = ownLatency > config.streamSync.liveStream.minimumDrift;
         const ownLatencyIsBest = ownLatency < bestAttendeeLatency;
         logIfEnabled(`Current latency: ${ownLatency}`);
         logIfEnabled(`Other latencies: [${utcSanitizedMeasurements.join(",")}]`);
@@ -49,7 +49,7 @@ const liveStreamCatchUpStrategy: IDriftSyncStrategy<number> = {
 };
 
 const logIfEnabled = (message: string) => {
-    if (config.StreamSync.EnableLogging) {
+    if (config.streamSync.loggingEnabled) {
         console.log(message);
     }
 };

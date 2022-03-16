@@ -55,7 +55,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
     );
 
     const driftSyncStrategy = React.useMemo(() => {
-        switch (config.StreamSync.StreamSynchronizationType) {
+        switch (config.streamSync.streamSynchronizationType) {
             case "LiveStream":
                 return liveStreamCatchUpStrategy;
             case "Static":

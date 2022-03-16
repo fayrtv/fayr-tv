@@ -24,7 +24,7 @@ const videoCatchUpStrategy: IDriftSyncStrategy<number> = {
         const currentPosition = player.getPosition();
         const mostUpToDateTime = Math.max(...utcSanitizedMeasurements);
 
-        if (mostUpToDateTime - config.StreamSync.StaticStream.MinimumDrift > currentPosition) {
+        if (mostUpToDateTime - config.streamSync.staticStream.minimumDrift > currentPosition) {
             player.seekTo(mostUpToDateTime);
         }
     },

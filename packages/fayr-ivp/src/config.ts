@@ -43,34 +43,34 @@ export const ShowStartScreen: boolean = true;
 
 type StreamSyncOptions = {
     // Type of synchronization
-    StreamSynchronizationType: "None" | "Static" | "LiveStream";
+    streamSynchronizationType: "None" | "Static" | "LiveStream";
     // Interval for how often a heartbeat is shared
-    HeartBeatInterval: number;
+    heartBeatInterval: number;
     // Interval for synchronization of position among attendees
-    SynchronizationInterval: number;
+    synchronizationInterval: number;
     // Whether diagnostics logging is enabled
-    EnableLogging: boolean;
+    loggingEnabled: boolean;
     // Config for live stream
-    LiveStream: {
+    liveStream: {
         // The minimum time distance from the attendee ahead at which to start synchronizing streams
-        MinimumDrift: number;
+        minimumDrift: number;
     };
     // Config for static video source
-    StaticStream: {
+    staticStream: {
         // The maximum amount of seconds we can diverge from the most up to date attendee
-        MinimumDrift: number;
+        minimumDrift: number;
     };
 };
 
-export const StreamSync: StreamSyncOptions = {
-    StreamSynchronizationType: "LiveStream",
-    HeartBeatInterval: 1000,
-    SynchronizationInterval: 1000,
-    EnableLogging: true,
-    LiveStream: {
-        MinimumDrift: 3,
+export const streamSync: StreamSyncOptions = {
+    streamSynchronizationType: "LiveStream",
+    heartBeatInterval: 1000,
+    synchronizationInterval: 1000,
+    loggingEnabled: true,
+    liveStream: {
+        minimumDrift: 3,
     },
-    StaticStream: {
-        MinimumDrift: 2,
+    staticStream: {
+        minimumDrift: 2,
     },
 };
