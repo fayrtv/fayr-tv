@@ -22,7 +22,7 @@ export default function useContentSynchronizer<T>(
 
     React.useEffect(() => {
         const intervalHandle = window.setInterval(() => {
-            if (!player) {
+            if (!player || attendeeTsMap.current.size === 0) {
                 return;
             }
             strategy.apply(player, Array.from(attendeeTsMap.current.values()));
@@ -41,6 +41,11 @@ export default function useContentSynchronizer<T>(
         return socket.addListener<HeartBeat<T>>(
             SocketEventType.TimeStampHeartBeat,
             ({ attendeeId, measurement, eventTimestamp }) => {
+                // Exclude our own ID here
+                if (attendeeId === ownId) {
+                    return Promise.resolve();
+                }
+
                 attendeeTsMap.current.set(attendeeId, {
                     measurement,
                     measuredAt: eventTimestamp,
@@ -48,7 +53,7 @@ export default function useContentSynchronizer<T>(
                 return Promise.resolve();
             },
         );
-    }, [socket, attendeeTsMap]);
+    }, [socket, attendeeTsMap, ownId]);
 
     React.useEffect(() => {
         if (!socket || !player) {

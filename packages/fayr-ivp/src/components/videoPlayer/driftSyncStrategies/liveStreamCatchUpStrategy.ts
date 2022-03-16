@@ -7,11 +7,6 @@ import {
     IDriftSyncStrategy,
 } from "components/videoPlayer/driftSyncStrategies/interfaces";
 
-/**
- * The minimum time distance from the attendee ahead at which to start synchronizing streams
- */
-const MINIMUM_DRIFT_FOR_SYNC = 3;
-
 const liveStreamCatchUpStrategy: IDriftSyncStrategy<number> = {
     apply(
         player: MediaPlayer,
@@ -28,7 +23,7 @@ const liveStreamCatchUpStrategy: IDriftSyncStrategy<number> = {
 
         const ownLatency = player.getLiveLatency();
         const bestAttendeeLatency = Math.min(...utcSanitizedMeasurements);
-        const shouldCatchUp = ownLatency > MINIMUM_DRIFT_FOR_SYNC;
+        const shouldCatchUp = ownLatency > config.StreamSync.LiveStream.MinimumDrift;
         const ownLatencyIsBest = ownLatency < bestAttendeeLatency;
         logIfEnabled(`Current latency: ${ownLatency}`);
         logIfEnabled(`Other latencies: [${utcSanitizedMeasurements.join(",")}]`);
