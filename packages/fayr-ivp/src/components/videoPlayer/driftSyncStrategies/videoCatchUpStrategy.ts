@@ -1,15 +1,11 @@
 import { MediaPlayer } from "amazon-ivs-player";
+import * as config from "config";
 import * as moment from "moment";
 
 import {
     AttendeeDriftMeasurement,
     IDriftSyncStrategy,
 } from "components/videoPlayer/driftSyncStrategies/interfaces";
-
-/**
- * The maximum amount of seconds we can diverge from the most up to date attendee
- */
-const MAXIMUM_DRIFT_SECONDS = 2;
 
 const videoCatchUpStrategy: IDriftSyncStrategy<number> = {
     apply(
@@ -28,7 +24,7 @@ const videoCatchUpStrategy: IDriftSyncStrategy<number> = {
         const currentPosition = player.getPosition();
         const mostUpToDateTime = Math.max(...utcSanitizedMeasurements);
 
-        if (mostUpToDateTime - MAXIMUM_DRIFT_SECONDS > currentPosition) {
+        if (mostUpToDateTime - config.streamSync.staticStream.minimumDrift > currentPosition) {
             player.seekTo(mostUpToDateTime);
         }
     },

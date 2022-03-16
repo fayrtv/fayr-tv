@@ -55,7 +55,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
     );
 
     const driftSyncStrategy = React.useMemo(() => {
-        switch (config.StreamSynchronizationType) {
+        switch (config.streamSync.streamSynchronizationType) {
             case "LiveStream":
                 return liveStreamCatchUpStrategy;
             case "Static":
@@ -134,13 +134,6 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
         // @ts-ignore
         window.seek = (aheadOrBehind: number) =>
             initializedPlayer.seekTo(initializedPlayer.getPosition() + aheadOrBehind);
-
-        window.setInterval(() => {
-            console.log(`Current position: ${initializedPlayer.getPosition()}`);
-            if (initializedPlayer.getState() !== PlayerState.PLAYING) {
-                console.log(`State: ${initializedPlayer.getState()}`);
-            }
-        }, 1000);
 
         // Show/Hide player controls
         playerOverlay.addEventListener(

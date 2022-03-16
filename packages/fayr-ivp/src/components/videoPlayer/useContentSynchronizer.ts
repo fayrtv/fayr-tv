@@ -1,4 +1,5 @@
 import { MediaPlayer } from "amazon-ivs-player";
+import * as config from "config";
 import * as moment from "moment";
 import React from "react";
 
@@ -21,11 +22,11 @@ export default function useContentSynchronizer<T>(
 
     React.useEffect(() => {
         const intervalHandle = window.setInterval(() => {
-            if (!player) {
+            if (!player || attendeeTsMap.current.size === 0) {
                 return;
             }
             strategy.apply(player, Array.from(attendeeTsMap.current.values()));
-        }, 1000);
+        }, config.streamSync.synchronizationInterval);
 
         return () => window.clearInterval(intervalHandle);
     }, [player, strategy]);
@@ -40,6 +41,11 @@ export default function useContentSynchronizer<T>(
         return socket.addListener<HeartBeat<T>>(
             SocketEventType.TimeStampHeartBeat,
             ({ attendeeId, measurement, eventTimestamp }) => {
+                // Exclude our own ID here
+                if (attendeeId === ownId) {
+                    return Promise.resolve();
+                }
+
                 attendeeTsMap.current.set(attendeeId, {
                     measurement,
                     measuredAt: eventTimestamp,
@@ -47,7 +53,7 @@ export default function useContentSynchronizer<T>(
                 return Promise.resolve();
             },
         );
-    }, [socket, attendeeTsMap]);
+    }, [socket, attendeeTsMap, ownId]);
 
     React.useEffect(() => {
         if (!socket || !player) {
@@ -66,7 +72,7 @@ export default function useContentSynchronizer<T>(
                     eventTimestamp: moment.utc().unix(),
                 },
             });
-        }, 1000);
+        }, config.streamSync.heartBeatInterval);
 
         return () => window.clearInterval(intervalHandle);
     }, [socket, player, ownId, strategy]);
