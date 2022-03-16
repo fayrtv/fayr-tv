@@ -18,13 +18,13 @@ export const DEFAULT_VIDEO_STREAM = sample([
     // Das Erste
     // "https://mcdn.daserste.de/daserste/de/master_1920p_5128.m3u8",
     // Bunny stream
-    "https://3d26876b73d7.us-west-2.playback.live-video.net/api/video/v1/us-west-2.913157848533.channel.rkCBS9iD1eyd.m3u8",
+    // "https://3d26876b73d7.us-west-2.playback.live-video.net/api/video/v1/us-west-2.913157848533.channel.rkCBS9iD1eyd.m3u8",
     // ARTE
     // "https://artesimulcast.akamaized.net/hls/live/2030993/artelive_de/index.m3u8",
     // KIKA
     // "https://kikageohls.akamaized.net/hls/live/2022693/livetvkika_de/master.m3u8",
     // Tagesschau 24
-    // "https://3d26876b73d7.us-west-2.playback.live-video.net/api/video/v1/us-west-2.913157848533.channel.rkCBS9iD1eyd.m3u8",
+    "https://tagesschau.akamaized.net/hls/live/2020117/tagesschau/tagesschau_3/master_720.m3u8",
 ]) as string;
 
 // Default Chat websocket link
