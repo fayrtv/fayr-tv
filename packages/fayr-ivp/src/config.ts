@@ -40,4 +40,18 @@ export const RANDOM = makeid(8);
 export const HighlightVideoAlignment: "Top" | "Bottom" = "Bottom";
 export const HostPinningFeatureEnabled: boolean = false;
 export const ShowStartScreen: boolean = true;
-export const StreamSynchronizationType: "None" | "Static" | "LiveStream" = "LiveStream";
+
+type StreamSyncOptions = {
+    // Type of synchronization
+    StreamSynchronizationType: "None" | "Static" | "LiveStream";
+    HeartBeatInterval: number;
+    SynchronizationInterval: number;
+    EnableLogging: boolean;
+};
+
+export const StreamSync: StreamSyncOptions = {
+    StreamSynchronizationType: "LiveStream",
+    HeartBeatInterval: 1000,
+    SynchronizationInterval: 1000,
+    EnableLogging: true,
+};

@@ -1,4 +1,5 @@
 import { MediaPlayer } from "amazon-ivs-player";
+import * as config from "config";
 import * as moment from "moment";
 import React from "react";
 
@@ -25,7 +26,7 @@ export default function useContentSynchronizer<T>(
                 return;
             }
             strategy.apply(player, Array.from(attendeeTsMap.current.values()));
-        }, 1000);
+        }, config.StreamSync.SynchronizationInterval);
 
         return () => window.clearInterval(intervalHandle);
     }, [player, strategy]);
@@ -66,7 +67,7 @@ export default function useContentSynchronizer<T>(
                     eventTimestamp: moment.utc().unix(),
                 },
             });
-        }, 1000);
+        }, config.StreamSync.HeartBeatInterval);
 
         return () => window.clearInterval(intervalHandle);
     }, [socket, player, ownId, strategy]);

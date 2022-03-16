@@ -1,4 +1,5 @@
 import { MediaPlayer } from "amazon-ivs-player";
+import * as config from "config";
 import * as moment from "moment";
 
 import {
@@ -29,6 +30,10 @@ const liveStreamCatchUpStrategy: IDriftSyncStrategy<number> = {
         const bestAttendeeLatency = Math.min(...utcSanitizedMeasurements);
         const shouldCatchUp = ownLatency > MINIMUM_DRIFT_FOR_SYNC;
         const ownLatencyIsBest = ownLatency < bestAttendeeLatency;
+        logIfEnabled(`Current latency: ${ownLatency}`);
+        logIfEnabled(`Other latencies: [${utcSanitizedMeasurements.join(",")}]`);
+        logIfEnabled(`Catching up required: ${shouldCatchUp}`);
+        logIfEnabled(`Own latency best: ${ownLatencyIsBest}`);
 
         // Two conditions should be met to start the resynchronization process:
         // 1. Our delay must be below a certain amount. If we were to start synchronizing streams once the stream
@@ -37,7 +42,7 @@ const liveStreamCatchUpStrategy: IDriftSyncStrategy<number> = {
         if (shouldCatchUp && !ownLatencyIsBest) {
             const playbackRate = 130.641 - 129.6778 * Math.pow(Math.E, -0.0002520927 * ownLatency);
             player.setPlaybackRate(playbackRate);
-            console.log(`Need to catch up. Set playback rate to ${playbackRate}`);
+            logIfEnabled(`Need to catch up. Set playback rate to ${playbackRate}`);
             return;
         }
 
@@ -46,6 +51,12 @@ const liveStreamCatchUpStrategy: IDriftSyncStrategy<number> = {
     measureOwn(player: MediaPlayer): number {
         return player.getLiveLatency();
     },
+};
+
+const logIfEnabled = (message: string) => {
+    if (config.StreamSync.EnableLogging) {
+        console.log(message);
+    }
 };
 
 export default liveStreamCatchUpStrategy;
