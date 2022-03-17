@@ -26,7 +26,7 @@ type Props = {
 
 const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) => {
     const videoElement = React.useRef<HTMLDivElement>(null);
-    const player = React.useRef<MediaPlayer>();
+    const [player, setPlayer] = React.useState<MediaPlayer>();
     const [paused, setPaused] = React.useState(false);
     const [fullScreen, setFullScreen] = React.useState(false);
 
@@ -64,13 +64,15 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
                 throw Error("Unknown stream synchronization type");
         }
     }, []);
-    useContentSynchronizer(attendeeId, player.current, driftSyncStrategy);
+    useContentSynchronizer(attendeeId, player, driftSyncStrategy);
 
     const pause = React.useCallback(() => {
-        const currentPlayer = player.current!;
-        paused ? currentPlayer.play() : currentPlayer.pause();
+        if (!player) {
+            return;
+        }
+        paused ? player.play() : player.pause();
         setPaused(!paused);
-    }, [paused]);
+    }, [paused, player]);
 
     const toggleFullScreen: React.MouseEventHandler = React.useCallback(
         (event) => {
@@ -96,7 +98,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
 
         // Initialize player
         const initializedPlayer: MediaPlayer = mediaPlayerPackage.create();
-        player.current = initializedPlayer;
+        setPlayer(initializedPlayer);
         initializedPlayer.attachHTMLVideoElement(
             document.getElementById("video-player")! as HTMLVideoElement,
         );
@@ -210,7 +212,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
             >
                 <VideoPlayerControls
                     fullScreen={fullScreen}
-                    player={player.current}
+                    player={player}
                     video={videoElement.current}
                 />
             </div>
