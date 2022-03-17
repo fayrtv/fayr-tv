@@ -13667,6 +13667,14 @@
         "path": "fayr_tv_live/node_modules/react-color",
         "licenseFile": "fayr_tv_live/node_modules/react-color/LICENSE"
     },
+    "react-colorful@5.5.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/omgovich/react-colorful",
+        "publisher": "Vlad Shilov",
+        "email": "omgovich@ya.ru",
+        "path": "fayr_tv_live/node_modules/react-colorful",
+        "licenseFile": "fayr_tv_live/node_modules/react-colorful/LICENSE"
+    },
     "react-contenteditable@3.3.6": {
         "licenses": "Apache-2.0",
         "repository": "https://github.com/lovasoa/react-contenteditable",
