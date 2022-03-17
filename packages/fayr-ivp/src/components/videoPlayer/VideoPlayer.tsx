@@ -8,7 +8,7 @@ import useManyClickHandlers from "hooks/useManyClickHandlers";
 import { EMOJI_SIZE } from "components/chimeWeb/Controls/emoji-reactions/EmojiReactionButton";
 import Emoji from "components/common/Emoji";
 import { SelectedReactionContext } from "components/contexts/SelectedReactionContext";
-import liveStreamSyncAllStrategy from "components/videoPlayer/driftSyncStrategies/liveStreamSyncAllStrategy";
+import liveStreamCatchUpStrategy from "components/videoPlayer/driftSyncStrategies/liveStreamCatchUpStrategy";
 import videoCatchUpStrategy from "components/videoPlayer/driftSyncStrategies/videoCatchUpStrategy";
 import useContentSynchronizer from "components/videoPlayer/useContentSynchronizer";
 import { EmojiReaction, useEmojiReactions } from "components/videoPlayer/useEmojiReactions";
@@ -57,7 +57,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
     const driftSyncStrategy = React.useMemo(() => {
         switch (config.streamSync.streamSynchronizationType) {
             case "LiveStream":
-                return liveStreamSyncAllStrategy;
+                return liveStreamCatchUpStrategy;
             case "Static":
                 return videoCatchUpStrategy;
             default:

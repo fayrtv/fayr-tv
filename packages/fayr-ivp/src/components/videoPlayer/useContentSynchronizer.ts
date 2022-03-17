@@ -88,7 +88,7 @@ export default function useContentSynchronizer<T>(
                 messageType: SocketEventType.TimeStampHeartBeat,
                 payload: {
                     attendeeId: ownId,
-                    measurement: strategy.measureOwn(player),
+                    measurement: strategy.measureOwnDrift(player),
                     eventTimestamp: moment.utc().unix(),
                 },
             });

@@ -28,8 +28,16 @@ const videoCatchUpStrategy: IDriftSyncStrategy<number> = {
             player.seekTo(mostUpToDateTime);
         }
     },
-    measureOwn(player: MediaPlayer): number {
+
+    measureOwnDrift(player: MediaPlayer): number {
         return player.getPosition();
+    },
+
+    synchronizeWithOthers(
+        player: MediaPlayer,
+        otherAttendeeMeasurements: Array<AttendeeDriftMeasurement<number>>,
+    ): void {
+        throw Error("not implemented");
     },
 };
 

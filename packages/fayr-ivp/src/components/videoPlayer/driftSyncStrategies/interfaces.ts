@@ -1,8 +1,12 @@
 import { MediaPlayer } from "amazon-ivs-player";
 
 export interface IDriftSyncStrategy<T> {
-    apply(player: MediaPlayer, otherAttendeeMeasurements: Array<AttendeeDriftMeasurement<T>>): void;
-    measureOwn(player: MediaPlayer): T;
+    apply(player: MediaPlayer, otherAttendeeDrifts: Array<AttendeeDriftMeasurement<T>>): void;
+    measureOwnDrift(player: MediaPlayer): T;
+    synchronizeWithOthers(
+        player: MediaPlayer,
+        otherAttendeeMeasurements: Array<AttendeeDriftMeasurement<T>>,
+    ): void;
 }
 
 export type AttendeeDriftMeasurement<T> = {

@@ -71,7 +71,7 @@ export const streamSync: StreamSyncOptions = {
     synchronizationInterval: 1000,
     loggingEnabled: true,
     liveStream: {
-        minimumDrift: 1.5,
+        minimumDrift: 1.0,
     },
     staticStream: {
         minimumDrift: 2,
