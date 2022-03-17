@@ -7,6 +7,17 @@ import {
     IDriftSyncStrategy,
 } from "components/videoPlayer/driftSyncStrategies/interfaces";
 
+function determineCurrentLatency(utcNowUnix: number, info: AttendeeDriftMeasurement<number>) {
+    const secondsToSanitize = utcNowUnix - info.measuredAt;
+    return info.value + secondsToSanitize;
+}
+
+type LogRow = {
+    name: string;
+    latency: number;
+    shouldCatchUp?: boolean;
+};
+
 const liveStreamCatchUpStrategy: IDriftSyncStrategy<number> = {
     apply(
         player: MediaPlayer,
@@ -14,30 +25,38 @@ const liveStreamCatchUpStrategy: IDriftSyncStrategy<number> = {
     ): void {
         const currentUtcTime = moment.utc().unix();
 
-        // Sanitize the positions
-        const utcSanitizedMeasurements = otherAttendeeLatencies.map((info) => {
-            // This is the difference between the measurements and the current utc time
-            const secondsToSanitize = currentUtcTime - info.measuredAt;
-            return info.measurement + secondsToSanitize;
-        });
+        const othersSanitizedLatencies = otherAttendeeLatencies.map((l) =>
+            determineCurrentLatency(currentUtcTime, l),
+        );
 
         const ownLatency = player.getLiveLatency();
-        const bestAttendeeLatency = Math.min(...utcSanitizedMeasurements);
+        const bestAttendeeLatency = Math.min(...othersSanitizedLatencies);
         const shouldCatchUp = ownLatency > config.streamSync.liveStream.minimumDrift;
         const ownLatencyIsBest = ownLatency < bestAttendeeLatency;
-        logIfEnabled(`Current latency: ${ownLatency}`);
-        logIfEnabled(`Other latencies: [${utcSanitizedMeasurements.join(",")}]`);
-        logIfEnabled(`Catching up required: ${shouldCatchUp}`);
-        logIfEnabled(`Own latency best: ${ownLatencyIsBest}`);
+
+        if (config.streamSync.loggingEnabled) {
+            console.table([
+                {
+                    name: "you",
+                    latency: fmt(ownLatency),
+                    shouldCatchUp,
+                },
+                ...otherAttendeeLatencies.map((info) => ({
+                    name: info.attendeeName ?? "unknown",
+                    latency: fmt(determineCurrentLatency(currentUtcTime, info)),
+                })),
+            ] as LogRow[]);
+        }
 
         // Two conditions should be met to start the resynchronization process:
         // 1. Our delay must be below a certain amount. If we were to start synchronizing streams once the stream
         //    is even 0.5s past the source, it would start to get annoying
         // 2. We need to have someone to catch up to.
         if (shouldCatchUp && !ownLatencyIsBest) {
-            const playbackRate = 130.641 - 129.6778 * Math.pow(Math.E, -0.0002520927 * ownLatency);
+            const deltaToLeader = ownLatency - bestAttendeeLatency;
+            const playbackRate = 1 + Math.pow(0.05 * deltaToLeader, 1.5);
             player.setPlaybackRate(playbackRate);
-            logIfEnabled(`Need to catch up. Set playback rate to ${playbackRate}`);
+            console.log(`Need to catch up. Set playback rate to ${playbackRate.toFixed(2)}`);
             return;
         }
 
@@ -48,10 +67,8 @@ const liveStreamCatchUpStrategy: IDriftSyncStrategy<number> = {
     },
 };
 
-const logIfEnabled = (message: string) => {
-    if (config.streamSync.loggingEnabled) {
-        console.log(message);
-    }
-};
+function fmt(value: number | string) {
+    return Number(Number(value).toFixed(1));
+}
 
 export default liveStreamCatchUpStrategy;

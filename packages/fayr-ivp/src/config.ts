@@ -46,6 +46,8 @@ type StreamSyncOptions = {
     streamSynchronizationType: "None" | "Static" | "LiveStream";
     // Interval for how often a heartbeat is shared
     heartBeatInterval: number;
+    // Threshold in seconds after which a participant is considered lost/unhealthy
+    heartBeatInactiveThreshold: number;
     // Interval for synchronization of position among attendees
     synchronizationInterval: number;
     // Whether diagnostics logging is enabled
@@ -65,6 +67,7 @@ type StreamSyncOptions = {
 export const streamSync: StreamSyncOptions = {
     streamSynchronizationType: "LiveStream",
     heartBeatInterval: 1000,
+    heartBeatInactiveThreshold: 30,
     synchronizationInterval: 1000,
     loggingEnabled: true,
     liveStream: {
