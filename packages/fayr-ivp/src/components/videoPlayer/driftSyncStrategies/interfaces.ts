@@ -6,9 +6,11 @@ export interface IDriftSyncStrategy<T> {
 }
 
 export type AttendeeDriftMeasurement<T> = {
-    measurement: T;
+    value: T;
     /**
      * Unix timestamp (seconds since epoch) when this measurement was taken
      */
     measuredAt: number;
+
+    attendeeName?: string;
 };

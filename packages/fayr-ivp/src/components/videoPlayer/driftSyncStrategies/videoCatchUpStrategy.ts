@@ -18,7 +18,7 @@ const videoCatchUpStrategy: IDriftSyncStrategy<number> = {
         const utcSanitizedMeasurements = otherAttendeePositions.map((info) => {
             // This is the difference between the measurements and the current utc time
             const secondsToSanitize = currentUtcTime - info.measuredAt;
-            return info.measurement + secondsToSanitize;
+            return info.value + secondsToSanitize;
         });
 
         const currentPosition = player.getPosition();
