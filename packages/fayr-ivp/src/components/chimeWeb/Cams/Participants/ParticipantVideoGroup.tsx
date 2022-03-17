@@ -14,15 +14,15 @@ export const ParticipantVideoGroup = ({ localVideoInfo, participantVideos }: Pro
 
     const participantCount = participants.length;
 
-    const slotsRequired = Math.floor(participantCount / 2);
+    const rowsRequired = Math.ceil(participantCount / 2);
 
-    const rowPercentage = (100 / slotsRequired).toPrecision(2);
+    const rowPercentage = Math.ceil(100 / rowsRequired);
 
     return (
         <Grid
             gridProperties={{
                 gap: 0,
-                gridTemplateRows: `repeat(${slotsRequired}, ${rowPercentage}%)`,
+                gridTemplateRows: `repeat(${rowsRequired}, ${rowPercentage}%)`,
                 gridTemplateColumns: "repeat(2, 50%)",
             }}
             className={styles.ParticipantVideoGroup}
