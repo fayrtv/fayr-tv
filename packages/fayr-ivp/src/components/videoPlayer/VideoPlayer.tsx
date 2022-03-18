@@ -212,6 +212,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
                     fullScreen={fullScreen}
                     player={player.current}
                     video={videoElement.current}
+                    driftSyncStrategy={driftSyncStrategy}
                 />
             </div>
             <video

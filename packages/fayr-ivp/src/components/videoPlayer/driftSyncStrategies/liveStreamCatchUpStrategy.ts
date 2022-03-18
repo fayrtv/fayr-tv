@@ -3,6 +3,7 @@ import * as config from "config";
 
 import {
     AttendeeDriftMeasurement,
+    DriftInformation,
     IDriftSyncStrategy,
 } from "components/videoPlayer/driftSyncStrategies/interfaces";
 
@@ -38,8 +39,12 @@ const liveStreamCatchUpStrategy: IDriftSyncStrategy<number> = {
         player.setPlaybackRate(playbackRate);
     },
 
-    measureOwnDrift(player: MediaPlayer): number {
-        return player.getLiveLatency();
+    measureOwnDrift(player: MediaPlayer): DriftInformation<number> {
+        const measurement = player.getLiveLatency();
+        return {
+            driftedPastBoundary: measurement > config.streamSync.liveStream.minimumDrift,
+            measurement,
+        };
     },
 
     synchronizeWithOthers(player: MediaPlayer, _: Array<AttendeeDriftMeasurement<number>>) {

@@ -2,7 +2,7 @@ import { MediaPlayer } from "amazon-ivs-player";
 
 export interface IDriftSyncStrategy<T> {
     apply(player: MediaPlayer, otherAttendeeDrifts: Array<AttendeeDriftMeasurement<T>>): void;
-    measureOwnDrift(player: MediaPlayer): T;
+    measureOwnDrift(player: MediaPlayer): DriftInformation<T>;
     synchronizeWithOthers(
         player: MediaPlayer,
         otherAttendeeMeasurements: Array<AttendeeDriftMeasurement<T>>,
@@ -17,4 +17,9 @@ export type AttendeeDriftMeasurement<T> = {
     measuredAt: number;
 
     attendeeName?: string;
+};
+
+export type DriftInformation<T> = {
+    driftedPastBoundary: boolean;
+    measurement: T;
 };

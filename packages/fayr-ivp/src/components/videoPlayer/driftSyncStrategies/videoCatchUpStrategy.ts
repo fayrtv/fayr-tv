@@ -7,6 +7,8 @@ import {
     IDriftSyncStrategy,
 } from "components/videoPlayer/driftSyncStrategies/interfaces";
 
+import { DriftInformation } from "./interfaces";
+
 const videoCatchUpStrategy: IDriftSyncStrategy<number> = {
     apply(
         player: MediaPlayer,
@@ -29,8 +31,13 @@ const videoCatchUpStrategy: IDriftSyncStrategy<number> = {
         }
     },
 
-    measureOwnDrift(player: MediaPlayer): number {
-        return player.getPosition();
+    measureOwnDrift(player: MediaPlayer): DriftInformation<number> {
+        const position = player.getPosition();
+
+        return {
+            measurement: position,
+            driftedPastBoundary: position > config.streamSync.staticStream.minimumDrift,
+        };
     },
 
     synchronizeWithOthers(
