@@ -2,7 +2,6 @@
 import { MediaPlayer } from "amazon-ivs-player";
 import * as config from "config";
 import * as React from "react";
-import styled from "styled-components";
 
 import { Flex } from "@fayr/shared-components";
 

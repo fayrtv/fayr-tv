@@ -25,7 +25,7 @@ export const StreamHealthynessIndicator = ({ player, driftSyncStrategy }: Props)
             return;
         }
         driftSyncStrategy.synchronizeWithOthers(player, []);
-    }, [player]);
+    }, [player, driftSyncStrategy]);
 
     React.useEffect(() => {
         if (!player) {
