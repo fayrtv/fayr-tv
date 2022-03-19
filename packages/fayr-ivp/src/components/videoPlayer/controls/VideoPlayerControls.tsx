@@ -9,7 +9,7 @@ import styles from "./VideoPlayerControls.module.scss";
 
 import { IDriftSyncStrategy } from "../driftSyncStrategies/interfaces";
 import QualityPicker from "./QualityPicker";
-import StreamHealthynessIndicator from "./StreamHealthynessIndicator";
+import StreamHealthIndicator from "./StreamHealthIndicator";
 // Components
 import StreamVolumeControl from "./StreamVolumeControl";
 
@@ -50,7 +50,7 @@ export const VideoPlayerControls = ({ fullScreen, player, video, driftSyncStrate
 
     const streamControl =
         config.streamSync.streamSynchronizationType === "LiveStream" ? (
-            <StreamHealthynessIndicator driftSyncStrategy={driftSyncStrategy} player={player} />
+            <StreamHealthIndicator driftSyncStrategy={driftSyncStrategy} player={player} />
         ) : (
             <button
                 id="play"

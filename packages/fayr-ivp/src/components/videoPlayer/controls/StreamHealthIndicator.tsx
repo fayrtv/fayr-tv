@@ -8,7 +8,7 @@ import { MaterialIcon } from "@fayr/shared-components";
 import { Flex } from "@fayr/shared-components/lib";
 
 // Styles
-import styles from "./StreamHealthynessIndicator.module.scss";
+import styles from "./StreamHealthIndicator.module.scss";
 
 import { DriftInformation, IDriftSyncStrategy } from "../driftSyncStrategies/interfaces";
 
@@ -17,10 +17,10 @@ type Props = {
     driftSyncStrategy: IDriftSyncStrategy<number>;
 };
 
-export const StreamHealthynessIndicator = ({ player, driftSyncStrategy }: Props) => {
+export const StreamHealthIndicator = ({ player, driftSyncStrategy }: Props) => {
     const [drift, setDrift] = React.useState<DriftInformation<number>>();
 
-    const onSync = React.useCallback(() => {
+    const onSyncClicked = React.useCallback(() => {
         if (!player) {
             return;
         }
@@ -52,14 +52,14 @@ export const StreamHealthynessIndicator = ({ player, driftSyncStrategy }: Props)
                     drift?.driftedPastBoundary ? styles.Drifted : styles.Live,
                 )}
             />
-            <span className="mr-2">
+            <span className="mr-2 select-none">
                 {drift?.driftedPastBoundary ? `- ${drift!.measurement.toFixed(0)} s` : "Live"}
             </span>
             {drift?.driftedPastBoundary && (
-                <MaterialIcon color={"white"} iconName={"sync"} onClick={onSync} />
+                <MaterialIcon color="white" iconName="sync" onClick={onSyncClicked} />
             )}
         </Flex>
     );
 };
 
-export default StreamHealthynessIndicator;
+export default StreamHealthIndicator;
