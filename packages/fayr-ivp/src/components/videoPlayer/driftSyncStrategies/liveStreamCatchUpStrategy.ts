@@ -30,7 +30,7 @@ const liveStreamCatchUpStrategy: IDriftSyncStrategy<number> = {
                 },
                 ...otherAttendeeDrifts.map((info) => ({
                     name: info.attendeeName ?? "unknown",
-                    latency: info.value,
+                    latency: fmt(info.value),
                     playbackRate: calculateDesiredPlaybackRate(info.value),
                 })),
             ]);
@@ -54,7 +54,7 @@ const liveStreamCatchUpStrategy: IDriftSyncStrategy<number> = {
 };
 
 function fmt(value: number | string) {
-    return Number(Number(value).toFixed(1));
+    return Number(Number(value).toFixed(2));
 }
 
 export default liveStreamCatchUpStrategy;

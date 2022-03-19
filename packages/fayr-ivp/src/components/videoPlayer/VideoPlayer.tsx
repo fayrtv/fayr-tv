@@ -147,6 +147,13 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
         playerOverlay.addEventListener("mouseout", function () {
             playerOverlay.classList.remove("overlay--hover");
         });
+
+        //@ts-ignore
+        window.ivpDebug = {
+            seek(plusMinus: number) {
+                player.current?.seekTo(player.current.getLiveLatency() + plusMinus);
+            },
+        };
     }, [videoStream]);
 
     React.useEffect(() => {
