@@ -28,16 +28,9 @@ export const StreamHealthIndicator = ({ player, driftSyncStrategy }: Props) => {
     }, [player, driftSyncStrategy]);
 
     React.useEffect(() => {
-        if (!player) {
-            return;
-        }
-
-        const handle = window.setInterval(() => {
-            setDrift(driftSyncStrategy.measureOwnDrift(player));
-        }, 1000);
-
-        return () => window.clearInterval(handle);
-    }, [driftSyncStrategy, player]);
+        driftSyncStrategy.measurementChange.register(setDrift);
+        return () => driftSyncStrategy.measurementChange.unregister(setDrift);
+    }, [driftSyncStrategy]);
 
     return (
         <Flex

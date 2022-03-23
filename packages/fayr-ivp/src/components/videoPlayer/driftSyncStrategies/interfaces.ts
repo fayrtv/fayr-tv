@@ -1,8 +1,10 @@
 import { MediaPlayer } from "amazon-ivs-player";
+import { IEventConsumer } from "util/event";
 
 export interface IDriftSyncStrategy<T> {
     apply(player: MediaPlayer, otherAttendeeDrifts: Array<AttendeeDriftMeasurement<T>>): void;
     measureOwnDrift(player: MediaPlayer): DriftInformation<T>;
+    measurementChange: IEventConsumer<DriftInformation<T>>;
     synchronizeWithOthers(
         player: MediaPlayer,
         otherAttendeeMeasurements: Array<AttendeeDriftMeasurement<T>>,
