@@ -1,5 +1,4 @@
 import classNames from "classnames";
-import { AudioVideoController } from "amazon-chime-sdk-js";
 import React from "react";
 import { Nullable } from "types/global";
 
@@ -27,7 +26,7 @@ type Props = {
 const LocalVideo = ({ chime, joinInfo, pin }: Props) => {
     const videoElement = React.useRef<HTMLVideoElement>(null);
 
-    const [{ muted }] = useMeetingMetaData();
+    const [{ muted, videoEnabled }] = useMeetingMetaData();
 
     const { socket } = useSocket();
 
@@ -82,14 +81,14 @@ const LocalVideo = ({ chime, joinInfo, pin }: Props) => {
 
     const onBlurClick = React.useCallback(
         async (newBlurState: boolean) => {
-            if (!enabled) {
+            if (!videoEnabled) {
                 return;
             }
 
             await chime.changeBlurState(newBlurState);
             setCameraBlurred(newBlurState);
         },
-        [enabled],
+        [chime, videoEnabled],
     );
 
     const micMuteCls = muted ? "controls__btn--mic_on" : "controls__btn--mic_off";

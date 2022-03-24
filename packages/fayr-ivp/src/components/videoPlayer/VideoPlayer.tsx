@@ -157,6 +157,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
                 player.current?.seekTo(player.current?.getLiveLatency() + plusMinus);
             },
         };
+        //eslint-disable-next-line react-hooks/exhaustive-deps
     }, [videoStream]);
 
     React.useEffect(() => {

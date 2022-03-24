@@ -5,8 +5,8 @@
     "dependencies": {
         "@craco/craco": "^6.4.3",
         "@fayr/shared-components": "^1.0.0",
-        "amazon-chime-sdk-js": "^2.27.0",
-        "amazon-ivs-player": "^1.5.0",
+        "amazon-chime-sdk-js": "2.30.0",
+        "amazon-ivs-player": "1.8.0",
         "bowser": "^2.11.0",
         "emoji-picker-react": "^3.4.8",
         "ffplay": "^1.1.0",
