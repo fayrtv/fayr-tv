@@ -153,6 +153,7 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
         //@ts-ignore
         window.ivpDebug = {
             seek(plusMinus: number) {
+                //@ts-ignore
                 player.current?.seekTo(player.current?.getLiveLatency() + plusMinus);
             },
         };
