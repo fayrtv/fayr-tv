@@ -1,7 +1,7 @@
 export enum PlatformType {
-    WatchParty,
-    VideoOnDemand,
-    Hybrid,
+    WatchParty = "wp",
+    VideoOnDemand = "vod",
+    Hybrid = "hybrid",
 }
 
 export function formatPlatformType(type: PlatformType) {
