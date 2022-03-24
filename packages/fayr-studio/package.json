@@ -43,6 +43,7 @@
         "pretty-quick": "^3.1.1",
         "qrcode-svg": "^1.1.0",
         "react": "17.0.2",
+        "react-colorful": "^5.5.1",
         "react-contenteditable": "^3.3.6",
         "react-dom": "17.0.2",
         "react-emoji-render": "^1.2.4",

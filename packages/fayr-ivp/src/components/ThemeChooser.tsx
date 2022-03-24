@@ -21,7 +21,9 @@ const ThemeChooser = () => {
             value={theme.id}
         >
             {selectableThemes.map((t) => (
-                <option value={t.id}>{t.id}</option>
+                <option key={t.id} value={t.id}>
+                    {t.id}
+                </option>
             ))}
         </select>
     );

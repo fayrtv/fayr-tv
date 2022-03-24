@@ -1,61 +1,79 @@
 import { MediaPlayer } from "amazon-ivs-player";
+import * as config from "config";
 import * as moment from "moment";
 import React from "react";
 
+import { useAttendeeInfo } from "hooks/useAttendeeInfo";
 import useSocket from "hooks/useSocket";
 
 import { SocketEventType } from "components/chime/types";
+import {
+    AttendeeDriftMeasurement,
+    IDriftSyncStrategy,
+} from "components/videoPlayer/driftSyncStrategies/interfaces";
 
 import { HeartBeat } from "./types";
 
-type AttendeePositionInfo = {
-    measurement: number;
-    measurementTimeUtcInSeconds: number;
-};
-
-export default function useContentSynchronizer(
+export default function useContentSynchronizer<T>(
     ownId: string,
     player: MediaPlayer | undefined,
-    measureCb: () => number,
-    synchronizeCb: (measurements: Array<number>) => void,
+    strategy: IDriftSyncStrategy<T>,
 ) {
+    const attendeeTsMap = React.useRef(new Map<string, AttendeeDriftMeasurement<T>>());
+
+    const { getAttendee } = useAttendeeInfo();
+
+    React.useEffect(() => {
+        const intervalHandle = window.setInterval(() => {
+            if (!player || attendeeTsMap.current.size === 0) {
+                return;
+            }
+
+            const currentUtcTime = moment.utc().unix();
+
+            attendeeTsMap.current.forEach((value, key) => {
+                const lastHeartbeatAgo = currentUtcTime - value.measuredAt;
+                if (lastHeartbeatAgo > config.streamSync.heartBeatInactiveThreshold) {
+                    attendeeTsMap.current.delete(key);
+
+                    if (config.streamSync.loggingEnabled) {
+                        console.log(
+                            `No heartbeat from ${value.attendeeName} in the past ${config.streamSync.heartBeatInactiveThreshold} seconds.`,
+                        );
+                    }
+                }
+            });
+
+            strategy.apply(player, Array.from(attendeeTsMap.current.values()));
+        }, config.streamSync.synchronizationInterval);
+
+        return () => window.clearInterval(intervalHandle);
+    }, [player, strategy]);
+
     const { socket } = useSocket();
-
-    const attendeeTsMap = React.useMemo(() => new Map<string, AttendeePositionInfo>(), []);
-
-    const synchronizeTimeStamps = React.useCallback(() => {
-        if (!player) {
-            return;
-        }
-
-        const currentUtcTime = moment.utc().unix();
-
-        // Sanitize the positions
-        const utcSanitizedMeasurements = Array.from(attendeeTsMap.values()).map((info) => {
-            // This is the difference between the measurements and the current utc time
-            const secondsToSanitize = currentUtcTime - info.measurementTimeUtcInSeconds;
-            return info.measurement + secondsToSanitize;
-        });
-
-        synchronizeCb(utcSanitizedMeasurements);
-    }, [attendeeTsMap, ownId, player, synchronizeCb]);
 
     React.useEffect(() => {
         if (!socket) {
             return;
         }
 
-        return socket.addListener<HeartBeat>(
+        return socket.addListener<HeartBeat<T>>(
             SocketEventType.TimeStampHeartBeat,
-            ({ attendeeId, measurement, measurementTimeUtcInSeconds }) => {
-                attendeeTsMap.set(attendeeId, {
-                    measurement,
-                    measurementTimeUtcInSeconds,
+            ({ attendeeId, measurement, eventTimestamp }) => {
+                // Exclude our own ID here
+                if (attendeeId === ownId) {
+                    return Promise.resolve();
+                }
+
+                attendeeTsMap.current.set(attendeeId, {
+                    value: measurement,
+                    measuredAt: eventTimestamp,
+                    attendeeName: getAttendee(attendeeId)?.name,
                 });
                 return Promise.resolve();
             },
         );
-    }, [socket, attendeeTsMap]);
+    }, [socket, attendeeTsMap, ownId, getAttendee]);
 
     React.useEffect(() => {
         if (!socket || !player) {
@@ -66,22 +84,16 @@ export default function useContentSynchronizer(
         // we can then sanitize the actual position when the times are actually synchronized.
         // Otherwise our calculation will also include potential network delays.
         const intervalHandle = window.setInterval(() => {
-            socket.send<HeartBeat>({
+            socket.send<HeartBeat<T>>({
                 messageType: SocketEventType.TimeStampHeartBeat,
                 payload: {
                     attendeeId: ownId,
-                    measurement: measureCb(),
-                    measurementTimeUtcInSeconds: moment.utc().unix(),
+                    measurement: strategy.measureOwnDrift(player).measurement,
+                    eventTimestamp: moment.utc().unix(),
                 },
             });
-        }, 1000);
+        }, config.streamSync.heartBeatInterval);
 
         return () => window.clearInterval(intervalHandle);
-    }, [socket, player, ownId, measureCb]);
-
-    React.useEffect(() => {
-        const intervalHandle = window.setInterval(synchronizeTimeStamps, 1000);
-
-        return () => window.clearInterval(intervalHandle);
-    }, [synchronizeTimeStamps]);
+    }, [socket, player, ownId, strategy]);
 }

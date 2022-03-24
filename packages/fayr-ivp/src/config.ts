@@ -24,7 +24,7 @@ export const DEFAULT_VIDEO_STREAM = sample([
     // KIKA
     // "https://kikageohls.akamaized.net/hls/live/2022693/livetvkika_de/master.m3u8",
     // Tagesschau 24
-    // "https://3d26876b73d7.us-west-2.playback.live-video.net/api/video/v1/us-west-2.913157848533.channel.rkCBS9iD1eyd.m3u8",
+    //"https://tagesschau.akamaized.net/hls/live/2020117/tagesschau/tagesschau_3/master_720.m3u8",
 ]) as string;
 
 // Default Chat websocket link
@@ -40,3 +40,40 @@ export const RANDOM = makeid(8);
 export const HighlightVideoAlignment: "Top" | "Bottom" = "Bottom";
 export const HostPinningFeatureEnabled: boolean = false;
 export const ShowStartScreen: boolean = true;
+
+type StreamSyncOptions = {
+    // Type of synchronization
+    streamSynchronizationType: "None" | "Static" | "LiveStream";
+    // Interval for how often a heartbeat is shared
+    heartBeatInterval: number;
+    // Threshold in seconds after which a participant is considered lost/unhealthy
+    heartBeatInactiveThreshold: number;
+    // Interval for synchronization of position among attendees
+    synchronizationInterval: number;
+    // Whether diagnostics logging is enabled
+    loggingEnabled: boolean;
+    // Config for live stream
+    liveStream: {
+        // The minimum time distance from the attendee ahead at which to start synchronizing streams
+        minimumDrift: number;
+    };
+    // Config for static video source
+    staticStream: {
+        // The maximum amount of seconds we can diverge from the most up to date attendee
+        minimumDrift: number;
+    };
+};
+
+export const streamSync: StreamSyncOptions = {
+    streamSynchronizationType: "LiveStream",
+    heartBeatInterval: 1000,
+    heartBeatInactiveThreshold: 30,
+    synchronizationInterval: 1000,
+    loggingEnabled: true,
+    liveStream: {
+        minimumDrift: 1.0,
+    },
+    staticStream: {
+        minimumDrift: 2,
+    },
+};

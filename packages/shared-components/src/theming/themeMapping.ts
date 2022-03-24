@@ -24,7 +24,7 @@ type PropertiesAsCSSVariables<Value> = Value extends Function
 
 // Good ideas for color naming:
 // https://codepen.io/ufosky/pen/yzKRbz
-export interface Theme {
+export type Theme = {
     id: string;
     colorBackground: string;
     colorNeutral: string;
@@ -36,7 +36,7 @@ export interface Theme {
     colorTertiary: string;
     colorGray: string;
     colorBlueish: string;
-}
+};
 
 export type ThemeCSSVariables = PropertiesAsCSSVariables<Omit<Theme, "id">> & { id: string };
 

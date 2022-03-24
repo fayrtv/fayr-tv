@@ -240,7 +240,7 @@ input:disabled {
 .controls .controls__btn--cam_on,
 .controls .controls__btn--mic_on,
 .controls .controls__btn--chat_on {
-    background-color: var(--color--destructive);
+    background-color: var(--color-primary);
 }
 
 /* Overwrites */
@@ -318,17 +318,6 @@ a.btn {
             height: 50%;
         }
     }
-}
-
-.player-controls__inner {
-    position: absolute;
-    // height: 100%;
-    // width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    bottom: 5%;
-    left: 10%;
 }
 
 .overlay--hover #player-controls {

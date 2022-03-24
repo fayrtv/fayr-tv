@@ -80,16 +80,16 @@ select {
     --font-serif: "WinnerSans";
     --font-mono: "WinnerSans";
     /* Color tokens (overridden by theme) */
-    --color-background: #00ff00;
-    --color-neutral: #00ff00;
-    --color-white: #00ff00;
-    --color-primary: #00ff00;
-    --color-primary-dark: #00ff00;
-    --color-primary-light: #00ff00;
-    --color-secondary: #00ff00;
-    --color-tertiary: #00ff00;
-    --color-gray: #00ff00;
-    --color-blueish: #00ff00;
+    --color-background: #07090c;
+    --color-neutral: #d9d9d9;
+    --color-white: #ffffff;
+    --color-primary: #fa7751;
+    --color-primary-dark: #d96242;
+    --color-primary-light: #fa8966;
+    --color-secondary: #e7ecf0;
+    --color-tertiary: transparent;
+    --color-gray: #c4c4c4;
+    --color-blueish: #181f29;
     /* Additional colors */
     /*--color-text-alt: #4b5358;*/
     /*--color-text-inverted: #fff;*/

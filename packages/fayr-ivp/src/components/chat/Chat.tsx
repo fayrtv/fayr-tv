@@ -5,7 +5,7 @@ import { addMessage, markAsSeen } from "redux/reducers/chatMessageReducer";
 import { ReduxStore } from "redux/store";
 import { CouldBeArray } from "util/collectionUtil";
 
-import { useSocket } from "hooks/useSocket";
+import useSocket from "hooks/useSocket";
 
 import "./Chat.scss";
 
