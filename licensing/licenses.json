@@ -4056,13 +4056,6 @@
         "licenseFile": "fayr_tv_live/node_modules/amazon-chime-sdk-component-library-react/LICENSE",
         "noticeFile": "/home/runner/work/fayr_tv_live/fayr_tv_live/node_modules/amazon-chime-sdk-component-library-react/NOTICE"
     },
-    "amazon-chime-sdk-js@1.22.0": {
-        "licenses": "Apache-2.0",
-        "repository": "https://github.com/aws/amazon-chime-sdk-js",
-        "path": "fayr_tv_live/node_modules/@fayr/ivp/node_modules/amazon-chime-sdk-js",
-        "licenseFile": "fayr_tv_live/node_modules/@fayr/ivp/node_modules/amazon-chime-sdk-js/LICENSE",
-        "noticeFile": "/home/runner/work/fayr_tv_live/fayr_tv_live/node_modules/@fayr/ivp/node_modules/amazon-chime-sdk-js/NOTICE"
-    },
     "amazon-chime-sdk-js@2.27.0": {
         "licenses": "Apache-2.0",
         "repository": "https://github.com/aws/amazon-chime-sdk-js",
@@ -4070,7 +4063,14 @@
         "licenseFile": "fayr_tv_live/node_modules/amazon-chime-sdk-js/LICENSE",
         "noticeFile": "/home/runner/work/fayr_tv_live/fayr_tv_live/node_modules/amazon-chime-sdk-js/NOTICE"
     },
-    "amazon-ivs-player@1.7.0": {
+    "amazon-chime-sdk-js@2.30.0": {
+        "licenses": "Apache-2.0",
+        "repository": "https://github.com/aws/amazon-chime-sdk-js",
+        "path": "fayr_tv_live/node_modules/@fayr/ivp/node_modules/amazon-chime-sdk-js",
+        "licenseFile": "fayr_tv_live/node_modules/@fayr/ivp/node_modules/amazon-chime-sdk-js/LICENSE",
+        "noticeFile": "/home/runner/work/fayr_tv_live/fayr_tv_live/node_modules/@fayr/ivp/node_modules/amazon-chime-sdk-js/NOTICE"
+    },
+    "amazon-ivs-player@1.8.0": {
         "licenses": "Custom: https://docs.aws.amazon.com/ivs/",
         "publisher": "Amazon Web Services",
         "url": "https://aws.amazon.com/",
@@ -12190,6 +12190,12 @@
     "pako@1.0.11": {
         "licenses": "(MIT AND Zlib)",
         "repository": "https://github.com/nodeca/pako",
+        "path": "fayr_tv_live/node_modules/browserify-zlib/node_modules/pako",
+        "licenseFile": "fayr_tv_live/node_modules/browserify-zlib/node_modules/pako/LICENSE"
+    },
+    "pako@2.0.4": {
+        "licenses": "(MIT AND Zlib)",
+        "repository": "https://github.com/nodeca/pako",
         "path": "fayr_tv_live/node_modules/pako",
         "licenseFile": "fayr_tv_live/node_modules/pako/LICENSE"
     },
@@ -16390,8 +16396,8 @@
         "publisher": "Faisal Salman",
         "email": "f@faisalman.com",
         "url": "http://faisalman.com",
-        "path": "fayr_tv_live/node_modules/ua-parser-js",
-        "licenseFile": "fayr_tv_live/node_modules/ua-parser-js/license.md"
+        "path": "fayr_tv_live/node_modules/fbjs/node_modules/ua-parser-js",
+        "licenseFile": "fayr_tv_live/node_modules/fbjs/node_modules/ua-parser-js/license.md"
     },
     "ua-parser-js@1.0.2": {
         "licenses": "MIT",
@@ -16399,8 +16405,8 @@
         "publisher": "Faisal Salman",
         "email": "f@faisalman.com",
         "url": "http://faisalman.com",
-        "path": "fayr_tv_live/node_modules/amazon-chime-sdk-js/node_modules/ua-parser-js",
-        "licenseFile": "fayr_tv_live/node_modules/amazon-chime-sdk-js/node_modules/ua-parser-js/license.md"
+        "path": "fayr_tv_live/node_modules/ua-parser-js",
+        "licenseFile": "fayr_tv_live/node_modules/ua-parser-js/license.md"
     },
     "uglify-js@3.15.1": {
         "licenses": "BSD-2-Clause",

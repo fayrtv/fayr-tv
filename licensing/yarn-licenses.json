@@ -18,9 +18,11 @@ yarn licenses v1.22.17
 │     ├─ VendorName: Dominic Tarr
 │     └─ VendorUrl: https://github.com/crypto-browserify/sha.js
 ├─ (MIT AND Zlib)
-│  └─ pako@1.0.11
-│     ├─ URL: https://github.com/nodeca/pako.git
-│     └─ VendorUrl: https://github.com/nodeca/pako
+│  ├─ pako@1.0.11
+│  │  ├─ URL: https://github.com/nodeca/pako.git
+│  │  └─ VendorUrl: https://github.com/nodeca/pako
+│  └─ pako@2.0.4
+│     └─ URL: https://github.com/nodeca/pako.git
 ├─ (MIT OR Apache-2.0)
 │  ├─ atob@2.1.2
 │  │  ├─ URL: git://git.coolaj86.com/coolaj86/atob.js.git
@@ -378,9 +380,9 @@ yarn licenses v1.22.17
 │  │  └─ VendorUrl: https://github.com/videojs/aes-decrypter#readme
 │  ├─ amazon-chime-sdk-component-library-react@2.15.0
 │  │  └─ URL: git://github.com/aws/amazon-chime-sdk-component-library
-│  ├─ amazon-chime-sdk-js@1.22.0
-│  │  └─ URL: git://github.com/aws/amazon-chime-sdk-js
 │  ├─ amazon-chime-sdk-js@2.27.0
+│  │  └─ URL: git://github.com/aws/amazon-chime-sdk-js
+│  ├─ amazon-chime-sdk-js@2.30.0
 │  │  └─ URL: git://github.com/aws/amazon-chime-sdk-js
 │  ├─ ansi-html-community@0.0.8
 │  │  ├─ URL: git://github.com/mahdyar/ansi-html-community.git
@@ -7969,7 +7971,7 @@ yarn licenses v1.22.17
 │  └─ argparse@2.0.1
 │     └─ URL: https://github.com/nodeca/argparse.git
 ├─ SEE LICENSE IN https://player.live-video.net/LICENSE.txt
-│  └─ amazon-ivs-player@1.7.0
+│  └─ amazon-ivs-player@1.8.0
 │     ├─ URL: https://aws.amazon.com/ivs/
 │     ├─ VendorName: Amazon Web Services
 │     └─ VendorUrl: https://aws.amazon.com/ivs/
