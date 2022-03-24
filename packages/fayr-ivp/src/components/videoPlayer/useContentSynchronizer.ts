@@ -3,6 +3,7 @@ import * as config from "config";
 import * as moment from "moment";
 import React from "react";
 
+import { useAttendeeInfo } from "hooks/useAttendeeInfo";
 import useSocket from "hooks/useSocket";
 
 import { SocketEventType } from "components/chime/types";
@@ -20,11 +21,29 @@ export default function useContentSynchronizer<T>(
 ) {
     const attendeeTsMap = React.useRef(new Map<string, AttendeeDriftMeasurement<T>>());
 
+    const { getAttendee } = useAttendeeInfo();
+
     React.useEffect(() => {
         const intervalHandle = window.setInterval(() => {
             if (!player || attendeeTsMap.current.size === 0) {
                 return;
             }
+
+            const currentUtcTime = moment.utc().unix();
+
+            attendeeTsMap.current.forEach((value, key) => {
+                const lastHeartbeatAgo = currentUtcTime - value.measuredAt;
+                if (lastHeartbeatAgo > config.streamSync.heartBeatInactiveThreshold) {
+                    attendeeTsMap.current.delete(key);
+
+                    if (config.streamSync.loggingEnabled) {
+                        console.log(
+                            `No heartbeat from ${value.attendeeName} in the past ${config.streamSync.heartBeatInactiveThreshold} seconds.`,
+                        );
+                    }
+                }
+            });
+
             strategy.apply(player, Array.from(attendeeTsMap.current.values()));
         }, config.streamSync.synchronizationInterval);
 
@@ -47,13 +66,14 @@ export default function useContentSynchronizer<T>(
                 }
 
                 attendeeTsMap.current.set(attendeeId, {
-                    measurement,
+                    value: measurement,
                     measuredAt: eventTimestamp,
+                    attendeeName: getAttendee(attendeeId)?.name,
                 });
                 return Promise.resolve();
             },
         );
-    }, [socket, attendeeTsMap, ownId]);
+    }, [socket, attendeeTsMap, ownId, getAttendee]);
 
     React.useEffect(() => {
         if (!socket || !player) {
@@ -68,7 +88,7 @@ export default function useContentSynchronizer<T>(
                 messageType: SocketEventType.TimeStampHeartBeat,
                 payload: {
                     attendeeId: ownId,
-                    measurement: strategy.measureOwn(player),
+                    measurement: strategy.measureOwnDrift(player).measurement,
                     eventTimestamp: moment.utc().unix(),
                 },
             });

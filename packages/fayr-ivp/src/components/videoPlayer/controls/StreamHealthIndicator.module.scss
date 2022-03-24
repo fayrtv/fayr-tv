@@ -1,0 +1,21 @@
+.Container {
+    height: 36px;
+    bottom: 0px;
+    cursor: unset !important;
+
+    .LiveDot {
+        height: 8px;
+        width: 8px;
+        border-radius: 20px;
+        border: 1px solid black;
+        transition: background 0.5s ease-in-out;
+
+        &.Live {
+            background: red;
+        }
+
+        &.Drifted {
+            background: var(--color-white);
+        }
+    }
+}

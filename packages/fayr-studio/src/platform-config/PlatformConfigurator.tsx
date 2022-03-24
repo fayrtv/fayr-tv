@@ -49,7 +49,7 @@ const PlatformConfigurator: React.FC = () => {
             {
                 id: "5",
                 name: "Launch",
-                description: "Omfg let's deploy this maddafaka",
+                description: "Let's deploy this!",
                 href: "#",
                 isComplete: false,
             },

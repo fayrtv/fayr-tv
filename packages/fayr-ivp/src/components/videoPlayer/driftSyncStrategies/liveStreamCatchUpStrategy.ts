@@ -1,57 +1,76 @@
 import { MediaPlayer } from "amazon-ivs-player";
 import * as config from "config";
-import * as moment from "moment";
 
 import {
     AttendeeDriftMeasurement,
+    DriftInformation,
     IDriftSyncStrategy,
 } from "components/videoPlayer/driftSyncStrategies/interfaces";
 
-const liveStreamCatchUpStrategy: IDriftSyncStrategy<number> = {
-    apply(
+import { Event, IEvent } from "../../../util/event";
+
+function calculateDesiredPlaybackRate(latency: number) {
+    if (latency < config.streamSync.liveStream.minimumDrift) {
+        return 1.0;
+    }
+
+    return 1 + Math.pow(0.05 * latency, 1.5);
+}
+
+class LiveStreamCatchUpStrategy implements IDriftSyncStrategy<number> {
+    public measurementChange: IEvent<DriftInformation<number>>;
+
+    constructor() {
+        this.measurementChange = new Event<DriftInformation<number>>();
+    }
+
+    public apply(
         player: MediaPlayer,
-        otherAttendeeLatencies: Array<AttendeeDriftMeasurement<number>>,
+        otherAttendeeDrifts: Array<AttendeeDriftMeasurement<number>>,
     ): void {
-        const currentUtcTime = moment.utc().unix();
-
-        // Sanitize the positions
-        const utcSanitizedMeasurements = otherAttendeeLatencies.map((info) => {
-            // This is the difference between the measurements and the current utc time
-            const secondsToSanitize = currentUtcTime - info.measuredAt;
-            return info.measurement + secondsToSanitize;
-        });
-
         const ownLatency = player.getLiveLatency();
-        const bestAttendeeLatency = Math.min(...utcSanitizedMeasurements);
-        const shouldCatchUp = ownLatency > config.streamSync.liveStream.minimumDrift;
-        const ownLatencyIsBest = ownLatency < bestAttendeeLatency;
-        logIfEnabled(`Current latency: ${ownLatency}`);
-        logIfEnabled(`Other latencies: [${utcSanitizedMeasurements.join(",")}]`);
-        logIfEnabled(`Catching up required: ${shouldCatchUp}`);
-        logIfEnabled(`Own latency best: ${ownLatencyIsBest}`);
 
-        // Two conditions should be met to start the resynchronization process:
-        // 1. Our delay must be below a certain amount. If we were to start synchronizing streams once the stream
-        //    is even 0.5s past the source, it would start to get annoying
-        // 2. We need to have someone to catch up to.
-        if (shouldCatchUp && !ownLatencyIsBest) {
-            const playbackRate = 130.641 - 129.6778 * Math.pow(Math.E, -0.0002520927 * ownLatency);
-            player.setPlaybackRate(playbackRate);
-            logIfEnabled(`Need to catch up. Set playback rate to ${playbackRate}`);
-            return;
+        const playbackRate = calculateDesiredPlaybackRate(ownLatency);
+
+        if (config.streamSync.loggingEnabled) {
+            console.table([
+                {
+                    name: "you",
+                    latency: fmt(ownLatency),
+                    playbackRate,
+                },
+                ...otherAttendeeDrifts.map((info) => ({
+                    name: info.attendeeName ?? "unknown",
+                    latency: fmt(info.value),
+                    playbackRate: calculateDesiredPlaybackRate(info.value),
+                })),
+            ]);
         }
 
-        player.setPlaybackRate(1.0);
-    },
-    measureOwn(player: MediaPlayer): number {
-        return player.getLiveLatency();
-    },
-};
-
-const logIfEnabled = (message: string) => {
-    if (config.streamSync.loggingEnabled) {
-        console.log(message);
+        player.setPlaybackRate(playbackRate);
     }
-};
 
-export default liveStreamCatchUpStrategy;
+    public measureOwnDrift(player: MediaPlayer): DriftInformation<number> {
+        const measurement = player.getLiveLatency();
+
+        const driftInfo: DriftInformation<number> = {
+            driftedPastBoundary: measurement > config.streamSync.liveStream.minimumDrift,
+            measurement,
+        };
+
+        this.measurementChange.publish(driftInfo);
+
+        return driftInfo;
+    }
+
+    public synchronizeWithOthers(player: MediaPlayer, _: Array<AttendeeDriftMeasurement<number>>) {
+        const currentPos = player.getPosition();
+        player.seekTo(currentPos + player.getLiveLatency());
+    }
+}
+
+function fmt(value: number | string) {
+    return Number(Number(value).toFixed(2));
+}
+
+export default LiveStreamCatchUpStrategy;

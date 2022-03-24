@@ -7,8 +7,18 @@ import {
     IDriftSyncStrategy,
 } from "components/videoPlayer/driftSyncStrategies/interfaces";
 
-const videoCatchUpStrategy: IDriftSyncStrategy<number> = {
-    apply(
+import { IEvent } from "../../../util/event";
+import Event from "../../../util/event";
+import { DriftInformation } from "./interfaces";
+
+class VideoCatchUpStrategy implements IDriftSyncStrategy<number> {
+    public measurementChange: IEvent<DriftInformation<number>>;
+
+    constructor() {
+        this.measurementChange = new Event<DriftInformation<number>>();
+    }
+
+    public apply(
         player: MediaPlayer,
         otherAttendeePositions: Array<AttendeeDriftMeasurement<number>>,
     ): void {
@@ -18,7 +28,7 @@ const videoCatchUpStrategy: IDriftSyncStrategy<number> = {
         const utcSanitizedMeasurements = otherAttendeePositions.map((info) => {
             // This is the difference between the measurements and the current utc time
             const secondsToSanitize = currentUtcTime - info.measuredAt;
-            return info.measurement + secondsToSanitize;
+            return info.value + secondsToSanitize;
         });
 
         const currentPosition = player.getPosition();
@@ -27,10 +37,23 @@ const videoCatchUpStrategy: IDriftSyncStrategy<number> = {
         if (mostUpToDateTime - config.streamSync.staticStream.minimumDrift > currentPosition) {
             player.seekTo(mostUpToDateTime);
         }
-    },
-    measureOwn(player: MediaPlayer): number {
-        return player.getPosition();
-    },
-};
+    }
 
-export default videoCatchUpStrategy;
+    public measureOwnDrift(player: MediaPlayer): DriftInformation<number> {
+        const position = player.getPosition();
+
+        return {
+            measurement: position,
+            driftedPastBoundary: position > config.streamSync.staticStream.minimumDrift,
+        };
+    }
+
+    public synchronizeWithOthers(
+        player: MediaPlayer,
+        otherAttendeeMeasurements: Array<AttendeeDriftMeasurement<number>>,
+    ): void {
+        throw Error("not implemented");
+    }
+}
+
+export default VideoCatchUpStrategy;
