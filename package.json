@@ -12,7 +12,7 @@
         "prepare": "husky install",
         "build": "lerna run build --ignore chime-sdk-meeting-demo",
         "format": "prettylint \"**/*.{ts,js,html,jsx,tsx,css,less,scss,json}\" --fix",
-        "format-check": "prettylint \"**/*.{ts,js,html,jsx,tsx,css,less,scss,json}\"",
+        "format:check": "prettylint \"**/*.{ts,js,html,jsx,tsx,css,less,scss,json}\"",
         "test": "lerna run test"
     },
     "devDependencies": {

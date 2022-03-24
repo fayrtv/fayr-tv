@@ -21,6 +21,6 @@ jobs:
                   node-version: ${{ matrix.node }}
             - uses: c-hive/gha-yarn-cache@v2
             - run: yarn install
-            - run: yarn run format-check
+            - run: yarn run format:check
             - run: yarn run build
             - run: yarn run test

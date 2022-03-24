@@ -1,4 +1,3 @@
-// Framework
 import { useState } from "react";
 
 type InitialState<T> = T | (() => T);

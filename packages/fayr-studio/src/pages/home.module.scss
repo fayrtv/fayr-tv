@@ -1,0 +1,28 @@
+@keyframes fadeHenlo {
+    0% {
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 1;
+    }
+
+    80% {
+        opacity: 1;
+    }
+
+    95% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+.henlo {
+    animation-name: fadeHenlo;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+    color: white;
+}

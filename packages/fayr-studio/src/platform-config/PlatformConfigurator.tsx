@@ -1,7 +1,10 @@
 import SettingsScreen from "./SettingsScreen";
+import { isFalsyOrWhitespace } from "@fayr/shared-components";
 import VerticalSteps, { StepInfo } from "components/VerticalSteps";
-import Designer from "components/designer/Designer";
+import IVPDesigner from "components/designer/IVPDesigner";
 import { PlatformConfiguratorContext } from "platform-config/PlatformConfiguratorContextProvider";
+import PublishScreen from "platform-config/PublishScreen";
+import StreamSettings from "platform-config/StreamSettings";
 import { formatPlatformType } from "platform-config/platform-type/PlatformType";
 import { PlatformTypeChoice } from "platform-config/platform-type/PlatformTypeChoice";
 import React from "react";
@@ -9,7 +12,7 @@ import React from "react";
 const ZERO_WIDTH_NON_JOINER = "‌";
 
 const PlatformConfigurator: React.FC = () => {
-    const { type } = React.useContext(PlatformConfiguratorContext);
+    const { type, info } = React.useContext(PlatformConfiguratorContext);
 
     const [currentStepId, setCurrentStepId] = React.useState("choose-platform");
 
@@ -26,17 +29,18 @@ const PlatformConfigurator: React.FC = () => {
             {
                 id: "2",
                 name: "Basic Setup",
-                description: "This is important",
+                description: "Some essentials...",
                 href: "#",
                 renderBody: () => <SettingsScreen />,
-                isComplete: false,
+                isComplete:
+                    !isFalsyOrWhitespace(info.name) && !isFalsyOrWhitespace(info.welcomeMessage),
             },
             {
                 id: "3",
                 name: "Design",
-                description: "Damn, we got so far",
+                description: "Time to create your own design",
                 href: "#",
-                renderBody: () => <Designer />,
+                renderBody: () => <IVPDesigner />,
                 isComplete: false,
             },
             {
@@ -44,13 +48,15 @@ const PlatformConfigurator: React.FC = () => {
                 name: "Generate Streaming Keys or Add Videos",
                 description: "Almost there...",
                 href: "#",
+                renderBody: () => <StreamSettings />,
                 isComplete: false,
             },
             {
                 id: "5",
                 name: "Launch",
-                description: "Let's deploy this!",
+                description: "Let's deploy your app",
                 href: "#",
+                renderBody: () => <PublishScreen />,
                 isComplete: false,
             },
         ],

@@ -41,7 +41,7 @@ export const HighlightVideoAlignment: "Top" | "Bottom" = "Bottom";
 export const HostPinningFeatureEnabled: boolean = false;
 export const ShowStartScreen: boolean = true;
 
-type StreamSyncOptions = {
+export type StreamSyncOptions = {
     // Type of synchronization
     streamSynchronizationType: "None" | "Static" | "LiveStream";
     // Interval for how often a heartbeat is shared

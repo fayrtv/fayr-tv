@@ -1,11 +1,40 @@
 import { SpeakerphoneIcon, XIcon } from "@heroicons/react/outline";
 import { A } from "components/A";
+import { useSession } from "next-auth/react";
+import { GetBannerDismissalsResponse } from "pages/api/banner-dismissals/[bannerId]";
 import React from "react";
+import { useQuery } from "react-query";
+
+const BANNER_ID: string = "save-on-fayr-monthly";
 
 export default function Banner() {
-    const [isAcknowledged, setAcknowledged] = React.useState<boolean>(false);
+    const session = useSession();
 
-    return isAcknowledged ? (
+    const isDismissed = React.useRef<boolean>();
+
+    const { isLoading, refetch } = useQuery("dismissals", () =>
+        fetch(`/api/banner-dismissals/${BANNER_ID}`, { method: "GET" }).then(async (res) => {
+            const response = (await res.json()) as GetBannerDismissalsResponse;
+            isDismissed.current = response.isDismissed;
+        }),
+    );
+
+    const setDismissed = React.useCallback(async () => {
+        if (!session?.data?.user?.email) {
+            return;
+        }
+        await fetch(`/api/banner-dismissals/${BANNER_ID}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({
+                userId: session.data.user.email,
+            }),
+        });
+        await refetch();
+    }, [session?.data?.user?.email, refetch]);
+
+    return isLoading || isDismissed.current ? (
         <></>
     ) : (
         <div className="inset-x-0 pb-2 sm:pb-5">
@@ -41,7 +70,7 @@ export default function Banner() {
                             <button
                                 type="button"
                                 className="-mr-1 flex p-2 rounded-md hover:bg-gray focus:outline-none focus:ring-2 focus:ring-white"
-                                onClick={() => setAcknowledged(true)}
+                                onClick={setDismissed}
                             >
                                 <span className="sr-only">Dismiss</span>
                                 <XIcon className="h-6 w-6 text-black" aria-hidden="true" />
