@@ -7,10 +7,18 @@ import {
     IDriftSyncStrategy,
 } from "components/videoPlayer/driftSyncStrategies/interfaces";
 
+import { IEvent } from "../../../util/event";
+import Event from "../../../util/event";
 import { DriftInformation } from "./interfaces";
 
-const videoCatchUpStrategy: IDriftSyncStrategy<number> = {
-    apply(
+class VideoCatchUpStrategy implements IDriftSyncStrategy<number> {
+    public measurementChange: IEvent<DriftInformation<number>>;
+
+    constructor() {
+        this.measurementChange = new Event<DriftInformation<number>>();
+    }
+
+    public apply(
         player: MediaPlayer,
         otherAttendeePositions: Array<AttendeeDriftMeasurement<number>>,
     ): void {
@@ -29,23 +37,23 @@ const videoCatchUpStrategy: IDriftSyncStrategy<number> = {
         if (mostUpToDateTime - config.streamSync.staticStream.minimumDrift > currentPosition) {
             player.seekTo(mostUpToDateTime);
         }
-    },
+    }
 
-    measureOwnDrift(player: MediaPlayer): DriftInformation<number> {
+    public measureOwnDrift(player: MediaPlayer): DriftInformation<number> {
         const position = player.getPosition();
 
         return {
             measurement: position,
             driftedPastBoundary: position > config.streamSync.staticStream.minimumDrift,
         };
-    },
+    }
 
-    synchronizeWithOthers(
+    public synchronizeWithOthers(
         player: MediaPlayer,
         otherAttendeeMeasurements: Array<AttendeeDriftMeasurement<number>>,
     ): void {
         throw Error("not implemented");
-    },
-};
+    }
+}
 
-export default videoCatchUpStrategy;
+export default VideoCatchUpStrategy;
