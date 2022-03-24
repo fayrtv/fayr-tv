@@ -14,6 +14,8 @@ import {
 import throttle from "lodash/throttle";
 import { hasCamPermissions } from "util/permissions/browserPermissionUtil";
 
+import { ActivityState } from "components/chimeWeb/Cams/types";
+
 import * as config from "../../config";
 import { Nullable, Callback } from "../../types/global";
 import {
@@ -58,6 +60,7 @@ export type Attendee = {
     videoElement: React.RefObject<HTMLVideoElement>;
     volume: number;
     role: Role;
+    activityState: ActivityState;
 };
 
 export type RosterMap = {

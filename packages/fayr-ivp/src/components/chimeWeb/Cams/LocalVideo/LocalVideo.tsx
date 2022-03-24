@@ -1,14 +1,21 @@
+import classNames from "classnames";
 import React from "react";
 import { Nullable } from "types/global";
 
 import useMeetingMetaData from "hooks/useMeetingMetaData";
+import useSocket from "hooks/useSocket";
 
 import { JoinInfo } from "components/chimeWeb/types";
 
 import { Flex, MaterialIcon } from "@fayr/shared-components";
 
-import "../Cam.scss";
+import commonCamStyles from "../Cam.module.scss";
 import styles from "./LocalVideo.module.scss";
+
+import { SocketEventType } from "../../../chime/types";
+import CamOverlay from "../CamOverlay";
+import { ActivityState, ActivityStateChangeDto } from "../types";
+import DiagonalDash from "./DiagonalDash";
 
 type Props = {
     chime: any;
@@ -21,11 +28,11 @@ const LocalVideo = ({ chime, joinInfo, pin }: Props) => {
 
     const [{ muted }] = useMeetingMetaData();
 
-    const [enabled, setEnabled] = React.useState(false);
-    const [showMeta, setShowMeta] = React.useState(true);
-    React.useEffect(() => {
-        const hideMetaInfoTimeout = setTimeout(() => setShowMeta(false), 2500);
+    const { socket } = useSocket();
 
+    const [activityState, setActivityState] = React.useState(ActivityState.Available);
+
+    React.useEffect(() => {
         if (chime.audioVideo) {
             if (!chime.audioVideo.videoTileController.currentLocalTile) {
                 chime.audioVideo.addObserver({
@@ -40,53 +47,76 @@ const LocalVideo = ({ chime, joinInfo, pin }: Props) => {
                         }
 
                         chime.audioVideo.bindVideoElement(tileState.tileId, videoElement.current);
-
-                        setEnabled(tileState.active);
                     },
                 });
             } else {
                 const currentTile = chime.audioVideo.videoTileController.currentLocalTile.tileState;
 
                 chime.audioVideo.bindVideoElement(currentTile.tileId, videoElement.current);
-
-                setEnabled(currentTile.active);
             }
         }
-
-        return () => {
-            clearTimeout(hideMetaInfoTimeout);
-        };
     }, [chime]);
 
-    const handleMouseEnter = React.useCallback(() => setShowMeta(true), []);
+    const onAfkClick = React.useCallback(() => {
+        if (!socket) {
+            return;
+        }
 
-    const handleMouseLeave = React.useCallback(() => setShowMeta(false), []);
+        const newState =
+            activityState === ActivityState.Available
+                ? ActivityState.AwayFromKeyboard
+                : ActivityState.Available;
 
-    // always show metadata when muted
-    const showMetaCombined = showMeta || muted || !enabled;
+        socket.send<ActivityStateChangeDto>({
+            messageType: SocketEventType.ActivityStateChange,
+            payload: {
+                attendeeId: joinInfo.Attendee.AttendeeId,
+                activityState: newState,
+            },
+        });
+
+        setActivityState(newState);
+    }, [joinInfo.Attendee.AttendeeId, socket, activityState]);
 
     const micMuteCls = muted ? "controls__btn--mic_on" : "controls__btn--mic_off";
-    const metaCls = showMetaCombined ? "" : " participantMeta--hide";
 
     return (
-        <div
-            className={styles.LocalVideo}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-        >
-            <div className="cam">
-                <div className="preview">
-                    <div className="video-container pos-relative">
-                        <video className="attendee_cam" ref={videoElement} />
+        <div className={styles.LocalVideo}>
+            <div className={commonCamStyles.cam}>
+                <div className={commonCamStyles.preview}>
+                    <div className={classNames("pos-relative", commonCamStyles.VideoContainer)}>
+                        <video className={commonCamStyles.AttendeeCam} ref={videoElement} />
+                        {activityState === ActivityState.AwayFromKeyboard && (
+                            <CamOverlay activityState={ActivityState.AwayFromKeyboard} />
+                        )}
                     </div>
                 </div>
                 <Flex
-                    className={`participantMeta ${metaCls}`}
+                    className={commonCamStyles.ParticipantMeta}
                     id={`${joinInfo.Attendee.AttendeeId}`}
                     space="Between"
                 >
                     ich
                     <Flex mainAlign="Center" direction="Row">
+                        <span style={{ marginTop: "2px", height: "16px" }}>
+                            {activityState === ActivityState.Available ? (
+                                <MaterialIcon
+                                    size={16}
+                                    color="white"
+                                    iconName="keyboard"
+                                    onClick={onAfkClick}
+                                />
+                            ) : (
+                                <DiagonalDash onClick={onAfkClick}>
+                                    <MaterialIcon
+                                        size={16}
+                                        color="white"
+                                        iconName="keyboard"
+                                        onClick={onAfkClick}
+                                    />
+                                </DiagonalDash>
+                            )}
+                        </span>
                         <span className={`${micMuteCls} btn--mic`}>
                             <svg
                                 className="attendee mg-l-1 btn__svg btn__svg--sm btn__svg--mic_on"

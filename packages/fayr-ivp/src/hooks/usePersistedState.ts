@@ -14,14 +14,14 @@ function parseAsJson<T>(rawJson: string) {
  */
 export const usePersistedState = <T>(key: string, factory?: () => T) => {
     const value = React.useMemo<T | undefined>(() => {
-        const rawData = sessionStorage.getItem(key);
+        const rawData = localStorage.getItem(key);
         return rawData ? parseAsJson(rawData) : undefined;
     }, [key]);
 
     const [state, setState] = React.useState(value ?? (factory ? factory() : undefined));
 
     React.useEffect(() => {
-        sessionStorage.setItem(key, JSON.stringify(state));
+        localStorage.setItem(key, JSON.stringify(state));
     }, [key, state]);
 
     return [state, setState] as [T, Dispatch<SetStateAction<T>>];

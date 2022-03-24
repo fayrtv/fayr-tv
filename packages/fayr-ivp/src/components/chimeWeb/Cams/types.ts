@@ -7,3 +7,13 @@ export type LocalVideoInfo = {
     node: React.ReactNode;
     replace: boolean;
 };
+
+export enum ActivityState {
+    Available,
+    AwayFromKeyboard,
+}
+
+export type ActivityStateChangeDto = {
+    attendeeId: string;
+    activityState: ActivityState;
+};
