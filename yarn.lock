@@ -3855,7 +3855,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/dom-mediacapture-record@^1.0.4", "@types/dom-mediacapture-record@^1.0.7":
+"@types/dom-mediacapture-record@^1.0.7":
   version "1.0.11"
   resolved "https://registry.yarnpkg.com/@types/dom-mediacapture-record/-/dom-mediacapture-record-1.0.11.tgz#f61b17e6131d76629d4039b02634c7e786b82c3a"
   integrity sha512-ODVOH95x08arZhbQOjH3no7Iye64akdO+55nM+IGtTzpu2ACKr9CQTrI//CCVieIjlI/eL+rK1hQjMycxIgylQ==
@@ -4225,7 +4225,7 @@
   resolved "https://registry.yarnpkg.com/@types/trusted-types/-/trusted-types-2.0.2.tgz#fc25ad9943bcac11cceb8168db4f275e0e72e756"
   integrity sha512-F5DIZ36YVLE+PN+Zwws4kJogq47hNgX3Nx6WyDJ3kcplxyke3XIzB8uK5n/Lpm1HBsbGzd6nmGehL8cPekP+Tg==
 
-"@types/ua-parser-js@^0.7.33", "@types/ua-parser-js@^0.7.35":
+"@types/ua-parser-js@^0.7.35":
   version "0.7.36"
   resolved "https://registry.yarnpkg.com/@types/ua-parser-js/-/ua-parser-js-0.7.36.tgz#9bd0b47f26b5a3151be21ba4ce9f5fa457c5f190"
   integrity sha512-N1rW+njavs70y2cApeIw1vLMYXRwfBy+7trgavGuuTfOd7j1Yh7QTRc/yqsPl6ncokt72ZXuxEU0PiCp9bSwNQ==
@@ -4827,18 +4827,6 @@ amazon-chime-sdk-component-library-react@^2.12.0:
     throttle-debounce "^2.3.0"
     uuid "^8.0.0"
 
-amazon-chime-sdk-js@^1.14.0:
-  version "1.22.0"
-  resolved "https://registry.yarnpkg.com/amazon-chime-sdk-js/-/amazon-chime-sdk-js-1.22.0.tgz#cf18447cdd41248181cccde7bcf6d817609f5284"
-  integrity sha512-1X/1yO8HFs4vcoi/CIRR5IxySpz4s2n6C8CErFC+bRPjeORVAmDyiy1F5WvXZm1XtAj4wa4tbuPUCoR21Dhw/Q==
-  dependencies:
-    "@types/dom-mediacapture-record" "^1.0.4"
-    "@types/ua-parser-js" "^0.7.33"
-    detect-browser "^5.1.0"
-    protobufjs "~6.8.8"
-    resize-observer "^1.0.0"
-    ua-parser-js "^0.7.22"
-
 amazon-chime-sdk-js@^2.21.1:
   version "2.27.0"
   resolved "https://registry.yarnpkg.com/amazon-chime-sdk-js/-/amazon-chime-sdk-js-2.27.0.tgz#2c8c0c23b0f6b0e957ac44be75218b7558314258"
@@ -4847,6 +4835,19 @@ amazon-chime-sdk-js@^2.21.1:
     "@types/dom-mediacapture-record" "^1.0.7"
     "@types/ua-parser-js" "^0.7.35"
     detect-browser "^5.2.0"
+    protobufjs "~6.8.8"
+    resize-observer "^1.0.0"
+    ua-parser-js "^1.0.1"
+
+amazon-chime-sdk-js@^2.27.0:
+  version "2.28.0"
+  resolved "https://registry.yarnpkg.com/amazon-chime-sdk-js/-/amazon-chime-sdk-js-2.28.0.tgz#bcd9ef95de87e6a13197215d60b16087eac8a4c4"
+  integrity sha512-ON0wMClROp8aiuPovO+gFE5Hob/+/rJXH0dDznm/V1PNL87arbF4od9hUXdRPWAfpQ2+cQzsHaYxYU1PCwVe0Q==
+  dependencies:
+    "@types/dom-mediacapture-record" "^1.0.7"
+    "@types/ua-parser-js" "^0.7.35"
+    detect-browser "^5.2.0"
+    pako "^2.0.4"
     protobufjs "~6.8.8"
     resize-observer "^1.0.0"
     ua-parser-js "^1.0.1"
@@ -7115,7 +7116,7 @@ destroy@~1.0.4:
   resolved "https://registry.yarnpkg.com/destroy/-/destroy-1.0.4.tgz#978857442c44749e4206613e37946205826abd80"
   integrity sha1-l4hXRCxEdJ5CBmE+N5RiBYJqvYA=
 
-detect-browser@^5.1.0, detect-browser@^5.2.0:
+detect-browser@^5.2.0:
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/detect-browser/-/detect-browser-5.3.0.tgz#9705ef2bddf46072d0f7265a1fe300e36fe7ceca"
   integrity sha512-53rsFbGdwMwlF7qvCt0ypLM5V5/Mbl0szB7GPN8y9NCcbknYOeVVXdrXEq+90IwAfrrzt6Hd+u2E2ntakICU8w==
@@ -12610,6 +12611,11 @@ pacote@^11.2.6:
     ssri "^8.0.1"
     tar "^6.1.0"
 
+pako@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/pako/-/pako-2.0.4.tgz#6cebc4bbb0b6c73b0d5b8d7e8476e2b2fbea576d"
+  integrity sha512-v8tweI900AUkZN6heMU/4Uy4cXRc2AYNRggVmTR+dEncawDJgCdLMximOVA2p4qO57WMynangsfGRb5WD6L1Bg==
+
 pako@~1.0.5:
   version "1.0.11"
   resolved "https://registry.yarnpkg.com/pako/-/pako-1.0.11.tgz#6c9599d340d54dfd3946380252a35705a6b992bf"
@@ -16446,7 +16452,7 @@ typescript@^4.1.5, typescript@^4.3.5:
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.5.5.tgz#d8c953832d28924a9e3d37c73d729c846c5896f3"
   integrity sha512-TCTIul70LyWe6IJWT8QSYeA54WQe8EjQFU4wY52Fasj5UKx88LNYKCgBEHcOMOrFF1rKGbD8v/xcNWVUq9SymA==
 
-ua-parser-js@^0.7.22, ua-parser-js@^0.7.30:
+ua-parser-js@^0.7.30:
   version "0.7.31"
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.31.tgz#649a656b191dffab4f21d5e053e27ca17cbff5c6"
   integrity sha512-qLK/Xe9E2uzmYI3qLeOmI0tEOt+TBBQyUIAh4aAgU05FVYzeZrKUdkAZfBNVGRaHVgV0TDkdEngJSw/SyQchkQ==

@@ -1,15 +1,14 @@
 import {
     ConsoleLogger,
     DefaultDeviceController,
-    DefaultDOMWebSocketFactory,
     DefaultMeetingSession,
     DefaultModality,
-    DefaultPromisedWebSocketFactory,
-    FullJitterBackoff,
     LogLevel,
     MeetingSessionConfiguration,
-    ReconnectingPromisedWebSocket,
     AudioVideoFacade,
+    WebSocketAdapter,
+    DefaultWebSocketAdapter,
+    Logger,
 } from "amazon-chime-sdk-js";
 import throttle from "lodash/throttle";
 import { hasCamPermissions } from "util/permissions/browserPermissionUtil";
@@ -23,6 +22,7 @@ import {
     hasOutputPermissions,
 } from "../../util/permissions/browserPermissionUtil";
 import { JoinInfo } from "../chimeWeb/types";
+import { IAudioVideoManager, AudioVideoManager } from "./AudioVideoManager";
 import DeviceProviderDeviceTrackingDecorator from "./DeviceProviderDeviceTrackingDecorator";
 import SocketProvider from "./SocketProvider";
 import { ISocketProvider } from "./types";
@@ -79,7 +79,7 @@ type MessageUpdate = {
 type MessageUpdateCallback = Callback<MessageUpdate>;
 
 export interface IChimeSocket {
-    joinRoomSocket(): Promise<Nullable<ISocketProvider>>;
+    joinRoomSocket(): Nullable<ISocketProvider>;
 }
 
 export interface IChimeSdkWrapper extends IChimeSocket {
@@ -94,12 +94,6 @@ export interface IChimeSdkWrapper extends IChimeSocket {
     unsubscribeFromDevicesUpdated(callback: DeviceUpdateCallback): void;
 
     leaveRoom(end: boolean): Promise<void>;
-}
-
-export interface IChimeDevicePicker {
-    chooseAudioInputDevice(device: Nullable<DeviceInfo>): Promise<void>;
-    chooseAudioOutputDevice(device: Nullable<DeviceInfo>): Promise<void>;
-    chooseVideoInputDevice(device: Nullable<DeviceInfo>): Promise<void>;
 }
 
 export interface IChimeAudioVideoProvider {
@@ -122,11 +116,10 @@ export default class ChimeSdkWrapper
     implements
         IChimeSdkWrapper,
         IChimeSocket,
-        IChimeDevicePicker,
+        IAudioVideoManager,
         IChimeAudioVideoProvider,
         IDeviceProvider
 {
-    private static WEB_SOCKET_TIMEOUT_MS = 10000;
     private static ROSTER_THROTTLE_MS = 400;
 
     private _meetingSession: Nullable<DefaultMeetingSession> = null;
@@ -134,9 +127,8 @@ export default class ChimeSdkWrapper
         return this._meetingSession;
     }
 
-    private _audioVideo: Nullable<AudioVideoFacade> = null;
     public get audioVideo() {
-        return this._audioVideo!;
+        return this._audioVideoManager.audioVideo!;
     }
 
     public get attendeeId() {
@@ -148,17 +140,14 @@ export default class ChimeSdkWrapper
     private region: Nullable<string> = null;
 
     // Selected devices
-    private _currentAudioInputDevice: Nullable<DeviceInfo> = null;
     public get currentAudioInputDevice() {
-        return this._currentAudioInputDevice;
+        return this._audioVideoManager.currentAudioInputDevice;
     }
-    private _currentAudioOutputDevice: Nullable<DeviceInfo> = null;
     public get currentAudioOutputDevice() {
-        return this._currentVideoInputDevice;
+        return this._audioVideoManager.currentAudioOutputDevice;
     }
-    private _currentVideoInputDevice: Nullable<DeviceInfo> = null;
     public get currentVideoInputDevice() {
-        return this._currentVideoInputDevice;
+        return this._audioVideoManager.currentVideoInputDevice;
     }
 
     // Available devices
@@ -191,13 +180,33 @@ export default class ChimeSdkWrapper
     private roster: RosterMap = {};
     private rosterUpdateCallbacks: Array<RosterUpdateCallback> = [];
     private configuration: Nullable<MeetingSessionConfiguration> = null;
-    private messagingSocket: Nullable<ReconnectingPromisedWebSocket> = null;
+    private messagingSocket: Nullable<WebSocketAdapter> = null;
     private messageUpdateCallbacks: Array<MessageUpdateCallback> = [];
 
     private _permissionGranter: IDeviceProvider;
+    private _audioVideoManager: IAudioVideoManager;
+    private _logger: Logger;
 
     constructor() {
         this._permissionGranter = new DeviceProviderDeviceTrackingDecorator(this);
+        this._logger = new ConsoleLogger("SDK", LogLevel.ERROR);
+        this._audioVideoManager = new AudioVideoManager(this._logger);
+    }
+    changeBlurState(blurBackground: boolean) {
+        return this._audioVideoManager.changeBlurState(blurBackground);
+    }
+
+    chooseAudioInputDevice(device: Nullable<DeviceInfo>): Promise<void> {
+        return this._audioVideoManager.chooseAudioInputDevice(device);
+    }
+    chooseAudioOutputDevice(device: Nullable<DeviceInfo>): Promise<void> {
+        return this._audioVideoManager.chooseAudioOutputDevice(device);
+    }
+    chooseVideoInputDevice(
+        device: Nullable<DeviceInfo>,
+        blurBackground: boolean = false,
+    ): Promise<void> {
+        return this._audioVideoManager.chooseVideoInputDevice(device, blurBackground);
     }
 
     listAudioInputDevices() {
@@ -212,13 +221,9 @@ export default class ChimeSdkWrapper
 
     resetFields() {
         this._meetingSession = null;
-        this._audioVideo = null;
         this.title = null;
         this.name = null;
         this.region = null;
-        this._currentAudioInputDevice = null;
-        this._currentAudioOutputDevice = null;
-        this._currentVideoInputDevice = null;
         this._audioInputDevices = [];
         this._audioOutputDevices = [];
         this._videoInputDevices = [];
@@ -302,10 +307,13 @@ export default class ChimeSdkWrapper
     };
 
     async initializeMeetingSession(configuration: MeetingSessionConfiguration) {
-        const logger = new ConsoleLogger("SDK", LogLevel.ERROR);
-        const deviceController = new DefaultDeviceController(logger);
-        this._meetingSession = new DefaultMeetingSession(configuration, logger, deviceController);
-        this._audioVideo = this._meetingSession.audioVideo;
+        const deviceController = new DefaultDeviceController(this._logger);
+        this._meetingSession = new DefaultMeetingSession(
+            configuration,
+            this._logger,
+            deviceController,
+        );
+        this._audioVideoManager.audioVideo = this._meetingSession.audioVideo;
 
         this._audioInputDevices = [];
         this._audioOutputDevices = [];
@@ -338,76 +346,80 @@ export default class ChimeSdkWrapper
         ]);
 
         this.publishDevicesUpdated();
-        this._audioVideo.addDeviceChangeObserver(this);
+        this._audioVideoManager.audioVideo.addDeviceChangeObserver(this);
 
-        this._audioVideo.realtimeSubscribeToAttendeeIdPresence((presentAttendeeId, present) => {
-            if (!present) {
-                delete this.roster[presentAttendeeId];
-                //this.publishRosterUpdate.cancel();
-                this.publishRosterUpdate()();
-                return;
-            }
-
-            this._audioVideo?.realtimeSubscribeToVolumeIndicator(
-                presentAttendeeId,
-                async (attendeeId, volume, muted, signalStrength) => {
-                    const baseAttendeeId = new DefaultModality(attendeeId).base();
-                    if (baseAttendeeId !== attendeeId) {
-                        // Don't include the content attendee in the roster.
-                        //
-                        // When you or other attendees share content (a screen capture, a video file,
-                        // or any other MediaStream object), the content attendee (attendee-id#content) joins the session and
-                        // shares content as if a regular attendee shares a video.
-                        //
-                        // For example, your attendee ID is "my-id". When you call meetingSession.audioVideo.startContentShare,
-                        // the content attendee "my-id#content" will join the session and share your content.
-                        return;
-                    }
-
-                    let shouldPublishImmediately = false;
-
-                    if (!this.roster[attendeeId]) {
-                        this.roster[attendeeId] = { name: "", role: Role.Attendee } as Attendee;
-                    }
-                    if (volume !== null) {
-                        this.roster[attendeeId].volume = Math.round(volume * 100);
-                    }
-                    if (muted !== null) {
-                        this.roster[attendeeId].muted = muted;
-                    }
-                    if (signalStrength !== null) {
-                        this.roster[attendeeId].signalStrength = Math.round(signalStrength * 100);
-                    }
-
-                    if (this.title && attendeeId && !this.roster[attendeeId].name) {
-                        const response = await fetch(
-                            `${config.CHIME_ROOM_API}/attendee?title=${encodeURIComponent(
-                                this.title,
-                            )}&attendeeId=${encodeURIComponent(attendeeId)}`,
-                        );
-                        const json = await response.json();
-                        const attendee = this.roster[attendeeId];
-                        if (json.AttendeeInfo && attendee) {
-                            attendee.name = json.AttendeeInfo.Name || "";
-
-                            let role = Role.Attendee;
-                            if ((json.AttendeeInfo.Role || "") === "host") {
-                                role = Role.Host;
-                            }
-                            attendee.role = role;
-
-                            shouldPublishImmediately = true;
-                        }
-                    }
-
-                    if (shouldPublishImmediately) {
-                        //this.publishRosterUpdate.cancel();
-                    }
-
+        this._audioVideoManager.audioVideo.realtimeSubscribeToAttendeeIdPresence(
+            (presentAttendeeId, present) => {
+                if (!present) {
+                    delete this.roster[presentAttendeeId];
+                    //this.publishRosterUpdate.cancel();
                     this.publishRosterUpdate()();
-                },
-            );
-        });
+                    return;
+                }
+
+                this._audioVideoManager.audioVideo?.realtimeSubscribeToVolumeIndicator(
+                    presentAttendeeId,
+                    async (attendeeId, volume, muted, signalStrength) => {
+                        const baseAttendeeId = new DefaultModality(attendeeId).base();
+                        if (baseAttendeeId !== attendeeId) {
+                            // Don't include the content attendee in the roster.
+                            //
+                            // When you or other attendees share content (a screen capture, a video file,
+                            // or any other MediaStream object), the content attendee (attendee-id#content) joins the session and
+                            // shares content as if a regular attendee shares a video.
+                            //
+                            // For example, your attendee ID is "my-id". When you call meetingSession.audioVideo.startContentShare,
+                            // the content attendee "my-id#content" will join the session and share your content.
+                            return;
+                        }
+
+                        let shouldPublishImmediately = false;
+
+                        if (!this.roster[attendeeId]) {
+                            this.roster[attendeeId] = { name: "", role: Role.Attendee } as Attendee;
+                        }
+                        if (volume !== null) {
+                            this.roster[attendeeId].volume = Math.round(volume * 100);
+                        }
+                        if (muted !== null) {
+                            this.roster[attendeeId].muted = muted;
+                        }
+                        if (signalStrength !== null) {
+                            this.roster[attendeeId].signalStrength = Math.round(
+                                signalStrength * 100,
+                            );
+                        }
+
+                        if (this.title && attendeeId && !this.roster[attendeeId].name) {
+                            const response = await fetch(
+                                `${config.CHIME_ROOM_API}/attendee?title=${encodeURIComponent(
+                                    this.title,
+                                )}&attendeeId=${encodeURIComponent(attendeeId)}`,
+                            );
+                            const json = await response.json();
+                            const attendee = this.roster[attendeeId];
+                            if (json.AttendeeInfo && attendee) {
+                                attendee.name = json.AttendeeInfo.Name || "";
+
+                                let role = Role.Attendee;
+                                if ((json.AttendeeInfo.Role || "") === "host") {
+                                    role = Role.Host;
+                                }
+                                attendee.role = role;
+
+                                shouldPublishImmediately = true;
+                            }
+                        }
+
+                        if (shouldPublishImmediately) {
+                            //this.publishRosterUpdate.cancel();
+                        }
+
+                        this.publishRosterUpdate()();
+                    },
+                );
+            },
+        );
     }
 
     async joinRoom(element: HTMLAudioElement) {
@@ -422,11 +434,11 @@ export default class ChimeSdkWrapper
 
         this.publishDevicesUpdated();
 
-        this._audioVideo?.bindAudioElement(element);
-        this._audioVideo?.start();
+        this._audioVideoManager.audioVideo?.bindAudioElement(element);
+        this._audioVideoManager.audioVideo?.start();
     }
 
-    async joinRoomSocket() {
+    joinRoomSocket() {
         if (!this.configuration) {
             this.logError(new Error("configuration does not exist"));
             return null;
@@ -438,15 +450,8 @@ export default class ChimeSdkWrapper
             this.configuration.credentials!.joinToken
         }`;
 
-        this.messagingSocket = new ReconnectingPromisedWebSocket(
-            messagingUrl,
-            [],
-            "arraybuffer",
-            new DefaultPromisedWebSocketFactory(new DefaultDOMWebSocketFactory()),
-            new FullJitterBackoff(1000, 0, 10000),
-        );
-
-        await this.messagingSocket.open(ChimeSdkWrapper.WEB_SOCKET_TIMEOUT_MS);
+        this.messagingSocket = new DefaultWebSocketAdapter(this._logger);
+        this.messagingSocket.create(messagingUrl, []);
 
         if (config.DEBUG) {
             console.log(this.messagingSocket);
@@ -474,7 +479,7 @@ export default class ChimeSdkWrapper
 
     async leaveRoom(end: boolean) {
         try {
-            this._audioVideo?.stop();
+            this._audioVideoManager.audioVideo?.stop();
         } catch (error) {
             this.logError(error);
         }
@@ -501,35 +506,6 @@ export default class ChimeSdkWrapper
         this.resetFields();
     }
 
-    // Device
-
-    chooseAudioInputDevice = async (device: Nullable<DeviceInfo>) => {
-        try {
-            await this._audioVideo?.chooseAudioInputDevice(device?.value ?? null);
-            this._currentAudioInputDevice = device;
-        } catch (error) {
-            this.logError(error);
-        }
-    };
-
-    chooseAudioOutputDevice = async (device: Nullable<DeviceInfo>) => {
-        try {
-            await this._audioVideo?.chooseAudioOutputDevice(device?.value ?? null);
-            this._currentAudioOutputDevice = device;
-        } catch (error) {
-            this.logError(error);
-        }
-    };
-
-    chooseVideoInputDevice = async (device: Nullable<DeviceInfo>) => {
-        try {
-            await this._audioVideo?.chooseVideoInputDevice(device?.value ?? null);
-            this._currentVideoInputDevice = device;
-        } catch (error) {
-            this.logError(error);
-        }
-    };
-
     // Observer methods
 
     audioInputsChanged(freshAudioInputDeviceList: Array<MediaDeviceInfo>) {
@@ -549,7 +525,7 @@ export default class ChimeSdkWrapper
         });
 
         if (!hasCurrentDevice) {
-            this._currentAudioInputDevice =
+            this._audioVideoManager.currentAudioInputDevice =
                 this._audioInputDevices.length > 0 ? this._audioInputDevices[0] : null;
         }
         this.publishDevicesUpdated();
@@ -573,7 +549,7 @@ export default class ChimeSdkWrapper
         });
 
         if (!hasCurrentDevice) {
-            this._currentAudioOutputDevice =
+            this._audioVideoManager.currentAudioOutputDevice =
                 this._audioOutputDevices.length > 0 ? this._audioOutputDevices[0] : null;
         }
         this.publishDevicesUpdated();
@@ -584,8 +560,8 @@ export default class ChimeSdkWrapper
 
         this._videoInputDevices = freshVideoInputDeviceList.map((mediaDeviceInfo) => {
             if (
-                this._currentVideoInputDevice &&
-                mediaDeviceInfo.deviceId === this._currentVideoInputDevice.value
+                this._audioVideoManager.currentVideoInputDevice &&
+                mediaDeviceInfo.deviceId === this._audioVideoManager.currentVideoInputDevice.value
             ) {
                 hasCurrentDevice = true;
             }
@@ -597,7 +573,7 @@ export default class ChimeSdkWrapper
         });
 
         if (!hasCurrentDevice) {
-            this._currentVideoInputDevice =
+            this._audioVideoManager.currentVideoInputDevice =
                 this._videoInputDevices.length > 0 ? this._videoInputDevices[0] : null;
         }
 
@@ -619,9 +595,9 @@ export default class ChimeSdkWrapper
 
     publishDevicesUpdated() {
         const params: DeviceUpdatePayload = {
-            currentAudioInputDevice: this._currentAudioInputDevice,
-            currentAudioOutputDevice: this._currentAudioOutputDevice,
-            currentVideoInputDevice: this._currentVideoInputDevice,
+            currentAudioInputDevice: this._audioVideoManager.currentAudioInputDevice,
+            currentAudioOutputDevice: this._audioVideoManager.currentAudioOutputDevice,
+            currentVideoInputDevice: this._audioVideoManager.currentVideoInputDevice,
             audioInputDevices: this._audioInputDevices,
             audioOutputDevices: this._audioOutputDevices,
             videoInputDevices: this._videoInputDevices,

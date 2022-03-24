@@ -26,12 +26,13 @@ type Props = {
 const LocalVideo = ({ chime, joinInfo, pin }: Props) => {
     const videoElement = React.useRef<HTMLVideoElement>(null);
 
-    const [{ muted }] = useMeetingMetaData();
+    const [{ muted, videoEnabled }] = useMeetingMetaData();
 
     const { socket } = useSocket();
 
     const [activityState, setActivityState] = React.useState(ActivityState.Available);
 
+    const [cameraBlurred, setCameraBlurred] = React.useState(false);
     React.useEffect(() => {
         if (chime.audioVideo) {
             if (!chime.audioVideo.videoTileController.currentLocalTile) {
@@ -77,6 +78,18 @@ const LocalVideo = ({ chime, joinInfo, pin }: Props) => {
 
         setActivityState(newState);
     }, [joinInfo.Attendee.AttendeeId, socket, activityState]);
+
+    const onBlurClick = React.useCallback(
+        async (newBlurState: boolean) => {
+            if (!videoEnabled) {
+                return;
+            }
+
+            await chime.changeBlurState(newBlurState);
+            setCameraBlurred(newBlurState);
+        },
+        [chime, videoEnabled],
+    );
 
     const micMuteCls = muted ? "controls__btn--mic_on" : "controls__btn--mic_off";
 
@@ -144,6 +157,14 @@ const LocalVideo = ({ chime, joinInfo, pin }: Props) => {
                                     fill="white"
                                 />
                             </svg>
+                        </span>
+                        <span style={{ marginTop: "2px" }}>
+                            <MaterialIcon
+                                size={16}
+                                color="white"
+                                iconName={cameraBlurred ? "blur_on" : "blur_off"}
+                                onClick={() => onBlurClick(!cameraBlurred)}
+                            />
                         </span>
                         <span style={{ marginTop: "2px" }}>
                             <MaterialIcon

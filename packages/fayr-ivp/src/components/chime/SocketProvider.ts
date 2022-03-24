@@ -1,4 +1,4 @@
-import { ReconnectingPromisedWebSocket } from "amazon-chime-sdk-js";
+import { WebSocketAdapter } from "amazon-chime-sdk-js";
 
 import { ISocketProvider, SocketEventType, SocketMessage } from "./types";
 
@@ -15,11 +15,11 @@ type AwsWebsocketMessage = {
 };
 
 export class SocketProvider implements ISocketProvider {
-    private _socket: ReconnectingPromisedWebSocket;
+    private _socket: WebSocketAdapter;
 
     private _listeners: Map<SocketEventType, Array<ListenerCallback>>;
 
-    public constructor(socket: ReconnectingPromisedWebSocket) {
+    public constructor(socket: WebSocketAdapter) {
         this._socket = socket;
         this._listeners = new Map<SocketEventType, Array<ListenerCallback>>();
 
@@ -89,10 +89,8 @@ export class SocketProvider implements ISocketProvider {
         return () => this.removeListener(eventType, typedCallback);
     }
 
-    close(timeoutMs: number, code?: number | undefined, reason?: string | undefined) {
-        this._socket.close(timeoutMs, code, reason).catch((err) => {
-            // Socket was probably already closed
-        });
+    close(code?: number | undefined, reason?: string | undefined) {
+        this._socket.close(code, reason);
     }
 
     private removeListener(eventType: SocketEventType, callback: ListenerCallback): void {

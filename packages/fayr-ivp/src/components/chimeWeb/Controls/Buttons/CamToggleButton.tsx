@@ -4,9 +4,9 @@ import * as React from "react";
 import useGlobalKeyHandler from "hooks/useGlobalKeyHandler";
 import useMeetingMetaData from "hooks/useMeetingMetaData";
 
+import { IAudioVideoManager } from "components/chime/AudioVideoManager";
 import {
     IChimeAudioVideoProvider,
-    IChimeDevicePicker,
     IChimeSdkWrapper,
     IDeviceProvider,
 } from "components/chime/ChimeSdkWrapper";
@@ -20,7 +20,7 @@ export enum VideoStatus {
 }
 
 type Props = {
-    chime: IChimeSdkWrapper & IChimeAudioVideoProvider & IChimeDevicePicker & IDeviceProvider;
+    chime: IChimeSdkWrapper & IChimeAudioVideoProvider & IAudioVideoManager & IDeviceProvider;
 };
 
 export const CamToggleButton = ({ chime }: Props) => {

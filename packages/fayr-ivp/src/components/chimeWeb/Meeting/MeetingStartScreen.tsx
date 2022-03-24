@@ -5,11 +5,11 @@ import * as React from "react";
 
 import useTranslations from "hooks/useTranslations";
 
+import { IAudioVideoManager } from "components/chime/AudioVideoManager";
 // Types
 import {
     DeviceInfo,
     IChimeAudioVideoProvider,
-    IChimeDevicePicker,
     IDeviceProvider,
 } from "components/chime/ChimeSdkWrapper";
 
@@ -29,7 +29,7 @@ import AudioSensitivityBar from "./AudioSensitivityBar";
 type Props = {
     audioVideo: AudioVideoFacade;
     attendeeId: string | null | undefined;
-    chime: IChimeDevicePicker & IChimeAudioVideoProvider & IDeviceProvider;
+    chime: IAudioVideoManager & IChimeAudioVideoProvider & IDeviceProvider;
     onContinue(): void;
 };
 

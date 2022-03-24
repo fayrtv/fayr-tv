@@ -1,11 +1,8 @@
 import React from "react";
 import { useMediaQuery } from "react-responsive";
 
-import {
-    IChimeAudioVideoProvider,
-    IChimeDevicePicker,
-    IChimeSdkWrapper,
-} from "components/chime/ChimeSdkWrapper";
+import { IAudioVideoManager } from "components/chime/AudioVideoManager";
+import { IChimeAudioVideoProvider, IChimeSdkWrapper } from "components/chime/ChimeSdkWrapper";
 
 import { Cell, Flex, Grid } from "@fayr/shared-components";
 
@@ -25,7 +22,7 @@ import VotingButton from "./Buttons/VotingButton";
 import ReactionButton from "./emoji-reactions/ReactionButton";
 
 type Props = {
-    chime: IChimeSdkWrapper & IChimeAudioVideoProvider & IChimeDevicePicker & IDeviceProvider;
+    chime: IChimeSdkWrapper & IChimeAudioVideoProvider & IAudioVideoManager & IDeviceProvider;
     title: string;
     openSettings(): void;
     role: RoomMemberRole;
