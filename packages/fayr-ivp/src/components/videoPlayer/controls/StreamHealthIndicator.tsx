@@ -34,7 +34,7 @@ export const StreamHealthIndicator = ({ player, driftSyncStrategy }: Props) => {
 
     return (
         <Flex
-            className={classNames(styles.Container, "player-btn")}
+            className={classNames(styles.Container, "player-btn mg-x-1")}
             direction="Row"
             crossAlign="Center"
         >
