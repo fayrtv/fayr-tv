@@ -3434,23 +3434,6 @@
     prop-types "^15.7.2"
     react-is "^16.8.0 || ^17.0.0"
 
-"@middy/core@^2.5.3":
-  version "2.5.7"
-  resolved "https://registry.yarnpkg.com/@middy/core/-/core-2.5.7.tgz#a1b3eff68881ff66b14b5051255791f7cbd3b471"
-  integrity sha512-KX5Ud0SP+pol6PGkYtMCH4goHobs1XJo3OvEUwdiZUIjZgo56Q08nLu5N7Bs6P+FwGTQHA+hlQ3I5SZbfpO/jg==
-
-"@middy/http-json-body-parser@^2.5.3":
-  version "2.5.7"
-  resolved "https://registry.yarnpkg.com/@middy/http-json-body-parser/-/http-json-body-parser-2.5.7.tgz#966dccc77ec5a0a163efe731b7c7007adf821513"
-  integrity sha512-6xysTWlK8s8QTVyQE9MfXR6fIY9h26uyiD1rM0mmYzGhLqWmamHgJvXzpBVXyRwOej451zSfjdSgKU66nxZmrw==
-  dependencies:
-    "@middy/util" "^2.5.7"
-
-"@middy/util@^2.5.7":
-  version "2.5.7"
-  resolved "https://registry.yarnpkg.com/@middy/util/-/util-2.5.7.tgz#4a08ebb8ec04c3a62ec35007399b675f93119446"
-  integrity sha512-4CwEVfUyvF0n1qtEzrcrV56L7iQYyt6zChYQ9N5/uvQgAhdExLzOinW6ki1ZjTMgaMypqdHNUyDAEiAuNJLRUw==
-
 "@napi-rs/triples@^1.0.3":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@napi-rs/triples/-/triples-1.1.0.tgz#88c35b72e79a20b79bb4c9b3e2817241a1c9f4f9"
