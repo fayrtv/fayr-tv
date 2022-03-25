@@ -51,7 +51,7 @@ export const PlatformConfiguratorContextProvider: React.FC = ({ children }) => {
         React.useCallback(
             async (newValue: PlatformInfo) => {
                 await fetch(`/api/platforms/${platformId}`, {
-                    method: "POST",
+                    method: "PATCH",
                     headers: { "Content-Type": "application/json" },
                     credentials: "include",
                     body: JSON.stringify({ id: platformId, info: newValue }),
@@ -67,7 +67,7 @@ export const PlatformConfiguratorContextProvider: React.FC = ({ children }) => {
         React.useCallback(
             async (newValue: PlatformType | undefined) => {
                 await fetch(`/api/platforms/${platformId}`, {
-                    method: "POST",
+                    method: "PATCH",
                     headers: { "Content-Type": "application/json" },
                     credentials: "include",
                     body: JSON.stringify({ id: platformId, type: newValue }),
@@ -83,7 +83,7 @@ export const PlatformConfiguratorContextProvider: React.FC = ({ children }) => {
         React.useCallback(
             async (newValue: PlatformStyling) => {
                 await fetch(`/api/platforms/${platformId}`, {
-                    method: "POST",
+                    method: "PATCH",
                     headers: { "Content-Type": "application/json" },
                     credentials: "include",
                     body: JSON.stringify({ id: platformId, styling: newValue }),

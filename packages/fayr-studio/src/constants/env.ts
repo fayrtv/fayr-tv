@@ -4,7 +4,5 @@ export const env = {
     COGNITO_CLIENT_ID: process.env.COGNITO_CLIENT_ID as string,
     COGNITO_CLIENT_SECRET: process.env.COGNITO_CLIENT_SECRET as string,
     COGNITO_ISSUER: process.env.COGNITO_ISSUER as string,
-
-    TABLE_NAME: process.env.TABLE_NAME as string,
-    TABLE_REGION: process.env.TABLE_REGION as string,
+    API_URL: process.env.API_URL as string
 } as const;
