@@ -1,4 +1,5 @@
 import Link from "next/link";
+import React from "react";
 
 export function A(props: React.AllHTMLAttributes<HTMLAnchorElement>): JSX.Element {
     const { href, children, ...rest } = props;

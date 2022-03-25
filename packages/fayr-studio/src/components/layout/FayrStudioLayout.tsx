@@ -228,7 +228,7 @@ export default function FayrStudioLayout({ children }: PropsWithChildren<{}>) {
                             leaveFrom="translate-x-0"
                             leaveTo="-translate-x-full"
                         >
-                            <div className="relative max-w-xs w-full bg-indigo-700 pt-5 pb-4 flex-1 flex flex-col">
+                            <div className="relative max-w-xs w-full bg-background pt-5 pb-4 flex-1 flex flex-col">
                                 <Transition.Child
                                     as={Fragment}
                                     enter="ease-in-out duration-300"

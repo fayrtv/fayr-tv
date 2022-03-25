@@ -22,6 +22,9 @@ const client = DynamoDBDocument.from(new DynamoDB(dynamoDBConfig), {
 });
 
 export default NextAuth({
+    pages: {
+        signIn: "/auth/signin",
+    },
     providers: [
         // https://next-auth.js.org/providers/cognito
         CognitoProvider({
@@ -39,15 +42,13 @@ export default NextAuth({
             },
         }),
     ],
-    secret: env.NEXT_AUTH_SECRET,
+    secret: env.NEXTAUTH_SECRET,
     adapter: DynamoDBAdapter(client, { tableName: "studio_auth" }),
     callbacks: {
         session: async ({ session, user }) => {
             return Promise.resolve({
                 ...session,
-                user: {
-                    ...user,
-                },
+                user,
             });
         },
     },
