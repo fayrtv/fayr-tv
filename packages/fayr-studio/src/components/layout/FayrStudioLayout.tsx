@@ -49,7 +49,7 @@ export default function FayrStudioLayout({ children }: PropsWithChildren<{}>) {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     return (
-        <div ref={rootRef} className="h-full flex">
+        <div ref={rootRef} className="h-full flex" id="fayr-studio-root">
             {/* Narrow sidebar */}
             <div className="hidden bg-background overflow-y-auto md:block no-scrollbar">
                 <div className="w-full py-6 flex flex-col items-center">
