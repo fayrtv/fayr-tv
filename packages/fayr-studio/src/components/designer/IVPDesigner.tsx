@@ -1,5 +1,5 @@
 import { Editor, Element, Frame } from "@craftjs/core";
-import { FAYR_THEME, Theme } from "@fayr/shared-components";
+import { applyTheme, FAYR_THEME, Theme } from "@fayr/shared-components";
 import { SaveLoadActions } from "components/SaveLoadActions";
 import { SettingsPanel } from "components/SettingsPanel";
 import { Toolbox } from "components/Toolbox";
@@ -13,6 +13,10 @@ import React from "react";
 
 const IVPDesigner = () => {
     const { styling, setStyling } = React.useContext(PlatformConfiguratorContext);
+
+    React.useEffect(() => {
+        applyTheme(styling.theme, document.getElementById("fayr-studio-root")!);
+    }, [styling.theme]);
 
     const setThemeColor = React.useCallback(
         (colorKey: keyof Theme, value: string) => {

@@ -36,7 +36,7 @@ export default function SettingsScreen() {
                 {/*<div key={key} className="flex flex-col ">*/}
                 {/*    <div className="flex-1 space-y-4 bg-gray p-4 flex flex-col justify-between text-black text-sm">*/}
 
-                <div className="bg-gray rounded-sm shadow-lg overflow-hidden text-black p-4">
+                <div className="bg-background rounded-sm shadow-lg overflow-hidden text-neutral p-4">
                     <h3 className="text-lg font-medium">Platform Configuration</h3>
                     <p className="mt-1 max-w-2xl text-sm">
                         This is what users see when they enter your

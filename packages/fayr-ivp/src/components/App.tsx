@@ -18,7 +18,7 @@ import IvpTranslationContextProvider from "./contexts/IvpTranslationContext";
 import SelectedReactionContextProvider from "./contexts/SelectedReactionContext";
 import VotingOpenContextProvider from "./contexts/VotingOpenContext";
 
-function MainIvpRouter(props: { chime: ChimeSdkWrapper; from: string }) {
+function MainIvpRouter(props: { chime: ChimeSdkWrapper }) {
     let { path } = useRouteMatch();
 
     if (path === "/") {
@@ -65,11 +65,11 @@ function App() {
                 <Router>
                     <Switch>
                         <Route path={`${baseHref}/preview/:platform`}>
-                            <MainIvpRouter chime={chime} from={"preview"} />
+                            <MainIvpRouter chime={chime} />
                         </Route>
 
                         <Route path={`${baseHref}`}>
-                            <MainIvpRouter chime={chime} from={"root"} />
+                            <MainIvpRouter chime={chime} />
                         </Route>
                     </Switch>
                 </Router>
