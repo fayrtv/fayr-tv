@@ -3,6 +3,8 @@ import { makeid } from "util/guidHelper";
 
 export const BASE_HREF = "";
 
+export const API_BASE_URL = "https://h9iohvkr9b.execute-api.us-east-1.amazonaws.com/dev/v1/";
+
 // API endpoint for retrieving the attendees list, joining the room, and ending the room.
 // Value without trailing slash.
 export const CHIME_ROOM_API = "https://enb885lh75.execute-api.eu-central-1.amazonaws.com/Prod";
