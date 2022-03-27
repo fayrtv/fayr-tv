@@ -12,6 +12,7 @@ export type PlatformStyling = {
 
 export type PlatformInfo = {
     name?: string;
+    slug?: string;
     companyName?: string;
     welcomeMessage?: string;
 };

@@ -1,4 +1,3 @@
-// Framework
 import { MediaPlayer } from "amazon-ivs-player";
 import * as config from "config";
 import * as React from "react";
@@ -10,7 +9,6 @@ import styles from "./VideoPlayerControls.module.scss";
 import { IDriftSyncStrategy } from "../driftSyncStrategies/interfaces";
 import QualityPicker from "./QualityPicker";
 import StreamHealthIndicator from "./StreamHealthIndicator";
-// Components
 import StreamVolumeControl from "./StreamVolumeControl";
 
 type Props = {

@@ -1,8 +1,6 @@
-// Framework
 import moment from "moment";
 import React, { useMemo } from "react";
 
-// Styles
 import "./ChatLine.scss";
 
 // Types

@@ -1,4 +1,3 @@
-// Styles
 import classNames from "classnames";
 
 import useTranslations from "hooks/useTranslations";

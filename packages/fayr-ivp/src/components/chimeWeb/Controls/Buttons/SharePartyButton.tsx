@@ -1,9 +1,7 @@
-// Framework
 import * as config from "config";
 import * as React from "react";
 import { withoutPropagation } from "util/mouseUtils";
 
-// Styles
 import styles from "./CommonButton.module.scss";
 
 type Props = {

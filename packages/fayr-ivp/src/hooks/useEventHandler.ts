@@ -1,4 +1,3 @@
-// Framework
 import * as React from "react";
 
 export const useEventHandler = <TEvent extends Event>(

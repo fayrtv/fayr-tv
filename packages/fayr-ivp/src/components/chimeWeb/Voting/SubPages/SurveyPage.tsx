@@ -1,7 +1,5 @@
-// Framework
 import * as React from "react";
 
-// Styles
 import styles from "./SurveyPage.module.scss";
 
 export const SurveyPage = () => {

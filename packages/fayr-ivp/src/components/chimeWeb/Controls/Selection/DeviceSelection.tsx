@@ -1,9 +1,7 @@
-// Framework
 import * as React from "react";
 import { Nullable } from "types/global";
 
 import { IAudioVideoManager } from "components/chime/AudioVideoManager";
-// Styles
 import { DeviceInfo } from "components/chime/ChimeSdkWrapper";
 
 type CommonProps = {

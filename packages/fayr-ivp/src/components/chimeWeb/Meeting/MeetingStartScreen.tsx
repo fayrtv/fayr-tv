@@ -1,4 +1,3 @@
-// Framework
 import { AudioVideoFacade } from "amazon-chime-sdk-js";
 import classNames from "classnames";
 import * as React from "react";
@@ -13,10 +12,8 @@ import {
     IDeviceProvider,
 } from "components/chime/ChimeSdkWrapper";
 
-// Components
 import { Cell, Flex, Grid, MaterialIcon } from "@fayr/shared-components";
 
-// Styles
 import styles from "./MeetingStartScreen.module.scss";
 
 import useMeetingMetaData from "../../../hooks/useMeetingMetaData";

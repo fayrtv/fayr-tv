@@ -1,4 +1,3 @@
-// Framework
 import classNames from "classnames";
 import * as React from "react";
 import { useSelector } from "react-redux";
@@ -7,7 +6,6 @@ import { withoutPropagation } from "util/mouseUtils";
 
 import { Message } from "components/chat/types";
 
-// Styles
 import styles from "./ChatButton.module.scss";
 
 // Functionality

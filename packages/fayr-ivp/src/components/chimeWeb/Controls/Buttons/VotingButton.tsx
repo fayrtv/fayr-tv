@@ -1,11 +1,9 @@
-// Framework
 import classNames from "classnames";
 import * as React from "react";
 import { withoutPropagation } from "util/mouseUtils";
 
 import { VotingOpenContext } from "components/contexts/VotingOpenContext";
 
-// Styles
 import styles from "./VotingButton.module.scss";
 
 export const VotingButton = () => {

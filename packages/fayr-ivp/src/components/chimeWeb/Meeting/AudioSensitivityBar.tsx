@@ -1,10 +1,8 @@
-// Framework
 import classNames from "classnames";
 import { range } from "util/collectionUtil";
 
 import { Flex } from "@fayr/shared-components";
 
-// Styles
 import styles from "./AudioSensitivityBar.module.scss";
 
 type Props = {

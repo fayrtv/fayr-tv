@@ -1,4 +1,3 @@
-// Framework
 import { Property as CssProperty } from "csstype";
 import * as React from "react";
 import styled from "styled-components";

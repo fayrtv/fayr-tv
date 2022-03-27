@@ -1,4 +1,3 @@
-// Framework
 import React, { createContext } from "react";
 
 type Context = {

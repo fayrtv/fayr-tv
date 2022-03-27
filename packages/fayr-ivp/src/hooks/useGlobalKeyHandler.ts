@@ -1,4 +1,3 @@
-// Framework
 import * as React from "react";
 import { CouldBeArray, ensureArray } from "util/collectionUtil";
 

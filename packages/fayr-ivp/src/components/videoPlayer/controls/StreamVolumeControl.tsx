@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-// Framework
 import { MediaPlayer } from "amazon-ivs-player";
 import * as React from "react";
 // Functionality
@@ -7,7 +6,6 @@ import { useMediaQuery } from "react-responsive";
 
 import useGlobalKeyHandler from "hooks/useGlobalKeyHandler";
 
-// Styles
 import styles from "./StreamVolumeControl.module.scss";
 
 const RAIL_BG_COLOR = "#707070";

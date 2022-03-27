@@ -8,13 +8,11 @@ import { MeetingStatus, MeetingMetaData } from "components/chimeWeb/Meeting/meet
 import { formatMeetingSsKey } from "components/chimeWeb/Meeting/storage";
 import { JoinInfo } from "components/chimeWeb/types";
 
-// Styles
 import "../ChimeWeb.scss";
 import styles from "./Meeting.module.scss";
 
 import * as config from "../../../config";
 import Chat from "../../chat/Chat";
-// Components
 import VideoPlayer from "../../videoPlayer/VideoPlayer";
 import CamSection from "../Cams/CamSection";
 import Controls from "../Controls/Controls";

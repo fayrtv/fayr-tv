@@ -1,4 +1,3 @@
-// Framework
 import * as React from "react";
 
 import styles from "./styles/VotingMenuEntry.module.scss";

@@ -1,4 +1,3 @@
-// Framework
 import React from "react";
 import { Nullable } from "types/global";
 

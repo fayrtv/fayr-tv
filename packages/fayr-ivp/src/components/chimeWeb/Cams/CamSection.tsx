@@ -1,4 +1,3 @@
-// Framework
 import { VideoTileState } from "amazon-chime-sdk-js";
 // Functionality
 import * as config from "config";
@@ -15,14 +14,12 @@ import { IAudioVideoManager } from "components/chime/AudioVideoManager";
 import { RosterMap, Role, IChimeAudioVideoProvider } from "components/chime/ChimeSdkWrapper";
 import { SocketEventType } from "components/chime/types";
 
-// Styles
 import styles from "./CamSection.module.scss";
 
 import { useAttendeeInfo } from "../../../hooks/useAttendeeInfo";
 import useMeetingMetaData from "../../../hooks/useMeetingMetaData";
 import { IChimeSdkWrapper } from "../../chime/ChimeSdkWrapper";
 import { JoinInfo, ForceMicChangeDto, ForceCamChangeDto } from "../types";
-// Components
 import LocalVideo from "./LocalVideo/LocalVideo";
 import ParticipantVideo from "./Participants/ParticipantVideo";
 import ParticipantVideoGroup from "./Participants/ParticipantVideoGroup";

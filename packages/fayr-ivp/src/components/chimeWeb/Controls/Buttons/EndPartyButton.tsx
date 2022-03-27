@@ -1,4 +1,3 @@
-// Framework
 import classNames from "classnames";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
@@ -8,7 +7,6 @@ import { withoutPropagation } from "util/mouseUtils";
 
 import { IChimeSdkWrapper } from "components/chime/ChimeSdkWrapper";
 
-// Styles
 import styles from "./CommonButton.module.scss";
 
 type Props = {

@@ -1,4 +1,3 @@
-// Framework
 import styled from "styled-components";
 
 import styles from "./CamOverlay.module.scss";

@@ -1,4 +1,3 @@
-// Framework
 import { MediaPlayer, Quality } from "amazon-ivs-player";
 import classNames from "classnames";
 import React from "react";
@@ -7,10 +6,8 @@ import { isInRect } from "util/coordinateUtil";
 // Functionality
 import useGlobalClickHandler from "hooks/useGlobalClickHandler";
 
-// Components
 import { Flex } from "@fayr/shared-components";
 
-// Styles
 import styles from "./QualityPicker.module.scss";
 
 import useTranslations from "../../../hooks/useTranslations";

@@ -1,11 +1,9 @@
-// Framework
 import * as React from "react";
 import { withoutPropagation } from "util/mouseUtils";
 
 import Emoji from "components/common/Emoji";
 import { SelectedReactionContext } from "components/contexts/SelectedReactionContext";
 
-// Styles
 import styles from "./ReactionButton.module.scss";
 
 import ReactionButtonSelection, { ReactionsDisabledIcon } from "./ReactionButtonSelection";

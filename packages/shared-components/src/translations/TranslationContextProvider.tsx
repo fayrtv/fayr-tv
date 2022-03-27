@@ -1,4 +1,3 @@
-// Framework
 import React, { useEffect, useState } from "react";
 
 import { TypedTranslationContext } from "./TranslationContext";

@@ -24,7 +24,7 @@ const ACCESS_LEVEL_SETTINGS = [
 export default function SettingsScreen() {
     const {
         type,
-        info: { name, companyName, welcomeMessage },
+        info: { name, slug, companyName, welcomeMessage },
         setInfo,
     } = React.useContext(PlatformConfiguratorContext);
 
@@ -49,7 +49,7 @@ export default function SettingsScreen() {
                                 htmlFor="username"
                                 className="block text-sm font-medium sm:mt-px sm:pt-2"
                             >
-                                Name
+                                Slug
                             </label>
                             <div className="mt-1 sm:mt-0 sm:col-span-2">
                                 <div className="max-w-lg flex rounded-md shadow-sm">
@@ -58,9 +58,9 @@ export default function SettingsScreen() {
                                     </span>
                                     <input
                                         type="text"
-                                        value={name}
+                                        value={slug}
                                         onChange={(ev) =>
-                                            setInfo((curr) => ({ ...curr, name: ev.target.value }))
+                                            setInfo((curr) => ({ ...curr, slug: ev.target.value }))
                                         }
                                         name="name"
                                         id="name"

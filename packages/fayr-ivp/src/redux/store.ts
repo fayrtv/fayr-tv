@@ -1,4 +1,3 @@
-// Framework
 import createSagaMiddleware from "@redux-saga/core";
 import * as redux from "redux";
 import { applyMiddleware, compose } from "redux";

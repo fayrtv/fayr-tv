@@ -1,8 +1,6 @@
-// Framework
 import classNames from "classnames";
 import { withoutPropagation } from "util/mouseUtils";
 
-// Styles
 import styles from "./CommonButton.module.scss";
 
 type Props = {
