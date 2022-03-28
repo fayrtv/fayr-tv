@@ -54,7 +54,7 @@ export const Chat: React.FC<Props & ReduxProps & ReduxDispatches> = ({
             return Promise.resolve();
         });
 
-        return () => socket.close(5000);
+        return () => socket.close();
     }, [socket, addMessages]);
 
     React.useLayoutEffect(() => {

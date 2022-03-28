@@ -137,6 +137,12 @@ input:disabled {
     @media (max-width: mq.$mobile) {
         flex-direction: column;
     }
+
+    &:hover {
+        #overlay {
+            opacity: 1;
+        }
+    }
 }
 
 .el-player {
@@ -291,6 +297,9 @@ a.btn {
     right: 0;
     bottom: 0;
     z-index: 1;
+
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
 }
 
 .overlay.fullscreen {
