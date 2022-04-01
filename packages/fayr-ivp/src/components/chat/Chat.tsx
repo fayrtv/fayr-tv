@@ -9,7 +9,6 @@ import useSocket from "hooks/useSocket";
 
 import "./Chat.scss";
 
-import { IChimeSocket } from "../chime/ChimeSdkWrapper";
 import { SocketEventType } from "../chime/types";
 import { ChatOpenContext } from "../contexts/ChatOpenContext";
 import ChatInput from "./subcomponents/ChatInput";
@@ -17,7 +16,6 @@ import ChatLine from "./subcomponents/ChatLine";
 import { Message, MessageTransferObject } from "./types";
 
 type Props = {
-    chimeSocket: IChimeSocket;
     userName: string;
     title: string;
 };

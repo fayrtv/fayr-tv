@@ -1,6 +1,8 @@
 import classNames from "classnames";
+import { useInjection } from "inversify-react";
 import React from "react";
 import { Nullable } from "types/global";
+import Types from "types/inject";
 
 import useMeetingMetaData from "hooks/useMeetingMetaData";
 import useSocket from "hooks/useSocket";
@@ -12,19 +14,21 @@ import { Flex, MaterialIcon } from "@fayr/shared-components";
 import commonCamStyles from "../Cam.module.scss";
 import styles from "./LocalVideo.module.scss";
 
+import IAudioVideoManager from "../../../chime/interfaces/IAudioVideoManager";
 import { SocketEventType } from "../../../chime/types";
 import CamOverlay from "../CamOverlay";
 import { ActivityState, ActivityStateChangeDto } from "../types";
 import DiagonalDash from "./DiagonalDash";
 
 type Props = {
-    chime: any;
     joinInfo: JoinInfo;
     pin(id: Nullable<string>): void;
 };
 
-const LocalVideo = ({ chime, joinInfo, pin }: Props) => {
+const LocalVideo = ({ joinInfo, pin }: Props) => {
     const videoElement = React.useRef<HTMLVideoElement>(null);
+
+    const audioVideoManager = useInjection<IAudioVideoManager>(Types.IAudioVideoManager);
 
     const [{ muted, videoEnabled }] = useMeetingMetaData();
 
@@ -34,9 +38,9 @@ const LocalVideo = ({ chime, joinInfo, pin }: Props) => {
 
     const [cameraBlurred, setCameraBlurred] = React.useState(false);
     React.useEffect(() => {
-        if (chime.audioVideo) {
-            if (!chime.audioVideo.videoTileController.currentLocalTile) {
-                chime.audioVideo.addObserver({
+        if (audioVideoManager.audioVideo) {
+            if (!audioVideoManager.audioVideo.getLocalVideoTile()) {
+                audioVideoManager.audioVideo.addObserver({
                     videoTileDidUpdate: (tileState: any) => {
                         if (
                             !tileState.boundAttendeeId ||
@@ -47,16 +51,22 @@ const LocalVideo = ({ chime, joinInfo, pin }: Props) => {
                             return;
                         }
 
-                        chime.audioVideo.bindVideoElement(tileState.tileId, videoElement.current);
+                        audioVideoManager.audioVideo.bindVideoElement(
+                            tileState.tileId,
+                            videoElement.current,
+                        );
                     },
                 });
             } else {
-                const currentTile = chime.audioVideo.videoTileController.currentLocalTile.tileState;
+                const currentTile = audioVideoManager.audioVideo.getLocalVideoTile()!.state();
 
-                chime.audioVideo.bindVideoElement(currentTile.tileId, videoElement.current);
+                audioVideoManager.audioVideo.bindVideoElement(
+                    currentTile.tileId!,
+                    videoElement.current!,
+                );
             }
         }
-    }, [chime]);
+    }, [audioVideoManager.audioVideo]);
 
     const onAfkClick = React.useCallback(() => {
         if (!socket) {
@@ -85,10 +95,10 @@ const LocalVideo = ({ chime, joinInfo, pin }: Props) => {
                 return;
             }
 
-            await chime.changeBlurState(newBlurState);
+            await audioVideoManager.changeBlurState(newBlurState);
             setCameraBlurred(newBlurState);
         },
-        [chime, videoEnabled],
+        [audioVideoManager, videoEnabled],
     );
 
     const micMuteCls = muted ? "controls__btn--mic_on" : "controls__btn--mic_off";

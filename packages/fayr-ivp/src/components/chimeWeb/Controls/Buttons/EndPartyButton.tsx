@@ -1,30 +1,32 @@
 // Framework
 import classNames from "classnames";
+import { useInjection } from "inversify-react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { GlobalResetAction } from "redux/store";
 import { RoomMemberRole } from "types/Room";
+import Types from "types/inject";
 import { withoutPropagation } from "util/mouseUtils";
-
-import { IChimeSdkWrapper } from "components/chime/ChimeSdkWrapper";
 
 // Styles
 import styles from "./CommonButton.module.scss";
 
+import IRoomManager from "../../../chime/interfaces/IRoomManager";
+
 type Props = {
-    chime: IChimeSdkWrapper;
     ssName: string;
     role: RoomMemberRole;
     baseHref: string;
     title: string;
 };
 
-export const EndPartyButton = ({ chime, ssName, role, baseHref, title }: Props) => {
+export const EndPartyButton = ({ ssName, role, baseHref, title }: Props) => {
     const dispatch = useDispatch();
     const history = useHistory();
+    const roomManager = useInjection<IRoomManager>(Types.IRoomManager);
 
     const onEndButtonClick = async () => {
-        await chime.leaveRoom(role === "host");
+        await roomManager.leaveRoom(role === "host");
         dispatch(GlobalResetAction());
         localStorage.removeItem(ssName);
         const whereTo = `${baseHref}/${role === "host" ? "" : "join?room=" + title}`;

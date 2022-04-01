@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import { useInjection } from "inversify-react";
 import React from "react";
 import { CSSTransition } from "react-transition-group";
 import { Nullable } from "types/global";
@@ -8,7 +9,6 @@ import useSocket from "hooks/useSocket";
 import useSocketResponse from "hooks/useSocketResponse";
 import useTranslations from "hooks/useTranslations";
 
-import { IChimeSdkWrapper } from "components/chime/ChimeSdkWrapper";
 import { SocketEventType } from "components/chime/types";
 import { EmojiReactionTransferObject, ForceMicChangeDto } from "components/chimeWeb/types";
 import Emoji from "components/common/Emoji";
@@ -18,6 +18,8 @@ import { MaterialIcon, Flex, Spinner } from "@fayr/shared-components";
 import commonCamStyles from "../Cam.module.scss";
 import styles from "./ParticipantVideo.module.scss";
 
+import Types from "../../../../types/inject";
+import IAudioVideoManager from "../../../chime/interfaces/IAudioVideoManager";
 import { ForceCamChangeDto } from "../../types";
 import CamOverlay from "../CamOverlay";
 import { ActivityState } from "../types";
@@ -31,7 +33,6 @@ type Props = {
     forceVideoDisabled: boolean;
     attendeeId: string;
     name: string;
-    chime: IChimeSdkWrapper;
     tileIndex: number;
     volume: number;
     pin(id: string): void;
@@ -45,7 +46,6 @@ const ParticipantVideo = ({
     videoEnabled,
     forceVideoDisabled,
     name,
-    chime,
     tileIndex,
     volume,
     pin,
@@ -63,6 +63,8 @@ const ParticipantVideo = ({
     );
 
     const videoRef = React.useRef<HTMLVideoElement>(null);
+
+    const audioVideoManager = useInjection<IAudioVideoManager>(Types.IAudioVideoManager);
 
     const { socket } = useSocket();
 
@@ -97,20 +99,19 @@ const ParticipantVideo = ({
     }, [sendVideoChange, attendeeId, getAttendee]);
 
     React.useEffect(() => {
-        if (!chime.audioVideo) {
+        if (!audioVideoManager.audioVideo) {
             return;
         }
-        const tile = chime.audioVideo.getVideoTile(tileIndex);
+        const tile = audioVideoManager.audioVideo.getVideoTile(tileIndex);
 
         if (!tile) {
             return;
         }
 
         if (videoRef?.current) {
-            chime.audioVideo.bindVideoElement(tileIndex, videoRef.current);
+            audioVideoManager.audioVideo.bindVideoElement(tileIndex, videoRef.current);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [chime.audioVideo, tileIndex]);
+    }, [audioVideoManager.audioVideo, tileIndex, videoRef.current]);
 
     React.useEffect(() => {
         if (!socket) {

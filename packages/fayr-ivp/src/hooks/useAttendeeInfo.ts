@@ -2,7 +2,7 @@ import * as config from "config";
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { Attendee } from "components/chime/ChimeSdkWrapper";
+import { Attendee } from "components/chime/types";
 
 import {
     ReducerState as AttendeeMapState,

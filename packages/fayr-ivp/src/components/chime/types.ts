@@ -1,7 +1,13 @@
+import { WebSocketAdapter } from "amazon-chime-sdk-js";
+import { Nullable } from "types/global";
+
+import { ActivityState } from "components/chimeWeb/Cams/types";
+
 export interface ISocketProvider {
     addListener<T>(eventType: SocketEventType, callback: (payload: T) => Promise<void>): () => void;
     send<T>(message: SocketMessage<T>): void;
     close(code?: number | undefined, reason?: string | undefined): void;
+    joinRoomSocket(): Nullable<WebSocketAdapter>;
 }
 
 export type SocketMessage<T = string> = {
@@ -19,3 +25,23 @@ export enum SocketEventType {
     TimeStampHeartBeat = 6,
     ActivityStateChange = 7,
 }
+
+export enum Role {
+    Attendee,
+    Host,
+}
+
+export type Attendee = {
+    attendeeId: string;
+    muted: boolean;
+    forceMuted: boolean;
+    name: string;
+    signalStrength: number;
+    tileId: number;
+    videoEnabled: boolean;
+    forceVideoDisabled: boolean;
+    videoElement: React.RefObject<HTMLVideoElement>;
+    volume: number;
+    role: Role;
+    activityState: ActivityState;
+};

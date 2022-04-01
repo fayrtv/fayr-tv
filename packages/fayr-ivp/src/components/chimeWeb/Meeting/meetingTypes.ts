@@ -1,6 +1,6 @@
 import { RoomMemberRole } from "types/Room";
 
-import { DeviceInfo } from "components/chime/ChimeSdkWrapper";
+import { DeviceInfo } from "components/chime/AudioVideoManager";
 import { JoinInfo } from "components/chimeWeb/types";
 
 export type MeetingStatus = "Loading" | "Success" | "Failed";
@@ -12,7 +12,7 @@ export type MeetingInputOutputDevices = {
 };
 
 export type MeetingMetaData = {
-    username: string;
+    userName: string;
     title: string;
     role: RoomMemberRole;
     joinInfo?: JoinInfo;

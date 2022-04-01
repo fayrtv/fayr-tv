@@ -17,8 +17,10 @@
         "isolatedModules": true,
         "noEmit": true,
         "sourceMap": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
         "jsx": "react-jsx",
-        "types": ["node"]
+        "types": ["node", "reflect-metadata"]
     },
     "include": ["src"],
     "exclude": ["node_modules"]

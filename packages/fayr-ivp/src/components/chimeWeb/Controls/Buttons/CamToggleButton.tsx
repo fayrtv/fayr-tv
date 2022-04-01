@@ -1,15 +1,12 @@
 // Framework
+import { useInjection } from "inversify-react";
 import * as React from "react";
+import Types from "types/inject";
 
 import useGlobalKeyHandler from "hooks/useGlobalKeyHandler";
 import useMeetingMetaData from "hooks/useMeetingMetaData";
 
-import { IAudioVideoManager } from "components/chime/AudioVideoManager";
-import {
-    IChimeAudioVideoProvider,
-    IChimeSdkWrapper,
-    IDeviceProvider,
-} from "components/chime/ChimeSdkWrapper";
+import IAudioVideoManager from "components/chime/interfaces/IAudioVideoManager";
 
 import CamToggle from "./CamToggle";
 
@@ -19,13 +16,13 @@ export enum VideoStatus {
     Disabled,
 }
 
-type Props = {
-    chime: IChimeSdkWrapper & IChimeAudioVideoProvider & IAudioVideoManager & IDeviceProvider;
-};
+export const CamToggleButton = () => {
+    const audioVideoManager = useInjection<IAudioVideoManager>(Types.IAudioVideoManager);
 
-export const CamToggleButton = ({ chime }: Props) => {
     const [videoStatus, setVideoStatus] = React.useState(
-        chime.currentVideoInputDevice == null ? VideoStatus.Disabled : VideoStatus.Enabled,
+        audioVideoManager.currentVideoInputDevice == null
+            ? VideoStatus.Disabled
+            : VideoStatus.Enabled,
     );
 
     const [meetingMetaData, setMeetingMetaData] = useMeetingMetaData();
@@ -35,28 +32,33 @@ export const CamToggleButton = ({ chime }: Props) => {
             setVideoStatus(VideoStatus.Loading);
 
             try {
-                if (!chime.currentVideoInputDevice) {
-                    const videoInputs = await chime.listVideoInputDevices();
+                if (!audioVideoManager.currentVideoInputDevice) {
+                    const videoInputs = await audioVideoManager.listVideoInputDevices();
                     const fallbackDevice = {
                         label: videoInputs[0].label,
                         value: videoInputs[0].deviceId,
                     };
-                    await chime.chooseVideoInputDevice(fallbackDevice);
+                    await audioVideoManager.chooseVideoInputDevice(fallbackDevice);
                 }
 
                 try {
-                    await chime.chooseVideoInputDevice(chime.currentVideoInputDevice);
+                    await audioVideoManager.chooseVideoInputDevice(
+                        audioVideoManager.currentVideoInputDevice,
+                    );
                     setMeetingMetaData({
                         ...meetingMetaData,
                         meetingInputOutputDevices: {
                             ...meetingMetaData.meetingInputOutputDevices,
-                            cam: chime.currentVideoInputDevice!,
+                            cam: audioVideoManager.currentVideoInputDevice!,
                         },
                         videoEnabled: true,
                     });
                 } catch (err) {
-                    const videoInputDevices = await chime.audioVideo.listVideoInputDevices();
-                    await chime.audioVideo.chooseVideoInputDevice(videoInputDevices[0].deviceId);
+                    const videoInputDevices =
+                        await audioVideoManager.audioVideo.listVideoInputDevices();
+                    await audioVideoManager.audioVideo.chooseVideoInputDevice(
+                        videoInputDevices[0].deviceId,
+                    );
                     setMeetingMetaData({
                         ...meetingMetaData,
                         meetingInputOutputDevices: {
@@ -70,7 +72,7 @@ export const CamToggleButton = ({ chime }: Props) => {
                     });
                 }
 
-                chime.audioVideo.startLocalVideoTile();
+                audioVideoManager.audioVideo.startLocalVideoTile();
 
                 setVideoStatus(VideoStatus.Enabled);
             } catch (error) {
@@ -89,7 +91,7 @@ export const CamToggleButton = ({ chime }: Props) => {
             }
         } else if (videoStatus === VideoStatus.Enabled) {
             setVideoStatus(VideoStatus.Loading);
-            chime.audioVideo.stopLocalVideoTile();
+            audioVideoManager.audioVideo.stopLocalVideoTile();
             setVideoStatus(VideoStatus.Disabled);
 
             setMeetingMetaData({

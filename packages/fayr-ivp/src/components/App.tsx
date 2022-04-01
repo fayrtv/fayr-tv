@@ -1,4 +1,5 @@
-import React from "react";
+import { Provider as InversifyProvider } from "inversify-react";
+import { container } from "inversify.config";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { Provider } from "react-redux";
@@ -15,7 +16,6 @@ import { applyTheme } from "@fayr/shared-components";
 import styles from "./App.module.scss";
 
 import * as config from "../config";
-import ChimeSdkWrapper from "./chime/ChimeSdkWrapper";
 import SocketContextProvider from "./chime/SocketContextProvider";
 import Join from "./chimeWeb/Intro/Join";
 import MeetingContainer from "./chimeWeb/Meeting/MeetingContainer";
@@ -73,27 +73,28 @@ function MainIvpRouter(props: { chime: ChimeSdkWrapper }) {
 }
 
 function App() {
-    const chime = new ChimeSdkWrapper();
     const baseHref = config.BASE_HREF;
 
     return (
         <div className={styles.App}>
-            <QueryClientProvider client={queryClient}>
-                <IvpTranslationContextProvider>
-                    <Router>
-                        <Switch>
-                            <Route path={`${baseHref}/preview/:platform`}>
-                                <MainIvpRouter chime={chime} />
-                            </Route>
+            <InversifyProvider container={container}>
+	            <QueryClientProvider client={queryClient}>
+	                <IvpTranslationContextProvider>
+	                    <Router>
+	                        <Switch>
+	                            <Route path={`${baseHref}/preview/:platform`}>
+	                                <MainIvpRouter chime={chime} />
+	                            </Route>
 
-                            <Route path={`${baseHref}`}>
-                                <MainIvpRouter chime={chime} />
-                            </Route>
-                        </Switch>
-                    </Router>
-                </IvpTranslationContextProvider>
-                <ReactQueryDevtools initialIsOpen={false} />
-            </QueryClientProvider>
+	                            <Route path={`${baseHref}`}>
+	                                <MainIvpRouter chime={chime} />
+	                            </Route>
+	                        </Switch>
+	                    </Router>
+	                </IvpTranslationContextProvider>
+	                <ReactQueryDevtools initialIsOpen={false} />
+	            </QueryClientProvider>
+            </InversifyProvider>
         </div>
     );
 }

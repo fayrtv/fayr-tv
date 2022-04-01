@@ -1,18 +1,15 @@
 // Framework
-import { AudioVideoFacade } from "amazon-chime-sdk-js";
 import classNames from "classnames";
+import { useInjection } from "inversify-react";
 import * as React from "react";
+import Types from "types/inject";
 
 import useTranslations from "hooks/useTranslations";
 
-import { IAudioVideoManager } from "components/chime/AudioVideoManager";
-// Types
-import {
-    DeviceInfo,
-    IChimeAudioVideoProvider,
-    IDeviceProvider,
-} from "components/chime/ChimeSdkWrapper";
+import { DeviceInfo } from "components/chime/AudioVideoManager";
+import IAudioVideoManager from "components/chime/interfaces/IAudioVideoManager";
 
+// Types
 // Components
 import { Cell, Flex, Grid, MaterialIcon } from "@fayr/shared-components";
 
@@ -27,28 +24,30 @@ import { CameraSelection, MicrophoneSelection } from "../Controls/Selection/Devi
 import AudioSensitivityBar from "./AudioSensitivityBar";
 
 type Props = {
-    audioVideo: AudioVideoFacade;
     attendeeId: string | null | undefined;
-    chime: IAudioVideoManager & IChimeAudioVideoProvider & IDeviceProvider;
     onContinue(): void;
 };
 
-export const MeetingStartScreen = ({ audioVideo, attendeeId, chime, onContinue }: Props) => {
+export const MeetingStartScreen = ({ attendeeId, onContinue }: Props) => {
     const [{ meetingInputOutputDevices }, setMetaData] = useMeetingMetaData();
 
     const translations = useTranslations();
     const videoRef = React.useRef<HTMLVideoElement>(null);
 
+    const audioVideoManager = useInjection<IAudioVideoManager>(Types.IAudioVideoManager);
+
     const [currentCam, setCurrentCam] = React.useState<string>(
-        () => chime.currentVideoInputDevice?.value ?? "",
+        () => audioVideoManager.currentVideoInputDevice?.value ?? "",
     );
     const [videoStatus, setVideoStatus] = React.useState(
-        chime.currentVideoInputDevice == null ? VideoStatus.Disabled : VideoStatus.Enabled,
+        audioVideoManager.currentVideoInputDevice == null
+            ? VideoStatus.Disabled
+            : VideoStatus.Enabled,
     );
     const [camDevices, setCamDevices] = React.useState<Array<DeviceInfo>>([]);
 
     const [currentMic, setCurrentMic] = React.useState<string>(
-        () => chime.currentAudioInputDevice?.value ?? "",
+        () => audioVideoManager.currentAudioInputDevice?.value ?? "",
     );
     const [audioInputDevices, setAudioInputDevices] = React.useState<Array<DeviceInfo>>([]);
 
@@ -60,9 +59,9 @@ export const MeetingStartScreen = ({ audioVideo, attendeeId, chime, onContinue }
         const newMicState = !micEnabled;
 
         if (newMicState) {
-            const devices = await chime.listAudioInputDevices();
+            const devices = await audioVideoManager.listAudioInputDevices();
 
-            // Chime might return an array of devices here, even if no permission is granted, so we
+            // audioVideoManager might return an array of devices here, even if no permission is granted, so we
             // have to check again if the queried devices are proper devices
             if (devices.some((x) => x.deviceId !== "")) {
                 const deviceInfos: Array<DeviceInfo> = devices.map((x) => ({
@@ -70,9 +69,9 @@ export const MeetingStartScreen = ({ audioVideo, attendeeId, chime, onContinue }
                     value: x.deviceId,
                 }));
 
-                await chime.chooseAudioInputDevice(deviceInfos[0]);
-                audioVideo.start();
-                audioVideo.realtimeUnmuteLocalAudio();
+                await audioVideoManager.chooseAudioInputDevice(deviceInfos[0]);
+                audioVideoManager.audioVideo.start();
+                audioVideoManager.audioVideo.realtimeUnmuteLocalAudio();
 
                 setCurrentMic(deviceInfos[0].label);
                 setAudioInputDevices(deviceInfos);
@@ -85,8 +84,8 @@ export const MeetingStartScreen = ({ audioVideo, attendeeId, chime, onContinue }
                 });
             }
         } else {
-            await chime.chooseAudioInputDevice(null);
-            audioVideo.realtimeMuteLocalAudio();
+            await audioVideoManager.chooseAudioInputDevice(null);
+            audioVideoManager.audioVideo.realtimeMuteLocalAudio();
             setAudioInputDevices([]);
             setMetaData({
                 muted: true,
@@ -102,9 +101,9 @@ export const MeetingStartScreen = ({ audioVideo, attendeeId, chime, onContinue }
     const onCamToggleClick = async () => {
         if (videoStatus === VideoStatus.Disabled) {
             setVideoStatus(VideoStatus.Loading);
-            const devices = await chime.listVideoInputDevices();
+            const devices = await audioVideoManager.listVideoInputDevices();
 
-            // Chime might return an array of devices here, even if no permission is granted, so we
+            // audioVideoManager might return an array of devices here, even if no permission is granted, so we
             // have to check again if the queried devices are proper devices
             if (devices.some((x) => x.deviceId !== "")) {
                 const deviceInfos: Array<DeviceInfo> = devices.map((x) => ({
@@ -112,9 +111,9 @@ export const MeetingStartScreen = ({ audioVideo, attendeeId, chime, onContinue }
                     value: x.deviceId,
                 }));
 
-                await chime.chooseVideoInputDevice(deviceInfos[0]);
-                audioVideo.start();
-                audioVideo.startLocalVideoTile();
+                await audioVideoManager.chooseVideoInputDevice(deviceInfos[0]);
+                audioVideoManager.audioVideo.start();
+                audioVideoManager.audioVideo.startLocalVideoTile();
 
                 setVideoStatus(VideoStatus.Enabled);
                 setCurrentCam(deviceInfos[0].label);
@@ -129,8 +128,8 @@ export const MeetingStartScreen = ({ audioVideo, attendeeId, chime, onContinue }
             }
         } else {
             setVideoStatus(VideoStatus.Disabled);
-            await chime.chooseVideoInputDevice(null);
-            audioVideo.stopLocalVideoTile();
+            await audioVideoManager.chooseVideoInputDevice(null);
+            audioVideoManager.audioVideo.stopLocalVideoTile();
             setCamDevices([]);
             setMetaData({
                 meetingInputOutputDevices: {
@@ -145,21 +144,24 @@ export const MeetingStartScreen = ({ audioVideo, attendeeId, chime, onContinue }
 
     React.useEffect(() => {
         if (videoStatus === VideoStatus.Enabled && videoRef.current) {
-            const currentTile = (audioVideo as any).videoTileController.currentLocalTile.tileState;
-            audioVideo.bindVideoElement(currentTile.tileId, videoRef.current!);
-            audioVideo.startLocalVideoTile();
+            const currentTile = (audioVideoManager.audioVideo as any).videoTileController
+                .currentLocalTile.tileState;
+            audioVideoManager.audioVideo.bindVideoElement(currentTile.tileId, videoRef.current!);
+            audioVideoManager.audioVideo.startLocalVideoTile();
         }
-    }, [videoStatus, audioVideo]);
+    }, [videoStatus, audioVideoManager.audioVideo]);
 
     React.useEffect(() => {
-        if (micEnabled && audioVideo && attendeeId) {
-            audioVideo.realtimeSubscribeToVolumeIndicator(attendeeId, (_, volume) =>
-                setVolume(volume ?? 0),
+        if (micEnabled && audioVideoManager.audioVideo && attendeeId) {
+            audioVideoManager.audioVideo.realtimeSubscribeToVolumeIndicator(
+                attendeeId,
+                (_, volume) => setVolume(volume ?? 0),
             );
 
-            return () => audioVideo.realtimeUnsubscribeFromVolumeIndicator(attendeeId);
+            return () =>
+                audioVideoManager.audioVideo.realtimeUnsubscribeFromVolumeIndicator(attendeeId);
         }
-    }, [micEnabled, audioVideo, attendeeId]);
+    }, [micEnabled, audioVideoManager.audioVideo, attendeeId]);
 
     return (
         <Grid
@@ -203,7 +205,7 @@ export const MeetingStartScreen = ({ audioVideo, attendeeId, chime, onContinue }
                             selectedDevice={currentMic}
                             setSelectedDevice={setCurrentMic}
                             availableDevices={audioInputDevices}
-                            chimeDevicePicker={chime}
+                            audioVideoManager={audioVideoManager}
                         />
                     </Flex>
                     <Flex direction="Row">
@@ -212,7 +214,7 @@ export const MeetingStartScreen = ({ audioVideo, attendeeId, chime, onContinue }
                             selectedDevice={currentCam}
                             setSelectedDevice={setCurrentCam}
                             availableDevices={camDevices}
-                            chimeDevicePicker={chime}
+                            audioVideoManager={audioVideoManager}
                         />
                     </Flex>
                 </Flex>

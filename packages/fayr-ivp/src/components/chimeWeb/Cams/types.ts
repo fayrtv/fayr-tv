@@ -1,4 +1,4 @@
-import { Attendee } from "components/chime/ChimeSdkWrapper";
+import { Attendee } from "components/chime/types";
 
 export type Roster = Array<Attendee>;
 
