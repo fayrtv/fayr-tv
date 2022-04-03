@@ -5,6 +5,7 @@ import { Nullable } from "types/global";
 import Types from "types/inject";
 
 import LogProvider from "./LogProvider";
+import IChimeEvents from "./interfaces/IChimeEvents";
 import IRoomManager from "./interfaces/IRoomManager";
 import { ISocketProvider, SocketEventType, SocketMessage } from "./types";
 
@@ -22,7 +23,7 @@ type AwsWebsocketMessage = {
 
 @injectable()
 export class SocketProvider implements ISocketProvider {
-    private _socket: WebSocketAdapter | undefined;
+    private _socket: Nullable<WebSocketAdapter> = null;
 
     private _listeners: Map<SocketEventType, Array<ListenerCallback>>;
 
@@ -33,10 +34,17 @@ export class SocketProvider implements ISocketProvider {
     public constructor(
         @inject(Types.IRoomManager) roomManager: IRoomManager,
         @inject(Types.LogProvider) logProvider: LogProvider,
+        @inject(Types.IChimeEvents) chimeEvents: IChimeEvents,
     ) {
         this._listeners = new Map<SocketEventType, Array<ListenerCallback>>();
         this._roomManager = roomManager;
         this._logger = logProvider.logger;
+
+        chimeEvents.roomLeft.register(
+            (() => {
+                this._socket = null;
+            }).bind(this),
+        );
     }
 
     send<T>(message: SocketMessage<T>) {

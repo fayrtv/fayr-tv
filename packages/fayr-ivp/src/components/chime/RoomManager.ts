@@ -8,7 +8,7 @@ import {
 import * as config from "config";
 import { inject, injectable } from "inversify";
 import { throttle } from "lodash";
-import { Nullable, Callback } from "types/global";
+import { Nullable } from "types/global";
 import Types from "types/inject";
 
 import { JoinInfo } from "components/chimeWeb/types";
@@ -21,9 +21,9 @@ import { Attendee, Role } from "./types";
 
 @injectable()
 export default class RoomManager implements IRoomManager {
-    private _configuration!: MeetingSessionConfiguration;
+    private _configuration: Nullable<MeetingSessionConfiguration> = null;
     public get configuration(): MeetingSessionConfiguration {
-        return this._configuration;
+        return this._configuration!;
     }
     public get attendeeId(): Nullable<string> {
         return this._configuration?.credentials?.attendeeId ?? null;
@@ -31,10 +31,10 @@ export default class RoomManager implements IRoomManager {
 
     private static ROSTER_THROTTLE_MS = 400;
 
-    private _title!: string;
-    private _name!: string;
-    private _region!: Nullable<string>;
-    private _meetingSession!: DefaultMeetingSession;
+    private _title: Nullable<string> = null;
+    private _name: Nullable<string> = null;
+    private _region: Nullable<string> = null;
+    private _meetingSession: Nullable<DefaultMeetingSession> = null;
 
     private _audioVideoManager: IAudioVideoManager;
     private _logger: Logger;
@@ -54,23 +54,17 @@ export default class RoomManager implements IRoomManager {
         this._logger = logProvider.logger;
         this._audioVideoManager = audioVideoManager;
         this._chimeEvents = chimeEvents;
-        chimeEvents.roomLeft.register(this.resetFields);
+        chimeEvents.roomLeft.register((() => this.resetFields()).bind(this));
     }
 
     private resetFields() {
-        // this._meetingSession = null;
-        // this._title = null;
-        // this.name = null;
-        // this.region = null;
-        // this._audioInputDevices = [];
-        // this._audioOutputDevices = [];
-        // this._videoInputDevices = [];
-        // this.devicesUpdatedCallbacks = [];
-        // this._roster = {};
-        // this._rosterUpdateCallbacks = [];
-        // this.configuration = null;
-        // this.messagingSocket = null;
-        // this.messageUpdateCallbacks = [];
+        this._title = null;
+        this._name = null;
+        this._region = null;
+        this._roster = {};
+        this._rosterUpdateCallbacks = [];
+        this._configuration = null;
+        this._meetingSession = null;
     }
 
     public async createRoom(

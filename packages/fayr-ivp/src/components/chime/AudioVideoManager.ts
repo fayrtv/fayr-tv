@@ -99,11 +99,19 @@ export class AudioVideoManager implements IAudioVideoManager {
 
     private readonly _logger: Logger;
 
-    constructor(
+    public constructor(
         @inject(Types.LogProvider) logProvider: LogProvider,
         @inject(Types.IChimeEvents) chimeEvents: IChimeEvents,
     ) {
         this._logger = logProvider.logger;
+        chimeEvents.roomLeft.register((() => this.resetFields()).bind(this));
+    }
+
+    private resetFields() {
+        this._audioInputDevices = [];
+        this._audioOutputDevices = [];
+        this._videoInputDevices = [];
+        this._devicesUpdatedCallbacks = [];
     }
 
     public setNewRoomAudioVideoFacade(audioVideoFacade: AudioVideoFacade) {
