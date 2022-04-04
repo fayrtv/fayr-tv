@@ -2,6 +2,8 @@ import React from "react";
 import { RouteComponentProps, useRouteMatch, withRouter } from "react-router-dom";
 import { RoomMemberRole } from "types/Room";
 
+import { usePlatformConfig } from "hooks/usePlatformConfig";
+
 import { IChimeSdkWrapper } from "components/chime/ChimeSdkWrapper";
 
 import * as config from "../../config";
@@ -23,7 +25,9 @@ type State = {
 };
 
 const Welcome = (props: Props) => {
-    const { url } = useRouteMatch();
+    const { url } = useRouteMatch<{ platform?: string }>();
+
+    const { platformConfig } = usePlatformConfig();
 
     const [state, setState] = React.useState<State>({
         role: "host",
@@ -78,6 +82,9 @@ const Welcome = (props: Props) => {
 
     const { username, roomTitle, playbackURL } = state;
 
+    const welcomeMessage =
+        platformConfig?.info?.welcomeMessage ?? "Erlebe Live- und Sportevents wie noch nie zuvor!";
+
     return (
         <>
             <div className="welcome form-grid">
@@ -90,7 +97,7 @@ const Welcome = (props: Props) => {
                             style={{ border: "none" }}
                         />
                         <br />
-                        <h2>Erlebe Live- und Sportevents wie noch nie zuvor!</h2>
+                        <h2>{welcomeMessage}</h2>
                         <h3>
                             Erstelle eine Watch Party oder trete einer bei und verbringe mit deinen
                             Freunden eine geile Zeit!

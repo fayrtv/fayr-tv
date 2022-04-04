@@ -1,10 +1,17 @@
+import { platform } from "os";
 import React from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router, Route, Switch, useRouteMatch } from "react-router-dom";
 import store from "redux/store";
 
+import { usePlatformConfig } from "hooks/usePlatformConfig";
+
 import End from "components/chimeWeb/End";
 import Welcome from "components/chimeWeb/Welcome";
+
+import { applyTheme } from "@fayr/shared-components";
 
 import styles from "./App.module.scss";
 
@@ -18,12 +25,23 @@ import IvpTranslationContextProvider from "./contexts/IvpTranslationContext";
 import SelectedReactionContextProvider from "./contexts/SelectedReactionContext";
 import VotingOpenContextProvider from "./contexts/VotingOpenContext";
 
+const queryClient = new QueryClient();
+
 function MainIvpRouter(props: { chime: ChimeSdkWrapper }) {
     let { path } = useRouteMatch();
 
     if (path === "/") {
         path = "";
     }
+
+    const { platformConfig } = usePlatformConfig();
+
+    React.useEffect(() => {
+        if (!platformConfig?.styling?.theme) {
+            return;
+        }
+        applyTheme(platformConfig.styling.theme, document.documentElement);
+    }, [platformConfig?.styling?.theme]);
 
     return (
         <Router>
@@ -61,19 +79,22 @@ function App() {
 
     return (
         <div className={styles.App}>
-            <IvpTranslationContextProvider>
-                <Router>
-                    <Switch>
-                        <Route path={`${baseHref}/preview/:platform`}>
-                            <MainIvpRouter chime={chime} />
-                        </Route>
+            <QueryClientProvider client={queryClient}>
+                <IvpTranslationContextProvider>
+                    <Router>
+                        <Switch>
+                            <Route path={`${baseHref}/preview/:platform`}>
+                                <MainIvpRouter chime={chime} />
+                            </Route>
 
-                        <Route path={`${baseHref}`}>
-                            <MainIvpRouter chime={chime} />
-                        </Route>
-                    </Switch>
-                </Router>
-            </IvpTranslationContextProvider>
+                            <Route path={`${baseHref}`}>
+                                <MainIvpRouter chime={chime} />
+                            </Route>
+                        </Switch>
+                    </Router>
+                </IvpTranslationContextProvider>
+                <ReactQueryDevtools initialIsOpen={false} />
+            </QueryClientProvider>
         </div>
     );
 }
