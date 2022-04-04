@@ -2,7 +2,7 @@ import { MeetingSessionStatusCode } from "amazon-chime-sdk-js";
 import AudioVideoObserver from "amazon-chime-sdk-js/build/audiovideoobserver/AudioVideoObserver";
 import * as config from "config";
 import React from "react";
-import { Redirect, RouteComponentProps, withRouter } from "react-router-dom";
+import { Redirect, RouteComponentProps, useRouteMatch, withRouter } from "react-router-dom";
 
 import useLoadingGuard from "hooks/useLoadingGuard";
 
@@ -27,6 +27,8 @@ export const MeetingContainer = ({
     roomTitle,
     history,
 }: PublicProps & { history: RouteComponentProps["history"] }) => {
+    const { url } = useRouteMatch();
+
     const audioElementRef = React.createRef<HTMLAudioElement>();
     // const myVideoElement = React.createRef<HTMLVideoElement>();
 
@@ -210,7 +212,7 @@ export const MeetingContainer = ({
             </>
         )
     ) : (
-        <Redirect to={`${config.BASE_HREF}/`} />
+        <Redirect to={`${url}/`} />
     );
 };
 
@@ -219,6 +221,8 @@ const MeetingRouter = ({
     history,
     chime,
 }: Omit<RouteComponentProps & PublicProps, "roomTitle">) => {
+    const { url } = useRouteMatch();
+
     const roomTitle = React.useMemo<string | null>(() => {
         const qs = new URLSearchParams(location.search);
         return qs.get("room");
@@ -227,7 +231,7 @@ const MeetingRouter = ({
     return roomTitle ? (
         <MeetingContainer chime={chime} roomTitle={roomTitle} history={history} />
     ) : (
-        <Redirect to={`${config.BASE_HREF}/`} />
+        <Redirect to={`${url}/`} />
     );
 };
 

@@ -33,28 +33,27 @@ export default function SettingsScreen() {
     return (
         <form className="space-y-8 divide-y divide-gray-200">
             <div className="space-y-8 divide-y divide-gray-200 sm:space-y-5">
-                <div>
-                    <div>
-                        <h3 className="text-lg leading-6 font-medium text-gray-900">
-                            Platform Configuration
-                        </h3>
-                        <p className="mt-1 max-w-2xl text-sm text-gray-500">
-                            This is what users see when they enter your
-                            {type ? " " + formatPlatformType(type) : ""} platform.
-                        </p>
-                    </div>
+                {/*<div key={key} className="flex flex-col ">*/}
+                {/*    <div className="flex-1 space-y-4 bg-gray p-4 flex flex-col justify-between text-black text-sm">*/}
 
-                    <div className="mt-6 sm:mt-5 space-y-6 sm:space-y-5">
-                        <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
+                <div className="bg-background rounded-sm shadow-lg overflow-hidden text-neutral p-4">
+                    <h3 className="text-lg font-medium">Platform Configuration</h3>
+                    <p className="mt-1 max-w-2xl text-sm">
+                        This is what users see when they enter your
+                        {type ? " " + formatPlatformType(type) : ""} platform.
+                    </p>
+
+                    <div className="mt-6 sm:mt-5 space-y-4 sm:space-y-5">
+                        <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray sm:pt-5">
                             <label
                                 htmlFor="username"
-                                className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+                                className="block text-sm font-medium sm:mt-px sm:pt-2"
                             >
                                 Name
                             </label>
                             <div className="mt-1 sm:mt-0 sm:col-span-2">
                                 <div className="max-w-lg flex rounded-md shadow-sm">
-                                    <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-neutral bg-gray-50 text-gray-500 sm:text-sm">
+                                    <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-neutral bg-gray-50  sm:text-sm">
                                         fayr.tv/
                                     </span>
                                     <input
@@ -93,7 +92,7 @@ export default function SettingsScreen() {
                                     className="max-w-lg shadow-sm block w-full focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border border-gray-300 rounded-md"
                                     defaultValue={""}
                                 />
-                                <p className="mt-2 text-sm text-gray-500">
+                                <p className="mt-2 text-sm ">
                                     Let users know what your platform is about.
                                 </p>
                             </div>
@@ -166,9 +165,7 @@ export default function SettingsScreen() {
                                             </label>
                                             <p className="pl-1">or drag and drop</p>
                                         </div>
-                                        <p className="text-xs text-gray-500">
-                                            PNG, JPG, GIF up to 10MB
-                                        </p>
+                                        <p className="text-xs ">PNG, JPG, GIF up to 10MB</p>
                                     </div>
                                 </div>
                             </div>

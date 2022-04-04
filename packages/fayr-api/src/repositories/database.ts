@@ -11,7 +11,8 @@ export function createModel<T extends TableRecord>(
 ) {
     return new Model<T>(
         {
-            table: process.env.TABLE_NAME,
+            // TODO: make this generic (again)
+            table: "Platforms",
             // @ts-ignore
             schema: schema ?? { validate: (item: T) => ({ value: item, error: undefined }) },
         },

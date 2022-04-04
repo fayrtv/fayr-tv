@@ -98,9 +98,7 @@ export default function VerticalSteps({ currentStepId, setCurrentStepId, steps }
                                 <div
                                     className={classNames(
                                         "w-full block relative",
-                                        currentStepId === step.id
-                                            ? "bg-gradient-to-b from-background pb-8"
-                                            : "",
+                                        currentStepId === step.id ? "pb-8" : "",
                                     )}
                                 >
                                     <A href={step.href}>

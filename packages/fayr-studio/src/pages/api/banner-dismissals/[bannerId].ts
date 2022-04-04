@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
-import { isDismissed, setDismissed } from "repositories/bannerDismissals";
 
 export type GetBannerDismissalsResponse = { isDismissed: boolean };
 
@@ -25,16 +24,17 @@ export default async function handler(req: Request, res: NextApiResponse): Promi
         return;
     }
 
-    const { bannerId } = req.query;
+    // const { bannerId } = req.query;
 
     switch (req.method) {
         case "POST":
-            await setDismissed({ bannerId, userId: userEmail });
+            // await setDismissed({ bannerId, userId: userEmail });
             res.status(200).json({ ok: true });
             return;
         case "GET":
             res.status(200).json({
-                isDismissed: await isDismissed({ bannerId, userId: userEmail }),
+                // isDismissed: await isDismissed({ bannerId, userId: userEmail }),
+                isDismissed: false,
             } as GetBannerDismissalsResponse);
             return;
     }
