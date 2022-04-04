@@ -8,6 +8,16 @@ module.exports = {
                 },
             },
             //#endregion
+            module: {
+                rules: [
+                    {
+                        test: /\.js$/,
+                        enforce: "pre",
+                        use: ["source-map-loader"],
+                    },
+                ],
+            },
+            ignoreWarnings: [/amazon-chime-sdk-js/],
         },
     },
 };
