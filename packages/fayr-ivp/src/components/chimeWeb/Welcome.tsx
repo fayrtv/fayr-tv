@@ -1,6 +1,5 @@
 import React from "react";
 import { RouteComponentProps, useRouteMatch, withRouter } from "react-router-dom";
-import { RoomMemberRole } from "types/Room";
 
 import { usePlatformConfig } from "hooks/usePlatformConfig";
 import useTranslations from "hooks/useTranslations";
@@ -16,30 +15,22 @@ type Props = RouteComponentProps & {
     chime: IChimeSdkWrapper;
 };
 
-type State = {
-    role: RoomMemberRole;
-    username: string;
-    roomTitle: string;
-    playbackURL: string;
-    errorMsg?: string;
-    showError: boolean;
-};
-
 const Welcome = (props: Props) => {
-    const { url } = useRouteMatch<{ platform?: string }>();
+    let { url } = useRouteMatch<{ platform?: string }>();
+
+    if (url === "/") {
+        url = "";
+    }
 
     const { platformConfig } = usePlatformConfig();
 
     const tl = useTranslations();
 
-    const [state, setState] = React.useState<State>({
-        role: "host",
-        username: "",
-        roomTitle: config.RANDOM,
-        playbackURL: config.DEFAULT_VIDEO_STREAM,
-        errorMsg: "",
-        showError: false,
-    });
+    const [username, setUsername] = React.useState("");
+    const [roomTitle, setRoomTitle] = React.useState(config.RANDOM);
+    const [playbackURL] = React.useState(config.DEFAULT_VIDEO_STREAM);
+    const [errorMessage] = React.useState("");
+    const [showError, setShowError] = React.useState(false);
 
     const usernameInputRef = React.useRef<HTMLInputElement>(null);
 
@@ -63,27 +54,20 @@ const Welcome = (props: Props) => {
         createRoom();
     };
 
-    const closeError = () => {
-        setState((curr) => ({ ...curr, showError: false }));
-    };
-
     const roomUrlRelative = React.useMemo(() => {
-        return `${url}/meeting?room=${state.roomTitle}`;
-    }, [state.roomTitle, url]);
+        return `${url}/meeting?room=${roomTitle}`;
+    }, [roomTitle, url]);
 
     const createRoom = () => {
-        const { roomTitle, username, playbackURL } = state;
         const data = {
             username,
             title: roomTitle,
             playbackURL,
-            role: state.role,
+            role: "host",
         };
         localStorage.setItem(formatMeetingSsKey(roomTitle), JSON.stringify(data));
         props.history.push(roomUrlRelative);
     };
-
-    const { username, roomTitle, playbackURL } = state;
 
     const welcomeMessage = platformConfig?.info?.welcomeMessage ?? tl.WelcomeMessageHeader;
 
@@ -111,20 +95,16 @@ const Welcome = (props: Props) => {
                         <JoinInfoForm
                             username={username}
                             usernameInputRef={usernameInputRef}
-                            onUsernameChanged={(newName) =>
-                                setState((curr) => ({ ...curr, username: newName }))
-                            }
+                            onUsernameChanged={setUsername}
                             roomTitle={roomTitle}
-                            onRoomTitleChanged={(newTitle) =>
-                                setState((curr) => ({ ...curr, roomTitle: newTitle }))
-                            }
+                            onRoomTitleChanged={setRoomTitle}
                             disableSubmit={!playbackURL}
                             onSubmit={handleCreateRoom}
                         />
                     </div>
                 </div>
             </div>
-            {state.showError && <Error closeError={closeError} errorMsg={state.errorMsg} />}
+            {showError && <Error closeError={() => setShowError(false)} errorMsg={errorMessage} />}
         </>
     );
 };
