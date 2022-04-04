@@ -1,6 +1,5 @@
 import { PlatformConfig } from "@fayr/api-contracts";
 import { API_BASE_URL } from "config";
-import React from "react";
 import { useQuery } from "react-query";
 import { useRouteMatch } from "react-router-dom";
 
