@@ -3,6 +3,7 @@ import { RouteComponentProps, useRouteMatch, withRouter } from "react-router-dom
 import { RoomMemberRole } from "types/Room";
 
 import { usePlatformConfig } from "hooks/usePlatformConfig";
+import useTranslations from "hooks/useTranslations";
 
 import { IChimeSdkWrapper } from "components/chime/ChimeSdkWrapper";
 
@@ -28,6 +29,8 @@ const Welcome = (props: Props) => {
     const { url } = useRouteMatch<{ platform?: string }>();
 
     const { platformConfig } = usePlatformConfig();
+
+    const tl = useTranslations();
 
     const [state, setState] = React.useState<State>({
         role: "host",
@@ -82,8 +85,7 @@ const Welcome = (props: Props) => {
 
     const { username, roomTitle, playbackURL } = state;
 
-    const welcomeMessage =
-        platformConfig?.info?.welcomeMessage ?? "Erlebe Live- und Sportevents wie noch nie zuvor!";
+    const welcomeMessage = platformConfig?.info?.welcomeMessage ?? tl.WelcomeMessageHeader;
 
     return (
         <>
@@ -98,20 +100,14 @@ const Welcome = (props: Props) => {
                         />
                         <br />
                         <h2>{welcomeMessage}</h2>
-                        <h3>
-                            Erstelle eine Watch Party oder trete einer bei und verbringe mit deinen
-                            Freunden eine geile Zeit!
-                        </h3>
+                        <h3>{tl.WelcomeMessageBody}</h3>
                     </div>
                 </div>
 
                 <div className="welcome__content pd-4">
                     <div className="content__inner">
-                        <h2 className="mg-b-2">Starte eine Watch Party</h2>
-                        <h3>
-                            Fiebere zusammen mit deinen Freunden mit und schaue dir Live- und
-                            Sportevents online an!
-                        </h3>
+                        <h2 className="mg-b-2">{tl.StartWatchPartyHeader}</h2>
+                        <h3>{tl.StartWatchPartyBody}</h3>
                         <JoinInfoForm
                             username={username}
                             usernameInputRef={usernameInputRef}

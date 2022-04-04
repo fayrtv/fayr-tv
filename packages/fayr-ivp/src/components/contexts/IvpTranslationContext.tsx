@@ -8,7 +8,7 @@ export const IvpTranslationContext = createTranslationContext<Translations>();
 export const IvpTranslationContextProvider: React.FC = ({ children }) => {
     return (
         <TranslationContextProvider<Translations>
-            initialLanguage={"de"}
+            initialLanguage="de"
             resourcePathFactory={(lang: string) => `resources/translations/${lang}.json`}
             context={IvpTranslationContext}
         >
