@@ -1,9 +1,7 @@
 import React from "react";
 import { RouteComponentProps, useRouteMatch, withRouter } from "react-router-dom";
 import { RoomMemberRole } from "types/Room";
-import isDevMode from "util/isDevMode";
 
-import ThemeChooser from "components/ThemeChooser";
 import { IChimeSdkWrapper } from "components/chime/ChimeSdkWrapper";
 
 import * as config from "../../config";
@@ -97,11 +95,6 @@ const Welcome = (props: Props) => {
                             Erstelle eine Watch Party oder trete einer bei und verbringe mit deinen
                             Freunden eine geile Zeit!
                         </h3>
-                        {isDevMode && (
-                            <>
-                                Theme: <ThemeChooser />
-                            </>
-                        )}
                     </div>
                 </div>
 

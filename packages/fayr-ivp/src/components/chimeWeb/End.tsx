@@ -1,9 +1,7 @@
 import React from "react";
-import { RouteComponentProps, useRouteMatch, withRouter } from "react-router-dom";
+import { useRouteMatch, withRouter } from "react-router-dom";
 
-type Props = RouteComponentProps & {};
-
-function End() {
+const End = () => {
     const { url } = useRouteMatch();
 
     return (
@@ -26,6 +24,6 @@ function End() {
             </div>
         </div>
     );
-}
+};
 
 export default withRouter(End);
