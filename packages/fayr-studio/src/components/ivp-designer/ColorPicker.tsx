@@ -20,10 +20,10 @@ export default function ColorPicker({ color, onChange, name }: Props) {
     useOutsideClickHandler(() => toggle(false), popoverRef, inputRef);
 
     return (
-        <div className="flex flex-row items-center mt-1">
+        <div className="flex flex-row items-center mt-1 inline-block">
             <div className="mt-1 sm:mt-0 sm:col-span-2">
                 <div
-                    className="max-w-lg flex rounded-md shadow-sm"
+                    className="max-w-lg flex rounded-md shadow-sm hover:cursor-pointer"
                     onClick={() => toggle(true)}
                     ref={inputRef}
                 >

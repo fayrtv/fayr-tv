@@ -23,6 +23,7 @@ export function ThemeSettingsContainer() {
 
     return (
         <div className="flex flex-col">
+            <span className="font-upper text-lg text-center pb-2">Theme settings</span>
             {Object.entries(styling.theme)
                 .filter(([key, _]) => key !== "id")
                 .map(([colorKey, color]) => (

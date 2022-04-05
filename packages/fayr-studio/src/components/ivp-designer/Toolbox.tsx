@@ -1,6 +1,5 @@
-import { useEditor, Element } from "@craftjs/core";
-import { Box, Grid, Button as MaterialButton } from "@material-ui/core";
-import ColorPicker from "components/ivp-designer/ColorPicker";
+import { Element, useEditor } from "@craftjs/core";
+import { Box, Button as MaterialButton, Grid } from "@material-ui/core";
 import { Button } from "components/user/Button";
 import { Card } from "components/user/Card";
 import { Container } from "components/user/Container";
@@ -11,7 +10,7 @@ export const Toolbox = () => {
     const { connectors } = useEditor();
 
     return (
-        <Box px={2} py={2}>
+        <Box>
             <Grid
                 container
                 direction="column"
