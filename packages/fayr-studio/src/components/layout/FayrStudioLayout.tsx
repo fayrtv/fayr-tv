@@ -35,21 +35,14 @@ const FayrLogo = () => (
 );
 
 export default function FayrStudioLayout({ children }: PropsWithChildren<{}>) {
-    // https://dev.to/ohitslaurence/creating-dynamic-themes-with-react-tailwindcss-59cl
-    const [theme] = React.useState(FAYR_THEME);
-
-    const rootRef = React.useRef<HTMLDivElement>(null);
-
     React.useEffect(() => {
-        if (rootRef.current?.parentElement) {
-            applyTheme(theme, rootRef.current);
-        }
-    }, [theme]);
+        applyTheme(FAYR_THEME, document.getElementById("fayr-studio-root")!);
+    }, []);
 
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     return (
-        <div ref={rootRef} className="h-full flex" id="fayr-studio-root">
+        <div className="h-full flex" id="fayr-studio-root">
             {/* Narrow sidebar */}
             <div className="hidden bg-background overflow-y-auto md:block no-scrollbar">
                 <div className="w-full py-6 flex flex-col items-center">

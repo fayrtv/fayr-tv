@@ -1,9 +1,9 @@
 import { Editor, Element, Frame } from "@craftjs/core";
 import { applyTheme, FAYR_THEME, Theme } from "@fayr/shared-components";
-import { SaveLoadActions } from "components/SaveLoadActions";
-import { SettingsPanel } from "components/SettingsPanel";
-import { Toolbox } from "components/Toolbox";
-import ColorPicker from "components/designer/ColorPicker";
+import ColorPicker from "components/ivp-designer/ColorPicker";
+import { SaveLoadActions } from "components/ivp-designer/SaveLoadActions";
+import { SettingsPanel } from "components/ivp-designer/SettingsPanel";
+import { Toolbox } from "components/ivp-designer/Toolbox";
 import { Button } from "components/user/Button";
 import { Card, CardBottom, CardTop } from "components/user/Card";
 import { Container } from "components/user/Container";
@@ -15,7 +15,7 @@ const IVPDesigner = () => {
     const { styling, setStyling } = React.useContext(PlatformConfiguratorContext);
 
     React.useEffect(() => {
-        applyTheme(styling.theme, document.getElementById("fayr-studio-root")!);
+        applyTheme(styling?.theme ?? FAYR_THEME, document.getElementById("fayr-studio-root")!);
     }, [styling.theme]);
 
     const setThemeColor = React.useCallback(

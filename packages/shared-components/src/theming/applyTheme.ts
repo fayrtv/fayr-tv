@@ -6,6 +6,10 @@ export const applyTheme = (theme: Theme, applyOn: HTMLElement = document.documen
         return;
     }
 
+    if (applyOn?.style === undefined) {
+        throw Error("Element to apply style on was not found.");
+    }
+
     Object.keys(mappedTheme).forEach((property) => {
         if (property === "name") {
             return;
