@@ -21,5 +21,6 @@ export {
 export { isFalsyOrWhitespace } from "./utils/stringUtils";
 
 export * from "./hooks/useStateWithCallback";
+export * from "./hooks/usePersistedState";
 
 export * from "./theming";

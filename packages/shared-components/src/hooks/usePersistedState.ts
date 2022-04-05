@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from "react";
 
-import { isFalsyOrWhitespace } from "@fayr/shared-components";
+import { isFalsyOrWhitespace } from "..";
 
 function parseAsJson<T>(rawJson: string) {
     if (isFalsyOrWhitespace(rawJson)) {
@@ -14,6 +14,9 @@ function parseAsJson<T>(rawJson: string) {
  */
 export const usePersistedState = <T>(key: string, factory?: () => T) => {
     const value = React.useMemo<T | undefined>(() => {
+        if (typeof window === "undefined") {
+            return undefined;
+        }
         const rawData = localStorage.getItem(key);
         return rawData ? parseAsJson(rawData) : undefined;
     }, [key]);
@@ -21,6 +24,9 @@ export const usePersistedState = <T>(key: string, factory?: () => T) => {
     const [state, setState] = React.useState(value ?? (factory ? factory() : undefined));
 
     React.useEffect(() => {
+        if (typeof window === "undefined") {
+            return;
+        }
         localStorage.setItem(key, JSON.stringify(state));
     }, [key, state]);
 
