@@ -1,3 +1,4 @@
+import { NoSsr } from "@material-ui/core";
 import Banner from "components/Banner";
 import FayrStudioLayout from "components/layout/FayrStudioLayout";
 import { NextSeo } from "next-seo";
