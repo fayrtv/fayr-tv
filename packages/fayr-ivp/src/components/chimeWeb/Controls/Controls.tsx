@@ -4,7 +4,7 @@ import { useMediaQuery } from "react-responsive";
 import { IAudioVideoManager } from "components/chime/AudioVideoManager";
 import { IChimeAudioVideoProvider, IChimeSdkWrapper } from "components/chime/ChimeSdkWrapper";
 
-import { Cell, Flex, Grid } from "@fayr/shared-components";
+import { Cell, FayrLogo, Flex, Grid } from "@fayr/shared-components";
 
 import styles from "./Controls.module.scss";
 
@@ -112,11 +112,7 @@ const Controls: React.FC<Props> = ({ chime, title, openSettings, role, ssName, b
             }}
             ref={controlsRef}
         >
-            <img
-                className={styles.FayrIcon}
-                src="https://fayr-logo-v001.s3.eu-central-1.amazonaws.com/svg/fayr_logo_main.svg"
-                alt="fayrtv-logo"
-            />
+            <FayrLogo className={styles.FayrIcon} />
             {isMobile && isChatOpen && (
                 <Flex direction="Row" mainAlign="Start" className={styles.ControlsMinified}>
                     <Grid

@@ -1,4 +1,4 @@
-import { applyTheme, FAYR_THEME } from "@fayr/shared-components";
+import { applyTheme, FAYR_THEME, FayrLogo } from "@fayr/shared-components";
 import { Dialog, Transition } from "@headlessui/react";
 import {
     CogIcon,
@@ -22,18 +22,6 @@ function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(" ");
 }
 
-const FayrLogo = () => (
-    <A href="home">
-        <img
-            src="https://fayr-logo-v001.s3.eu-central-1.amazonaws.com/svg/fayr_logo_main.svg"
-            className="h-8 w-auto"
-            alt="fayrtv-logo"
-            height="70"
-            style={{ border: "none" }}
-        />
-    </A>
-);
-
 export default function FayrStudioLayout({ children }: PropsWithChildren<{}>) {
     React.useEffect(() => {
         applyTheme(FAYR_THEME, document.getElementById("fayr-studio-root")!);
@@ -47,7 +35,7 @@ export default function FayrStudioLayout({ children }: PropsWithChildren<{}>) {
             <div className="hidden bg-background overflow-y-auto md:block no-scrollbar">
                 <div className="w-full py-6 flex flex-col items-center">
                     <div className="flex-shrink-0 flex items-center">
-                        <FayrLogo />
+                        <FayrLogo className="h-16 w-auto" />
                     </div>
                     <div className="px-3">
                         <div className="mx-2 select-none block border-primary mt-4 mb-8 bg-background text-primary flex border-2 justify-center font-upper">

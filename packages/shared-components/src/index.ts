@@ -24,3 +24,5 @@ export * from "./hooks/useStateWithCallback";
 export * from "./hooks/usePersistedState";
 
 export * from "./theming";
+
+export { default as FayrLogo } from "./assets/FayrLogo";

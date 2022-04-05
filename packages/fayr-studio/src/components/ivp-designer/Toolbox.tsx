@@ -1,5 +1,6 @@
 import { useEditor, Element } from "@craftjs/core";
 import { Box, Grid, Button as MaterialButton } from "@material-ui/core";
+import ColorPicker from "components/ivp-designer/ColorPicker";
 import { Button } from "components/user/Button";
 import { Card } from "components/user/Card";
 import { Container } from "components/user/Container";
