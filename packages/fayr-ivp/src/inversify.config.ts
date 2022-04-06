@@ -6,12 +6,12 @@ import { AudioVideoManager } from "components/chime/AudioVideoManager";
 import ChimeEvents from "components/chime/ChimeEvents";
 import SocketProvider from "components/chime/SocketProvider";
 import IAudioVideoManager from "components/chime/interfaces/IAudioVideoManager";
+import ISocketProvider from "components/chime/interfaces/ISocketProvider";
 
 import LogProvider from "./components/chime/LogProvider";
 import RoomManager from "./components/chime/RoomManager";
 import IChimeEvents from "./components/chime/interfaces/IChimeEvents";
 import IRoomManager from "./components/chime/interfaces/IRoomManager";
-import { ISocketProvider } from "./components/chime/types";
 
 const container = new Container();
 

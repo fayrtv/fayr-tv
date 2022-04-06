@@ -1,8 +1,10 @@
 import {
     AudioVideoFacade,
+    AudioVideoObserver,
     BackgroundBlurProcessor,
     BackgroundBlurVideoFrameProcessor,
     DefaultVideoTransformDevice,
+    DeviceChangeObserver,
     Logger,
 } from "amazon-chime-sdk-js";
 import { inject, injectable } from "inversify";
@@ -35,7 +37,7 @@ type DeviceUpdatePayload = {
 export type DeviceUpdateCallback = (deviceInfo: DeviceUpdatePayload) => void;
 
 @injectable()
-export class AudioVideoManager implements IAudioVideoManager {
+export class AudioVideoManager implements IAudioVideoManager, DeviceChangeObserver {
     private _audioVideo!: AudioVideoFacade;
     public set audioVideo(device: AudioVideoFacade) {
         this._audioVideo = device;
@@ -46,7 +48,7 @@ export class AudioVideoManager implements IAudioVideoManager {
 
     private _devicesUpdatedCallbacks: Array<DeviceUpdateCallback> = [];
 
-    // Current devices
+    // #region Current devices
     private _currentAudioInputDevice: Nullable<DeviceInfo> = null;
     public get currentAudioInputDevice() {
         return this._currentAudioInputDevice;
@@ -70,8 +72,9 @@ export class AudioVideoManager implements IAudioVideoManager {
     public set currentVideoInputDevice(device: Nullable<DeviceInfo>) {
         this._currentVideoInputDevice = device;
     }
+    // #endregion
 
-    // Available devices
+    // #region Available devices
     private _audioInputDevices: Array<DeviceInfo> = [];
     public get audioInputDevices() {
         return this._audioInputDevices;
@@ -96,6 +99,7 @@ export class AudioVideoManager implements IAudioVideoManager {
         this._videoInputDevices = devices;
         this.publishDevicesUpdated();
     }
+    //#endregion
 
     private readonly _logger: Logger;
 
@@ -104,15 +108,16 @@ export class AudioVideoManager implements IAudioVideoManager {
         @inject(Types.IChimeEvents) chimeEvents: IChimeEvents,
     ) {
         this._logger = logProvider.logger;
-        chimeEvents.roomLeft.register((() => this.resetFields()).bind(this));
+
+        chimeEvents.roomLeft.register(this.resetFields);
     }
 
-    private resetFields() {
+    private resetFields = () => {
         this._audioInputDevices = [];
         this._audioOutputDevices = [];
         this._videoInputDevices = [];
         this._devicesUpdatedCallbacks = [];
-    }
+    };
 
     public setNewRoomAudioVideoFacade(audioVideoFacade: AudioVideoFacade) {
         this._audioVideo = audioVideoFacade;
@@ -122,29 +127,10 @@ export class AudioVideoManager implements IAudioVideoManager {
         this._audioVideo.addDeviceChangeObserver(this);
 
         // How annoying do you want to be? Javascript "this" scope: Yes
-        const that = this;
         await Promise.all([
-            this.initDevicesIfAllowed(
-                hasMicPermissions,
-                function () {
-                    return that.listAudioInputDevices();
-                },
-                this._audioInputDevices,
-            ),
-            this.initDevicesIfAllowed(
-                hasOutputPermissions,
-                function () {
-                    return that.listAudioOutputDevices();
-                },
-                this._audioOutputDevices,
-            ),
-            this.initDevicesIfAllowed(
-                hasCamPermissions,
-                function () {
-                    return that.listVideoInputDevices();
-                },
-                this._videoInputDevices,
-            ),
+            this.initDevicesIfAllowed(hasMicPermissions, this.listAudioInputDevices),
+            this.initDevicesIfAllowed(hasOutputPermissions, this.listAudioOutputDevices),
+            this.initDevicesIfAllowed(hasCamPermissions, this.listVideoInputDevices),
         ]);
 
         this.publishDevicesUpdated();
@@ -153,10 +139,9 @@ export class AudioVideoManager implements IAudioVideoManager {
     private initDevicesIfAllowed = async function (
         permissionChecker: () => Promise<boolean>,
         deviceGatherer: () => Promise<Array<MediaDeviceInfo>>,
-        field: Array<DeviceInfo>,
     ) {
         if (await permissionChecker()) {
-            field = (await deviceGatherer()).map((device) => ({
+            (await deviceGatherer()).map((device) => ({
                 label: device.label,
                 value: device.deviceId,
             }));
@@ -164,25 +149,21 @@ export class AudioVideoManager implements IAudioVideoManager {
     };
 
     // Input picker
-    public async chooseAudioInputDevice(device: Nullable<DeviceInfo>) {
-        try {
-            await this._audioVideo?.chooseAudioInputDevice(device?.value ?? null);
-            this._currentAudioInputDevice = device;
-        } catch (error: any) {
-            this._logger.error(error);
-        }
+    public async setAudioInputDeviceSafe(device: Nullable<DeviceInfo>) {
+        this._currentAudioInputDevice = await this.setDeviceSafe(
+            device,
+            this._audioVideo?.chooseAudioInputDevice,
+        );
     }
 
-    public async chooseAudioOutputDevice(device: Nullable<DeviceInfo>) {
-        try {
-            await this._audioVideo?.chooseAudioOutputDevice(device?.value ?? null);
-            this._currentAudioOutputDevice = device;
-        } catch (error: any) {
-            this._logger.error(error);
-        }
+    public async setAudioOutputDeviceSafe(device: Nullable<DeviceInfo>) {
+        this.currentAudioOutputDevice = await this.setDeviceSafe(
+            device,
+            this._audioVideo?.chooseAudioOutputDevice,
+        );
     }
 
-    public async chooseVideoInputDevice(
+    public async setVideoInputDeviceSafe(
         device: Nullable<DeviceInfo>,
         blurBackground: boolean = false,
     ) {
@@ -217,23 +198,35 @@ export class AudioVideoManager implements IAudioVideoManager {
         }
     }
 
-    public async changeBlurState(blurBackground: boolean) {
-        await this.chooseVideoInputDevice(this._currentVideoInputDevice, blurBackground);
-    }
+    private setDeviceSafe = async (
+        device: Nullable<DeviceInfo>,
+        chooser: (deviceId: string | null) => Promise<void>,
+    ): Promise<Nullable<DeviceInfo>> => {
+        try {
+            await chooser(device?.value ?? null);
+            return device;
+        } catch (error: any) {
+            this._logger.error(error);
+            return null;
+        }
+    };
 
-    public async listAudioInputDevices(): Promise<MediaDeviceInfo[]> {
+    public changeBlurState = (blurBackground: boolean) =>
+        this.setVideoInputDeviceSafe(this._currentVideoInputDevice, blurBackground);
+
+    public listAudioInputDevices = async (): Promise<MediaDeviceInfo[]> => {
         const inputDevices = await this.listAudioInputDevicesInternal();
         await this.listAudioOutputDevicesInternal();
         return inputDevices;
-    }
+    };
 
-    public async listAudioOutputDevices(): Promise<MediaDeviceInfo[]> {
+    public listAudioOutputDevices = async (): Promise<MediaDeviceInfo[]> => {
         const outputDevices = await this.listAudioOutputDevicesInternal();
         await this.listAudioInputDevicesInternal();
         return outputDevices;
-    }
+    };
 
-    public async listVideoInputDevices(): Promise<MediaDeviceInfo[]> {
+    public listVideoInputDevices = async (): Promise<MediaDeviceInfo[]> => {
         const devices = await this._audioVideo.listVideoInputDevices();
 
         if (devices.length) {
@@ -244,80 +237,70 @@ export class AudioVideoManager implements IAudioVideoManager {
         }
 
         return devices;
-    }
-    // Observer methods
+    };
 
-    audioInputsChanged(freshAudioInputDeviceList: Array<MediaDeviceInfo>) {
-        let hasCurrentDevice = false;
-
-        this._audioInputDevices = freshAudioInputDeviceList.map((mediaDeviceInfo) => {
-            if (
-                this._currentAudioInputDevice &&
-                mediaDeviceInfo.deviceId === this._currentAudioInputDevice.value
-            ) {
-                hasCurrentDevice = true;
-            }
-            return {
-                label: mediaDeviceInfo.label,
-                value: mediaDeviceInfo.deviceId,
-            };
-        });
-
-        if (!hasCurrentDevice) {
-            this._currentAudioInputDevice =
-                this._audioInputDevices.length > 0 ? this._audioInputDevices[0] : null;
+    public tryRemoveObserver = (observer: AudioVideoObserver) => {
+        try {
+            this.audioVideo.removeObserver(observer);
+        } catch (ex) {
+            // ok
         }
-        this.publishDevicesUpdated();
-    }
+    };
 
-    audioOutputsChanged(freshAudioOutputDeviceList: Array<MediaDeviceInfo>) {
+    // #region Observer methods
+    audioInputsChanged = (freshAudioInputDeviceList: Array<MediaDeviceInfo>) =>
+        this.onDevicesChanged(
+            freshAudioInputDeviceList,
+            (coll) => (this._audioInputDevices = coll),
+            this._audioInputDevices,
+            (device) => (this._currentAudioInputDevice = device),
+            this._currentAudioInputDevice,
+        );
+
+    audioOutputsChanged = (freshAudioOutputDeviceList: Array<MediaDeviceInfo>) =>
+        this.onDevicesChanged(
+            freshAudioOutputDeviceList,
+            (coll) => (this._audioOutputDevices = coll),
+            this._audioOutputDevices,
+            (device) => (this._currentAudioOutputDevice = device),
+            this._currentAudioOutputDevice,
+        );
+
+    videoInputsChanged = (freshVideoInputDeviceList: Array<MediaDeviceInfo>) =>
+        this.onDevicesChanged(
+            freshVideoInputDeviceList,
+            (coll) => (this._videoInputDevices = coll),
+            this._videoInputDevices,
+            (device) => (this._currentVideoInputDevice = device),
+            this._currentVideoInputDevice,
+        );
+
+    private onDevicesChanged = (
+        deviceList: Array<MediaDeviceInfo>,
+        collectionSetter: (deviceInfos: Array<DeviceInfo>) => void,
+        collection: Array<DeviceInfo>,
+        currentDeviceSetter: (deviceInfo: Nullable<DeviceInfo>) => void,
+        currentDevice: Nullable<DeviceInfo>,
+    ) => {
         let hasCurrentDevice = false;
 
-        this._audioOutputDevices = freshAudioOutputDeviceList.map((mediaDeviceInfo) => {
-            if (
-                this._currentAudioOutputDevice &&
-                mediaDeviceInfo.deviceId === this._currentAudioOutputDevice.value
-            ) {
-                hasCurrentDevice = true;
-            }
-
-            return {
-                label: mediaDeviceInfo.label,
-                value: mediaDeviceInfo.deviceId,
-            };
-        });
-
-        if (!hasCurrentDevice) {
-            this._currentAudioOutputDevice =
-                this._audioOutputDevices.length > 0 ? this._audioOutputDevices[0] : null;
+        if (currentDevice && deviceList.some((x) => x.deviceId === currentDevice.value)) {
+            collectionSetter(
+                deviceList.map((mediaDeviceInfo) => ({
+                    label: mediaDeviceInfo.label,
+                    value: mediaDeviceInfo.deviceId,
+                })),
+            );
         }
-        this.publishDevicesUpdated();
-    }
-
-    videoInputsChanged(freshVideoInputDeviceList: Array<MediaDeviceInfo>) {
-        let hasCurrentDevice = false;
-
-        this._videoInputDevices = freshVideoInputDeviceList.map((mediaDeviceInfo) => {
-            if (
-                this._currentVideoInputDevice &&
-                mediaDeviceInfo.deviceId === this._currentVideoInputDevice.value
-            ) {
-                hasCurrentDevice = true;
-            }
-
-            return {
-                label: mediaDeviceInfo.label,
-                value: mediaDeviceInfo.deviceId,
-            };
-        });
 
         if (!hasCurrentDevice) {
-            this._currentVideoInputDevice =
-                this._videoInputDevices.length > 0 ? this._videoInputDevices[0] : null;
+            currentDeviceSetter(collection.length > 0 ? collection[0] : null);
         }
 
         this.publishDevicesUpdated();
-    }
+    };
+
+    // #endregion
 
     private async listAudioInputDevicesInternal(): Promise<MediaDeviceInfo[]> {
         const devices = await this._audioVideo.listAudioInputDevices();

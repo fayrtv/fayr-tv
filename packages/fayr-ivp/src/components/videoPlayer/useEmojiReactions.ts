@@ -2,7 +2,7 @@ import React from "react";
 
 import useSocket from "hooks/useSocket";
 
-import { SocketEventType } from "components/chime/types";
+import { SocketEventType } from "components/chime/interfaces/ISocketProvider";
 import { EmojiReactionTransferObject } from "components/chimeWeb/types";
 
 export type EmojiReaction = { emoji: string; relativeXClick: number; relativeYClick: number };

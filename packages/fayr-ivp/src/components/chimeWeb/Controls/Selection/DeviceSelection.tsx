@@ -79,7 +79,8 @@ export const MicrophoneSelection = (props: SpecializedProps) => {
             title="Mikrofon"
             name="microphone"
             onUpdate={((deviceInfo: DeviceInfo) =>
-                props.audioVideoManager.chooseAudioInputDevice(deviceInfo)).bind(
+                // eslint-disable-next-line no-extra-bind
+                props.audioVideoManager.setAudioInputDeviceSafe(deviceInfo)).bind(
                 props.audioVideoManager,
             )}
         />
@@ -93,7 +94,8 @@ export const SpeakerSelection = (props: SpecializedProps) => {
             title="Lautsprecher"
             name="speaker"
             onUpdate={((deviceInfo: DeviceInfo) =>
-                props.audioVideoManager.chooseAudioOutputDevice(deviceInfo)).bind(
+                // eslint-disable-next-line no-extra-bind
+                props.audioVideoManager.setAudioOutputDeviceSafe(deviceInfo)).bind(
                 props.audioVideoManager,
             )}
         />
@@ -107,7 +109,8 @@ export const CameraSelection = (props: SpecializedProps) => {
             title="Kamera"
             name="camera"
             onUpdate={((deviceInfo: DeviceInfo) =>
-                props.audioVideoManager.chooseVideoInputDevice(deviceInfo)).bind(
+                // eslint-disable-next-line no-extra-bind
+                props.audioVideoManager.setVideoInputDeviceSafe(deviceInfo)).bind(
                 props.audioVideoManager,
             )}
         />

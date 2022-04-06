@@ -8,19 +8,20 @@ import { batch, useDispatch, useSelector } from "react-redux";
 import { updatePinnedHost } from "redux/reducers/pinnedHostReducer";
 import { ReduxStore } from "redux/store";
 import { Nullable } from "types/global";
+import Types from "types/inject";
 
+import { useAttendeeInfo } from "hooks/useAttendeeInfo";
+import useMeetingMetaData from "hooks/useMeetingMetaData";
 import useSocket from "hooks/useSocket";
 
 // Types
 import IAudioVideoManager from "components/chime/interfaces/IAudioVideoManager";
-import { Role, SocketEventType } from "components/chime/types";
+import { SocketEventType } from "components/chime/interfaces/ISocketProvider";
+import { Role } from "components/chime/types";
 
 // Styles
 import styles from "./CamSection.module.scss";
 
-import { useAttendeeInfo } from "../../../hooks/useAttendeeInfo";
-import useMeetingMetaData from "../../../hooks/useMeetingMetaData";
-import Types from "../../../types/inject";
 import IRoomManager, { RosterMap } from "../../chime/interfaces/IRoomManager";
 import { JoinInfo, ForceMicChangeDto, ForceCamChangeDto } from "../types";
 // Components
@@ -158,27 +159,19 @@ export const CamSection = ({ joinInfo }: Props) => {
             audioVideoManager.audioVideo.addObserver(observer);
         }
 
-        return () => {
-            try {
-                audioVideoManager.audioVideo.removeObserver(observer);
-            } catch (ex) {
-                // ok
-            }
-        };
+        return () => audioVideoManager.tryRemoveObserver(observer);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [audioVideoManager.audioVideo]);
 
+    // Initializes the initial roster so we don't only depend on the notifications
     React.useEffect(() => {
         onRosterUpdate(roomManager.roster);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
         roomManager.subscribeToRosterUpdate(onRosterUpdate);
-
-        return () => {
-            roomManager.unsubscribeFromRosterUpdate(onRosterUpdate);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        return () => roomManager.unsubscribeFromRosterUpdate(onRosterUpdate);
     }, [roomManager, onRosterUpdate]);
 
     const isSelfHost = role === "host";
@@ -244,7 +237,7 @@ export const CamSection = ({ joinInfo }: Props) => {
                     if (forceVideoDisabled) {
                         audioVideoManager.audioVideo.stopLocalVideoTile();
                     } else {
-                        await audioVideoManager.chooseVideoInputDevice(
+                        await audioVideoManager.setVideoInputDeviceSafe(
                             audioVideoManager.currentVideoInputDevice,
                         );
                         // Only unmute if we didn't mute ourself locally
@@ -301,7 +294,6 @@ export const CamSection = ({ joinInfo }: Props) => {
         const participantVideoMap = new Map<string, JSX.Element>();
 
         attendeeMap.forEach((attendee) => {
-            console.log(attendee);
             participantVideoMap.set(
                 attendee.attendeeId,
                 <ParticipantVideo

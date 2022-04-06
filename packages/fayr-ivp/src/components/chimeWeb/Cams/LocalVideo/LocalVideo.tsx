@@ -7,6 +7,7 @@ import Types from "types/inject";
 import useMeetingMetaData from "hooks/useMeetingMetaData";
 import useSocket from "hooks/useSocket";
 
+import { SocketEventType } from "components/chime/interfaces/ISocketProvider";
 import { JoinInfo } from "components/chimeWeb/types";
 
 import { Flex, MaterialIcon } from "@fayr/shared-components";
@@ -15,7 +16,6 @@ import commonCamStyles from "../Cam.module.scss";
 import styles from "./LocalVideo.module.scss";
 
 import IAudioVideoManager from "../../../chime/interfaces/IAudioVideoManager";
-import { SocketEventType } from "../../../chime/types";
 import CamOverlay from "../CamOverlay";
 import { ActivityState, ActivityStateChangeDto } from "../types";
 import DiagonalDash from "./DiagonalDash";

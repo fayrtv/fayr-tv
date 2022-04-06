@@ -9,7 +9,7 @@ import useSocket from "hooks/useSocket";
 import useSocketResponse from "hooks/useSocketResponse";
 import useTranslations from "hooks/useTranslations";
 
-import { SocketEventType } from "components/chime/types";
+import { SocketEventType } from "components/chime/interfaces/ISocketProvider";
 import { EmojiReactionTransferObject, ForceMicChangeDto } from "components/chimeWeb/types";
 import Emoji from "components/common/Emoji";
 
@@ -111,7 +111,7 @@ const ParticipantVideo = ({
         if (videoRef?.current) {
             audioVideoManager.audioVideo.bindVideoElement(tileIndex, videoRef.current);
         }
-    }, [audioVideoManager.audioVideo, tileIndex, videoRef.current]);
+    }, [audioVideoManager.audioVideo, tileIndex]);
 
     React.useEffect(() => {
         if (!socket) {

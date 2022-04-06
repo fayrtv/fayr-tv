@@ -69,7 +69,7 @@ export const MeetingStartScreen = ({ attendeeId, onContinue }: Props) => {
                     value: x.deviceId,
                 }));
 
-                await audioVideoManager.chooseAudioInputDevice(deviceInfos[0]);
+                await audioVideoManager.setAudioInputDeviceSafe(deviceInfos[0]);
                 audioVideoManager.audioVideo.start();
                 audioVideoManager.audioVideo.realtimeUnmuteLocalAudio();
 
@@ -84,7 +84,7 @@ export const MeetingStartScreen = ({ attendeeId, onContinue }: Props) => {
                 });
             }
         } else {
-            await audioVideoManager.chooseAudioInputDevice(null);
+            await audioVideoManager.setAudioInputDeviceSafe(null);
             audioVideoManager.audioVideo.realtimeMuteLocalAudio();
             setAudioInputDevices([]);
             setMetaData({
@@ -111,7 +111,7 @@ export const MeetingStartScreen = ({ attendeeId, onContinue }: Props) => {
                     value: x.deviceId,
                 }));
 
-                await audioVideoManager.chooseVideoInputDevice(deviceInfos[0]);
+                await audioVideoManager.setVideoInputDeviceSafe(deviceInfos[0]);
                 audioVideoManager.audioVideo.start();
                 audioVideoManager.audioVideo.startLocalVideoTile();
 
@@ -128,7 +128,7 @@ export const MeetingStartScreen = ({ attendeeId, onContinue }: Props) => {
             }
         } else {
             setVideoStatus(VideoStatus.Disabled);
-            await audioVideoManager.chooseVideoInputDevice(null);
+            await audioVideoManager.setVideoInputDeviceSafe(null);
             audioVideoManager.audioVideo.stopLocalVideoTile();
             setCamDevices([]);
             setMetaData({

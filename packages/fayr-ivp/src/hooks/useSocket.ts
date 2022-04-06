@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { SocketContext } from "components/chime/SocketContextProvider";
-import { SocketMessage } from "components/chime/types";
+import { SocketMessage } from "components/chime/interfaces/ISocketProvider";
 
 /**
  * Conveniently exposes the {@link SocketContext} with additional helper functions

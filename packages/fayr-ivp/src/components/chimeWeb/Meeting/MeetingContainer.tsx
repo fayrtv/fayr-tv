@@ -82,14 +82,14 @@ export const MeetingContainer = ({
                         if (audioInput && !meetingMetaData.muted && !meetingMetaData.forceMuted) {
                             promises.push(
                                 (async () => {
-                                    await audioVideoManager.chooseAudioInputDevice(audioInput);
+                                    await audioVideoManager.setAudioInputDeviceSafe(audioInput);
                                     audioVideoManager.audioVideo!.start();
                                 })(),
                             );
                         }
 
                         if (audioOutput) {
-                            promises.push(audioVideoManager.chooseAudioOutputDevice(audioOutput));
+                            promises.push(audioVideoManager.setAudioOutputDeviceSafe(audioOutput));
                         }
 
                         if (
@@ -99,7 +99,7 @@ export const MeetingContainer = ({
                         ) {
                             promises.push(
                                 (async () => {
-                                    await audioVideoManager.chooseVideoInputDevice(cam);
+                                    await audioVideoManager.setVideoInputDeviceSafe(cam);
                                     audioVideoManager.audioVideo.start();
                                     audioVideoManager.audioVideo.startLocalVideoTile();
                                 })(),

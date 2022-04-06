@@ -11,7 +11,7 @@ import useGlobalClickHandler from "hooks/useGlobalClickHandler";
 import useGlobalKeyHandler from "hooks/useGlobalKeyHandler";
 import useSocket from "hooks/useSocket";
 
-import { SocketEventType } from "components/chime/types";
+import { SocketEventType } from "components/chime/interfaces/ISocketProvider";
 
 import { Flex } from "@fayr/shared-components";
 
@@ -30,7 +30,7 @@ type Props = {
 export const VotingContainer = ({ attendeeId, votings }: Props) => {
     const votingRef = React.createRef<HTMLDivElement>();
 
-    const chime = useInjection<IRoomManager>(Types.IRoomManager);
+    const roomManager = useInjection<IRoomManager>(Types.IRoomManager);
 
     const dispatch = useDispatch();
 
@@ -50,9 +50,9 @@ export const VotingContainer = ({ attendeeId, votings }: Props) => {
                 new Map<string, string>(Object.entries(x).map(([key, val]) => [key, val.name])),
             );
         };
-        chime.subscribeToRosterUpdate(callback);
-        return () => chime.unsubscribeFromRosterUpdate(callback);
-    }, [chime, setIdNameMapping]);
+        roomManager.subscribeToRosterUpdate(callback);
+        return () => roomManager.unsubscribeFromRosterUpdate(callback);
+    }, [roomManager, setIdNameMapping]);
 
     React.useEffect(() => {
         if (!socket) {

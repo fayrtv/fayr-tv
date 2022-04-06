@@ -7,9 +7,10 @@ import { CouldBeArray } from "util/collectionUtil";
 
 import useSocket from "hooks/useSocket";
 
+import { SocketEventType } from "components/chime/interfaces/ISocketProvider";
+
 import "./Chat.scss";
 
-import { SocketEventType } from "../chime/types";
 import { ChatOpenContext } from "../contexts/ChatOpenContext";
 import ChatInput from "./subcomponents/ChatInput";
 import ChatLine from "./subcomponents/ChatLine";

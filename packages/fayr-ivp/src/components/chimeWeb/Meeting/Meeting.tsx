@@ -4,6 +4,7 @@ import Types from "types/inject";
 
 import useSocket from "hooks/useSocket";
 
+import ISocketProvider from "components/chime/interfaces/ISocketProvider";
 import Error from "components/chimeWeb/Error";
 import { MeetingStatus, MeetingMetaData } from "components/chimeWeb/Meeting/meetingTypes";
 import { formatMeetingSsKey } from "components/chimeWeb/Meeting/storage";
@@ -16,7 +17,6 @@ import styles from "./Meeting.module.scss";
 import * as config from "../../../config";
 import Chat from "../../chat/Chat";
 import IRoomManager from "../../chime/interfaces/IRoomManager";
-import { ISocketProvider } from "../../chime/types";
 // Components
 import VideoPlayer from "../../videoPlayer/VideoPlayer";
 import CamSection from "../Cams/CamSection";

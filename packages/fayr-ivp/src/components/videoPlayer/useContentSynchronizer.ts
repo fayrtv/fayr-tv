@@ -6,7 +6,7 @@ import React from "react";
 import { useAttendeeInfo } from "hooks/useAttendeeInfo";
 import useSocket from "hooks/useSocket";
 
-import { SocketEventType } from "components/chime/types";
+import { SocketEventType } from "components/chime/interfaces/ISocketProvider";
 import {
     AttendeeDriftMeasurement,
     IDriftSyncStrategy,

@@ -25,11 +25,12 @@ export default class RoomManager implements IRoomManager {
     public get configuration(): MeetingSessionConfiguration {
         return this._configuration!;
     }
+
     public get attendeeId(): Nullable<string> {
         return this._configuration?.credentials?.attendeeId ?? null;
     }
 
-    private static ROSTER_THROTTLE_MS = 400;
+    private static ROSTER_UPDATE_THROTTLE_MS = 400;
 
     private _title: Nullable<string> = null;
     private _name: Nullable<string> = null;
@@ -41,7 +42,7 @@ export default class RoomManager implements IRoomManager {
     private _chimeEvents: IChimeEvents;
 
     private _roster: RosterMap = {};
-    public get roster() {
+    public get roster(): RosterMap {
         return this._roster;
     }
     private _rosterUpdateCallbacks: Array<RosterUpdateCallback> = [];
@@ -54,10 +55,11 @@ export default class RoomManager implements IRoomManager {
         this._logger = logProvider.logger;
         this._audioVideoManager = audioVideoManager;
         this._chimeEvents = chimeEvents;
-        chimeEvents.roomLeft.register((() => this.resetFields()).bind(this));
+
+        chimeEvents.roomLeft.register(this.cleanUp);
     }
 
-    private resetFields() {
+    private cleanUp = () => {
         this._title = null;
         this._name = null;
         this._region = null;
@@ -65,7 +67,9 @@ export default class RoomManager implements IRoomManager {
         this._rosterUpdateCallbacks = [];
         this._configuration = null;
         this._meetingSession = null;
-    }
+
+        window.removeEventListener("unhandledrejection", this.onUnhandledRejection);
+    };
 
     public async createRoom(
         role: string,
@@ -118,15 +122,16 @@ export default class RoomManager implements IRoomManager {
             return;
         }
 
-        window.addEventListener("unhandledrejection", (event) => {
-            this._logger.error(event.reason);
-        });
+        window.addEventListener("unhandledrejection", this.onUnhandledRejection);
 
         await this._audioVideoManager.initializeMeetingSession();
 
         this._audioVideoManager.audioVideo?.bindAudioElement(element);
         this._audioVideoManager.audioVideo?.start();
     }
+
+    private onUnhandledRejection = (event: PromiseRejectionEvent) =>
+        this._logger.error(event.reason);
 
     public async leaveRoom(end: boolean) {
         try {
@@ -159,22 +164,22 @@ export default class RoomManager implements IRoomManager {
 
     public async reInitializeMeetingSession(joinInfo: JoinInfo, name: string) {
         this._configuration = new MeetingSessionConfiguration(joinInfo.Meeting, joinInfo.Attendee);
-        await this.initializeMeetingSession(this.configuration);
+        await this.initializeMeetingSession(this._configuration);
 
         this._title = joinInfo.Title;
         this._name = name;
     }
 
-    private publishRosterUpdate() {
-        return throttle(() => {
+    private publishRosterUpdate = () =>
+        throttle(() => {
             for (const cb of this._rosterUpdateCallbacks) {
                 cb(this._roster);
             }
-        }, RoomManager.ROSTER_THROTTLE_MS);
-    }
+        }, RoomManager.ROSTER_UPDATE_THROTTLE_MS);
 
     public subscribeToRosterUpdate = (callback: RosterUpdateCallback) => {
         this._rosterUpdateCallbacks.push(callback);
+        return callback;
     };
 
     public unsubscribeFromRosterUpdate(callback: RosterUpdateCallback) {
@@ -201,7 +206,6 @@ export default class RoomManager implements IRoomManager {
         audioVideo.realtimeSubscribeToAttendeeIdPresence((presentAttendeeId, present) => {
             if (!present) {
                 delete this._roster[presentAttendeeId];
-                //this.publishRosterUpdate.cancel();
                 this.publishRosterUpdate()();
                 return;
             }

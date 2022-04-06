@@ -7,7 +7,7 @@ import Types from "types/inject";
 import LogProvider from "./LogProvider";
 import IChimeEvents from "./interfaces/IChimeEvents";
 import IRoomManager from "./interfaces/IRoomManager";
-import { ISocketProvider, SocketEventType, SocketMessage } from "./types";
+import ISocketProvider, { SocketEventType, SocketMessage } from "./interfaces/ISocketProvider";
 
 type ListenerCallback = (event: AwsWebsocketMessage) => Promise<void>;
 
@@ -40,11 +40,7 @@ export class SocketProvider implements ISocketProvider {
         this._roomManager = roomManager;
         this._logger = logProvider.logger;
 
-        chimeEvents.roomLeft.register(
-            (() => {
-                this._socket = null;
-            }).bind(this),
-        );
+        chimeEvents.roomLeft.register(() => (this._socket = null));
     }
 
     send<T>(message: SocketMessage<T>) {

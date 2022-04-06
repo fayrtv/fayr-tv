@@ -38,11 +38,11 @@ export const CamToggleButton = () => {
                         label: videoInputs[0].label,
                         value: videoInputs[0].deviceId,
                     };
-                    await audioVideoManager.chooseVideoInputDevice(fallbackDevice);
+                    await audioVideoManager.setVideoInputDeviceSafe(fallbackDevice);
                 }
 
                 try {
-                    await audioVideoManager.chooseVideoInputDevice(
+                    await audioVideoManager.setVideoInputDeviceSafe(
                         audioVideoManager.currentVideoInputDevice,
                     );
                     setMeetingMetaData({
