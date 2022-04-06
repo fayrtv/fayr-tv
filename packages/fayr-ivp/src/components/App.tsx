@@ -78,22 +78,22 @@ function App() {
     return (
         <div className={styles.App}>
             <InversifyProvider container={container}>
-	            <QueryClientProvider client={queryClient}>
-	                <IvpTranslationContextProvider>
-	                    <Router>
-	                        <Switch>
-	                            <Route path={`${baseHref}/preview/:platform`}>
-	                                <MainIvpRouter chime={chime} />
-	                            </Route>
+                <QueryClientProvider client={queryClient}>
+                    <IvpTranslationContextProvider>
+                        <Router>
+                            <Switch>
+                                <Route path={`${baseHref}/preview/:platform`}>
+                                    <MainIvpRouter chime={chime} />
+                                </Route>
 
-	                            <Route path={`${baseHref}`}>
-	                                <MainIvpRouter chime={chime} />
-	                            </Route>
-	                        </Switch>
-	                    </Router>
-	                </IvpTranslationContextProvider>
-	                <ReactQueryDevtools initialIsOpen={false} />
-	            </QueryClientProvider>
+                                <Route path={`${baseHref}`}>
+                                    <MainIvpRouter chime={chime} />
+                                </Route>
+                            </Switch>
+                        </Router>
+                    </IvpTranslationContextProvider>
+                    <ReactQueryDevtools initialIsOpen={false} />
+                </QueryClientProvider>
             </InversifyProvider>
         </div>
     );
