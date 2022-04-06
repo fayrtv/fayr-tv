@@ -6,6 +6,8 @@ import useTranslations from "hooks/useTranslations";
 
 import { IChimeSdkWrapper } from "components/chime/ChimeSdkWrapper";
 
+import { FayrLogo } from "@fayr/shared-components";
+
 import * as config from "../../config";
 import Error from "./Error";
 import { JoinInfoForm } from "./JoinInfoForm";
@@ -76,12 +78,7 @@ const Welcome = (props: Props) => {
             <div className="welcome form-grid">
                 <div className="welcome__intro">
                     <div className="intro__inner formatted-text">
-                        <img
-                            src="https://fayr-logo-v001.s3.eu-central-1.amazonaws.com/svg/fayr_logo_main.svg"
-                            alt="fayrtv-logo"
-                            height="70"
-                            style={{ border: "none" }}
-                        />
+                        <FayrLogo style={{ border: "none" }} />
                         <br />
                         <h2>{welcomeMessage}</h2>
                         <h3>{tl.WelcomeMessageBody}</h3>

@@ -1,54 +1,15 @@
 import { Editor, Element, Frame } from "@craftjs/core";
-import { applyTheme, FAYR_THEME, Theme } from "@fayr/shared-components";
-import { SaveLoadActions } from "components/SaveLoadActions";
-import { SettingsPanel } from "components/SettingsPanel";
-import { Toolbox } from "components/Toolbox";
-import ColorPicker from "components/designer/ColorPicker";
+import { SaveLoadActions } from "components/ivp-designer/SaveLoadActions";
+import { SelectedElementPropertiesPanel } from "components/ivp-designer/SelectedElementPropertiesPanel";
 import { Button } from "components/user/Button";
 import { Card, CardBottom, CardTop } from "components/user/Card";
 import { Container } from "components/user/Container";
 import { Text } from "components/user/Text";
-import { PlatformConfiguratorContext } from "platform-config/PlatformConfiguratorContextProvider";
 import React from "react";
 
 const IVPDesigner = () => {
-    const { styling, setStyling } = React.useContext(PlatformConfiguratorContext);
-
-    React.useEffect(() => {
-        applyTheme(styling.theme, document.getElementById("fayr-studio-root")!);
-    }, [styling.theme]);
-
-    const setThemeColor = React.useCallback(
-        (colorKey: keyof Theme, value: string) => {
-            // TODO: oof...
-            setStyling((curr) => ({
-                ...curr,
-                ...{ theme: { ...curr.theme, ...{ [colorKey]: value } } },
-            }));
-        },
-        [setStyling],
-    );
-
     return (
         <>
-            <div className="flex flex-col">
-                {Object.entries(styling.theme)
-                    .filter(([key, _]) => key !== "id")
-                    .map(([colorKey, color]) => (
-                        <div key={colorKey}>
-                            <label htmlFor={colorKey} className="block text-sm font-medium">
-                                {colorKey.replace("color", "")}
-                            </label>
-                            <ColorPicker
-                                name={colorKey}
-                                color={color}
-                                onChange={(newValue) =>
-                                    setThemeColor(colorKey as keyof Theme, newValue)
-                                }
-                            />
-                        </div>
-                    ))}
-            </div>
             <Editor
                 resolver={{
                     Card,
@@ -60,9 +21,18 @@ const IVPDesigner = () => {
                 }}
             >
                 <div className="flex-grow w-full lg:flex">
-                    <div className="flex-1 min-w-0 xl:flex">
+                    <div>
+                        <div className="h-full lg:w-80">
+                            <div className="h-full relative p-2 p-2 inset-0 border-2 border-gray-200 border-dashed rounded-lg">
+                                {/*<Toolbox />*/}
+                                <SelectedElementPropertiesPanel />
+                                <SaveLoadActions />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="flex-1 min-w-0 xl:flex sm:mx-5 lg:mx-5">
                         <div className="lg:min-w-0 lg:flex-1">
-                            <div className="h-full py-6 px-4 sm:px-6 lg:px-8">
+                            <div className="h-full ">
                                 {/* Start main area*/}
                                 <div className="relative h-full" style={{ minHeight: "36rem" }}>
                                     <div className="absolute inset-0 border-2 border-gray-200 border-dashed rounded-lg" />
@@ -109,19 +79,6 @@ const IVPDesigner = () => {
                                 </div>
                                 {/* End main area */}
                             </div>
-                        </div>
-                    </div>
-
-                    <div className="pr-4 sm:pr-6 lg:pr-8 lg:flex-shrink-0 lg:border-l lg:border-gray-200 xl:pr-0">
-                        <div className="h-full pl-6 py-6 lg:w-80">
-                            {/* Start right column area */}
-                            <div className="h-full relative" style={{ minHeight: "16rem" }}>
-                                <div className="absolute inset-0 border-2 border-gray-200 border-dashed rounded-lg" />
-                                <Toolbox />
-                                <SaveLoadActions />
-                                <SettingsPanel />
-                            </div>
-                            {/* End right column area */}
                         </div>
                     </div>
                 </div>

@@ -1,7 +1,7 @@
 import SettingsScreen from "./SettingsScreen";
 import { isFalsyOrWhitespace } from "@fayr/shared-components";
 import VerticalSteps, { StepInfo } from "components/VerticalSteps";
-import IVPDesigner from "components/designer/IVPDesigner";
+import IVPDesigner from "components/ivp-designer";
 import { PlatformConfiguratorContext } from "platform-config/PlatformConfiguratorContextProvider";
 import PublishScreen from "platform-config/PublishScreen";
 import StreamSettings from "platform-config/StreamSettings";

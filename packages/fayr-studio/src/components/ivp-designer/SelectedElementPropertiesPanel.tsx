@@ -1,8 +1,10 @@
 import { useEditor } from "@craftjs/core";
-import { Box, Chip, Grid, Button as MaterialButton } from "@material-ui/core";
+import { XCircleIcon } from "@heroicons/react/outline";
+import { Box, Button as MaterialButton, Chip, Grid } from "@material-ui/core";
+import { ThemeSettingsContainer } from "components/ivp-designer/ThemeSettingsContainer";
 import React from "react";
 
-export const SettingsPanel = () => {
+export const SelectedElementPropertiesPanel = () => {
     const { actions, selected, isEnabled } = useEditor((state, query) => {
         const currentNodeId = query.getEvent("selected").last();
         let selected;
@@ -31,6 +33,11 @@ export const SettingsPanel = () => {
                     <Box pb={2}>
                         <Grid container alignItems="center">
                             <Grid item xs>
+                                <XCircleIcon
+                                    color="#ffffff"
+                                    className="w-6 h-6 hover:cursor-pointer inline-block mr-1"
+                                    onClick={() => actions.selectNode(undefined)}
+                                />
                                 Selected
                             </Grid>
                             <Grid item>
@@ -60,5 +67,7 @@ export const SettingsPanel = () => {
                 ) : null}
             </Grid>
         </Box>
-    ) : null;
+    ) : (
+        <ThemeSettingsContainer />
+    );
 };
