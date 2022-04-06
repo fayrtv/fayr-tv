@@ -16,7 +16,7 @@
         "@craftjs/core": "^0.2.0-beta.0",
         "@emotion/react": "^11.7.0",
         "@emotion/styled": "^11.6.0",
-        "@fayr/shared-components": "^1.0.0",
+        "@fayr/common": "^1.0.0",
         "@headlessui/react": "^1.4.2",
         "@heroicons/react": "^1.0.5",
         "@material-ui/core": "^4.12.3",

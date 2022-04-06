@@ -1,10 +1,10 @@
 {
-    "name": "@fayr/shared-components",
+    "name": "@fayr/common",
     "version": "1.0.0",
     "main": "lib/index.js",
     "scripts": {
         "build": "yarn clean && yarn copy-files && tsc",
-        "dev": "tsc -w",
+        "dev": "yarn clean && tsc -w",
         "clean": "rimraf lib/",
         "copy-files": "copyfiles -u 1 \"src/**/*.scss\" lib/"
     },

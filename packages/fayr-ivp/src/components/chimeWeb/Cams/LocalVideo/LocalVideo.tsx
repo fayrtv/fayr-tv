@@ -10,7 +10,7 @@ import useSocket from "hooks/useSocket";
 import { SocketEventType } from "components/chime/interfaces/ISocketProvider";
 import { JoinInfo } from "components/chimeWeb/types";
 
-import { Flex, MaterialIcon } from "@fayr/shared-components";
+import { Flex, MaterialIcon } from "@fayr/common";
 
 import commonCamStyles from "../Cam.module.scss";
 import styles from "./LocalVideo.module.scss";

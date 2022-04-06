@@ -1,5 +1,5 @@
 import SettingsScreen from "./SettingsScreen";
-import { isFalsyOrWhitespace } from "@fayr/shared-components";
+import { isFalsyOrWhitespace } from "@fayr/common";
 import VerticalSteps, { StepInfo } from "components/VerticalSteps";
 import IVPDesigner from "components/ivp-designer";
 import { PlatformConfiguratorContext } from "platform-config/PlatformConfiguratorContextProvider";

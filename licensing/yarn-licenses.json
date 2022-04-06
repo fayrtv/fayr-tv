@@ -9060,7 +9060,7 @@ yarn licenses v1.22.18
 │  ├─ @fayr/ivp@0.1.1
 │  │  ├─ URL: http:///
 │  │  └─ VendorUrl: http:///
-│  ├─ @fayr/shared-components@1.0.0
+│  ├─ @fayr/common@1.0.0
 │  ├─ @fayr/studio@0.0.1
 │  │  ├─ URL: http:///
 │  │  └─ VendorUrl: http:///

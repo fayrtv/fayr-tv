@@ -13,7 +13,7 @@ import useSocket from "hooks/useSocket";
 
 import { SocketEventType } from "components/chime/interfaces/ISocketProvider";
 
-import { Flex } from "@fayr/shared-components";
+import { Flex } from "@fayr/common";
 
 import styles from "./styles/VotingContainer.module.scss";
 

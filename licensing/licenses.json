@@ -1846,10 +1846,10 @@
         "licenses": "UNKNOWN",
         "path": "fayr_tv_live/node_modules/@fayr/api-contracts"
     },
-    "@fayr/shared-components@1.0.0": {
+    "@fayr/common@1.0.0": {
         "licenses": "UNKNOWN",
-        "path": "fayr_tv_live/node_modules/@fayr/shared-components",
-        "licenseFile": "fayr_tv_live/node_modules/@fayr/shared-components/README.md"
+        "path": "fayr_tv_live/node_modules/@fayr/common",
+        "licenseFile": "fayr_tv_live/node_modules/@fayr/common/README.md"
     },
     "@gar/promisify@1.1.3": {
         "licenses": "MIT",
@@ -18621,8 +18621,8 @@
         "publisher": "Sindre Sorhus",
         "email": "sindresorhus@gmail.com",
         "url": "https://sindresorhus.com",
-        "path": "fayr_tv_live/node_modules/@fayr/shared-components/node_modules/type-fest",
-        "licenseFile": "fayr_tv_live/node_modules/@fayr/shared-components/node_modules/type-fest/license"
+        "path": "fayr_tv_live/node_modules/@fayr/common/node_modules/type-fest",
+        "licenseFile": "fayr_tv_live/node_modules/@fayr/common/node_modules/type-fest/license"
     },
     "type-is@1.6.18": {
         "licenses": "MIT",

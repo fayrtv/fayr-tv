@@ -1,13 +1,9 @@
-// Framework
 import { MediaPlayer } from "amazon-ivs-player";
 import classNames from "classnames";
 import * as React from "react";
 
-import { MaterialIcon } from "@fayr/shared-components";
-// Components
-import { Flex } from "@fayr/shared-components/lib";
+import { Flex, MaterialIcon } from "@fayr/common";
 
-// Styles
 import styles from "./StreamHealthIndicator.module.scss";
 
 import { DriftInformation, IDriftSyncStrategy } from "../driftSyncStrategies/interfaces";

@@ -1,4 +1,4 @@
-import { Cell, Grid } from "@fayr/shared-components";
+import { Cell, Grid } from "@fayr/common";
 
 import styles from "./ParticipantVideoGroup.module.scss";
 

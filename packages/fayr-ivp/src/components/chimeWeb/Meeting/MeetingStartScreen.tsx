@@ -11,7 +11,7 @@ import IAudioVideoManager from "components/chime/interfaces/IAudioVideoManager";
 
 // Types
 // Components
-import { Cell, Flex, Grid, MaterialIcon } from "@fayr/shared-components";
+import { Cell, Flex, Grid, MaterialIcon } from "@fayr/common";
 
 // Styles
 import styles from "./MeetingStartScreen.module.scss";

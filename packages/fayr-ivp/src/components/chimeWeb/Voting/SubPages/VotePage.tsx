@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Cell, Flex, Grid } from "@fayr/shared-components";
+import { Cell, Flex, Grid } from "@fayr/common";
 
 import styles from "./VotePage.module.scss";
 

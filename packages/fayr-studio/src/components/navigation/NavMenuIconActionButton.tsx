@@ -1,4 +1,4 @@
-import { MaterialIcon } from "@fayr/shared-components";
+import { MaterialIcon } from "@fayr/common";
 import React from "react";
 
 type Props = {

@@ -1,4 +1,4 @@
-import { applyTheme, FAYR_THEME, Theme } from "@fayr/shared-components";
+import { applyTheme, FAYR_THEME, Theme } from "@fayr/common";
 import ColorPicker from "components/ivp-designer/ColorPicker";
 import { PlatformConfiguratorContext } from "platform-config/PlatformConfiguratorContextProvider";
 import React from "react";
