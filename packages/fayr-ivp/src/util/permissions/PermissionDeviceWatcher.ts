@@ -1,12 +1,7 @@
-import { IChimeAudioVideoProvider } from "components/chime/ChimeSdkWrapper";
-
 export default class PermissionDeviceWatcher {
-    private _chime: IChimeAudioVideoProvider;
-
     private _cleanUpCbs: Array<() => void>;
 
-    constructor(chime: IChimeAudioVideoProvider) {
-        this._chime = chime;
+    constructor() {
         this._cleanUpCbs = [];
     }
 

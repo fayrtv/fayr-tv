@@ -1,7 +1,7 @@
 import { GLOBAL_RESET } from "redux/store";
 import { PartialBut } from "types/global";
 
-import { Attendee } from "components/chime/ChimeSdkWrapper";
+import { Attendee } from "components/chime/types";
 
 import { ReducerAction } from "../types";
 

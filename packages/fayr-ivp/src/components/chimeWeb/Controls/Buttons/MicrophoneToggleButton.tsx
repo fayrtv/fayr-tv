@@ -1,25 +1,19 @@
 // Framework
+import { useInjection } from "inversify-react";
 import * as React from "react";
+import Types from "types/inject";
 
 import useGlobalKeyHandler from "hooks/useGlobalKeyHandler";
 import useMeetingMetaData from "hooks/useMeetingMetaData";
 
-import {
-    IChimeAudioVideoProvider,
-    IChimeSdkWrapper,
-    IDeviceProvider,
-} from "components/chime/ChimeSdkWrapper";
+import IAudioVideoManager from "components/chime/interfaces/IAudioVideoManager";
 
 import MicrophoneToggle from "./MicrophoneToggle";
 
-type Props = {
-    chime: IChimeAudioVideoProvider & IDeviceProvider & IChimeSdkWrapper;
-    forceMuted?: boolean;
-};
-
-export const MicrophoneToggleButton = ({ chime }: Props) => {
+export const MicrophoneToggleButton = () => {
     const [{ forceMuted, meetingInputOutputDevices, muted }, setMeetingMetaData] =
         useMeetingMetaData();
+    const audioVideoManager = useInjection<IAudioVideoManager>(Types.IAudioVideoManager);
 
     const toggleMute = async () => {
         if (forceMuted) {
@@ -27,9 +21,9 @@ export const MicrophoneToggleButton = ({ chime }: Props) => {
         }
 
         if (muted) {
-            const audioInputs = await chime.listAudioInputDevices();
+            const audioInputs = await audioVideoManager.listAudioInputDevices();
             if (audioInputs && audioInputs.length > 0 && audioInputs[0].deviceId) {
-                await chime.audioVideo?.chooseAudioInputDevice(audioInputs[0].deviceId);
+                await audioVideoManager.audioVideo?.chooseAudioInputDevice(audioInputs[0].deviceId);
                 setMeetingMetaData({
                     meetingInputOutputDevices: {
                         ...meetingInputOutputDevices,
@@ -40,7 +34,7 @@ export const MicrophoneToggleButton = ({ chime }: Props) => {
                     },
                     muted: false,
                 });
-                chime.audioVideo.realtimeUnmuteLocalAudio();
+                audioVideoManager.audioVideo.realtimeUnmuteLocalAudio();
             }
         } else {
             setMeetingMetaData({
@@ -50,7 +44,7 @@ export const MicrophoneToggleButton = ({ chime }: Props) => {
                 },
                 muted: true,
             });
-            chime.audioVideo.realtimeMuteLocalAudio();
+            audioVideoManager.audioVideo.realtimeMuteLocalAudio();
         }
 
         return Promise.resolve();
@@ -59,8 +53,8 @@ export const MicrophoneToggleButton = ({ chime }: Props) => {
     useGlobalKeyHandler(["m", "M", "keyM"], toggleMute);
 
     React.useEffect(() => {
-        if (chime.audioVideo) {
-            const localChimeCopy = chime.audioVideo;
+        if (audioVideoManager.audioVideo) {
+            const localChimeCopy = audioVideoManager.audioVideo;
 
             const onMuteChange = (muted: boolean) =>
                 setMeetingMetaData({
@@ -71,7 +65,7 @@ export const MicrophoneToggleButton = ({ chime }: Props) => {
 
             return () => localChimeCopy.realtimeUnsubscribeToMuteAndUnmuteLocalAudio(onMuteChange);
         }
-    }, [chime.audioVideo, setMeetingMetaData]);
+    }, [audioVideoManager.audioVideo, setMeetingMetaData]);
 
     return <MicrophoneToggle enabled={!muted} forceMuted={forceMuted} onClick={toggleMute} />;
 };

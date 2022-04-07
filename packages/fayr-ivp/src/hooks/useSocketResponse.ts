@@ -1,6 +1,6 @@
 import React from "react";
 
-import { SocketEventType, SocketMessage } from "components/chime/types";
+import { SocketEventType, SocketMessage } from "components/chime/interfaces/ISocketProvider";
 
 import useSocket from "./useSocket";
 

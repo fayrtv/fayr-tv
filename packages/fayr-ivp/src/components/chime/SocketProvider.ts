@@ -1,6 +1,13 @@
-import { WebSocketAdapter } from "amazon-chime-sdk-js";
+import { DefaultWebSocketAdapter, Logger, WebSocketAdapter } from "amazon-chime-sdk-js";
+import * as config from "config";
+import { inject, injectable } from "inversify";
+import { Nullable } from "types/global";
+import Types from "types/inject";
 
-import { ISocketProvider, SocketEventType, SocketMessage } from "./types";
+import LogProvider from "./LogProvider";
+import IChimeEvents from "./interfaces/IChimeEvents";
+import IRoomManager from "./interfaces/IRoomManager";
+import ISocketProvider, { SocketEventType, SocketMessage } from "./interfaces/ISocketProvider";
 
 type ListenerCallback = (event: AwsWebsocketMessage) => Promise<void>;
 
@@ -14,38 +21,27 @@ type AwsWebsocketMessage = {
     data: string;
 };
 
+@injectable()
 export class SocketProvider implements ISocketProvider {
-    private _socket: WebSocketAdapter;
+    private _socket: Nullable<WebSocketAdapter> = null;
 
     private _listeners: Map<SocketEventType, Array<ListenerCallback>>;
 
-    public constructor(socket: WebSocketAdapter) {
-        this._socket = socket;
+    private _roomManager: IRoomManager;
+
+    private _logger: Logger;
+
+    public constructor(
+        @inject(Types.IRoomManager) roomManager: IRoomManager,
+        @inject(Types.LogProvider) logProvider: LogProvider,
+        @inject(Types.IChimeEvents) chimeEvents: IChimeEvents,
+    ) {
         this._listeners = new Map<SocketEventType, Array<ListenerCallback>>();
+        this._roomManager = roomManager;
+        this._logger = logProvider.logger;
 
-        socket.addEventListener("message", this.onSendMessage);
+        chimeEvents.roomLeft.register(() => (this._socket = null));
     }
-
-    private onSendMessage = (payload: any) => {
-        const rawAwsSocketMessage = JSON.parse(payload.data) as RawAwsWebsocketMessage;
-
-        const awsSocketMessage: AwsWebsocketMessage = {
-            eventType: +rawAwsSocketMessage.eventType,
-            data: rawAwsSocketMessage.data,
-        };
-
-        const { eventType } = awsSocketMessage;
-
-        const listeners = this._listeners.get(eventType);
-
-        if (!listeners) {
-            return;
-        }
-
-        for (const listener of listeners) {
-            listener(awsSocketMessage);
-        }
-    };
 
     send<T>(message: SocketMessage<T>) {
         const websocketCompatibleMessage: RawAwsWebsocketMessage = {
@@ -60,7 +56,7 @@ export class SocketProvider implements ISocketProvider {
 		}`;
 
         try {
-            this._socket.send(data);
+            this._socket!.send(data);
         } catch (error) {
             console.error(error);
         }
@@ -90,8 +86,51 @@ export class SocketProvider implements ISocketProvider {
     }
 
     close(code?: number | undefined, reason?: string | undefined) {
-        this._socket.close(code, reason);
+        this._socket?.close(code, reason);
     }
+
+    joinRoomSocket(): Nullable<WebSocketAdapter> {
+        if (!this._roomManager.configuration) {
+            this._logger.error("configuration does not exist");
+            return null;
+        }
+
+        const messagingUrl = `${config.CHAT_WEBSOCKET}?MeetingId=${
+            this._roomManager.configuration.meetingId
+        }&AttendeeId=${this._roomManager.configuration.credentials!.attendeeId}&JoinToken=${
+            this._roomManager.configuration.credentials!.joinToken
+        }`;
+
+        this._socket = new DefaultWebSocketAdapter(this._logger);
+        this._socket.create(messagingUrl, []);
+
+        if (config.DEBUG) {
+            console.log(this._socket);
+        }
+        this._socket.addEventListener("message", this.onSendMessage);
+        return this._socket;
+    }
+
+    private onSendMessage = (payload: any) => {
+        const rawAwsSocketMessage = JSON.parse(payload.data) as RawAwsWebsocketMessage;
+
+        const awsSocketMessage: AwsWebsocketMessage = {
+            eventType: +rawAwsSocketMessage.eventType,
+            data: rawAwsSocketMessage.data,
+        };
+
+        const { eventType } = awsSocketMessage;
+
+        const listeners = this._listeners.get(eventType);
+
+        if (!listeners) {
+            return;
+        }
+
+        for (const listener of listeners) {
+            listener(awsSocketMessage);
+        }
+    };
 
     private removeListener(eventType: SocketEventType, callback: ListenerCallback): void {
         let eventListeners = this._listeners.get(eventType);

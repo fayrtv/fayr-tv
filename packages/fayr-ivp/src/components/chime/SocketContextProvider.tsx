@@ -2,8 +2,7 @@
 import React from "react";
 import { Nullable } from "types/global";
 
-// Types
-import { ISocketProvider } from "./types";
+import ISocketProvider from "./interfaces/ISocketProvider";
 
 type Context = {
     socket?: ISocketProvider;

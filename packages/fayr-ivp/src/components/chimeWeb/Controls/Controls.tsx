@@ -1,15 +1,11 @@
 import React from "react";
 import { useMediaQuery } from "react-responsive";
 
-import { IAudioVideoManager } from "components/chime/AudioVideoManager";
-import { IChimeAudioVideoProvider, IChimeSdkWrapper } from "components/chime/ChimeSdkWrapper";
-
 import { Cell, FayrLogo, Flex, Grid } from "@fayr/shared-components";
 
 import styles from "./Controls.module.scss";
 
 import { RoomMemberRole } from "../../../types/Room";
-import { IDeviceProvider } from "../../chime/ChimeSdkWrapper";
 import { ChatOpenContext } from "../../contexts/ChatOpenContext";
 // Buttons
 import CamToggleButton from "./Buttons/CamToggleButton";
@@ -22,7 +18,6 @@ import VotingButton from "./Buttons/VotingButton";
 import ReactionButton from "./emoji-reactions/ReactionButton";
 
 type Props = {
-    chime: IChimeSdkWrapper & IChimeAudioVideoProvider & IAudioVideoManager & IDeviceProvider;
     title: string;
     openSettings(): void;
     role: RoomMemberRole;
@@ -30,7 +25,7 @@ type Props = {
     baseHref: string;
 };
 
-const Controls: React.FC<Props> = ({ chime, title, openSettings, role, ssName, baseHref }) => {
+const Controls: React.FC<Props> = ({ title, openSettings, role, ssName, baseHref }) => {
     const { isOpen: isChatOpen, set: setChatOpen } = React.useContext(ChatOpenContext);
 
     const isMobile = useMediaQuery({ maxWidth: 1024 });
@@ -78,8 +73,8 @@ const Controls: React.FC<Props> = ({ chime, title, openSettings, role, ssName, b
     const chatButton = <ChatButton key="ChatButton" />;
 
     const buttons = [
-        <MicrophoneToggleButton chime={chime} key="MicrophoneToggleButton" />,
-        <CamToggleButton chime={chime} key="CamToggleButton" />,
+        <MicrophoneToggleButton key="MicrophoneToggleButton" />,
+        <CamToggleButton key="CamToggleButton" />,
         // {/* Setting button */}
         <SettingsButton openSettings={openSettings} key="SettingsButton" />,
         <SharePartyButton title={title} key="SharePartyButton" />,
@@ -89,7 +84,6 @@ const Controls: React.FC<Props> = ({ chime, title, openSettings, role, ssName, b
         <VotingButton key="VotingButton" />,
         // End button
         <EndPartyButton
-            chime={chime}
             ssName={ssName}
             role={role}
             baseHref={baseHref}

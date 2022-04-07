@@ -24,7 +24,7 @@ export const Join = ({ location, history }: RouteComponentProps) => {
 
     const joinRoom = () => {
         const data = {
-            username: userName,
+            userName,
             title,
             role: "Attendee",
         };

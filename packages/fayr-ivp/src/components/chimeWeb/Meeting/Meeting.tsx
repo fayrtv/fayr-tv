@@ -1,8 +1,10 @@
+import { useInjection } from "inversify-react";
 import React, { SetStateAction } from "react";
+import Types from "types/inject";
 
 import useSocket from "hooks/useSocket";
 
-import ChimeSdkWrapper from "components/chime/ChimeSdkWrapper";
+import ISocketProvider from "components/chime/interfaces/ISocketProvider";
 import Error from "components/chimeWeb/Error";
 import { MeetingStatus, MeetingMetaData } from "components/chimeWeb/Meeting/meetingTypes";
 import { formatMeetingSsKey } from "components/chimeWeb/Meeting/storage";
@@ -14,6 +16,7 @@ import styles from "./Meeting.module.scss";
 
 import * as config from "../../../config";
 import Chat from "../../chat/Chat";
+import IRoomManager from "../../chime/interfaces/IRoomManager";
 // Components
 import VideoPlayer from "../../videoPlayer/VideoPlayer";
 import CamSection from "../Cams/CamSection";
@@ -22,7 +25,6 @@ import Settings from "../Settings";
 import VotingContainer from "../Voting/VotingContainer";
 
 type PublicProps = {
-    chime: ChimeSdkWrapper;
     roomTitle: string;
 };
 
@@ -34,8 +36,7 @@ type Props = MeetingMetaData &
     };
 
 const Meeting = ({
-    chime,
-    username,
+    userName,
     title,
     role,
     joinInfo,
@@ -51,18 +52,21 @@ const Meeting = ({
         message: null as string | null,
     });
 
+    const { setSocket } = useSocket();
+
     const closeError = () => setErrorState({ showError: false, message: null });
 
     // const setErrorMsg = (errorMsg: string) => {
     //     setErrorState({ message: errorMsg, showError: true });
     // };
 
-    const { setSocket } = useSocket();
+    const socketProvider = useInjection<ISocketProvider>(Types.ISocketProvider);
+    const attendeeId = useInjection<IRoomManager>(Types.IRoomManager).attendeeId;
 
     React.useEffect(() => {
-        const socket = chime.joinRoomSocket();
-        setSocket(socket);
-    }, [chime, setSocket]);
+        socketProvider.joinRoomSocket();
+        setSocket(socketProvider);
+    }, [setSocket, socketProvider]);
 
     const handleSettingsClick = (event: any) => {
         if (showSettings) {
@@ -81,7 +85,7 @@ const Meeting = ({
         }
     };
 
-    const camSection = <CamSection chime={chime} joinInfo={joinInfo} />;
+    const camSection = <CamSection joinInfo={joinInfo} />;
 
     return (
         <>
@@ -91,13 +95,12 @@ const Meeting = ({
                         <VideoPlayer
                             videoStream={playbackURL}
                             fullScreenCamSection={camSection}
-                            attendeeId={chime.attendeeId!}
+                            attendeeId={attendeeId!}
                         />
 
-                        <VotingContainer chime={chime} attendeeId={chime.attendeeId!} />
+                        <VotingContainer attendeeId={attendeeId!} />
 
                         <Controls
-                            chime={chime}
                             baseHref={config.BASE_HREF}
                             ssName={formatMeetingSsKey(roomTitle)}
                             title={title}
@@ -105,7 +108,7 @@ const Meeting = ({
                             role={role}
                         />
 
-                        <Chat chimeSocket={chime} title={title} userName={username} />
+                        <Chat title={title} userName={userName} />
                     </div>
 
                     <div className={`full-height pos-relative ${styles.CamContainer}`}>
@@ -114,7 +117,6 @@ const Meeting = ({
 
                     {showSettings && (
                         <Settings
-                            chime={chime}
                             joinInfo={joinInfo}
                             saveSettings={(
                                 _playbackURL,

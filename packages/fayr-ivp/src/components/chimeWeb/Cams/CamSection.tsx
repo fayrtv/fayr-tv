@@ -2,25 +2,27 @@
 import { VideoTileState } from "amazon-chime-sdk-js";
 // Functionality
 import * as config from "config";
+import { useInjection } from "inversify-react";
 import React from "react";
 import { batch, useDispatch, useSelector } from "react-redux";
 import { updatePinnedHost } from "redux/reducers/pinnedHostReducer";
 import { ReduxStore } from "redux/store";
 import { Nullable } from "types/global";
+import Types from "types/inject";
 
+import { useAttendeeInfo } from "hooks/useAttendeeInfo";
+import useMeetingMetaData from "hooks/useMeetingMetaData";
 import useSocket from "hooks/useSocket";
 
-import { IAudioVideoManager } from "components/chime/AudioVideoManager";
 // Types
-import { RosterMap, Role, IChimeAudioVideoProvider } from "components/chime/ChimeSdkWrapper";
-import { SocketEventType } from "components/chime/types";
+import IAudioVideoManager from "components/chime/interfaces/IAudioVideoManager";
+import { SocketEventType } from "components/chime/interfaces/ISocketProvider";
+import { Role } from "components/chime/types";
 
 // Styles
 import styles from "./CamSection.module.scss";
 
-import { useAttendeeInfo } from "../../../hooks/useAttendeeInfo";
-import useMeetingMetaData from "../../../hooks/useMeetingMetaData";
-import { IChimeSdkWrapper } from "../../chime/ChimeSdkWrapper";
+import IRoomManager, { RosterMap } from "../../chime/interfaces/IRoomManager";
 import { JoinInfo, ForceMicChangeDto, ForceCamChangeDto } from "../types";
 // Components
 import LocalVideo from "./LocalVideo/LocalVideo";
@@ -29,11 +31,10 @@ import ParticipantVideoGroup from "./Participants/ParticipantVideoGroup";
 import { ActivityState, ActivityStateChangeDto } from "./types";
 
 type Props = {
-    chime: IChimeSdkWrapper & IChimeAudioVideoProvider & IAudioVideoManager;
     joinInfo: JoinInfo;
 };
 
-export const CamSection = ({ chime, joinInfo }: Props) => {
+export const CamSection = ({ joinInfo }: Props) => {
     const {
         attendeeMap,
         updateAttendee,
@@ -42,6 +43,9 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
         removeAttendeeAtTile,
         removeAttendee,
     } = useAttendeeInfo();
+
+    const roomManager = useInjection<IRoomManager>(Types.IRoomManager);
+    const audioVideoManager = useInjection<IAudioVideoManager>(Types.IAudioVideoManager);
 
     const [{ role, muted, videoEnabled }, setMetaData] = useMeetingMetaData();
 
@@ -146,35 +150,29 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
     );
 
     React.useEffect(() => {
-        const audioVideo = chime.audioVideo;
-
         const observer = {
             videoTileDidUpdate: videoTileDidUpdateCallback,
             videoTileWasRemoved: onVideoTileRemoved,
         };
 
-        if (audioVideo) {
-            audioVideo.addObserver(observer);
+        if (audioVideoManager.audioVideo) {
+            audioVideoManager.audioVideo.addObserver(observer);
         }
 
-        return () => {
-            try {
-                audioVideo.removeObserver(observer);
-            } catch (ex) {
-                // ok
-            }
-        };
+        return () => audioVideoManager.tryRemoveObserver(observer);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [chime.audioVideo]);
+    }, [audioVideoManager.audioVideo]);
+
+    // Initializes the initial roster so we don't only depend on the notifications
+    React.useEffect(() => {
+        onRosterUpdate(roomManager.roster);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     React.useEffect(() => {
-        chime.subscribeToRosterUpdate(onRosterUpdate);
-
-        return () => {
-            chime.unsubscribeFromRosterUpdate(onRosterUpdate);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [chime, onRosterUpdate]);
+        roomManager.subscribeToRosterUpdate(onRosterUpdate);
+        return () => roomManager.unsubscribeFromRosterUpdate(onRosterUpdate);
+    }, [roomManager, onRosterUpdate]);
 
     const isSelfHost = role === "host";
 
@@ -210,10 +208,10 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
                     });
 
                     if (forceMuted) {
-                        chime.audioVideo.realtimeMuteLocalAudio();
+                        audioVideoManager.audioVideo.realtimeMuteLocalAudio();
                     } else {
                         // Only unmute if we didn't mute ourself locally
-                        chime.audioVideo.realtimeUnmuteLocalAudio();
+                        audioVideoManager.audioVideo.realtimeUnmuteLocalAudio();
                     }
 
                     return Promise.resolve();
@@ -237,11 +235,13 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
                     });
 
                     if (forceVideoDisabled) {
-                        chime.audioVideo.stopLocalVideoTile();
+                        audioVideoManager.audioVideo.stopLocalVideoTile();
                     } else {
-                        await chime.chooseVideoInputDevice(chime.currentVideoInputDevice);
+                        await audioVideoManager.setVideoInputDeviceSafe(
+                            audioVideoManager.currentVideoInputDevice,
+                        );
                         // Only unmute if we didn't mute ourself locally
-                        chime.audioVideo.startLocalVideoTile();
+                        audioVideoManager.audioVideo.startLocalVideoTile();
                     }
 
                     return Promise.resolve();
@@ -280,18 +280,14 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
         updateAttendee,
         setMetaData,
         joinInfo.Attendee.AttendeeId,
-        chime,
+        audioVideoManager,
+        audioVideoManager.audioVideo,
         muted,
         videoEnabled,
     ]);
 
     const localVideo = (
-        <LocalVideo
-            key="LocalVideo"
-            chime={chime}
-            joinInfo={joinInfo}
-            pin={setPinnedHostIdentifier}
-        />
+        <LocalVideo key="LocalVideo" joinInfo={joinInfo} pin={setPinnedHostIdentifier} />
     );
 
     const participantVideos = React.useMemo(() => {
@@ -303,7 +299,6 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
                 <ParticipantVideo
                     isSelfHost={isSelfHost}
                     onMicClick={onMicClicked}
-                    chime={chime}
                     tileIndex={attendee.tileId}
                     key={attendee.attendeeId}
                     forceMuted={attendee.forceMuted}
@@ -319,7 +314,7 @@ export const CamSection = ({ chime, joinInfo }: Props) => {
         });
 
         return participantVideoMap;
-    }, [attendeeMap, setPinnedHostIdentifier, chime, isSelfHost, onMicClicked]);
+    }, [attendeeMap, setPinnedHostIdentifier, isSelfHost, onMicClicked]);
 
     const highlightVideo = (
         <div className={styles.HighlightVideoWrapper}>

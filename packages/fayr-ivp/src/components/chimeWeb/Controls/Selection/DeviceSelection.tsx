@@ -2,14 +2,14 @@
 import * as React from "react";
 import { Nullable } from "types/global";
 
-import { IAudioVideoManager } from "components/chime/AudioVideoManager";
+import { DeviceInfo } from "components/chime/AudioVideoManager";
 // Styles
-import { DeviceInfo } from "components/chime/ChimeSdkWrapper";
+import IAudioVideoManager from "components/chime/interfaces/IAudioVideoManager";
 
 type CommonProps = {
     selectedDevice: Nullable<string>;
     setSelectedDevice(device: string): void;
-    chimeUpdateCb(device: DeviceInfo): void;
+    onUpdate(device: DeviceInfo): void;
     availableDevices: Array<DeviceInfo>;
     name: string;
     title: string;
@@ -18,7 +18,7 @@ type CommonProps = {
 const DeviceSelection = ({
     selectedDevice,
     setSelectedDevice,
-    chimeUpdateCb,
+    onUpdate,
     availableDevices,
     name,
     title,
@@ -30,7 +30,7 @@ const DeviceSelection = ({
         if (availableDevices.length) {
             for (let o in availableDevices) {
                 if (availableDevices[o].value === value) {
-                    chimeUpdateCb(availableDevices[o]);
+                    onUpdate(availableDevices[o]);
                     break;
                 }
             }
@@ -68,8 +68,8 @@ const DeviceSelection = ({
 };
 
 type SpecializedProps = Omit<
-    CommonProps & { chimeDevicePicker: IAudioVideoManager },
-    "title" | "microphone" | "chimeUpdateCb" | "name"
+    CommonProps & { audioVideoManager: IAudioVideoManager },
+    "title" | "microphone" | "onUpdate" | "name"
 >;
 
 export const MicrophoneSelection = (props: SpecializedProps) => {
@@ -78,7 +78,11 @@ export const MicrophoneSelection = (props: SpecializedProps) => {
             {...props}
             title="Mikrofon"
             name="microphone"
-            chimeUpdateCb={props.chimeDevicePicker.chooseAudioInputDevice}
+            onUpdate={((deviceInfo: DeviceInfo) =>
+                // eslint-disable-next-line no-extra-bind
+                props.audioVideoManager.setAudioInputDeviceSafe(deviceInfo)).bind(
+                props.audioVideoManager,
+            )}
         />
     );
 };
@@ -89,7 +93,11 @@ export const SpeakerSelection = (props: SpecializedProps) => {
             {...props}
             title="Lautsprecher"
             name="speaker"
-            chimeUpdateCb={props.chimeDevicePicker.chooseAudioOutputDevice}
+            onUpdate={((deviceInfo: DeviceInfo) =>
+                // eslint-disable-next-line no-extra-bind
+                props.audioVideoManager.setAudioOutputDeviceSafe(deviceInfo)).bind(
+                props.audioVideoManager,
+            )}
         />
     );
 };
@@ -100,7 +108,11 @@ export const CameraSelection = (props: SpecializedProps) => {
             {...props}
             title="Kamera"
             name="camera"
-            chimeUpdateCb={props.chimeDevicePicker.chooseVideoInputDevice}
+            onUpdate={((deviceInfo: DeviceInfo) =>
+                // eslint-disable-next-line no-extra-bind
+                props.audioVideoManager.setVideoInputDeviceSafe(deviceInfo)).bind(
+                props.audioVideoManager,
+            )}
         />
     );
 };

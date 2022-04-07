@@ -1,33 +1,36 @@
+import { useInjection } from "inversify-react";
 import * as React from "react";
 import { connect, useDispatch } from "react-redux";
 import { updateVote } from "redux/reducers/votingReducer";
 import { ReduxStore } from "redux/store";
 import { Callback, Nullable } from "types/global";
+import Types from "types/inject";
 import { isInRect } from "util/coordinateUtil";
 
 import useGlobalClickHandler from "hooks/useGlobalClickHandler";
 import useGlobalKeyHandler from "hooks/useGlobalKeyHandler";
 import useSocket from "hooks/useSocket";
 
-import { SocketEventType } from "components/chime/types";
+import { SocketEventType } from "components/chime/interfaces/ISocketProvider";
 
 import { Flex } from "@fayr/shared-components";
 
 import styles from "./styles/VotingContainer.module.scss";
 
-import ChimeSdkWrapper, { RosterMap } from "../../chime/ChimeSdkWrapper";
+import IRoomManager, { RosterMap } from "../../chime/interfaces/IRoomManager";
 import { VotingOpenContext } from "../../contexts/VotingOpenContext";
 import Voting from "./Voting";
 import { AttendeeVoteDto, VotingData } from "./types";
 
 type Props = {
     attendeeId: string;
-    chime: ChimeSdkWrapper;
     votings: Array<VotingData>;
 };
 
-export const VotingContainer = ({ attendeeId, chime, votings }: Props) => {
+export const VotingContainer = ({ attendeeId, votings }: Props) => {
     const votingRef = React.createRef<HTMLDivElement>();
+
+    const roomManager = useInjection<IRoomManager>(Types.IRoomManager);
 
     const dispatch = useDispatch();
 
@@ -47,9 +50,9 @@ export const VotingContainer = ({ attendeeId, chime, votings }: Props) => {
                 new Map<string, string>(Object.entries(x).map(([key, val]) => [key, val.name])),
             );
         };
-        chime.subscribeToRosterUpdate(callback);
-        return () => chime.unsubscribeFromRosterUpdate(callback);
-    }, [chime, setIdNameMapping]);
+        roomManager.subscribeToRosterUpdate(callback);
+        return () => roomManager.unsubscribeFromRosterUpdate(callback);
+    }, [roomManager, setIdNameMapping]);
 
     React.useEffect(() => {
         if (!socket) {

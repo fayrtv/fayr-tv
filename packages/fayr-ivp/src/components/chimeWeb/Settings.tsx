@@ -1,17 +1,17 @@
+import { useInjection } from "inversify-react";
 import * as React from "react";
 import { Nullable } from "types/global";
 
 import useGlobalKeyHandler from "hooks/useGlobalKeyHandler";
 
-import { IAudioVideoManager } from "components/chime/AudioVideoManager";
-import { IChimeSdkWrapper } from "components/chime/ChimeSdkWrapper";
+import IAudioVideoManager from "components/chime/interfaces/IAudioVideoManager";
 
 import { MaterialIcon } from "@fayr/shared-components";
 
 import styles from "./Settings.module.scss";
 
 import * as config from "../../config";
-import { IChimeAudioVideoProvider } from "../chime/ChimeSdkWrapper";
+import Types from "../../types/inject";
 import {
     MicrophoneSelection,
     CameraSelection,
@@ -20,10 +20,9 @@ import {
 import { JoinInfo } from "./types";
 
 type Props = {
-    chime: IAudioVideoManager & IChimeAudioVideoProvider & IChimeSdkWrapper;
     joinInfo: JoinInfo;
     saveSettings(
-        playbackUrl: string,
+        playbackURL: string,
         microphone: Nullable<string>,
         speaker: Nullable<string>,
         camera: Nullable<string>,
@@ -31,19 +30,21 @@ type Props = {
     closeSettings(): void;
 };
 
-export const Settings = ({ chime, closeSettings, joinInfo, saveSettings }: Props) => {
-    const availableMics = chime.audioInputDevices;
-    const availableSpeakers = chime.audioOutputDevices;
-    const availableCams = chime.videoInputDevices;
+export const Settings = ({ closeSettings, joinInfo, saveSettings }: Props) => {
+    const audioVideoManager = useInjection<IAudioVideoManager>(Types.IAudioVideoManager);
+
+    const availableMics = audioVideoManager.audioInputDevices;
+    const availableSpeakers = audioVideoManager.audioOutputDevices;
+    const availableCams = audioVideoManager.videoInputDevices;
 
     const [microphone, setMicrophone] = React.useState<Nullable<string>>(
-        chime.currentAudioInputDevice?.value ?? null,
+        audioVideoManager.currentAudioInputDevice?.value ?? null,
     );
     const [speaker, setSpeaker] = React.useState<Nullable<string>>(
-        chime.currentAudioOutputDevice?.value ?? null,
+        audioVideoManager.currentAudioOutputDevice?.value ?? null,
     );
     const [camera, setCamera] = React.useState<Nullable<string>>(
-        chime.currentVideoInputDevice?.value ?? null,
+        audioVideoManager.currentVideoInputDevice?.value ?? null,
     );
 
     useGlobalKeyHandler("Escape", closeSettings);
@@ -55,8 +56,8 @@ export const Settings = ({ chime, closeSettings, joinInfo, saveSettings }: Props
     };
 
     React.useEffect(() => {
-        chime.subscribeToDevicesUpdated(devicesUpdatedCallback);
-        return () => chime.unsubscribeFromDevicesUpdated(devicesUpdatedCallback);
+        audioVideoManager.subscribeToDevicesUpdated(devicesUpdatedCallback);
+        return () => audioVideoManager.unsubscribeFromDevicesUpdated(devicesUpdatedCallback);
     });
 
     const handleSave: React.MouseEventHandler<HTMLButtonElement> = (e) => {
@@ -77,21 +78,21 @@ export const Settings = ({ chime, closeSettings, joinInfo, saveSettings }: Props
                             selectedDevice={microphone}
                             setSelectedDevice={setMicrophone}
                             availableDevices={availableMics}
-                            chimeDevicePicker={chime}
+                            audioVideoManager={audioVideoManager}
                         />
                         <h2 className="mg-b-2">Lautsprecher</h2>
                         <SpeakerSelection
                             selectedDevice={speaker}
                             setSelectedDevice={setSpeaker}
                             availableDevices={availableSpeakers}
-                            chimeDevicePicker={chime}
+                            audioVideoManager={audioVideoManager}
                         />
                         <h2 className="mg-b-2">Kamera</h2>
                         <CameraSelection
                             selectedDevice={camera}
                             setSelectedDevice={setCamera}
                             availableDevices={availableCams}
-                            chimeDevicePicker={chime}
+                            audioVideoManager={audioVideoManager}
                         />
                         <button className="btn btn--primary mg-t-2" onClick={handleSave}>
                             Speichern

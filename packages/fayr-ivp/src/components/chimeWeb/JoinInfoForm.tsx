@@ -31,10 +31,10 @@ export function JoinInfoForm({
     roomTitleInputRef,
     disableSubmit = false,
 }: Props) {
-    const isValid = !isFalsyOrWhitespace(roomTitle) && !isFalsyOrWhitespace(username);
     const isMobile = useMediaQuery({ maxWidth: 960 });
 
     const [usernameInternal, setUsernameInternal] = usePersistedState("USERNAME", () => username);
+    const isValid = !isFalsyOrWhitespace(roomTitle) && !isFalsyOrWhitespace(usernameInternal);
 
     const setUsername = (newValue: string) => {
         setUsernameInternal(newValue);

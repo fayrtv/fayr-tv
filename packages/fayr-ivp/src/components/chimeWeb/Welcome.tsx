@@ -4,8 +4,6 @@ import { RouteComponentProps, useRouteMatch, withRouter } from "react-router-dom
 import { usePlatformConfig } from "hooks/usePlatformConfig";
 import useTranslations from "hooks/useTranslations";
 
-import { IChimeSdkWrapper } from "components/chime/ChimeSdkWrapper";
-
 import { FayrLogo } from "@fayr/shared-components";
 
 import * as config from "../../config";
@@ -13,9 +11,7 @@ import Error from "./Error";
 import { JoinInfoForm } from "./JoinInfoForm";
 import { formatMeetingSsKey } from "./Meeting/storage";
 
-type Props = RouteComponentProps & {
-    chime: IChimeSdkWrapper;
-};
+type Props = RouteComponentProps;
 
 const Welcome = (props: Props) => {
     let { url } = useRouteMatch<{ platform?: string }>();

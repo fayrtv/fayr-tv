@@ -1,12 +1,14 @@
 import { MeetingSessionStatusCode } from "amazon-chime-sdk-js";
 import AudioVideoObserver from "amazon-chime-sdk-js/build/audiovideoobserver/AudioVideoObserver";
 import * as config from "config";
+import { useInjection } from "inversify-react";
 import React from "react";
 import { Redirect, RouteComponentProps, useRouteMatch, withRouter } from "react-router-dom";
+import Types from "types/inject";
 
 import useLoadingGuard from "hooks/useLoadingGuard";
 
-import ChimeSdkWrapper from "components/chime/ChimeSdkWrapper";
+import IRoomManager from "components/chime/interfaces/IRoomManager";
 import Meeting from "components/chimeWeb/Meeting/Meeting";
 import { MeetingMetaData, MeetingStatus } from "components/chimeWeb/Meeting/meetingTypes";
 import { JoinInfo } from "components/chimeWeb/types";
@@ -14,23 +16,24 @@ import { JoinInfo } from "components/chimeWeb/types";
 import { LoadingAnimation, isFalsyOrWhitespace } from "@fayr/shared-components";
 
 import useMeetingMetaData from "../../../hooks/useMeetingMetaData";
+import IAudioVideoManager from "../../chime/interfaces/IAudioVideoManager";
 import MeetingStartScreen from "./MeetingStartScreen";
 import { formatMeetingSsKey } from "./storage";
 
 type PublicProps = {
-    chime: ChimeSdkWrapper;
     roomTitle: string;
 };
 
 export const MeetingContainer = ({
-    chime,
     roomTitle,
     history,
 }: PublicProps & { history: RouteComponentProps["history"] }) => {
     const { url } = useRouteMatch();
 
     const audioElementRef = React.createRef<HTMLAudioElement>();
-    // const myVideoElement = React.createRef<HTMLVideoElement>();
+
+    const roomManager = useInjection<IRoomManager>(Types.IRoomManager);
+    const audioVideoManager = useInjection<IAudioVideoManager>(Types.IAudioVideoManager);
 
     // Will be undefined on direct URL loading without previously filling meeting fields
     const [meetingMetaData, setMeetingMetaData] = useMeetingMetaData(() => {
@@ -64,9 +67,9 @@ export const MeetingContainer = ({
             }
             if (meetingMetaData.joinInfo) {
                 // Browser refresh
-                await chime.reInitializeMeetingSession(
+                await roomManager.reInitializeMeetingSession(
                     meetingMetaData.joinInfo,
-                    meetingMetaData.username,
+                    meetingMetaData.userName,
                 );
 
                 if (meetingMetaData.meetingInputOutputDevices) {
@@ -79,14 +82,14 @@ export const MeetingContainer = ({
                         if (audioInput && !meetingMetaData.muted && !meetingMetaData.forceMuted) {
                             promises.push(
                                 (async () => {
-                                    await chime.chooseAudioInputDevice(audioInput);
-                                    chime.audioVideo.start();
+                                    await audioVideoManager.setAudioInputDeviceSafe(audioInput);
+                                    audioVideoManager.audioVideo!.start();
                                 })(),
                             );
                         }
 
                         if (audioOutput) {
-                            promises.push(chime.chooseAudioOutputDevice(audioOutput));
+                            promises.push(audioVideoManager.setAudioOutputDeviceSafe(audioOutput));
                         }
 
                         if (
@@ -96,9 +99,9 @@ export const MeetingContainer = ({
                         ) {
                             promises.push(
                                 (async () => {
-                                    await chime.chooseVideoInputDevice(cam);
-                                    chime.audioVideo.start();
-                                    chime.audioVideo.startLocalVideoTile();
+                                    await audioVideoManager.setVideoInputDeviceSafe(cam);
+                                    audioVideoManager.audioVideo.start();
+                                    audioVideoManager.audioVideo.startLocalVideoTile();
                                 })(),
                             );
                         }
@@ -107,9 +110,9 @@ export const MeetingContainer = ({
                     await Promise.all(promises);
                 }
             } else {
-                const joinInfo: JoinInfo = await chime.createRoom(
+                const joinInfo: JoinInfo = await roomManager.createRoom(
                     meetingMetaData.role,
-                    meetingMetaData.username,
+                    meetingMetaData.userName,
                     meetingMetaData.title,
                     meetingMetaData.playbackURL,
                 );
@@ -121,7 +124,7 @@ export const MeetingContainer = ({
             }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [chime],
+        [roomManager, audioVideoManager.audioVideo],
     );
     const { isLoading } = useLoadingGuard(true, initializeSession);
 
@@ -132,11 +135,11 @@ export const MeetingContainer = ({
 
         if (audioElementRef.current) {
             setMeetingStatus("Loading");
-            chime.joinRoom(audioElementRef.current).then(() => {
+            roomManager.joinRoom(audioElementRef.current).then(() => {
                 setMeetingStatus("Success");
             });
         }
-    }, [chime, audioElementRef, meetingStatus]);
+    }, [roomManager, audioElementRef, meetingStatus]);
 
     // TODO: Retry this once this is available in all browsers (LOOKING AT YOU SAFARI)
     // React.useEffect(() => {
@@ -148,7 +151,7 @@ export const MeetingContainer = ({
     React.useEffect(() => {
         // Perform cleanup
         return () => {
-            chime.leaveRoom(meetingMetaData?.role === "host").then((_) => {
+            roomManager.leaveRoom(meetingMetaData?.role === "host").then((_) => {
                 if (config.DEBUG) {
                     console.debug("Left room");
                 }
@@ -158,7 +161,7 @@ export const MeetingContainer = ({
     }, []);
 
     React.useEffect(() => {
-        if (!meetingMetaData || !chime.audioVideo) {
+        if (!meetingMetaData || !audioVideoManager.audioVideo) {
             return;
         }
 
@@ -169,23 +172,22 @@ export const MeetingContainer = ({
                         meetingMetaData.role === "host" ? "" : "end"
                     }`;
                     // noinspection ES6MissingAwait
-                    chime.leaveRoom(meetingMetaData.role === "host");
+                    roomManager.leaveRoom(meetingMetaData.role === "host");
                     history.push(whereTo);
                 }
             },
         };
-        chime.audioVideo.addObserver(observer);
-        return () => chime.audioVideo?.removeObserver(observer);
+        audioVideoManager.audioVideo.addObserver(observer);
+        return () => audioVideoManager.audioVideo?.removeObserver(observer);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [roomTitle, meetingMetaData?.role, chime, history]);
+    }, [roomTitle, meetingMetaData?.role, audioVideoManager.audioVideo, roomManager, history]);
 
     return isLoading || !meetingMetaData.joinInfo ? (
         <LoadingAnimation fullScreen={true} />
     ) : meetingMetaData && roomTitle ? (
         showStartScreen ? (
             <MeetingStartScreen
-                audioVideo={chime.audioVideo}
-                attendeeId={chime.attendeeId}
+                attendeeId={roomManager.attendeeId}
                 onContinue={() => {
                     setShowStartScreen(false);
                     if (!meetingMetaData.meetingInputOutputDevices) {
@@ -196,14 +198,12 @@ export const MeetingContainer = ({
                         });
                     }
                 }}
-                chime={chime}
             />
         ) : (
             <>
                 <audio ref={audioElementRef} style={{ display: "none" }} />
                 <Meeting
                     {...meetingMetaData}
-                    chime={chime}
                     roomTitle={roomTitle}
                     meetingStatus={meetingStatus}
                     setMeetingStatus={setMeetingStatus}
@@ -219,7 +219,6 @@ export const MeetingContainer = ({
 const MeetingRouter = ({
     location,
     history,
-    chime,
 }: Omit<RouteComponentProps & PublicProps, "roomTitle">) => {
     const { url } = useRouteMatch();
 
@@ -229,7 +228,7 @@ const MeetingRouter = ({
     }, [location.search]);
 
     return roomTitle ? (
-        <MeetingContainer chime={chime} roomTitle={roomTitle} history={history} />
+        <MeetingContainer roomTitle={roomTitle} history={history} />
     ) : (
         <Redirect to={`${url}/`} />
     );

@@ -20,4 +20,12 @@ module.exports = {
             ignoreWarnings: [/amazon-chime-sdk-js/],
         },
     },
+    babel: {
+        presets: [],
+        plugins: [
+            "babel-plugin-transform-typescript-metadata",
+            ["@babel/plugin-proposal-decorators", { version: "legacy" }],
+            ["@babel/plugin-proposal-class-properties", { loose: true }],
+        ],
+    },
 };
