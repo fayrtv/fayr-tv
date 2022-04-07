@@ -5,26 +5,44 @@ type Props = {
     additionalCondition?: boolean;
 };
 
-export const Desktop: React.FC<Props> = ({ children, additionalCondition }) => {
-    const isDesktop = useMediaQuery({ minWidth: 961 });
+type ScreenSize = "mobile" | "largeScreens";
 
-    return <>{isDesktop && (additionalCondition ?? true) ? children : null}</>;
-};
+export const Desktop: React.FC<Props> = (props) => (
+    <MediaQueryComponent {...props} query={useIsDesktop} />
+);
 
-export const Tablet: React.FC<Props> = ({ children, additionalCondition }) => {
-    const isTablet = useMediaQuery({ minWidth: 480, maxWidth: 960 });
+export const Tablet: React.FC<Props> = (props) => (
+    <MediaQueryComponent {...props} query={useIsTablet} />
+);
 
-    return <>{isTablet && (additionalCondition ?? true) ? children : null}</>;
-};
+export const Mobile: React.FC<Props> = (props) => (
+    <MediaQueryComponent {...props} query={useIsMobile} />
+);
 
-export const Mobile: React.FC<Props> = ({ children, additionalCondition }) => {
-    const isMobile = useMediaQuery({ maxWidth: 960 });
+export const TabletOrMobile: React.FC<Props> = (props) => (
+    <MediaQueryComponent {...props} query={useIsTabletOrMobile} />
+);
 
-    return <>{isMobile && (additionalCondition ?? true) ? children : null}</>;
-};
+const MediaQueryComponent: React.FC<
+    Props & {
+        query(): boolean;
+    }
+> = ({ additionalCondition, children, query }) => (
+    <>{query() && (additionalCondition ?? true) ? children : null}</>
+);
 
-export const TabletOrMobile: React.FC<Props> = ({ children, additionalCondition }) => {
-    const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
+export const useIsDesktop = () => useMediaQuery({ minWidth: getSizeFromCss("largeScreens") + 1 });
 
-    return <>{isTabletOrMobile && (additionalCondition ?? true) ? children : null}</>;
+export const useIsTablet = () =>
+    useMediaQuery({ minWidth: getSizeFromCss("mobile"), maxWidth: getSizeFromCss("largeScreens") });
+
+export const useIsMobile = () => useMediaQuery({ maxWidth: getSizeFromCss("largeScreens") });
+
+export const useIsTabletOrMobile = () => useMediaQuery({ maxWidth: 1224 });
+
+const getSizeFromCss = (identifier: ScreenSize): number => {
+    const styles = getComputedStyle(document.documentElement);
+    const cssVariable = styles.getPropertyValue(`--${identifier}`);
+
+    return +cssVariable.trim().replace("px", "");
 };

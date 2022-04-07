@@ -1,3 +1,5 @@
+@use "../mediaQueries" as mq;
+
 .Reaction {
     position: absolute;
 
@@ -33,7 +35,7 @@
         height: 100%;
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: mq.$mobile) {
         height: 50%;
         width: 100%;
     }

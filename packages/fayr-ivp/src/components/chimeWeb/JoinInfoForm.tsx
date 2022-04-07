@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import React, { MouseEventHandler } from "react";
-import { useMediaQuery } from "react-responsive";
+
+import { useIsMobile } from "components/mediaQueries";
 
 import { usePersistedState } from "@fayr/common";
 import { isFalsyOrWhitespace } from "@fayr/common";
@@ -31,7 +32,7 @@ export function JoinInfoForm({
     roomTitleInputRef,
     disableSubmit = false,
 }: Props) {
-    const isMobile = useMediaQuery({ maxWidth: 960 });
+    const isMobile = useIsMobile();
 
     const [usernameInternal, setUsernameInternal] = usePersistedState("USERNAME", () => username);
     const isValid = !isFalsyOrWhitespace(roomTitle) && !isFalsyOrWhitespace(usernameInternal);
