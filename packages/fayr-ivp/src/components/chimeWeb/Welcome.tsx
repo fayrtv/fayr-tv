@@ -58,7 +58,7 @@ const Welcome = (props: Props) => {
 
     const createRoom = () => {
         const data = {
-            username,
+            userName: username,
             title: roomTitle,
             playbackURL,
             role: "host",
