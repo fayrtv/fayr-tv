@@ -1,5 +1,6 @@
 import { Provider as InversifyProvider } from "inversify-react";
 import { container } from "inversify.config";
+import React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { Provider } from "react-redux";
@@ -26,7 +27,7 @@ import VotingOpenContextProvider from "./contexts/VotingOpenContext";
 
 const queryClient = new QueryClient();
 
-function MainIvpRouter(props: { chime: ChimeSdkWrapper }) {
+function MainIvpRouter() {
     let { path } = useRouteMatch();
 
     if (path === "/") {
@@ -54,7 +55,7 @@ function MainIvpRouter(props: { chime: ChimeSdkWrapper }) {
                             <VotingOpenContextProvider>
                                 <SocketContextProvider>
                                     <SelectedReactionContextProvider>
-                                        <MeetingContainer chime={props.chime} />
+                                        <MeetingContainer />
                                     </SelectedReactionContextProvider>
                                 </SocketContextProvider>
                             </VotingOpenContextProvider>
@@ -65,7 +66,7 @@ function MainIvpRouter(props: { chime: ChimeSdkWrapper }) {
                     <Join />
                 </Route>
                 <Route path={`${path}/`}>
-                    <Welcome chime={props.chime} />
+                    <Welcome />
                 </Route>
             </Switch>
         </Router>
@@ -83,11 +84,11 @@ function App() {
                         <Router>
                             <Switch>
                                 <Route path={`${baseHref}/preview/:platform`}>
-                                    <MainIvpRouter chime={chime} />
+                                    <MainIvpRouter />
                                 </Route>
 
                                 <Route path={`${baseHref}`}>
-                                    <MainIvpRouter chime={chime} />
+                                    <MainIvpRouter />
                                 </Route>
                             </Switch>
                         </Router>
