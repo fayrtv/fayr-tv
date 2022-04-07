@@ -92,7 +92,7 @@
             border: 2px solid lightgreen;
             padding: calc(0.5rem - 2px) calc(1.5rem - 2px);
 
-            @media (max-width: 960px) {
+            @media (max-width: mq.$largeScreens) {
                 padding: 0px;
             }
         }
