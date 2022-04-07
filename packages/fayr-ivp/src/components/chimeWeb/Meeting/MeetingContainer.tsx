@@ -13,7 +13,7 @@ import Meeting from "components/chimeWeb/Meeting/Meeting";
 import { MeetingMetaData, MeetingStatus } from "components/chimeWeb/Meeting/meetingTypes";
 import { JoinInfo } from "components/chimeWeb/types";
 
-import { LoadingAnimation, isFalsyOrWhitespace } from "@fayr/shared-components";
+import { LoadingAnimation, isFalsyOrWhitespace } from "@fayr/common";
 
 import useMeetingMetaData from "../../../hooks/useMeetingMetaData";
 import IAudioVideoManager from "../../chime/interfaces/IAudioVideoManager";

@@ -2,17 +2,21 @@ import Flex from "./Flex";
 import Cell from "./GridLayout/Cell";
 import Grid from "./GridLayout/Grid";
 import { MaterialIcon } from "./MaterialIcon";
+import EaseInOutCheckmark from "./accessibility/EaseInOutCheckmark";
 import LoadingAnimation from "./interactivity/LoadingAnimation";
 import Spinner from "./interactivity/Spinner";
-import TranslationContextProvider from "./translations/TranslationContext";
+import createTranslationContext from "./translations/TranslationContext";
+import TranslationContextProvider from "./translations/TranslationContextProvider";
 import uuid from "./utils/uuid";
 
 export {
     Flex,
     Cell,
     Grid,
+    EaseInOutCheckmark,
     LoadingAnimation,
     MaterialIcon,
+    createTranslationContext,
     TranslationContextProvider,
     Spinner,
     uuid,

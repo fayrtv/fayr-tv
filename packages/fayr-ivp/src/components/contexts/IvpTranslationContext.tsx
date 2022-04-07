@@ -1,7 +1,7 @@
+import React from "react";
 import { Translations } from "types/translations";
 
-import createTranslationContext from "@fayr/shared-components/lib/translations/TranslationContext";
-import TranslationContextProvider from "@fayr/shared-components/lib/translations/TranslationContextProvider";
+import { createTranslationContext, TranslationContextProvider } from "@fayr/common";
 
 export const IvpTranslationContext = createTranslationContext<Translations>();
 

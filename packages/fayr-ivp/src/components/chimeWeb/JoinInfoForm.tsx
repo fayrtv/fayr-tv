@@ -2,8 +2,8 @@ import classNames from "classnames";
 import React, { MouseEventHandler } from "react";
 import { useMediaQuery } from "react-responsive";
 
-import { usePersistedState } from "@fayr/shared-components";
-import { isFalsyOrWhitespace } from "@fayr/shared-components";
+import { usePersistedState } from "@fayr/common";
+import { isFalsyOrWhitespace } from "@fayr/common";
 
 import styles from "./JoinInfoForm.module.scss";
 

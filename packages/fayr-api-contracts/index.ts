@@ -1,4 +1,4 @@
-import { Theme } from "@fayr/shared-components";
+import { Theme } from "@fayr/common";
 
 export enum PlatformType {
     WatchParty = "wp",

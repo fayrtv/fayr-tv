@@ -1,7 +1,7 @@
 import React from "react";
 import { useMediaQuery } from "react-responsive";
 
-import { Cell, FayrLogo, Flex, Grid } from "@fayr/shared-components";
+import { Cell, FayrLogo, Flex, Grid } from "@fayr/common";
 
 import styles from "./Controls.module.scss";
 

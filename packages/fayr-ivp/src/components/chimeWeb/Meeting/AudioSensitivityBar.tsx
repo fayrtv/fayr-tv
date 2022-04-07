@@ -2,7 +2,7 @@
 import classNames from "classnames";
 import { range } from "util/collectionUtil";
 
-import { Flex } from "@fayr/shared-components";
+import { Flex } from "@fayr/common";
 
 // Styles
 import styles from "./AudioSensitivityBar.module.scss";

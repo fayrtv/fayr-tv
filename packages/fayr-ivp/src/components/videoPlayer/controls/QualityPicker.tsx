@@ -8,7 +8,7 @@ import { isInRect } from "util/coordinateUtil";
 import useGlobalClickHandler from "hooks/useGlobalClickHandler";
 
 // Components
-import { Flex } from "@fayr/shared-components";
+import { Flex } from "@fayr/common";
 
 // Styles
 import styles from "./QualityPicker.module.scss";

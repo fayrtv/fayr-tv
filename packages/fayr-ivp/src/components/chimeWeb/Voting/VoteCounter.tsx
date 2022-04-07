@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import { MaterialIcon } from "@fayr/shared-components";
-import { Flex } from "@fayr/shared-components";
+import { MaterialIcon } from "@fayr/common";
+import { Flex } from "@fayr/common";
 
 import styles from "./styles/VoteCounter.module.scss";
 

@@ -7,7 +7,7 @@ import useSocket from "hooks/useSocket";
 
 import Emoji from "components/common/Emoji";
 
-import { isFalsyOrWhitespace, LoadingAnimation, uuid } from "@fayr/shared-components";
+import { isFalsyOrWhitespace, LoadingAnimation, uuid } from "@fayr/common";
 
 import styles from "./ChatInput.module.scss";
 

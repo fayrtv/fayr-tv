@@ -1,4 +1,4 @@
-import { usePersistedState } from "@fayr/shared-components";
+import { usePersistedState } from "@fayr/common";
 import { SpeakerphoneIcon, XIcon } from "@heroicons/react/outline";
 import { A } from "components/A";
 import React from "react";

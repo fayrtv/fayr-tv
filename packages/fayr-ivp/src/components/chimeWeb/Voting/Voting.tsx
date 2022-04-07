@@ -4,8 +4,7 @@ import styled from "styled-components";
 
 import useSlidingTimeout from "hooks/useSlidingTimeout";
 
-import { Cell, Flex, Grid, MaterialIcon } from "@fayr/shared-components";
-import EaseInOutCheckmark from "@fayr/shared-components/lib/accessibility/EaseInOutCheckmark";
+import { Cell, Flex, Grid, MaterialIcon, EaseInOutCheckmark } from "@fayr/common";
 
 import styles from "./styles/Voting.module.scss";
 

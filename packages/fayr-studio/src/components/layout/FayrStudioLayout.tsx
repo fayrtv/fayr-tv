@@ -1,4 +1,4 @@
-import { applyTheme, FAYR_THEME, FayrLogo } from "@fayr/shared-components";
+import { applyTheme, FAYR_THEME, FayrLogo } from "@fayr/common";
 import { Dialog, Transition } from "@headlessui/react";
 import {
     CogIcon,

@@ -1,5 +1,5 @@
 import { PlatformConfig, PlatformInfo, PlatformStyling, PlatformType } from "@fayr/api-contracts";
-import { FAYR_THEME, useStateWithEffect, uuid } from "@fayr/shared-components";
+import { FAYR_THEME, useStateWithEffect, uuid } from "@fayr/common";
 import React, { createContext, Dispatch, SetStateAction, useState } from "react";
 import { useQuery } from "react-query";
 

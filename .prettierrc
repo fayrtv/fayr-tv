@@ -14,7 +14,7 @@
     "importOrder": [
         "^hooks/?(.*)$",
         "(^components/(.*)$)",
-        "^@fayr/shared-components/?(.*)$",
+        "^@fayr/common/?(.*)$",
         "(\\.styles|\\.less|\\.scss)$",
         "^[\\./]"
     ],

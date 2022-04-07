@@ -8,8 +8,8 @@ import styles from "components/chimeWeb/Controls/styles/ReactionButtonSelection.
 import Emoji from "components/common/Emoji";
 import { SelectedReactionContext } from "components/contexts/SelectedReactionContext";
 
-import { MaterialIcon } from "@fayr/shared-components";
-import { Flex } from "@fayr/shared-components";
+import { MaterialIcon } from "@fayr/common";
+import { Flex } from "@fayr/common";
 
 const emojis = [":smile:", ":heart:", ":clap:", ":tada:", ":joy:"];
 

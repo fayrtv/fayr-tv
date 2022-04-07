@@ -3,7 +3,7 @@ import classNames from "classnames";
 
 import useTranslations from "hooks/useTranslations";
 
-import { LoadingAnimation } from "@fayr/shared-components";
+import { LoadingAnimation } from "@fayr/common";
 
 import styles from "./ToggleButton.module.scss";
 

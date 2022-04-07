@@ -1,7 +1,7 @@
 /*
 CSS modules from shared-components must be transpiled before use.
  */
-const withTM = require("next-transpile-modules")(["@fayr/shared-components"]);
+const withTM = require("next-transpile-modules")(["@fayr/common"]);
 
 /**
  * @type {import('next').NextConfig}

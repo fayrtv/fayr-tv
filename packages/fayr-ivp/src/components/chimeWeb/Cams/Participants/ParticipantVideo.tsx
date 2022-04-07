@@ -13,7 +13,7 @@ import { SocketEventType } from "components/chime/interfaces/ISocketProvider";
 import { EmojiReactionTransferObject, ForceMicChangeDto } from "components/chimeWeb/types";
 import Emoji from "components/common/Emoji";
 
-import { MaterialIcon, Flex, Spinner } from "@fayr/shared-components";
+import { MaterialIcon, Flex, Spinner } from "@fayr/common";
 
 import commonCamStyles from "../Cam.module.scss";
 import styles from "./ParticipantVideo.module.scss";

@@ -6,7 +6,7 @@ import useGlobalKeyHandler from "hooks/useGlobalKeyHandler";
 
 import IAudioVideoManager from "components/chime/interfaces/IAudioVideoManager";
 
-import { MaterialIcon } from "@fayr/shared-components";
+import { MaterialIcon } from "@fayr/common";
 
 import styles from "./Settings.module.scss";
 

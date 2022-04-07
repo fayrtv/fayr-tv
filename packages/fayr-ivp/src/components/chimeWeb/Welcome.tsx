@@ -4,7 +4,7 @@ import { RouteComponentProps, useRouteMatch, withRouter } from "react-router-dom
 import { usePlatformConfig } from "hooks/usePlatformConfig";
 import useTranslations from "hooks/useTranslations";
 
-import { FayrLogo } from "@fayr/shared-components";
+import { FayrLogo } from "@fayr/common";
 
 import * as config from "../../config";
 import Error from "./Error";
