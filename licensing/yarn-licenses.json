@@ -498,6 +498,10 @@ yarn licenses v1.22.18
 │  │  ├─ URL: https://github.com/ehmicky/human-signals.git
 │  │  ├─ VendorName: ehmicky
 │  │  └─ VendorUrl: https://git.io/JeluP
+│  ├─ inversify-react@1.0.1
+│  │  ├─ URL: https://github.com/Kukkimonsuta/inversify-react.git
+│  │  ├─ VendorName: Lukáš Novotný
+│  │  └─ VendorUrl: https://github.com/Kukkimonsuta
 │  ├─ jake@10.8.2
 │  │  ├─ URL: git://github.com/jakejs/jake.git
 │  │  ├─ VendorName: Matthew Eernisse
@@ -598,6 +602,10 @@ yarn licenses v1.22.18
 │  │  ├─ VendorName: Microsoft Corp.
 │  │  └─ VendorUrl: https://www.typescriptlang.org/
 │  ├─ typescript@4.6.2
+│  │  ├─ URL: https://github.com/Microsoft/TypeScript.git
+│  │  ├─ VendorName: Microsoft Corp.
+│  │  └─ VendorUrl: https://www.typescriptlang.org/
+│  ├─ typescript@4.6.3
 │  │  ├─ URL: https://github.com/Microsoft/TypeScript.git
 │  │  ├─ VendorName: Microsoft Corp.
 │  │  └─ VendorUrl: https://www.typescriptlang.org/
@@ -2061,6 +2069,10 @@ yarn licenses v1.22.18
 │  │  ├─ URL: https://github.com/babel/babel.git
 │  │  ├─ VendorName: The Babel Team
 │  │  └─ VendorUrl: https://babel.dev/team
+│  ├─ @babel/helper-create-class-features-plugin@7.17.6
+│  │  ├─ URL: https://github.com/babel/babel.git
+│  │  ├─ VendorName: The Babel Team
+│  │  └─ VendorUrl: https://babel.dev/team
 │  ├─ @babel/helper-create-regexp-features-plugin@7.17.0
 │  │  ├─ URL: https://github.com/babel/babel.git
 │  │  ├─ VendorName: The Babel Team
@@ -2192,6 +2204,10 @@ yarn licenses v1.22.18
 │  │  ├─ VendorName: The Babel Team
 │  │  └─ VendorUrl: https://babel.dev/docs/en/next/babel-plugin-proposal-class-static-block
 │  ├─ @babel/plugin-proposal-decorators@7.17.2
+│  │  ├─ URL: https://github.com/babel/babel.git
+│  │  ├─ VendorName: The Babel Team
+│  │  └─ VendorUrl: https://babel.dev/docs/en/next/babel-plugin-proposal-decorators
+│  ├─ @babel/plugin-proposal-decorators@7.17.8
 │  │  ├─ URL: https://github.com/babel/babel.git
 │  │  ├─ VendorName: The Babel Team
 │  │  └─ VendorUrl: https://babel.dev/docs/en/next/babel-plugin-proposal-decorators
@@ -5577,6 +5593,10 @@ yarn licenses v1.22.18
 │  ├─ invariant@2.2.4
 │  │  ├─ URL: https://github.com/zertosh/invariant
 │  │  └─ VendorName: Andres Suarez
+│  ├─ inversify@6.0.1
+│  │  ├─ URL: https://github.com/inversify/InversifyJS.git
+│  │  ├─ VendorName: Remo H. Jansen
+│  │  └─ VendorUrl: http://inversify.io/
 │  ├─ ip@1.1.5
 │  │  ├─ URL: http://github.com/indutny/node-ip.git
 │  │  ├─ VendorName: Fedor Indutny
@@ -9057,10 +9077,11 @@ yarn licenses v1.22.18
 │     └─ VendorUrl: https://aws.amazon.com/ivs/
 ├─ UNKNOWN
 │  ├─ @fayr/api-contracts@1.0.0
+│  ├─ @fayr/common@1.0.0
+│  ├─ @fayr/ivp-components@1.0.0
 │  ├─ @fayr/ivp@0.1.1
 │  │  ├─ URL: http:///
 │  │  └─ VendorUrl: http:///
-│  ├─ @fayr/common@1.0.0
 │  ├─ @fayr/studio@0.0.1
 │  │  ├─ URL: http:///
 │  │  └─ VendorUrl: http:///
