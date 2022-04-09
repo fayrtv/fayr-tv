@@ -5,6 +5,7 @@ import { useInjection } from "inversify-react";
 import React from "react";
 import { Redirect, RouteComponentProps, useRouteMatch, withRouter } from "react-router-dom";
 import Types from "types/inject";
+import { getPropertyCaseInsensitive } from "util/objectUtil";
 
 import useLoadingGuard from "hooks/useLoadingGuard";
 
@@ -110,11 +111,17 @@ export const MeetingContainer = ({
                     await Promise.all(promises);
                 }
             } else {
+                const [role, userName, title, playbackUrl] = [
+                    getPropertyCaseInsensitive(meetingMetaData, "role"),
+                    getPropertyCaseInsensitive(meetingMetaData, "userName"),
+                    getPropertyCaseInsensitive(meetingMetaData, "title"),
+                    getPropertyCaseInsensitive(meetingMetaData, "playbackURL"),
+                ];
                 const joinInfo: JoinInfo = await roomManager.createRoom(
-                    meetingMetaData.role,
-                    meetingMetaData.userName,
-                    meetingMetaData.title,
-                    meetingMetaData.playbackURL,
+                    role,
+                    userName,
+                    title,
+                    playbackUrl,
                 );
                 setMeetingMetaData({
                     joinInfo,
