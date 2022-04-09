@@ -1,11 +1,25 @@
 import { Editor, Element, Frame } from "@craftjs/core";
+import { QRCode } from "@fayr/ivp-components";
 import { SaveLoadActions } from "components/ivp-designer/SaveLoadActions";
 import { SelectedElementPropertiesPanel } from "components/ivp-designer/SelectedElementPropertiesPanel";
+import { Toolbox } from "components/ivp-designer/Toolbox";
 import { Button } from "components/user/Button";
 import { Card, CardBottom, CardTop } from "components/user/Card";
 import { Container } from "components/user/Container";
+import { QRCodeDefaultProps, QRCodeSettings } from "components/user/QRCode";
 import { Text } from "components/user/Text";
 import React from "react";
+
+//#region Link CraftJS components (only once)
+
+QRCode.craft = {
+    props: QRCodeDefaultProps,
+    related: {
+        settings: QRCodeSettings,
+    },
+};
+
+//#endreigon
 
 const IVPDesigner = () => {
     return (
@@ -18,13 +32,14 @@ const IVPDesigner = () => {
                     Container,
                     CardTop,
                     CardBottom,
+                    QRCode,
                 }}
             >
                 <div className="flex-grow w-full lg:flex">
                     <div>
                         <div className="h-full lg:w-80">
                             <div className="h-full relative p-2 p-2 inset-0 border-2 border-gray-200 border-dashed rounded-lg">
-                                {/*<Toolbox />*/}
+                                <Toolbox />
                                 <SelectedElementPropertiesPanel />
                                 <SaveLoadActions />
                             </div>
@@ -35,7 +50,7 @@ const IVPDesigner = () => {
                             <div className="h-full ">
                                 {/* Start main area*/}
                                 <div className="relative h-full" style={{ minHeight: "36rem" }}>
-                                    <div className="absolute inset-0 border-2 border-gray-200 border-dashed rounded-lg" />
+                                    {/*<div className="absolute inset-0 border-2 border-gray-200 border-dashed rounded-lg" />*/}
                                     <Frame>
                                         <Element
                                             canvas
@@ -56,6 +71,7 @@ const IVPDesigner = () => {
                                                 size="small"
                                                 data-cy="frame-button"
                                             />
+                                            <QRCode content="hello world" color="red" />
                                             <Text
                                                 fontSize={20}
                                                 text="Fiebere zusammen mit deinen Freunden bei diesem Event mit!"
