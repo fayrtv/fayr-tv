@@ -1,13 +1,12 @@
-import { PlatformIdentity, PlatformInfo, PlatformStyling, PlatformType } from "@fayr/api-contracts";
+import {
+    PlatformConfig,
+    PlatformIdentity,
+    PlatformStyling,
+    PlatformType,
+} from "@fayr/api-contracts";
 import * as Joi from "joi";
 
 import { createModel, TableRecord } from "./database";
-
-export type PlatformConfig = PlatformIdentity & {
-    type?: PlatformType;
-    info?: PlatformInfo;
-    styling?: PlatformStyling;
-};
 
 type Model = PlatformConfig & TableRecord;
 

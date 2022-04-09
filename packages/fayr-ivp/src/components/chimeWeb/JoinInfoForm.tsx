@@ -1,14 +1,16 @@
+import { Editor, Frame } from "@craftjs/core";
+import { QRCode } from "@fayr/ivp-components";
 import classNames from "classnames";
 import React, { MouseEventHandler } from "react";
 
 import { useIsMobile } from "components/mediaQueries";
 
+import { FayrLogo, usePersistedState } from "@fayr/common";
 import { isFalsyOrWhitespace } from "@fayr/common";
 
 import styles from "./JoinInfoForm.module.scss";
 
 import { formatJoinRoomUrl } from "./Intro/urls";
-import QRCodeView from "./QRCodeView";
 
 type Props = {
     username: string;
@@ -69,14 +71,14 @@ export function JoinInfoForm({
                     </button>
                 </div>
                 {/* <input type="text" placeholder="Playback URL" value={playbackURL} onChange={this.handlePlaybackURLChange} /> */}
-                {roomTitle && (
-                    <QRCodeView
-                        content={formatJoinRoomUrl(roomTitle)}
-                        width={qrSize}
-                        height={qrSize}
-                        padding={1}
-                    />
-                )}
+                {/*{roomTitle && (*/}
+                {/*    <QRCode*/}
+                {/*        content={formatJoinRoomUrl(roomTitle)}*/}
+                {/*        width={qrSize}*/}
+                {/*        height={qrSize}*/}
+                {/*        padding={1}*/}
+                {/*    />*/}
+                {/*)}*/}
             </fieldset>
         </form>
     );

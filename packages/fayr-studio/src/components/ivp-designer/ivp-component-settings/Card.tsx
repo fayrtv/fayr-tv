@@ -1,7 +1,11 @@
-import { Button } from "./Button";
-import { Container, ContainerSettings, ContainerDefaultProps } from "./Container";
-import { Text } from "./Text";
 import { Element, useNode } from "@craftjs/core";
+import { Button } from "components/ivp-designer/ivp-component-settings/Button";
+import {
+    Container,
+    ContainerSettings,
+    ContainerDefaultProps,
+} from "components/ivp-designer/ivp-component-settings/Container";
+import { Text } from "components/ivp-designer/ivp-component-settings/Text";
 import React from "react";
 
 type CardTopProps = {};

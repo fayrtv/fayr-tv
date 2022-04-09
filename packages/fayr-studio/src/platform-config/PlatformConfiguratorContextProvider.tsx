@@ -1,10 +1,12 @@
 import { PlatformConfig, PlatformInfo, PlatformStyling, PlatformType } from "@fayr/api-contracts";
 import { FAYR_THEME, useStateWithEffect, uuid } from "@fayr/common";
+import { debounce } from "lodash";
 import React, { createContext, Dispatch, SetStateAction, useState } from "react";
 import { useQuery } from "react-query";
 
 type Context = {
     isLoading: boolean;
+    isSaving: boolean;
     platformId: string;
     type?: PlatformType;
     setType: Dispatch<SetStateAction<PlatformType | undefined>>;
@@ -14,8 +16,9 @@ type Context = {
     setStyling: Dispatch<SetStateAction<PlatformStyling>>;
 };
 
-const defaults = {
+const defaults: Context = {
     isLoading: false,
+    isSaving: false,
     platformId: uuid(),
     type: undefined,
     info: {
@@ -25,7 +28,7 @@ const defaults = {
     },
     setInfo: () => void 0,
     setType: () => void 0,
-    styling: { theme: FAYR_THEME },
+    styling: { theme: FAYR_THEME, craftData: undefined },
     setStyling: () => void 0,
 };
 
@@ -33,6 +36,8 @@ export const PlatformConfiguratorContext = createContext<Context>(defaults);
 
 export const PlatformConfiguratorContextProvider: React.FC = ({ children }) => {
     const [platformId, setPlatformId] = useState<string>(defaults.platformId);
+
+    const [isSaving, setSaving] = useState<boolean>(false);
 
     const { isLoading, refetch } = useQuery("platform-config", () =>
         fetch(`/api/platforms/${platformId}`, { method: "GET" }).then(async (res) => {
@@ -44,60 +49,49 @@ export const PlatformConfiguratorContextProvider: React.FC = ({ children }) => {
         }),
     );
 
-    // TODO: debounce these
+    const debouncedSave = React.useRef(
+        debounce(async (dataToSave: Partial<Omit<PlatformConfig, "id">>) => {
+            setSaving(true);
+            await fetch(`/api/platforms/${platformId}`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify({ id: platformId, ...dataToSave }),
+            });
+            await refetch();
+            setSaving(false);
+        }, 700),
+    );
 
     const [platformInfo, setPlatformInfo] = useStateWithEffect<PlatformInfo>(
         defaults.info,
-        React.useCallback(
-            async (newValue: PlatformInfo) => {
-                await fetch(`/api/platforms/${platformId}`, {
-                    method: "PATCH",
-                    headers: { "Content-Type": "application/json" },
-                    credentials: "include",
-                    body: JSON.stringify({ id: platformId, info: newValue }),
-                });
-                await refetch();
-            },
-            [platformId, refetch],
-        ),
+        React.useCallback((newValue) => {
+            setSaving(true);
+            return debouncedSave.current({ info: newValue });
+        }, []),
     );
 
     const [platformType, setPlatformTypeAndSave] = useStateWithEffect<PlatformType | undefined>(
         defaults.type,
-        React.useCallback(
-            async (newValue: PlatformType | undefined) => {
-                await fetch(`/api/platforms/${platformId}`, {
-                    method: "PATCH",
-                    headers: { "Content-Type": "application/json" },
-                    credentials: "include",
-                    body: JSON.stringify({ id: platformId, type: newValue }),
-                });
-                await refetch();
-            },
-            [platformId, refetch],
-        ),
+        React.useCallback((newValue) => {
+            setSaving(true);
+            debouncedSave.current({ type: newValue });
+        }, []),
     );
 
     const [styling, setStyling] = useStateWithEffect<PlatformStyling>(
         defaults.styling,
-        React.useCallback(
-            async (newValue: PlatformStyling) => {
-                await fetch(`/api/platforms/${platformId}`, {
-                    method: "PATCH",
-                    headers: { "Content-Type": "application/json" },
-                    credentials: "include",
-                    body: JSON.stringify({ id: platformId, styling: newValue }),
-                });
-                await refetch();
-            },
-            [platformId, refetch],
-        ),
+        React.useCallback((newValue) => {
+            setSaving(true);
+            debouncedSave.current({ styling: newValue });
+        }, []),
     );
 
     return (
         <PlatformConfiguratorContext.Provider
             value={{
                 isLoading,
+                isSaving,
                 platformId,
                 type: platformType,
                 setType: setPlatformTypeAndSave,

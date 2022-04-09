@@ -8,6 +8,7 @@ export enum PlatformType {
 
 export type PlatformStyling = {
     theme: Theme;
+    craftData?: string;
 };
 
 export type PlatformInfo = {

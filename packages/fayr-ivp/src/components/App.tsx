@@ -1,3 +1,5 @@
+import { Editor } from "@craftjs/core";
+import { IVP_COMPONENT_RESOLVER } from "@fayr/ivp-components";
 import { Provider as InversifyProvider } from "inversify-react";
 import { container } from "inversify.config";
 import React from "react";
@@ -83,17 +85,19 @@ function App() {
             <InversifyProvider container={container}>
                 <QueryClientProvider client={queryClient}>
                     <IvpTranslationContextProvider>
-                        <Router>
-                            <Switch>
-                                <Route path={`${baseHref}/preview/:platform`}>
-                                    <MainIvpRouter />
-                                </Route>
+                        <Editor resolver={IVP_COMPONENT_RESOLVER} enabled={false}>
+                            <Router>
+                                <Switch>
+                                    <Route path={`${baseHref}/preview/:platform`}>
+                                        <MainIvpRouter />
+                                    </Route>
 
-                                <Route path={`${baseHref}`}>
-                                    <MainIvpRouter />
-                                </Route>
-                            </Switch>
-                        </Router>
+                                    <Route path={`${baseHref}`}>
+                                        <MainIvpRouter />
+                                    </Route>
+                                </Switch>
+                            </Router>
+                        </Editor>
                     </IvpTranslationContextProvider>
                     <ReactQueryDevtools initialIsOpen={false} />
                 </QueryClientProvider>
