@@ -1,6 +1,8 @@
+import { useStateWithEffect } from "@fayr/common";
 import useOutsideClickHandler from "hooks/useOutsideClickHandler";
+import { debounce } from "lodash";
 import React from "react";
-import { HexColorPicker, HexColorInput } from "react-colorful";
+import { HexColorInput, HexColorPicker } from "react-colorful";
 
 type Props = {
     name: string;
@@ -8,12 +10,15 @@ type Props = {
     onChange: (color: string) => void;
 };
 
-/**
- * https://codesandbox.io/s/opmco?file=/src/PopoverPicker.js
- */
 export default function ColorPicker({ color, onChange, name }: Props) {
     const inputRef = React.useRef<HTMLDivElement>(null);
     const popoverRef = React.useRef<HTMLInputElement>(null);
+
+    const setColorDebounced = React.useRef(debounce((value) => onChange(value), 100));
+
+    const [colorInternal, setColorInternal] = useStateWithEffect(color, () => {
+        setColorDebounced.current(colorInternal);
+    });
 
     const [isOpen, toggle] = React.useState(false);
 
@@ -31,7 +36,7 @@ export default function ColorPicker({ color, onChange, name }: Props) {
                         className="inline-flex items-center px-2 rounded-l-md bg-neutral border-2 border-r-0 border-white"
                         style={{
                             width: (inputRef.current?.clientHeight ?? 36) - 2,
-                            backgroundColor: color,
+                            backgroundColor: colorInternal,
                         }}
                     />
                     <div className="inline-block">
@@ -45,8 +50,8 @@ export default function ColorPicker({ color, onChange, name }: Props) {
                                 toggle(true);
                                 ev.preventDefault();
                             }}
-                            color={color}
-                            onChange={onChange}
+                            color={colorInternal}
+                            onChange={setColorInternal}
                             className={`w-20 px-2 block text-black border-2 border-white rounded-none rounded-r-md sm:text-sm`}
                         />
                     </div>
@@ -67,8 +72,8 @@ export default function ColorPicker({ color, onChange, name }: Props) {
                                 toggle(false);
                             }
                         }}
-                        color={color}
-                        onChange={onChange}
+                        color={colorInternal}
+                        onChange={setColorInternal}
                     />
                 </div>
             )}

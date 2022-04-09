@@ -1,4 +1,5 @@
 import { Element, useEditor } from "@craftjs/core";
+import { QRCode } from "@fayr/ivp-components";
 import { Box, Button as MaterialButton, Grid } from "@material-ui/core";
 import { Button } from "components/user/Button";
 import { Card } from "components/user/Card";
@@ -66,6 +67,15 @@ export const Toolbox = () => {
                         data-cy="toolbox-card"
                     >
                         Card
+                    </MaterialButton>
+                </Grid>
+                <Grid container direction="column" item>
+                    <MaterialButton
+                        ref={(ref) => connectors.create(ref!, <QRCode content="hello world" />)}
+                        variant="contained"
+                        data-cy="toolbox-card"
+                    >
+                        QR Code
                     </MaterialButton>
                 </Grid>
             </Grid>
