@@ -6,6 +6,8 @@ import {
     DefaultVideoTransformDevice,
     DeviceChangeObserver,
     Logger,
+    VoiceFocusDeviceTransformer,
+    VoiceFocusTransformDevice,
 } from "amazon-chime-sdk-js";
 import { inject, injectable } from "inversify";
 import { Nullable } from "types/global";
@@ -150,10 +152,28 @@ export class AudioVideoManager implements IAudioVideoManager, DeviceChangeObserv
 
     // Input picker
     public async setAudioInputDeviceSafe(device: Nullable<DeviceInfo>) {
-        this._currentAudioInputDevice = await this.setDeviceSafe(
-            device,
-            this._audioVideo?.chooseAudioInputDevice,
-        );
+        try {
+            let actualDevice: Nullable<string> | VoiceFocusTransformDevice = device?.value ?? null;
+
+            if (await VoiceFocusDeviceTransformer.isSupported()) {
+                const transformer = await VoiceFocusDeviceTransformer.create();
+
+                // Checks if the transformation spec is supported. The transformer itself might
+                // be supported, but maybe the transformation spec is not
+                if (await transformer.isSupported()) {
+                    const transformDevice = await transformer.createTransformDevice(actualDevice);
+
+                    if (transformDevice) {
+                        actualDevice = transformDevice;
+                    }
+                }
+            }
+
+            await this._audioVideo?.chooseAudioInputDevice(actualDevice);
+            this._currentAudioInputDevice = device;
+        } catch (error: any) {
+            this._logger.error(error);
+        }
     }
 
     public async setAudioOutputDeviceSafe(device: Nullable<DeviceInfo>) {
