@@ -1,4 +1,4 @@
-import { useNode } from "@craftjs/core";
+import { useEditor, useNode } from "@craftjs/core";
 import React, { useEffect, useState } from "react";
 import ContentEditable from "react-contenteditable";
 
@@ -21,6 +21,10 @@ const Text = ({ text, fontSize, color, textAlign, ...props }: Props) => {
         dragged: state.events.dragged,
     }));
 
+    const { enabled } = useEditor((state) => ({
+        enabled: state.options.enabled,
+    }));
+
     const [editable, setEditable] = useState(false);
 
     useEffect(() => {
@@ -31,10 +35,10 @@ const Text = ({ text, fontSize, color, textAlign, ...props }: Props) => {
         setEditable(false);
     }, [selected]);
 
-    return (
+    return enabled ? (
         <div
             {...props}
-            ref={(ref) => connect(drag(ref!))}
+            ref={(ref) => connect(drag(ref))}
             onClick={() => selected && setEditable(true)}
         >
             <ContentEditable
@@ -50,6 +54,10 @@ const Text = ({ text, fontSize, color, textAlign, ...props }: Props) => {
                 tagName="p"
                 style={{ fontSize: `${fontSize}px`, textAlign }}
             />
+        </div>
+    ) : (
+        <div {...props} ref={(ref) => connect(ref)}>
+            <p style={{ fontSize: `${fontSize}px`, textAlign }}>{text}</p>
         </div>
     );
 };
