@@ -24,7 +24,7 @@ export default interface IRoomManager {
         role: string,
         name: string,
         title: string,
-        playbackURL: string,
+        playbackURL?: string,
         region?: string,
     ) => Promise<JoinInfo>;
     leaveRoom(end: boolean): Promise<void>;

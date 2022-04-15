@@ -75,7 +75,7 @@ export default class RoomManager implements IRoomManager {
         role: string,
         name: string,
         title: string,
-        playbackURL: string,
+        playbackURL?: string,
         region?: string,
     ) {
         if (!name || !title || !role) {

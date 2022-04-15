@@ -112,9 +112,9 @@ export const MeetingContainer = ({
                 }
             } else {
                 const [role, userName, title, playbackUrl] = [
-                    getPropertyCaseInsensitive(meetingMetaData, "role"),
-                    getPropertyCaseInsensitive(meetingMetaData, "userName"),
-                    getPropertyCaseInsensitive(meetingMetaData, "title"),
+                    getPropertyCaseInsensitive(meetingMetaData, "role")!,
+                    getPropertyCaseInsensitive(meetingMetaData, "userName")!,
+                    getPropertyCaseInsensitive(meetingMetaData, "title")!,
                     getPropertyCaseInsensitive(meetingMetaData, "playbackURL"),
                 ];
                 const joinInfo: JoinInfo = await roomManager.createRoom(
