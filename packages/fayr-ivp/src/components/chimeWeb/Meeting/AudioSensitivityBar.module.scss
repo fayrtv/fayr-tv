@@ -1,26 +1,27 @@
-.AudioSensitivityBar {
-    position: relative;
+.Container {
     height: 100%;
     width: 100%;
 
-    .Segment {
+    .HorizontalLine {
+        position: relative;
         height: 5px;
-        width: 30px;
-        background-color: black;
-        z-index: 1;
-        border-radius: 4px;
+        width: 100%;
 
-        &.Active {
-            background-color: green;
+        $border-radius: 10px;
+
+        background-color: #c4c4c4;
+        border-radius: $border-radius;
+
+        .VolumeIndicator {
+            position: absolute;
+            height: 100%;
+            width: 0%;
+            left: 0px;
+
+            background-color: #24d366;
+            border-radius: $border-radius;
+
+            transition: width 0.2s ease-in-out;
         }
-    }
-
-    .VerticalLine {
-        position: absolute;
-        height: 100%;
-        width: 1px;
-        background-color: white;
-        left: 50%;
-        right: 50%;
     }
 }

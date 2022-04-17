@@ -1,0 +1,39 @@
+.ToggleContainer {
+    background: black;
+    border-radius: 15px;
+
+    position: relative;
+
+    cursor: pointer;
+    user-select: none;
+
+    transition: background 0.3s ease-in-out;
+
+    box-shadow: 0 0 0px 1px #000;
+
+    height: 17px;
+    width: 32px;
+
+    &.On {
+        background: #24d366;
+
+        &:before {
+            transform: translateX(calc(32px - 16px));
+        }
+    }
+
+    &:before {
+        background: #c4c4c4;
+        content: "";
+        position: absolute;
+        height: 13px;
+        width: 13px;
+
+        top: calc((100% - 13px) / 2);
+        left: 1px;
+
+        border-radius: 25px;
+
+        transition: transform 0.3s ease-in-out;
+    }
+}

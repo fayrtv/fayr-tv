@@ -6,6 +6,10 @@ import { DeviceInfo } from "components/chime/AudioVideoManager";
 // Styles
 import IAudioVideoManager from "components/chime/interfaces/IAudioVideoManager";
 
+import { MaterialIcon } from "@fayr/common";
+
+import styles from "./DeviceSelection.module.scss";
+
 type CommonProps = {
     selectedDevice: Nullable<string>;
     setSelectedDevice(device: string): void;
@@ -54,16 +58,24 @@ const DeviceSelection = ({
     };
 
     return (
-        <select
-            title={title}
-            name={name}
-            className="select__field"
-            onChange={handleChange}
-            value={selectedDevice ?? undefined}
-            disabled={!availableDevices.length}
-        >
-            {renderDevices(availableDevices, name)}
-        </select>
+        <div className={styles.Container}>
+            <select
+                title={title}
+                name={name}
+                className={styles.Selection}
+                onChange={handleChange}
+                value={selectedDevice ?? undefined}
+                disabled={!availableDevices.length}
+            >
+                {renderDevices(availableDevices, name)}
+            </select>
+            <MaterialIcon
+                className={styles.DropdownIndicator}
+                color="white"
+                iconName="expand_more"
+                size={24}
+            />
+        </div>
     );
 };
 

@@ -18,7 +18,7 @@ import { LoadingAnimation, isFalsyOrWhitespace } from "@fayr/common";
 
 import useMeetingMetaData from "../../../hooks/useMeetingMetaData";
 import IAudioVideoManager from "../../chime/interfaces/IAudioVideoManager";
-import MeetingStartScreen from "./MeetingStartScreen";
+import SettingsView from "./Settings/SettingsView";
 import { formatMeetingSsKey } from "./storage";
 
 type PublicProps = {
@@ -193,7 +193,7 @@ export const MeetingContainer = ({
         <LoadingAnimation fullScreen={true} />
     ) : meetingMetaData && roomTitle ? (
         showStartScreen ? (
-            <MeetingStartScreen
+            <SettingsView
                 attendeeId={roomManager.attendeeId}
                 onContinue={() => {
                     setShowStartScreen(false);
