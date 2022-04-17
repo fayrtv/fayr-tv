@@ -75,7 +75,7 @@ export const SettingsView = ({ attendeeId, onContinue }: Props) => {
         const setMicData = (devInfo?: DeviceInfo) => {
             setCurrentMic(devInfo?.label ?? "");
             setMetaData({
-                muted: false,
+                muted: !devInfo,
                 meetingInputOutputDevices: {
                     ...meetingInputOutputDevices,
                     audioInput: devInfo,
@@ -109,7 +109,7 @@ export const SettingsView = ({ attendeeId, onContinue }: Props) => {
         const setCamData = (devInfo?: DeviceInfo) => {
             setCurrentCam(devInfo?.label ?? "");
             setMetaData({
-                muted: false,
+                videoEnabled: !!devInfo,
                 meetingInputOutputDevices: {
                     ...meetingInputOutputDevices,
                     cam: devInfo,
