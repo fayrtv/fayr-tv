@@ -4,7 +4,7 @@ import { RouteComponentProps, useRouteMatch, withRouter } from "react-router-dom
 import { usePlatformConfig } from "hooks/usePlatformConfig";
 import useTranslations from "hooks/useTranslations";
 
-import { FayrLogo } from "@fayr/common";
+import { FayrLogo, usePersistedState } from "@fayr/common";
 
 import * as config from "../../config";
 import Error from "./Error";
@@ -24,7 +24,12 @@ const Welcome = (props: Props) => {
 
     const tl = useTranslations();
 
-    const [username, setUsername] = React.useState("");
+    const [usernameInternal, setUsernameInternal] = usePersistedState<string>(
+        "USERNAME",
+        () => username,
+    );
+
+    const [username, setUsername] = React.useState<string>(usernameInternal ?? "");
     const [roomTitle, setRoomTitle] = React.useState(config.RANDOM);
     const [playbackURL] = React.useState(config.DEFAULT_VIDEO_STREAM);
     const [errorMessage] = React.useState("");
@@ -88,7 +93,10 @@ const Welcome = (props: Props) => {
                         <JoinInfoForm
                             username={username}
                             usernameInputRef={usernameInputRef}
-                            onUsernameChanged={setUsername}
+                            onUsernameChanged={(val) => {
+                                setUsername(val);
+                                setUsernameInternal(val);
+                            }}
                             roomTitle={roomTitle}
                             onRoomTitleChanged={setRoomTitle}
                             disableSubmit={!playbackURL}
