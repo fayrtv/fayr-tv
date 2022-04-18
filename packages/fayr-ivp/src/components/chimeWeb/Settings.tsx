@@ -58,7 +58,7 @@ export const Settings = ({ closeSettings, joinInfo, saveSettings }: Props) => {
     React.useEffect(() => {
         audioVideoManager.subscribeToDevicesUpdated(devicesUpdatedCallback);
         return () => audioVideoManager.unsubscribeFromDevicesUpdated(devicesUpdatedCallback);
-    });
+    }, [audioVideoManager, devicesUpdatedCallback]);
 
     const handleSave: React.MouseEventHandler<HTMLButtonElement> = (e) => {
         e.stopPropagation();

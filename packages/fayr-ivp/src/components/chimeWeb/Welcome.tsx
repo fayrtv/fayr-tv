@@ -24,12 +24,7 @@ const Welcome = (props: Props) => {
 
     const tl = useTranslations();
 
-    const [usernameInternal, setUsernameInternal] = usePersistedState<string>(
-        "USERNAME",
-        () => username,
-    );
-
-    const [username, setUsername] = React.useState<string>(usernameInternal ?? "");
+    const [username, setUsername] = usePersistedState<string>("USERNAME", () => "");
     const [roomTitle, setRoomTitle] = React.useState(config.RANDOM);
     const [playbackURL] = React.useState(config.DEFAULT_VIDEO_STREAM);
     const [errorMessage] = React.useState("");
@@ -93,10 +88,7 @@ const Welcome = (props: Props) => {
                         <JoinInfoForm
                             username={username}
                             usernameInputRef={usernameInputRef}
-                            onUsernameChanged={(val) => {
-                                setUsername(val);
-                                setUsernameInternal(val);
-                            }}
+                            onUsernameChanged={setUsername}
                             roomTitle={roomTitle}
                             onRoomTitleChanged={setRoomTitle}
                             disableSubmit={!playbackURL}

@@ -4,6 +4,7 @@ import * as config from "config";
 import { useInjection } from "inversify-react";
 import React from "react";
 import { Redirect, RouteComponentProps, useRouteMatch, withRouter } from "react-router-dom";
+import styled from "styled-components";
 import Types from "types/inject";
 import { getPropertyCaseInsensitive } from "util/objectUtil";
 
@@ -20,6 +21,13 @@ import useMeetingMetaData from "../../../hooks/useMeetingMetaData";
 import IAudioVideoManager from "../../chime/interfaces/IAudioVideoManager";
 import SettingsView from "./Settings/SettingsView";
 import { formatMeetingSsKey } from "./storage";
+
+const SettingsViewContainer = styled.div`
+    display: grid;
+    place-content: center;
+    height: 100%;
+    width: 100%;
+`;
 
 type PublicProps = {
     roomTitle: string;
@@ -193,19 +201,22 @@ export const MeetingContainer = ({
         <LoadingAnimation fullScreen={true} />
     ) : meetingMetaData && roomTitle ? (
         showStartScreen ? (
-            <SettingsView
-                attendeeId={roomManager.attendeeId}
-                onContinue={() => {
-                    setShowStartScreen(false);
-                    if (!meetingMetaData.meetingInputOutputDevices) {
-                        setMeetingMetaData({
-                            ...meetingMetaData,
-                            meetingInputOutputDevices:
-                                meetingMetaData.meetingInputOutputDevices ?? {},
-                        });
-                    }
-                }}
-            />
+            <SettingsViewContainer>
+                <SettingsView
+                    attendeeId={roomManager.attendeeId}
+                    onCancel={() => history.push("/")}
+                    onContinue={() => {
+                        setShowStartScreen(false);
+                        if (!meetingMetaData.meetingInputOutputDevices) {
+                            setMeetingMetaData({
+                                ...meetingMetaData,
+                                meetingInputOutputDevices:
+                                    meetingMetaData.meetingInputOutputDevices ?? {},
+                            });
+                        }
+                    }}
+                />
+            </SettingsViewContainer>
         ) : (
             <>
                 <audio ref={audioElementRef} style={{ display: "none" }} />
