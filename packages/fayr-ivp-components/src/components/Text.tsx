@@ -1,5 +1,5 @@
 import { useEditor, useNode } from "@craftjs/core";
-import React, { useEffect, useState } from "react";
+import React, { CSSProperties, useEffect, useState } from "react";
 import ContentEditable from "react-contenteditable";
 
 import { withCraft } from "./craftTypes";
@@ -57,7 +57,14 @@ const Text = ({ text, fontSize, color, textAlign, ...props }: Props) => {
         </div>
     ) : (
         <div {...props} ref={(ref) => connect(ref)}>
-            <p style={{ fontSize: `${fontSize}px`, textAlign }}>{text}</p>
+            <p
+                style={{
+                    fontSize: `${fontSize}px`,
+                    textAlign: textAlign as CSSProperties["textAlign"],
+                }}
+            >
+                {text}
+            </p>
         </div>
     );
 };

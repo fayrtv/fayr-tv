@@ -1,16 +1,11 @@
-import { Editor, Frame } from "@craftjs/core";
-import { QRCode } from "@fayr/ivp-components";
 import classNames from "classnames";
 import React, { MouseEventHandler } from "react";
 
 import { useIsMobile } from "components/mediaQueries";
 
-import { FayrLogo, usePersistedState } from "@fayr/common";
-import { isFalsyOrWhitespace } from "@fayr/common";
+import { isFalsyOrWhitespace, usePersistedState } from "@fayr/common";
 
 import styles from "./JoinInfoForm.module.scss";
-
-import { formatJoinRoomUrl } from "./Intro/urls";
 
 type Props = {
     username: string;

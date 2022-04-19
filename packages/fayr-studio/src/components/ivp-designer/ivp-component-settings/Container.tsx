@@ -3,7 +3,6 @@ import { Container } from "@fayr/ivp-components";
 import Slider from "components/Slider";
 import ColorPicker from "components/ivp-designer/ColorPicker";
 import React from "react";
-import ReactSlider from "react-slider";
 
 type Props = React.ComponentProps<typeof Container>;
 
