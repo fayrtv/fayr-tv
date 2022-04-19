@@ -8,6 +8,7 @@
 **/.next/
 packages/fayr-meeting/
 licensing/
+craftjs-landing-example/
 
 # For some reason this causes trouble
 packages/fayr-ivp/src/index.js
