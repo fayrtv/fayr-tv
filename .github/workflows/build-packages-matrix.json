@@ -1,0 +1,32 @@
+[
+    {
+        "os": "ubuntu-latest",
+        "node": "16.x",
+        "runOnBranch": "always"
+    },
+    {
+        "os": "ubuntu-latest",
+        "node": "14.x",
+        "runOnBranch": "main"
+    },
+    {
+        "os": "windows-latest",
+        "node": "16.x",
+        "runOnBranch": "main"
+    },
+    {
+        "os": "windows-latest",
+        "node": "14.x",
+        "runOnBranch": "main"
+    },
+    {
+        "os": "macos-latest",
+        "node": "16.x",
+        "runOnBranch": "main"
+    },
+    {
+        "os": "macos-latest",
+        "node": "14.x",
+        "runOnBranch": "main"
+    }
+]
