@@ -151,10 +151,10 @@ export class AudioVideoManager implements IAudioVideoManager, DeviceChangeObserv
     };
 
     // Input picker
-    public async setAudioInputDeviceSafe(
+    public setAudioInputDeviceSafe = async (
         device: Nullable<DeviceInfo>,
         addNoiseSuppression: boolean = false,
-    ) {
+    ) => {
         try {
             let actualDevice: Nullable<string> | VoiceFocusTransformDevice = device?.value ?? null;
 
@@ -177,14 +177,17 @@ export class AudioVideoManager implements IAudioVideoManager, DeviceChangeObserv
         } catch (error: any) {
             this._logger.error(error);
         }
-    }
+    };
 
-    public async setAudioOutputDeviceSafe(device: Nullable<DeviceInfo>) {
+    public setAudioOutputDeviceSafe = async (device: Nullable<DeviceInfo>) => {
         this.currentAudioOutputDevice = await this.setDeviceSafe(
             device,
-            this._audioVideo?.chooseAudioOutputDevice,
+            async (deviceId: string | null) => {
+                await this._audioVideo?.chooseAudioOutputDevice(deviceId);
+                console.log(`New device: ${deviceId}`);
+            },
         );
-    }
+    };
 
     public async setVideoInputDeviceSafe(
         device: Nullable<DeviceInfo>,

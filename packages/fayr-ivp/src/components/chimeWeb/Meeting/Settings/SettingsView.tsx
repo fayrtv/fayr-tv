@@ -44,14 +44,20 @@ export const SettingsView = React.forwardRef<HTMLDivElement, Props>(
         const translations = useTranslations();
         const videoRef = React.useRef<HTMLVideoElement>(null);
 
-        const [isCameraEnabled, setIsCameraEnabled] = React.useState(false);
-        const [isMicrophoneEnabled, setIsMicrophoneEnabled] = React.useState(false);
-        const [isAudioOutputEnabled, setIsAudioOutputEnabled] = React.useState(true);
+        const audioVideoManager = useInjection<IAudioVideoManager>(Types.IAudioVideoManager);
+
+        const [isCameraEnabled, setIsCameraEnabled] = React.useState(
+            !!audioVideoManager.currentVideoInputDevice ?? false,
+        );
+        const [isMicrophoneEnabled, setIsMicrophoneEnabled] = React.useState(
+            !!audioVideoManager.currentAudioInputDevice ?? false,
+        );
+        const [isAudioOutputEnabled, setIsAudioOutputEnabled] = React.useState(
+            !!audioVideoManager.currentAudioOutputDevice ?? true,
+        );
 
         const [shouldUseBackgroundBlur, setShouldUseBackgroundBlur] = React.useState(false);
         const [shouldUseNoiseCancellation, setShouldUseNoiseCancellation] = React.useState(false);
-
-        const audioVideoManager = useInjection<IAudioVideoManager>(Types.IAudioVideoManager);
 
         const [currentCam, setCurrentCam] = React.useState<string>(
             () => audioVideoManager.currentVideoInputDevice?.value ?? "",

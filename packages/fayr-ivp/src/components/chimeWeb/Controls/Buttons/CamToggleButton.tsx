@@ -80,6 +80,7 @@ export const CamToggleButton = () => {
             }
         } else {
             audioVideoManager.audioVideo.stopLocalVideoTile();
+            await audioVideoManager.audioVideo.chooseVideoInputDevice(null);
 
             setMeetingMetaData({
                 ...meetingMetaData,
