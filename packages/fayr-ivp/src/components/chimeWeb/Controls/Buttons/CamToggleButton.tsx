@@ -1,6 +1,5 @@
 // Framework
 import { useInjection } from "inversify-react";
-import * as React from "react";
 import Types from "types/inject";
 
 import useGlobalKeyHandler from "hooks/useGlobalKeyHandler";

@@ -12,7 +12,7 @@ import styles from "./DeviceSelection.module.scss";
 
 type CommonProps = {
     selectedDevice: Nullable<string>;
-    setSelectedDevice(device: string): void;
+    setSelectedDevice(device: DeviceInfo): void;
     onUpdate(device: DeviceInfo): void;
     availableDevices: Array<DeviceInfo>;
     name: string;
@@ -29,7 +29,7 @@ const DeviceSelection = ({
 }: CommonProps) => {
     const handleChange: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
         const value = e.target.value;
-        setSelectedDevice(value);
+        setSelectedDevice(availableDevices.find((x) => x.value === value)!);
 
         if (availableDevices.length) {
             for (let o in availableDevices) {

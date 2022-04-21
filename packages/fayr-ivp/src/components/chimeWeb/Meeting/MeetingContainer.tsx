@@ -52,10 +52,11 @@ export const MeetingContainer = ({
         }
 
         try {
+            const parsedJson = JSON.parse(rawData) as MeetingMetaData;
             return {
-                ...(JSON.parse(rawData) as MeetingMetaData),
-                muted: true,
-                videoEnabled: false,
+                ...parsedJson,
+                muted: parsedJson.muted ?? true,
+                videoEnabled: parsedJson.videoEnabled ?? false,
             };
         } catch (error) {
             return {} as MeetingMetaData;
@@ -84,36 +85,34 @@ export const MeetingContainer = ({
                 if (meetingMetaData.meetingInputOutputDevices) {
                     const promises: Array<Promise<void>> = [];
 
-                    if (meetingMetaData.meetingInputOutputDevices) {
-                        const { audioInput, audioOutput, cam } =
-                            meetingMetaData.meetingInputOutputDevices;
+                    const { audioInput, audioOutput, cam } =
+                        meetingMetaData.meetingInputOutputDevices;
 
-                        if (audioInput && !meetingMetaData.muted && !meetingMetaData.forceMuted) {
-                            promises.push(
-                                (async () => {
-                                    await audioVideoManager.setAudioInputDeviceSafe(audioInput);
-                                    audioVideoManager.audioVideo!.start();
-                                })(),
-                            );
-                        }
+                    if (audioInput && !meetingMetaData.muted && !meetingMetaData.forceMuted) {
+                        promises.push(
+                            (async () => {
+                                await audioVideoManager.setAudioInputDeviceSafe(audioInput);
+                                audioVideoManager.audioVideo!.start();
+                            })(),
+                        );
+                    }
 
-                        if (audioOutput) {
-                            promises.push(audioVideoManager.setAudioOutputDeviceSafe(audioOutput));
-                        }
+                    if (audioOutput) {
+                        promises.push(audioVideoManager.setAudioOutputDeviceSafe(audioOutput));
+                    }
 
-                        if (
-                            cam &&
-                            meetingMetaData.videoEnabled &&
-                            !meetingMetaData.forceVideoDisabled
-                        ) {
-                            promises.push(
-                                (async () => {
-                                    await audioVideoManager.setVideoInputDeviceSafe(cam);
-                                    audioVideoManager.audioVideo.start();
-                                    audioVideoManager.audioVideo.startLocalVideoTile();
-                                })(),
-                            );
-                        }
+                    if (
+                        cam &&
+                        meetingMetaData.videoEnabled &&
+                        !meetingMetaData.forceVideoDisabled
+                    ) {
+                        promises.push(
+                            (async () => {
+                                await audioVideoManager.setVideoInputDeviceSafe(cam);
+                                audioVideoManager.audioVideo.start();
+                                audioVideoManager.audioVideo.startLocalVideoTile();
+                            })(),
+                        );
                     }
 
                     await Promise.all(promises);

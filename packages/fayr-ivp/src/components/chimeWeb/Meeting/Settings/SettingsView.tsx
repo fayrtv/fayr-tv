@@ -39,60 +39,39 @@ type Props = {
 
 export const SettingsView = React.forwardRef<HTMLDivElement, Props>(
     ({ attendeeId, onCancel, onContinue }: Props, ref) => {
-        const [{ meetingInputOutputDevices }, setMetaData] = useMeetingMetaData();
+        const [{ meetingInputOutputDevices, muted }, setMetaData] = useMeetingMetaData();
 
         const translations = useTranslations();
         const videoRef = React.useRef<HTMLVideoElement>(null);
 
         const audioVideoManager = useInjection<IAudioVideoManager>(Types.IAudioVideoManager);
 
-        const [isCameraEnabled, setIsCameraEnabled] = React.useState(
-            !!audioVideoManager.currentVideoInputDevice ?? false,
-        );
-        const [isMicrophoneEnabled, setIsMicrophoneEnabled] = React.useState(
-            !!audioVideoManager.currentAudioInputDevice ?? false,
-        );
-        const [isAudioOutputEnabled, setIsAudioOutputEnabled] = React.useState(
-            !!audioVideoManager.currentAudioOutputDevice ?? true,
+        const isCameraEnabled = !!meetingInputOutputDevices?.cam || false;
+        const isMicrophoneEnabled = !!meetingInputOutputDevices?.audioInput || false;
+        const isAudioOutputEnabled = !!meetingInputOutputDevices?.audioOutput || true;
+
+        const [videoStatus, setVideoStatus] = React.useState(
+            meetingInputOutputDevices?.cam == null ? VideoStatus.Disabled : VideoStatus.Enabled,
         );
 
         const [shouldUseBackgroundBlur, setShouldUseBackgroundBlur] = React.useState(false);
         const [shouldUseNoiseCancellation, setShouldUseNoiseCancellation] = React.useState(false);
 
-        const [currentCam, setCurrentCam] = React.useState<string>(
-            () => audioVideoManager.currentVideoInputDevice?.value ?? "",
-        );
-        const [currentMic, setCurrentMic] = React.useState<string>(
-            () => audioVideoManager.currentAudioInputDevice?.value ?? "",
-        );
-        const [currentSpeaker, setCurrentSpeaker] = React.useState<string>(
-            () => audioVideoManager.currentAudioOutputDevice?.value ?? "",
-        );
-        const [videoStatus, setVideoStatus] = React.useState(
-            audioVideoManager.currentVideoInputDevice == null
-                ? VideoStatus.Disabled
-                : VideoStatus.Enabled,
-        );
-
         const [volume, setVolume] = React.useState<number>(0);
 
-        const micEnabled = currentMic !== "";
+        const setMicData = (devInfo?: DeviceInfo) => {
+            setMetaData({
+                muted: !devInfo,
+                meetingInputOutputDevices: {
+                    ...meetingInputOutputDevices,
+                    audioInput: devInfo,
+                },
+            });
+        };
 
         const onMicToggleClick = async () => {
-            const newMicState = !micEnabled;
-
-            const setMicData = (devInfo?: DeviceInfo) => {
-                setCurrentMic(devInfo?.label ?? "");
-                setMetaData({
-                    muted: !devInfo,
-                    meetingInputOutputDevices: {
-                        ...meetingInputOutputDevices,
-                        audioInput: devInfo,
-                    },
-                });
-            };
-
-            if (newMicState) {
+            const newMutedState = !muted;
+            if (!newMutedState) {
                 // Pick the first device
                 const devices = await audioVideoManager.listAudioInputDevices();
                 const deviceInfos: Array<DeviceInfo> = devices.map((x) => ({
@@ -114,18 +93,17 @@ export const SettingsView = React.forwardRef<HTMLDivElement, Props>(
             }
         };
 
-        const onCamToggleClick = async () => {
-            const setCamData = (devInfo?: DeviceInfo) => {
-                setCurrentCam(devInfo?.label ?? "");
-                setMetaData({
-                    videoEnabled: !!devInfo,
-                    meetingInputOutputDevices: {
-                        ...meetingInputOutputDevices,
-                        cam: devInfo,
-                    },
-                });
-            };
+        const setCamData = (devInfo?: DeviceInfo) => {
+            setMetaData({
+                videoEnabled: !!devInfo,
+                meetingInputOutputDevices: {
+                    ...meetingInputOutputDevices,
+                    cam: devInfo,
+                },
+            });
+        };
 
+        const onCamToggleClick = async () => {
             if (videoStatus === VideoStatus.Disabled) {
                 try {
                     setVideoStatus(VideoStatus.Loading);
@@ -150,6 +128,37 @@ export const SettingsView = React.forwardRef<HTMLDivElement, Props>(
                 await audioVideoManager.setVideoInputDeviceSafe(null);
                 audioVideoManager.audioVideo.stopLocalVideoTile();
                 setCamData();
+            }
+        };
+
+        const setSpeakersData = (devInfo?: DeviceInfo) => {
+            setMetaData({
+                videoEnabled: !!devInfo,
+                meetingInputOutputDevices: {
+                    ...meetingInputOutputDevices,
+                    audioOutput: devInfo,
+                },
+            });
+        };
+
+        const onSpeakersClick = async () => {
+            if (!isAudioOutputEnabled) {
+                // Pick the first device
+                const devices = await audioVideoManager.listAudioOutputDevices();
+                const deviceInfos: Array<DeviceInfo> = devices.map((x) => ({
+                    label: x.label,
+                    value: x.deviceId,
+                }));
+                await audioVideoManager.setAudioOutputDeviceSafe(deviceInfos[0]);
+
+                // Start chime
+                audioVideoManager.audioVideo.start();
+                audioVideoManager.audioVideo.realtimeUnmuteLocalAudio();
+
+                setSpeakersData(deviceInfos[0]);
+            } else {
+                await audioVideoManager.setAudioOutputDeviceSafe(null);
+                setSpeakersData();
             }
         };
 
@@ -178,7 +187,7 @@ export const SettingsView = React.forwardRef<HTMLDivElement, Props>(
 
         // Microphone sensitivity indicator
         React.useEffect(() => {
-            if (micEnabled && audioVideoManager.audioVideo && attendeeId) {
+            if (!muted && audioVideoManager.audioVideo && attendeeId) {
                 audioVideoManager.audioVideo.realtimeSubscribeToVolumeIndicator(
                     attendeeId,
                     (_, volume) => setVolume(volume ?? 0),
@@ -187,7 +196,7 @@ export const SettingsView = React.forwardRef<HTMLDivElement, Props>(
                 return () =>
                     audioVideoManager.audioVideo.realtimeUnsubscribeFromVolumeIndicator(attendeeId);
             }
-        }, [micEnabled, audioVideoManager.audioVideo, attendeeId]);
+        }, [muted, audioVideoManager.audioVideo, attendeeId]);
 
         const createToggledSpan = (
             title: string,
@@ -227,10 +236,7 @@ export const SettingsView = React.forwardRef<HTMLDivElement, Props>(
                                     <span>Camera</span>
                                     <Toggle
                                         toggleState={isCameraEnabled}
-                                        onToggle={async () => {
-                                            setIsCameraEnabled((curr) => !curr);
-                                            await onCamToggleClick();
-                                        }}
+                                        onToggle={onCamToggleClick}
                                     />
                                 </Flex>
                                 <div
@@ -239,8 +245,10 @@ export const SettingsView = React.forwardRef<HTMLDivElement, Props>(
                                     })}
                                 >
                                     <CameraSelection
-                                        selectedDevice={currentCam}
-                                        setSelectedDevice={setCurrentCam}
+                                        selectedDevice={
+                                            meetingInputOutputDevices?.cam?.value ?? null
+                                        }
+                                        setSelectedDevice={setCamData}
                                         availableDevices={audioVideoManager.videoInputDevices}
                                         audioVideoManager={audioVideoManager}
                                     />
@@ -251,10 +259,7 @@ export const SettingsView = React.forwardRef<HTMLDivElement, Props>(
                                     <span>Microphone</span>
                                     <Toggle
                                         toggleState={isMicrophoneEnabled}
-                                        onToggle={async () => {
-                                            setIsMicrophoneEnabled((curr) => !curr);
-                                            await onMicToggleClick();
-                                        }}
+                                        onToggle={onMicToggleClick}
                                     />
                                 </Flex>
                                 <div
@@ -263,8 +268,10 @@ export const SettingsView = React.forwardRef<HTMLDivElement, Props>(
                                     })}
                                 >
                                     <MicrophoneSelection
-                                        selectedDevice={currentMic}
-                                        setSelectedDevice={setCurrentMic}
+                                        selectedDevice={
+                                            meetingInputOutputDevices?.audioInput?.value ?? null
+                                        }
+                                        setSelectedDevice={setMicData}
                                         availableDevices={audioVideoManager.audioInputDevices}
                                         audioVideoManager={audioVideoManager}
                                     />
@@ -275,7 +282,7 @@ export const SettingsView = React.forwardRef<HTMLDivElement, Props>(
                                     <span>Speaker</span>
                                     <Toggle
                                         toggleState={isAudioOutputEnabled}
-                                        onToggle={setIsAudioOutputEnabled}
+                                        onToggle={onSpeakersClick}
                                     />
                                 </Flex>
                                 <div
@@ -284,8 +291,10 @@ export const SettingsView = React.forwardRef<HTMLDivElement, Props>(
                                     })}
                                 >
                                     <SpeakerSelection
-                                        selectedDevice={currentSpeaker}
-                                        setSelectedDevice={setCurrentSpeaker}
+                                        selectedDevice={
+                                            meetingInputOutputDevices?.audioOutput?.value ?? null
+                                        }
+                                        setSelectedDevice={setSpeakersData}
                                         availableDevices={audioVideoManager.audioOutputDevices}
                                         audioVideoManager={audioVideoManager}
                                     />
