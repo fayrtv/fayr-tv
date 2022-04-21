@@ -1,5 +1,4 @@
 // Framework
-import { Disclosure } from "@headlessui/react";
 import classNames from "classnames";
 import { useInjection } from "inversify-react";
 import * as React from "react";
@@ -183,7 +182,7 @@ export const SettingsView = React.forwardRef<HTMLDivElement, Props>(
 
                 await audioVideoManager.setAudioOutputDeviceSafe(deviceInfos[0]);
             });
-        }, []);
+        }, [audioVideoManager]);
 
         // Microphone sensitivity indicator
         React.useEffect(() => {
@@ -304,17 +303,14 @@ export const SettingsView = React.forwardRef<HTMLDivElement, Props>(
                     </Cell>
                     <Cell className={styles.Separator} gridArea="Separator" />
                     <Cell className={styles.CamPreview} gridArea="CamPreview">
-                        <Flex direction="Column">
+                        {videoStatus === VideoStatus.Enabled ? (
                             <video ref={videoRef} id="TestVideo" autoPlay playsInline />
-                            {videoStatus !== VideoStatus.Enabled && (
-                                <div className={styles.NoCamSelected}>
-                                    <Flex direction="Column" crossAlign="Center">
-                                        <span>Noch keine Kamera ausgewählt</span>
-                                        <MaterialIcon iconName={"videocam_off"} color="white" />
-                                    </Flex>
-                                </div>
-                            )}
-                        </Flex>
+                        ) : (
+                            <Flex direction="Column" mainAlign="Center" crossAlign="Center">
+                                <span>Noch keine Kamera ausgewählt</span>
+                                <MaterialIcon iconName={"videocam_off"} color="white" />
+                            </Flex>
+                        )}
                     </Cell>
                     <Cell className={styles.AudioPreview} gridArea="AudioPreview">
                         <span className={styles.AudioPreviewContainer}>

@@ -4,10 +4,11 @@
     max-height: 90vh;
     height: 60vh;
     min-height: 60vh;
-    max-width: 50vw;
+    max-width: 80vw;
 
-    @media (max-width: mq.$largeScreens) {
+    @media (min-width: mq.$mobile) and (max-width: mq.$largeScreens) {
         max-width: 90vw;
+        height: 90vh;
     }
 
     @media (max-width: mq.$mobile) {
@@ -22,7 +23,16 @@
     .SettingsView {
         padding: 10px 50px;
         height: 100%;
-        width: 100%;
+
+        @media (min-width: mq.$mobile) and (max-width: mq.$largeScreens) {
+            padding: 0px 15px;
+            gap: 1px !important;
+        }
+
+        @media (max-width: mq.$mobile) {
+            padding: 20px 15px;
+            gap: 1px !important;
+        }
 
         .Header {
             display: grid;
@@ -57,20 +67,27 @@
         }
 
         .CamPreview {
-            display: flex;
-            justify-content: center;
+            height: 100%;
+            width: 100%;
 
-            > div {
-                max-height: 100%;
-                max-width: 100%;
-
-                height: 350px;
-                width: 350px;
-
-                video {
-                    height: 100%;
-                    width: 100%;
+            @mixin limitWidth($maxWidth) {
+                max-width: $maxWidth;
+                video,
+                > div {
+                    width: $maxWidth;
                 }
+            }
+
+            @include limitWidth($maxWidth: 350px);
+            @media (min-width: mq.$mobile) and (max-width: mq.$largeScreens) {
+                @include limitWidth($maxWidth: 250px);
+            }
+
+            display: grid;
+            place-content: center;
+
+            video {
+                height: 100%;
             }
         }
 
