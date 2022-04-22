@@ -7,8 +7,6 @@ import { LoadingAnimation } from "@fayr/common";
 
 import styles from "./ToggleButton.module.scss";
 
-import { VideoStatus } from "./CamToggleButton";
-
 type Props = {
     videoEnabled: boolean;
     forceVideoDisabled?: boolean;

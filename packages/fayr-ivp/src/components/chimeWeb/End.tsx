@@ -1,9 +1,6 @@
-import React from "react";
-import { useRouteMatch, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 const End = () => {
-    const { url } = useRouteMatch();
-
     return (
         <div className="welcome form-grid">
             <div className="welcome__intro">
