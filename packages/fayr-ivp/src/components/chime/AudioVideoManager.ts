@@ -184,7 +184,6 @@ export class AudioVideoManager implements IAudioVideoManager, DeviceChangeObserv
             device,
             async (deviceId: string | null) => {
                 await this._audioVideo?.chooseAudioOutputDevice(deviceId);
-                console.log(`New device: ${deviceId}`);
             },
         );
     };
