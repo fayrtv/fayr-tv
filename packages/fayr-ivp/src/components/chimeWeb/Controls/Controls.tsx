@@ -1,7 +1,8 @@
+import ApplicationLogo from "@fayr/ivp-components/lib/components/ApplicationLogo";
 import React from "react";
 import { useMediaQuery } from "react-responsive";
 
-import { Cell, FayrLogo, Flex, Grid } from "@fayr/common";
+import { Cell, Flex, Grid } from "@fayr/common";
 
 import styles from "./Controls.module.scss";
 
@@ -106,7 +107,7 @@ const Controls: React.FC<Props> = ({ title, openSettings, role, ssName, baseHref
             }}
             ref={controlsRef}
         >
-            <FayrLogo className={styles.FayrIcon} />
+            <ApplicationLogo className={styles.FayrIcon} />
             {isMobile && isChatOpen && (
                 <Flex direction="Row" mainAlign="Start" className={styles.ControlsMinified}>
                     <Grid

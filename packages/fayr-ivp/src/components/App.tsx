@@ -1,4 +1,4 @@
-import { Editor } from "@craftjs/core";
+import { Editor, Frame } from "@craftjs/core";
 import { IVP_COMPONENT_RESOLVER } from "@fayr/ivp-components";
 import { Provider as InversifyProvider } from "inversify-react";
 import { container } from "inversify.config";
@@ -12,6 +12,7 @@ import store from "redux/store";
 import { usePlatformConfig } from "hooks/usePlatformConfig";
 
 import End from "components/chimeWeb/End";
+import { JoinInfoForm } from "components/chimeWeb/JoinInfoForm";
 import Welcome from "components/chimeWeb/Welcome";
 
 import { applyTheme, ErrorBoundary } from "@fayr/common";
@@ -69,7 +70,12 @@ function MainIvpRouter() {
                 </Route>
                 <Route path={`${path}/`}>
                     <ErrorBoundary>
-                        <Welcome />
+                        <Editor
+                            resolver={{ JoinInfoForm, ...IVP_COMPONENT_RESOLVER }}
+                            enabled={false}
+                        >
+                            <Welcome />
+                        </Editor>
                     </ErrorBoundary>
                 </Route>
             </Switch>
@@ -85,19 +91,17 @@ function App() {
             <InversifyProvider container={container}>
                 <QueryClientProvider client={queryClient}>
                     <IvpTranslationContextProvider>
-                        <Editor resolver={IVP_COMPONENT_RESOLVER} enabled={false}>
-                            <Router>
-                                <Switch>
-                                    <Route path={`${baseHref}/preview/:platform`}>
-                                        <MainIvpRouter />
-                                    </Route>
+                        <Router>
+                            <Switch>
+                                <Route path={`${baseHref}/preview/:platform`}>
+                                    <MainIvpRouter />
+                                </Route>
 
-                                    <Route path={`${baseHref}`}>
-                                        <MainIvpRouter />
-                                    </Route>
-                                </Switch>
-                            </Router>
-                        </Editor>
+                                <Route path={`${baseHref}`}>
+                                    <MainIvpRouter />
+                                </Route>
+                            </Switch>
+                        </Router>
                     </IvpTranslationContextProvider>
                     <ReactQueryDevtools initialIsOpen={false} />
                 </QueryClientProvider>

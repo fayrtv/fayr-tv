@@ -1,8 +1,8 @@
 import { Editor, Element, Frame } from "@craftjs/core";
 import { QueryMethods } from "@craftjs/core/lib/editor/query";
 import { QueryCallbacksFor } from "@craftjs/utils";
+import { ErrorBoundary } from "@fayr/common";
 import { Container, IVP_COMPONENT_RESOLVER, QRCode, Text } from "@fayr/ivp-components";
-import ErrorBoundary from "components/ErrorBoundary";
 import { SaveLoadActions } from "components/ivp-designer/SaveLoadActions";
 import { SelectedElementPropertiesPanel } from "components/ivp-designer/SelectedElementPropertiesPanel";
 import { Toolbox } from "components/ivp-designer/Toolbox";

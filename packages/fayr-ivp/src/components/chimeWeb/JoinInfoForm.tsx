@@ -1,6 +1,8 @@
+import { QRCode } from "@fayr/ivp-components";
 import classNames from "classnames";
 import React, { MouseEventHandler } from "react";
 
+import { formatJoinRoomUrl } from "components/chimeWeb/Intro/urls";
 import { useIsMobile } from "components/mediaQueries";
 
 import { isFalsyOrWhitespace, usePersistedState } from "@fayr/common";
@@ -65,15 +67,20 @@ export function JoinInfoForm({
                         Watch Party
                     </button>
                 </div>
-                {/* <input type="text" placeholder="Playback URL" value={playbackURL} onChange={this.handlePlaybackURLChange} /> */}
-                {/*{roomTitle && (*/}
-                {/*    <QRCode*/}
-                {/*        content={formatJoinRoomUrl(roomTitle)}*/}
-                {/*        width={qrSize}*/}
-                {/*        height={qrSize}*/}
-                {/*        padding={1}*/}
-                {/*    />*/}
-                {/*)}*/}
+                {/*<input*/}
+                {/*    type="text"*/}
+                {/*    placeholder="Playback URL"*/}
+                {/*    value={playbackURL}*/}
+                {/*    onChange={this.handlePlaybackURLChange}*/}
+                {/*/>*/}
+                {roomTitle && (
+                    <QRCode
+                        content={formatJoinRoomUrl(roomTitle)}
+                        width={qrSize}
+                        height={qrSize}
+                        padding={1}
+                    />
+                )}
             </fieldset>
         </form>
     );

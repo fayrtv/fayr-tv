@@ -40,6 +40,13 @@ module.exports = {
                     src: "url(/fonts/font.woff)",
                 },
             });
+            addBase({
+                "@font-face": {
+                    fontFamily: "Roboto",
+                    fontWeight: "300",
+                    src: "url(/fonts/font.woff)",
+                },
+            });
         }),
     ],
 };
