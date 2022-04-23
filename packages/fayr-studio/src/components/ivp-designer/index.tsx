@@ -19,7 +19,7 @@ QRCode.craft = {
     },
 };
 
-//#endreigon
+//#endregion
 
 const IVPDesigner = () => {
     return (

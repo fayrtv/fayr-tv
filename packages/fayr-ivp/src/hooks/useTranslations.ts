@@ -1,4 +1,3 @@
-// Framework
 import { useContext } from "react";
 
 import { IvpTranslationContext } from "components/contexts/IvpTranslationContext";

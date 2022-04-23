@@ -11,8 +11,9 @@
         "setup": "npx lerna bootstrap && yarn install && yarn build && yarn prepare",
         "prepare": "husky install",
         "build": "lerna run build --ignore chime-sdk-meeting-demo",
-        "format": "prettylint \"**/*.{ts,js,html,jsx,tsx,css,less,scss,json}\" --fix",
-        "format:check": "prettylint \"**/*.{ts,js,html,jsx,tsx,css,less,scss,json}\"",
+        "clean": "lerna run clean --ignore chime-sdk-meeting-demo",
+        "format": "prettier --write \"**/*.{ts,js,html,jsx,tsx,css,less,scss,json}\"",
+        "format:check": "prettier --check \"**/*.{ts,js,html,jsx,tsx,css,less,scss,json}\"",
         "test": "lerna run test"
     },
     "devDependencies": {
@@ -20,7 +21,6 @@
         "husky": "^7.0.0",
         "lerna": "^4.0.0",
         "prettier": "^2.5.1",
-        "pretty-quick": "^3.1.1",
-        "prettylint": "^1.0.0"
+        "pretty-quick": "^3.1.1"
     }
 }
