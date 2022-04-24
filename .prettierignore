@@ -5,6 +5,7 @@
 **/lib/
 **/dist/
 **/build/
+**/.next/
 packages/fayr-meeting/
 licensing/
 
