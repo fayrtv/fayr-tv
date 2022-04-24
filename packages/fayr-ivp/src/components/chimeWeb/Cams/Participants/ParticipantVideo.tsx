@@ -155,7 +155,6 @@ const ParticipantVideo = ({
     const handleMouseLeave = () => setShowMeta(false);
 
     const showMetaCombined = showMeta || muted || !videoEnabled;
-    const micTalkingIndicator = talking ? "controls__btn--talking" : "";
     const metaCls = showMetaCombined ? "" : " participantMeta--hide";
     const videoId = `video_${attendeeId}`;
 
@@ -218,11 +217,9 @@ const ParticipantVideo = ({
                 </div>
             </div>
             <Flex
-                className={classNames(
-                    commonCamStyles.ParticipantMeta,
-                    metaCls,
-                    micTalkingIndicator,
-                )}
+                className={classNames(commonCamStyles.ParticipantMeta, metaCls, {
+                    [commonCamStyles.Talking]: talking,
+                })}
                 direction="Row"
                 space="Between"
             >

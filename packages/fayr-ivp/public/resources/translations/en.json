@@ -11,5 +11,8 @@
     "WelcomeMessageHeader": "Experience live and sport events like never before!",
     "WelcomeMessageBody": "Create or join a Watch Party and have a blast with your friends!",
     "StartWatchPartyHeader": "Start a Watch Party",
-    "StartWatchPartyBody": " Share the thrill of watching live and sport events together with your friends!"
+    "StartWatchPartyBody": " Share the thrill of watching live and sport events together with your friends!",
+    "Settings": "Settings",
+    "Cancel": "Cancel",
+    "Save": "Save"
 }

@@ -1,6 +1,5 @@
 // Framework
 import { useInjection } from "inversify-react";
-import * as React from "react";
 import Types from "types/inject";
 
 import useGlobalKeyHandler from "hooks/useGlobalKeyHandler";
@@ -19,18 +18,10 @@ export enum VideoStatus {
 export const CamToggleButton = () => {
     const audioVideoManager = useInjection<IAudioVideoManager>(Types.IAudioVideoManager);
 
-    const [videoStatus, setVideoStatus] = React.useState(
-        audioVideoManager.currentVideoInputDevice == null
-            ? VideoStatus.Disabled
-            : VideoStatus.Enabled,
-    );
-
     const [meetingMetaData, setMeetingMetaData] = useMeetingMetaData();
 
     const toggleVideo = async () => {
-        if (videoStatus === VideoStatus.Disabled) {
-            setVideoStatus(VideoStatus.Loading);
-
+        if (!meetingMetaData.videoEnabled) {
             try {
                 if (!audioVideoManager.currentVideoInputDevice) {
                     const videoInputs = await audioVideoManager.listVideoInputDevices();
@@ -73,12 +64,9 @@ export const CamToggleButton = () => {
                 }
 
                 audioVideoManager.audioVideo.startLocalVideoTile();
-
-                setVideoStatus(VideoStatus.Enabled);
             } catch (error) {
                 // eslint-disable-next-line
                 console.error(error);
-                setVideoStatus(VideoStatus.Disabled);
 
                 setMeetingMetaData({
                     ...meetingMetaData,
@@ -89,10 +77,9 @@ export const CamToggleButton = () => {
                     videoEnabled: false,
                 });
             }
-        } else if (videoStatus === VideoStatus.Enabled) {
-            setVideoStatus(VideoStatus.Loading);
+        } else {
             audioVideoManager.audioVideo.stopLocalVideoTile();
-            setVideoStatus(VideoStatus.Disabled);
+            await audioVideoManager.audioVideo.chooseVideoInputDevice(null);
 
             setMeetingMetaData({
                 ...meetingMetaData,
@@ -109,7 +96,7 @@ export const CamToggleButton = () => {
 
     return (
         <CamToggle
-            videoStatus={videoStatus}
+            videoEnabled={meetingMetaData.videoEnabled}
             forceVideoDisabled={meetingMetaData.forceVideoDisabled}
             onClick={toggleVideo}
         />

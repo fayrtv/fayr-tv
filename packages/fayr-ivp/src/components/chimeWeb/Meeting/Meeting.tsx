@@ -21,8 +21,8 @@ import IRoomManager from "../../chime/interfaces/IRoomManager";
 import VideoPlayer from "../../videoPlayer/VideoPlayer";
 import CamSection from "../Cams/CamSection";
 import Controls from "../Controls/Controls";
-import Settings from "../Settings";
 import VotingContainer from "../Voting/VotingContainer";
+import ModalSettingsView from "./Settings/ModalSettingsView";
 
 type PublicProps = {
     roomTitle: string;
@@ -116,18 +116,10 @@ const Meeting = ({
                     </div>
 
                     {showSettings && (
-                        <Settings
-                            joinInfo={joinInfo}
-                            saveSettings={(
-                                _playbackURL,
-                                _currentAudioInputDevice,
-                                _currentAudioOutputDevice,
-                                _currentVideoInputDevice,
-                            ) => {
-                                setShowSettings(false);
-                                // TODO: Handle playback URL and new devices
-                            }}
-                            closeSettings={() => setShowSettings(false)}
+                        <ModalSettingsView
+                            attendeeId={attendeeId}
+                            onContinue={() => setShowSettings(false)}
+                            onCancel={() => setShowSettings(false)}
                         />
                     )}
                 </div>

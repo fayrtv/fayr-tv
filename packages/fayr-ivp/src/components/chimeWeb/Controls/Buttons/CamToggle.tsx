@@ -7,22 +7,20 @@ import { LoadingAnimation } from "@fayr/common";
 
 import styles from "./ToggleButton.module.scss";
 
-import { VideoStatus } from "./CamToggleButton";
-
 type Props = {
-    videoStatus: VideoStatus;
+    videoEnabled: boolean;
     forceVideoDisabled?: boolean;
     onClick(): void | Promise<void>;
 };
 
-export const CamToggle = ({ videoStatus, forceVideoDisabled = false, onClick }: Props) => {
+export const CamToggle = ({ videoEnabled, forceVideoDisabled = false, onClick }: Props) => {
     const tl = useTranslations();
 
     return (
         <div
             key="CamButton"
             className={classNames("btn rounded", styles.Button, {
-                [styles.Active]: videoStatus === VideoStatus.Enabled && !forceVideoDisabled,
+                [styles.Active]: videoEnabled && !forceVideoDisabled,
                 [styles.NotAllowed]: forceVideoDisabled,
             })}
             onClick={
@@ -36,7 +34,7 @@ export const CamToggle = ({ videoStatus, forceVideoDisabled = false, onClick }: 
             }
             title={forceVideoDisabled ? tl.CamToggle_ForceVideoDisabled : tl.CamToggle_Enable}
         >
-            {videoStatus === VideoStatus.Disabled || forceVideoDisabled ? (
+            {!videoEnabled || forceVideoDisabled ? (
                 <svg
                     className={styles.BtnSvg}
                     fill="none"
@@ -48,7 +46,7 @@ export const CamToggle = ({ videoStatus, forceVideoDisabled = false, onClick }: 
                         fill="#D2D2D2"
                     />
                 </svg>
-            ) : videoStatus === VideoStatus.Enabled ? (
+            ) : videoEnabled ? (
                 <svg
                     className={styles.BtnSvg}
                     fill="none"

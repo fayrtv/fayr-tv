@@ -88,7 +88,7 @@
         transform: translate(0, 1rem);
         transition: opacity 0.25s ease, transform 0.25s ease;
 
-        &.controls__btn--talking {
+        &.Talking {
             border: 2px solid lightgreen;
             padding: calc(0.5rem - 2px) calc(1.5rem - 2px);
 

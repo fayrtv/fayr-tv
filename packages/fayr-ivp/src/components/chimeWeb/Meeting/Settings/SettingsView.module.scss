@@ -1,0 +1,125 @@
+@use "../../../mediaQueries" as mq;
+
+.Container {
+    max-height: 90vh;
+    height: 60vh;
+    min-height: 60vh;
+    max-width: 80vw;
+
+    @media (min-width: mq.$mobile) and (max-width: mq.$largeScreens) {
+        max-width: 90vw;
+        height: 90vh;
+    }
+
+    @media (max-width: mq.$mobile) {
+        max-width: 100vw;
+        font-size: 1.2rem;
+    }
+
+    background-color: #282828;
+
+    border-radius: 5px;
+
+    .SettingsView {
+        padding: 10px 50px;
+        height: 100%;
+
+        @media (min-width: mq.$mobile) and (max-width: mq.$largeScreens) {
+            padding: 0px 15px;
+            gap: 1px !important;
+        }
+
+        @media (max-width: mq.$mobile) {
+            padding: 20px 15px;
+            gap: 1px !important;
+        }
+
+        .Header {
+            display: grid;
+            place-items: center;
+
+            span {
+                font-size: 3rem;
+            }
+        }
+
+        .SettingsSection {
+            display: grid;
+            align-items: center;
+
+            .Item {
+                margin: 0.75em 0;
+
+                .SelectionDropdown {
+                    height: 100%;
+                    width: 100%;
+                    visibility: visible;
+
+                    &.Hidden {
+                        visibility: hidden;
+                    }
+
+                    select {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+
+        .CamPreview {
+            height: 100%;
+            width: 100%;
+
+            @mixin limitWidth($maxWidth) {
+                max-width: $maxWidth;
+                video,
+                > div {
+                    width: $maxWidth;
+                }
+            }
+
+            @include limitWidth($maxWidth: 350px);
+            @media (min-width: mq.$mobile) and (max-width: mq.$largeScreens) {
+                @include limitWidth($maxWidth: 250px);
+            }
+
+            display: grid;
+            place-content: center;
+
+            video {
+                height: 100%;
+            }
+        }
+
+        .AudioPreview {
+            display: flex;
+            justify-content: center;
+
+            .AudioPreviewContainer {
+                width: 200px;
+            }
+        }
+
+        .Separator {
+            height: 100%;
+            max-width: 1px;
+            place-self: center;
+            background-color: white;
+            left: 50%;
+            right: 50%;
+        }
+
+        .Button {
+            display: grid;
+            justify-content: center;
+
+            &.Cancel > button {
+                background-color: #fe1e39;
+            }
+
+            &.Save > button {
+                background-color: #24d366;
+            }
+        }
+    }
+}

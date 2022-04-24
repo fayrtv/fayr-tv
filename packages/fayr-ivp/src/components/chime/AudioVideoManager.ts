@@ -151,11 +151,14 @@ export class AudioVideoManager implements IAudioVideoManager, DeviceChangeObserv
     };
 
     // Input picker
-    public async setAudioInputDeviceSafe(device: Nullable<DeviceInfo>) {
+    public setAudioInputDeviceSafe = async (
+        device: Nullable<DeviceInfo>,
+        addNoiseSuppression: boolean = false,
+    ) => {
         try {
             let actualDevice: Nullable<string> | VoiceFocusTransformDevice = device?.value ?? null;
 
-            if (await VoiceFocusDeviceTransformer.isSupported()) {
+            if (addNoiseSuppression && (await VoiceFocusDeviceTransformer.isSupported())) {
                 const transformer = await VoiceFocusDeviceTransformer.create();
 
                 // Checks if the transformation spec is supported. The transformer itself might
@@ -174,14 +177,16 @@ export class AudioVideoManager implements IAudioVideoManager, DeviceChangeObserv
         } catch (error: any) {
             this._logger.error(error);
         }
-    }
+    };
 
-    public async setAudioOutputDeviceSafe(device: Nullable<DeviceInfo>) {
+    public setAudioOutputDeviceSafe = async (device: Nullable<DeviceInfo>) => {
         this.currentAudioOutputDevice = await this.setDeviceSafe(
             device,
-            this._audioVideo?.chooseAudioOutputDevice,
+            async (deviceId: string | null) => {
+                await this._audioVideo?.chooseAudioOutputDevice(deviceId);
+            },
         );
-    }
+    };
 
     public async setVideoInputDeviceSafe(
         device: Nullable<DeviceInfo>,
@@ -241,22 +246,10 @@ export class AudioVideoManager implements IAudioVideoManager, DeviceChangeObserv
     };
 
     public listAudioOutputDevices = async (): Promise<MediaDeviceInfo[]> => {
+        // We can query these 2 in pair since they share permissions
         const outputDevices = await this.listAudioOutputDevicesInternal();
         await this.listAudioInputDevicesInternal();
         return outputDevices;
-    };
-
-    public listVideoInputDevices = async (): Promise<MediaDeviceInfo[]> => {
-        const devices = await this._audioVideo.listVideoInputDevices();
-
-        if (devices.length) {
-            this._videoInputDevices = devices.map<DeviceInfo>((device) => ({
-                label: device.label,
-                value: device.deviceId,
-            }));
-        }
-
-        return devices;
     };
 
     public tryRemoveObserver = (observer: AudioVideoObserver) => {
@@ -322,8 +315,33 @@ export class AudioVideoManager implements IAudioVideoManager, DeviceChangeObserv
 
     // #endregion
 
+    public listVideoInputDevices = async (): Promise<MediaDeviceInfo[]> => {
+        const devices = await this._audioVideo.listVideoInputDevices();
+
+        // Might return an array of devices here, even if no permission is granted, so we
+        // have to check again if the queried devices are proper devices
+        if (!devices.some((x) => x.deviceId !== "")) {
+            return [];
+        }
+
+        if (devices.length) {
+            this._videoInputDevices = devices.map<DeviceInfo>((device) => ({
+                label: device.label,
+                value: device.deviceId,
+            }));
+        }
+
+        return devices;
+    };
+
     private async listAudioInputDevicesInternal(): Promise<MediaDeviceInfo[]> {
         const devices = await this._audioVideo.listAudioInputDevices();
+
+        // Might return an array of devices here, even if no permission is granted, so we
+        // have to check again if the queried devices are proper devices
+        if (!devices.some((x) => x.deviceId !== "")) {
+            return [];
+        }
 
         if (devices.length) {
             this._audioInputDevices = devices.map<DeviceInfo>((device) => ({
@@ -337,6 +355,12 @@ export class AudioVideoManager implements IAudioVideoManager, DeviceChangeObserv
 
     private async listAudioOutputDevicesInternal(): Promise<MediaDeviceInfo[]> {
         const devices = await this._audioVideo.listAudioOutputDevices();
+
+        // Might return an array of devices here, even if no permission is granted, so we
+        // have to check again if the queried devices are proper devices
+        if (!devices.some((x) => x.deviceId !== "")) {
+            return [];
+        }
 
         if (devices.length) {
             this._audioOutputDevices = devices.map<DeviceInfo>((device) => ({

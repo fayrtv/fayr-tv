@@ -4,6 +4,7 @@ import * as config from "config";
 import { useInjection } from "inversify-react";
 import React from "react";
 import { Redirect, RouteComponentProps, useRouteMatch, withRouter } from "react-router-dom";
+import styled from "styled-components";
 import Types from "types/inject";
 import { getPropertyCaseInsensitive } from "util/objectUtil";
 
@@ -18,8 +19,15 @@ import { LoadingAnimation, isFalsyOrWhitespace } from "@fayr/common";
 
 import useMeetingMetaData from "../../../hooks/useMeetingMetaData";
 import IAudioVideoManager from "../../chime/interfaces/IAudioVideoManager";
-import MeetingStartScreen from "./MeetingStartScreen";
+import SettingsView from "./Settings/SettingsView";
 import { formatMeetingSsKey } from "./storage";
+
+const SettingsViewContainer = styled.div`
+    display: grid;
+    place-content: center;
+    height: 100%;
+    width: 100%;
+`;
 
 type PublicProps = {
     roomTitle: string;
@@ -44,10 +52,11 @@ export const MeetingContainer = ({
         }
 
         try {
+            const parsedJson = JSON.parse(rawData) as MeetingMetaData;
             return {
-                ...(JSON.parse(rawData) as MeetingMetaData),
-                muted: true,
-                videoEnabled: false,
+                ...parsedJson,
+                muted: parsedJson.muted ?? true,
+                videoEnabled: parsedJson.videoEnabled ?? false,
             };
         } catch (error) {
             return {} as MeetingMetaData;
@@ -76,36 +85,34 @@ export const MeetingContainer = ({
                 if (meetingMetaData.meetingInputOutputDevices) {
                     const promises: Array<Promise<void>> = [];
 
-                    if (meetingMetaData.meetingInputOutputDevices) {
-                        const { audioInput, audioOutput, cam } =
-                            meetingMetaData.meetingInputOutputDevices;
+                    const { audioInput, audioOutput, cam } =
+                        meetingMetaData.meetingInputOutputDevices;
 
-                        if (audioInput && !meetingMetaData.muted && !meetingMetaData.forceMuted) {
-                            promises.push(
-                                (async () => {
-                                    await audioVideoManager.setAudioInputDeviceSafe(audioInput);
-                                    audioVideoManager.audioVideo!.start();
-                                })(),
-                            );
-                        }
+                    if (audioInput && !meetingMetaData.muted && !meetingMetaData.forceMuted) {
+                        promises.push(
+                            (async () => {
+                                await audioVideoManager.setAudioInputDeviceSafe(audioInput);
+                                audioVideoManager.audioVideo!.start();
+                            })(),
+                        );
+                    }
 
-                        if (audioOutput) {
-                            promises.push(audioVideoManager.setAudioOutputDeviceSafe(audioOutput));
-                        }
+                    if (audioOutput) {
+                        promises.push(audioVideoManager.setAudioOutputDeviceSafe(audioOutput));
+                    }
 
-                        if (
-                            cam &&
-                            meetingMetaData.videoEnabled &&
-                            !meetingMetaData.forceVideoDisabled
-                        ) {
-                            promises.push(
-                                (async () => {
-                                    await audioVideoManager.setVideoInputDeviceSafe(cam);
-                                    audioVideoManager.audioVideo.start();
-                                    audioVideoManager.audioVideo.startLocalVideoTile();
-                                })(),
-                            );
-                        }
+                    if (
+                        cam &&
+                        meetingMetaData.videoEnabled &&
+                        !meetingMetaData.forceVideoDisabled
+                    ) {
+                        promises.push(
+                            (async () => {
+                                await audioVideoManager.setVideoInputDeviceSafe(cam);
+                                audioVideoManager.audioVideo.start();
+                                audioVideoManager.audioVideo.startLocalVideoTile();
+                            })(),
+                        );
                     }
 
                     await Promise.all(promises);
@@ -193,19 +200,22 @@ export const MeetingContainer = ({
         <LoadingAnimation fullScreen={true} />
     ) : meetingMetaData && roomTitle ? (
         showStartScreen ? (
-            <MeetingStartScreen
-                attendeeId={roomManager.attendeeId}
-                onContinue={() => {
-                    setShowStartScreen(false);
-                    if (!meetingMetaData.meetingInputOutputDevices) {
-                        setMeetingMetaData({
-                            ...meetingMetaData,
-                            meetingInputOutputDevices:
-                                meetingMetaData.meetingInputOutputDevices ?? {},
-                        });
-                    }
-                }}
-            />
+            <SettingsViewContainer>
+                <SettingsView
+                    attendeeId={roomManager.attendeeId}
+                    onCancel={() => history.push("/")}
+                    onContinue={() => {
+                        setShowStartScreen(false);
+                        if (!meetingMetaData.meetingInputOutputDevices) {
+                            setMeetingMetaData({
+                                ...meetingMetaData,
+                                meetingInputOutputDevices:
+                                    meetingMetaData.meetingInputOutputDevices ?? {},
+                            });
+                        }
+                    }}
+                />
+            </SettingsViewContainer>
         ) : (
             <>
                 <audio ref={audioElementRef} style={{ display: "none" }} />

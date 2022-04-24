@@ -12,4 +12,7 @@ export type Translations = {
     WelcomeMessageBody: "Erstelle eine Watch Party oder trete einer bei und verbringe mit deinen Freunden eine geile Zeit!";
     StartWatchPartyHeader: "Starte eine Watch Party";
     StartWatchPartyBody: "Fiebere zusammen mit deinen Freunden mit und schaue dir Live- und Sportevents online an!";
+    Settings: "Einstellungen";
+    Cancel: "Abbrechen";
+    Save: "Speichern";
 };

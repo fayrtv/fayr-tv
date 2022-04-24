@@ -1,9 +1,6 @@
-import React from "react";
-import { useRouteMatch, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 const End = () => {
-    const { url } = useRouteMatch();
-
     return (
         <div className="welcome form-grid">
             <div className="welcome__intro">
@@ -17,7 +14,7 @@ const End = () => {
                 <div className="content__inner formatted-text">
                     <h2 className="mg-b-2">WatchParty geschlossen</h2>
                     <p>Der Host hat die WatchParty beendet und für alle geschlossen.</p>
-                    <a href={`${url}/`} className="mg-t-3 btn btn--primary">
+                    <a href="/" className="mg-t-3 btn btn--primary">
                         Neue Watch Party erstellen
                     </a>
                 </div>

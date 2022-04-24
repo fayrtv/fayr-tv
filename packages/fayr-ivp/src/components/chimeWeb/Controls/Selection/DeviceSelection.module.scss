@@ -1,0 +1,29 @@
+.Container {
+    height: 100%;
+    width: 100%;
+
+    position: relative;
+
+    .Selection {
+        width: 100%;
+
+        border: 2px groove white;
+
+        padding: 0 35px 0 10px;
+
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        white-space: nowrap;
+
+        > option {
+            color: black;
+        }
+    }
+
+    .DropdownIndicator {
+        top: 0;
+        position: absolute;
+        right: 10px;
+        transform: scaleX(1.5) translateY(50%);
+    }
+}

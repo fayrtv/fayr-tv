@@ -3,7 +3,6 @@ import React, { MouseEventHandler } from "react";
 
 import { useIsMobile } from "components/mediaQueries";
 
-import { usePersistedState } from "@fayr/common";
 import { isFalsyOrWhitespace } from "@fayr/common";
 
 import styles from "./JoinInfoForm.module.scss";
@@ -34,13 +33,9 @@ export function JoinInfoForm({
 }: Props) {
     const isMobile = useIsMobile();
 
-    const [usernameInternal, setUsernameInternal] = usePersistedState("USERNAME", () => username);
-    const isValid = !isFalsyOrWhitespace(roomTitle) && !isFalsyOrWhitespace(usernameInternal);
+    const isValid = !isFalsyOrWhitespace(roomTitle) && !isFalsyOrWhitespace(username);
 
-    const setUsername = (newValue: string) => {
-        setUsernameInternal(newValue);
-        onUsernameChanged(newValue);
-    };
+    const setUsername = (newValue: string) => onUsernameChanged(newValue);
 
     const qrSize = isMobile ? 100 : 150;
 
@@ -55,7 +50,7 @@ export function JoinInfoForm({
                         ref={usernameInputRef}
                         type="text"
                         placeholder="Dein Name"
-                        value={usernameInternal}
+                        value={username}
                         onChange={(ev) => setUsername(ev.target.value)}
                     />
                     <input

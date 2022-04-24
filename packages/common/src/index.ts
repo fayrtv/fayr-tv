@@ -5,6 +5,7 @@ import { MaterialIcon } from "./MaterialIcon";
 import EaseInOutCheckmark from "./accessibility/EaseInOutCheckmark";
 import LoadingAnimation from "./interactivity/LoadingAnimation";
 import Spinner from "./interactivity/Spinner";
+import Toggle from "./interactivity/Toggle";
 import createTranslationContext from "./translations/TranslationContext";
 import TranslationContextProvider from "./translations/TranslationContextProvider";
 import uuid from "./utils/uuid";
@@ -20,6 +21,7 @@ export {
     TranslationContextProvider,
     Spinner,
     uuid,
+    Toggle,
 };
 
 export { isFalsyOrWhitespace } from "./utils/stringUtils";

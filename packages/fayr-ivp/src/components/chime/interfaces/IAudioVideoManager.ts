@@ -13,7 +13,10 @@ export default interface IAudioVideoManager {
     audioOutputDevices: Array<DeviceInfo>;
     videoInputDevices: Array<DeviceInfo>;
 
-    setAudioInputDeviceSafe(device: Nullable<DeviceInfo>): Promise<void>;
+    setAudioInputDeviceSafe(
+        device: Nullable<DeviceInfo>,
+        addNoiseSuppression?: boolean,
+    ): Promise<void>;
     setAudioOutputDeviceSafe(device: Nullable<DeviceInfo>): Promise<void>;
     setVideoInputDeviceSafe(device: Nullable<DeviceInfo>, blurBackground?: boolean): Promise<void>;
     changeBlurState(blurBackground: boolean): Promise<void>;
