@@ -1,4 +1,4 @@
-import { Checkbox, PasswordField, SubmitButton, TextField } from "@fayr/common";
+import { Checkbox, isFalsyOrWhitespace, SubmitButton, TextField } from "@fayr/common";
 // @ts-ignore
 import SignUpFigure from "assets/signup-figure.svg";
 import classNames from "classnames";
@@ -43,12 +43,18 @@ export default function SignUp({ providers }: Props) {
                             placeholder="First name"
                             value={firstName}
                             onChange={setFirstName}
-                            isValid={false}
+                            getErrorMessage={(value: string) =>
+                                isFalsyOrWhitespace(value) ? "Please enter a value" : null
+                            }
                         />
                         <TextField
                             placeholder="Last name"
                             value={lastName}
+                            isValid={false}
                             onChange={setLastName}
+                            getErrorMessage={(value: string) =>
+                                isFalsyOrWhitespace(value) ? "Please enter a value" : null
+                            }
                         />
                     </div>
                     <TextField
@@ -56,18 +62,37 @@ export default function SignUp({ providers }: Props) {
                         placeholder="Email"
                         value={email}
                         onChange={setEmail}
+                        getErrorMessage={(value: string) =>
+                            isFalsyOrWhitespace(value)
+                                ? "Please enter a value"
+                                : !validateEmail(value)
+                                ? "Please enter a valid email address"
+                                : null
+                        }
                     />
-                    <PasswordField
+                    <TextField
+                        type="password"
                         className="col-span-2"
                         placeholder="Password"
                         value={password}
                         onChange={setPassword}
+                        getErrorMessage={(value: string) =>
+                            isFalsyOrWhitespace(value) ? "Please enter a password" : null
+                        }
                     />
-                    <PasswordField
+                    <TextField
+                        type="password"
                         className="col-span-2"
                         placeholder="Confirm password"
                         value={confirmPassword}
                         onChange={setConfirmPassword}
+                        getErrorMessage={(value: string) =>
+                            isFalsyOrWhitespace(value)
+                                ? "Please enter a password"
+                                : password !== confirmPassword
+                                ? "The passwords do not match"
+                                : null
+                        }
                     />
 
                     <label className="flex flex-row items-center gap-3">
@@ -101,6 +126,13 @@ export default function SignUp({ providers }: Props) {
         </TwoColumnAuthLayout>
     );
 }
+
+const validateEmail = (email: string) =>
+    String(email)
+        .toLowerCase()
+        .match(
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+        );
 
 SignUp.layoutProps = {
     Layout: AuthPageLayout,
