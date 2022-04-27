@@ -16,8 +16,8 @@
     "Cancel": "Cancel",
     "Save": "Save"
     "Invitation": "Invitation",
-    "LinkCopied": "Link successfully copied!",
+    "LinkCopied": "Link copied to clipboard!",
     "LinkToWatchPartyRoom": "Link to the watch party room",
     "Close": "Close",
-    "InvitationPrompt": "{{0}} wants to invite you to a Fayr TV session! Get your ass in here now you lazy fuck"
+    "InvitationPrompt": "{{0}} wants to invite you to a Fayr TV session!"
 }

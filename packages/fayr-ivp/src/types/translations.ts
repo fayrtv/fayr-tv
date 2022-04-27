@@ -19,5 +19,5 @@ export type Translations = {
     LinkCopied: "Link erfolgreich kopiert!";
     LinkToWatchPartyRoom: "Link zur Watch Party Sitzung";
     Close: "Schließen";
-    InvitationPrompt: "{{0}} möchte dich zu einer Fayr TV Sitzung einladen!";
+    InvitationPrompt: "{{0}} möchte dich zu einer FAYR TV Sitzung einladen!";
 };

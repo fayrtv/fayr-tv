@@ -1,5 +1,6 @@
 // Framework
 import * as React from "react";
+import { withoutPropagation } from "util/mouseUtils";
 
 import ShareInvite from "components/chimeWeb/Meeting/ShareInvite";
 import Portal from "components/common/Portal";
@@ -17,7 +18,7 @@ export const SharePartyButton = ({ title }: Props) => {
     return (
         <div
             className={`${styles.Button} btn rounded popup`}
-            onClick={() => setShowPopUp((curr) => !curr)}
+            onClick={withoutPropagation(() => setShowPopUp((curr) => !curr))}
             title="Teile den Link mit deinen Freunden"
         >
             {showPopUp && (
