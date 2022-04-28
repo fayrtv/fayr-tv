@@ -25,6 +25,7 @@ export {
 };
 
 export { isFalsyOrWhitespace } from "./utils/stringUtils";
+export { format } from "./utils/translationUtils";
 
 export * from "./hooks/useStateWithCallback";
 export * from "./hooks/usePersistedState";
