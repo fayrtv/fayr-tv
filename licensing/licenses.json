@@ -11469,6 +11469,12 @@
         "path": "fayr_tv_live/node_modules/jsonfile",
         "licenseFile": "fayr_tv_live/node_modules/jsonfile/LICENSE"
     },
+    "jsonp@0.2.1": {
+        "licenses": "MIT*",
+        "repository": "https://github.com/LearnBoost/jsonp",
+        "path": "fayr_tv_live/node_modules/jsonp",
+        "licenseFile": "fayr_tv_live/node_modules/jsonp/Readme.md"
+    },
     "jsonparse@1.3.1": {
         "licenses": "MIT",
         "repository": "https://github.com/creationix/jsonparse",
@@ -15669,6 +15675,15 @@
         "repository": "https://github.com/facebook/create-react-app",
         "path": "fayr_tv_live/node_modules/react-scripts",
         "licenseFile": "fayr_tv_live/node_modules/react-scripts/LICENSE"
+    },
+    "react-share@4.4.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/nygardk/react-share",
+        "publisher": "Klaus Nygård",
+        "email": "klaus.nygard@gmail.com",
+        "url": "http://klausnygard.fi",
+        "path": "fayr_tv_live/node_modules/react-share",
+        "licenseFile": "fayr_tv_live/node_modules/react-share/LICENSE"
     },
     "react-transition-group@4.4.2": {
         "licenses": "BSD-3-Clause",
