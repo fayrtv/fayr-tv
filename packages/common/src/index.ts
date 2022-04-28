@@ -31,4 +31,9 @@ export * from "./hooks/usePersistedState";
 
 export * from "./theming";
 
+export { default as ErrorBoundary } from "./ErrorBoundary";
 export { default as FayrLogo } from "./assets/FayrLogo";
+export { default as TextField } from "./TextField";
+export { default as PasswordField } from "./PasswordField";
+export { default as Checkbox } from "./Checkbox";
+export { default as SubmitButton } from "./SubmitButton";
