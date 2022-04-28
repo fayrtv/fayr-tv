@@ -50,7 +50,7 @@ export default function SignUp({ providers }: Props) {
                         <TextField
                             placeholder="Last name"
                             value={lastName}
-                            isValid={false}
+                            // isValid={false}
                             onChange={setLastName}
                             getErrorMessage={(value: string) =>
                                 isFalsyOrWhitespace(value) ? "Please enter a value" : null
