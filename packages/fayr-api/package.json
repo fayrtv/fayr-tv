@@ -1,10 +1,11 @@
 {
-    "name": "fayr-api",
+    "name": "@fayr/api",
     "version": "1.0.0",
     "description": "Serverless aws-nodejs-typescript template",
     "main": "serverless.ts",
     "scripts": {
         "dev": "serverless offline start",
+        "build": "serverless package",
         "deploy": "serverless deploy"
     },
     "engines": {

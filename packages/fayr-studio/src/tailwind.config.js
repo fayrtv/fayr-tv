@@ -7,7 +7,7 @@ const plugin = require("tailwindcss/plugin");
 
 module.exports = {
     mode: "jit",
-    content: ["./src/**/*.{js,jsx,ts,tsx}"],
+    content: ["./src/**/*.{js,jsx,ts,tsx}", "../common/lib/**/*.{js,jsx}"],
     theme: {
         extend: {
             fontSize: {
@@ -32,7 +32,7 @@ module.exports = {
     plugins: [
         require("@tailwindcss/forms"),
         // https://stackoverflow.com/questions/60854215/tailwind-use-font-from-local-files-globally
-        plugin(function ({ addBase }) {
+        plugin(({ addBase }) => {
             addBase({
                 "@font-face": {
                     fontFamily: "WinnerSans",

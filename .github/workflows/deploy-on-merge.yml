@@ -1,0 +1,26 @@
+name: Deploy FAYR API
+
+on:
+    push:
+# TODO(before-merge): Uncomment
+#        branches:
+#            - main
+
+jobs:
+    deploy-fayr-api:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: 16.x
+            - uses: aws-actions/configure-aws-credentials@v1
+              with:
+                  # TODO: Create IAM role
+                  # Docs: https://github.com/aws-actions/configure-aws-credentials
+                  role-to-assume: arn:aws:iam::111111111111:role/my-github-actions-role-test
+                  aws-region: us-east-1
+            - working-directory: packages/fayr-api
+              run: yarn install
+            - working-directory: packages/fayr-api
+              run: yarn deploy

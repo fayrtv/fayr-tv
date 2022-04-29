@@ -4,7 +4,7 @@
     "main": "lib/index.js",
     "scripts": {
         "build": "yarn clean && yarn copy-files && tsc",
-        "dev": "yarn clean && tsc -w",
+        "dev": "yarn clean && yarn copy-files && tsc -w",
         "clean": "rimraf lib/",
         "copy-files": "copyfiles -u 1 \"src/**/*.scss\" lib/"
     },

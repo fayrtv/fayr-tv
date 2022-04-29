@@ -1862,6 +1862,13 @@
         "licenses": "UNKNOWN",
         "path": "fayr_tv_live/node_modules/@fayr/api-contracts"
     },
+    "@fayr/api@1.0.0": {
+        "licenses": "MIT",
+        "publisher": "The serverless webpack authors",
+        "url": "https://github.com/elastic-coders/serverless-webpack",
+        "path": "fayr_tv_live/node_modules/@fayr/api",
+        "licenseFile": "fayr_tv_live/node_modules/@fayr/api/README.md"
+    },
     "@fayr/common@1.0.0": {
         "licenses": "UNKNOWN",
         "path": "fayr_tv_live/node_modules/@fayr/common",
@@ -3531,8 +3538,8 @@
     "@types/aws-lambda@8.10.93": {
         "licenses": "MIT",
         "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
-        "path": "fayr_tv_live/node_modules/fayr-api/node_modules/@types/aws-lambda",
-        "licenseFile": "fayr_tv_live/node_modules/fayr-api/node_modules/@types/aws-lambda/LICENSE"
+        "path": "fayr_tv_live/node_modules/@fayr/api/node_modules/@types/aws-lambda",
+        "licenseFile": "fayr_tv_live/node_modules/@fayr/api/node_modules/@types/aws-lambda/LICENSE"
     },
     "@types/babel__core@7.1.18": {
         "licenses": "MIT",
@@ -3785,8 +3792,8 @@
     "@types/node@14.18.12": {
         "licenses": "MIT",
         "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
-        "path": "fayr_tv_live/node_modules/fayr-api/node_modules/@types/node",
-        "licenseFile": "fayr_tv_live/node_modules/fayr-api/node_modules/@types/node/LICENSE"
+        "path": "fayr_tv_live/node_modules/@fayr/api/node_modules/@types/node",
+        "licenseFile": "fayr_tv_live/node_modules/@fayr/api/node_modules/@types/node/LICENSE"
     },
     "@types/node@17.0.18": {
         "licenses": "MIT",
@@ -4539,15 +4546,6 @@
         "path": "fayr_tv_live/node_modules/ansi-align",
         "licenseFile": "fayr_tv_live/node_modules/ansi-align/LICENSE"
     },
-    "ansi-escapes@2.0.0": {
-        "licenses": "MIT",
-        "repository": "https://github.com/sindresorhus/ansi-escapes",
-        "publisher": "Sindre Sorhus",
-        "email": "sindresorhus@gmail.com",
-        "url": "sindresorhus.com",
-        "path": "fayr_tv_live/node_modules/eslint-formatter-pretty/node_modules/ansi-escapes",
-        "licenseFile": "fayr_tv_live/node_modules/eslint-formatter-pretty/node_modules/ansi-escapes/license"
-    },
     "ansi-escapes@3.2.0": {
         "licenses": "MIT",
         "repository": "https://github.com/sindresorhus/ansi-escapes",
@@ -4785,15 +4783,6 @@
         "path": "fayr_tv_live/node_modules/array-differ",
         "licenseFile": "fayr_tv_live/node_modules/array-differ/license"
     },
-    "array-find-index@1.0.2": {
-        "licenses": "MIT",
-        "repository": "https://github.com/sindresorhus/array-find-index",
-        "publisher": "Sindre Sorhus",
-        "email": "sindresorhus@gmail.com",
-        "url": "sindresorhus.com",
-        "path": "fayr_tv_live/node_modules/array-find-index",
-        "licenseFile": "fayr_tv_live/node_modules/array-find-index/license"
-    },
     "array-flatten@1.1.1": {
         "licenses": "MIT",
         "repository": "https://github.com/blakeembrey/array-flatten",
@@ -4830,15 +4819,6 @@
         "path": "fayr_tv_live/node_modules/array-includes",
         "licenseFile": "fayr_tv_live/node_modules/array-includes/LICENSE"
     },
-    "array-union@1.0.2": {
-        "licenses": "MIT",
-        "repository": "https://github.com/sindresorhus/array-union",
-        "publisher": "Sindre Sorhus",
-        "email": "sindresorhus@gmail.com",
-        "url": "sindresorhus.com",
-        "path": "fayr_tv_live/node_modules/prettylint/node_modules/array-union",
-        "licenseFile": "fayr_tv_live/node_modules/prettylint/node_modules/array-union/license"
-    },
     "array-union@2.1.0": {
         "licenses": "MIT",
         "repository": "https://github.com/sindresorhus/array-union",
@@ -4856,15 +4836,6 @@
         "url": "https://sindresorhus.com",
         "path": "fayr_tv_live/node_modules/postcss-cli/node_modules/array-union",
         "licenseFile": "fayr_tv_live/node_modules/postcss-cli/node_modules/array-union/license"
-    },
-    "array-uniq@1.0.3": {
-        "licenses": "MIT",
-        "repository": "https://github.com/sindresorhus/array-uniq",
-        "publisher": "Sindre Sorhus",
-        "email": "sindresorhus@gmail.com",
-        "url": "sindresorhus.com",
-        "path": "fayr_tv_live/node_modules/array-uniq",
-        "licenseFile": "fayr_tv_live/node_modules/array-uniq/license"
     },
     "array-unique@0.3.2": {
         "licenses": "MIT",
@@ -5319,6 +5290,14 @@
         "path": "fayr_tv_live/node_modules/big-integer",
         "licenseFile": "fayr_tv_live/node_modules/big-integer/LICENSE"
     },
+    "big.js@3.2.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/MikeMcl/big.js",
+        "publisher": "Michael Mclaughlin",
+        "email": "M8ch88l@gmail.com",
+        "path": "fayr_tv_live/node_modules/svg-react-loader/node_modules/big.js",
+        "licenseFile": "fayr_tv_live/node_modules/svg-react-loader/node_modules/big.js/LICENCE"
+    },
     "big.js@5.2.2": {
         "licenses": "MIT",
         "repository": "https://github.com/MikeMcl/big.js",
@@ -5764,15 +5743,6 @@
         "path": "fayr_tv_live/node_modules/camelcase-css",
         "licenseFile": "fayr_tv_live/node_modules/camelcase-css/license"
     },
-    "camelcase-keys@2.1.0": {
-        "licenses": "MIT",
-        "repository": "https://github.com/sindresorhus/camelcase-keys",
-        "publisher": "Sindre Sorhus",
-        "email": "sindresorhus@gmail.com",
-        "url": "http://sindresorhus.com",
-        "path": "fayr_tv_live/node_modules/prettylint/node_modules/camelcase-keys",
-        "licenseFile": "fayr_tv_live/node_modules/prettylint/node_modules/camelcase-keys/license"
-    },
     "camelcase-keys@6.2.2": {
         "licenses": "MIT",
         "repository": "https://github.com/sindresorhus/camelcase-keys",
@@ -5781,15 +5751,6 @@
         "url": "sindresorhus.com",
         "path": "fayr_tv_live/node_modules/camelcase-keys",
         "licenseFile": "fayr_tv_live/node_modules/camelcase-keys/license"
-    },
-    "camelcase@2.1.1": {
-        "licenses": "MIT",
-        "repository": "https://github.com/sindresorhus/camelcase",
-        "publisher": "Sindre Sorhus",
-        "email": "sindresorhus@gmail.com",
-        "url": "http://sindresorhus.com",
-        "path": "fayr_tv_live/node_modules/prettylint/node_modules/camelcase",
-        "licenseFile": "fayr_tv_live/node_modules/prettylint/node_modules/camelcase/license"
     },
     "camelcase@5.3.1": {
         "licenses": "MIT",
@@ -6911,6 +6872,14 @@
         "path": "fayr_tv_live/node_modules/css.escape",
         "licenseFile": "fayr_tv_live/node_modules/css.escape/LICENSE-MIT.txt"
     },
+    "css@2.2.4": {
+        "licenses": "MIT",
+        "repository": "https://github.com/reworkcss/css",
+        "publisher": "TJ Holowaychuk",
+        "email": "tj@vision-media.ca",
+        "path": "fayr_tv_live/node_modules/css",
+        "licenseFile": "fayr_tv_live/node_modules/css/LICENSE"
+    },
     "cssdb@6.4.0": {
         "licenses": "CC0-1.0",
         "repository": "https://github.com/csstools/cssdb",
@@ -7020,15 +6989,6 @@
         "url": "https://ericelliottjs.com",
         "path": "fayr_tv_live/node_modules/cuid",
         "licenseFile": "fayr_tv_live/node_modules/cuid/LICENSE"
-    },
-    "currently-unhandled@0.4.1": {
-        "licenses": "MIT",
-        "repository": "https://github.com/jamestalmage/currently-unhandled",
-        "publisher": "James Talmage",
-        "email": "james@talmage.io",
-        "url": "github.com/jamestalmage",
-        "path": "fayr_tv_live/node_modules/currently-unhandled",
-        "licenseFile": "fayr_tv_live/node_modules/currently-unhandled/license"
     },
     "d@1.0.1": {
         "licenses": "ISC",
@@ -7871,8 +7831,8 @@
         "publisher": "Kiko Beats",
         "email": "josefrancisco.verdu@gmail.com",
         "url": "https://github.com/Kikobeats",
-        "path": "fayr_tv_live/node_modules/styled-jsx/node_modules/emojis-list",
-        "licenseFile": "fayr_tv_live/node_modules/styled-jsx/node_modules/emojis-list/LICENSE.md"
+        "path": "fayr_tv_live/node_modules/svg-react-loader/node_modules/emojis-list",
+        "licenseFile": "fayr_tv_live/node_modules/svg-react-loader/node_modules/emojis-list/LICENSE.md"
     },
     "emojis-list@3.0.0": {
         "licenses": "MIT",
@@ -8161,15 +8121,6 @@
         "path": "fayr_tv_live/node_modules/eslint-config-react-app",
         "licenseFile": "fayr_tv_live/node_modules/eslint-config-react-app/LICENSE"
     },
-    "eslint-formatter-pretty@1.3.0": {
-        "licenses": "MIT",
-        "repository": "https://github.com/sindresorhus/eslint-formatter-pretty",
-        "publisher": "Sindre Sorhus",
-        "email": "sindresorhus@gmail.com",
-        "url": "sindresorhus.com",
-        "path": "fayr_tv_live/node_modules/eslint-formatter-pretty",
-        "licenseFile": "fayr_tv_live/node_modules/eslint-formatter-pretty/license"
-    },
     "eslint-import-resolver-node@0.3.6": {
         "licenses": "MIT",
         "repository": "https://github.com/import-js/eslint-plugin-import",
@@ -8224,13 +8175,6 @@
         "publisher": "Ethan Cohen",
         "path": "fayr_tv_live/node_modules/eslint-plugin-jsx-a11y",
         "licenseFile": "fayr_tv_live/node_modules/eslint-plugin-jsx-a11y/LICENSE.md"
-    },
-    "eslint-plugin-prettier@2.7.0": {
-        "licenses": "MIT",
-        "repository": "https://github.com/prettier/eslint-plugin-prettier",
-        "publisher": "Teddy Katz",
-        "path": "fayr_tv_live/node_modules/eslint-plugin-prettier",
-        "licenseFile": "fayr_tv_live/node_modules/eslint-plugin-prettier/LICENSE.md"
     },
     "eslint-plugin-prettier@3.4.1": {
         "licenses": "MIT",
@@ -8702,13 +8646,6 @@
         "path": "fayr_tv_live/node_modules/faye-websocket",
         "licenseFile": "fayr_tv_live/node_modules/faye-websocket/LICENSE.md"
     },
-    "fayr-api@1.0.0": {
-        "licenses": "MIT",
-        "publisher": "The serverless webpack authors",
-        "url": "https://github.com/elastic-coders/serverless-webpack",
-        "path": "fayr_tv_live/node_modules/fayr-api",
-        "licenseFile": "fayr_tv_live/node_modules/fayr-api/README.md"
-    },
     "fayr-backend@1.0.0": {
         "licenses": "ISC",
         "path": "fayr_tv_live/node_modules/fayr-backend",
@@ -8932,15 +8869,6 @@
         "publisher": "jsdnxx",
         "path": "fayr_tv_live/node_modules/find-root",
         "licenseFile": "fayr_tv_live/node_modules/find-root/LICENSE.md"
-    },
-    "find-up@1.1.2": {
-        "licenses": "MIT",
-        "repository": "https://github.com/sindresorhus/find-up",
-        "publisher": "Sindre Sorhus",
-        "email": "sindresorhus@gmail.com",
-        "url": "sindresorhus.com",
-        "path": "fayr_tv_live/node_modules/prettylint/node_modules/find-up",
-        "licenseFile": "fayr_tv_live/node_modules/prettylint/node_modules/find-up/license"
     },
     "find-up@2.1.0": {
         "licenses": "MIT",
@@ -9579,15 +9507,6 @@
         "path": "fayr_tv_live/node_modules/postcss-cli/node_modules/globby",
         "licenseFile": "fayr_tv_live/node_modules/postcss-cli/node_modules/globby/license"
     },
-    "globby@6.1.0": {
-        "licenses": "MIT",
-        "repository": "https://github.com/sindresorhus/globby",
-        "publisher": "Sindre Sorhus",
-        "email": "sindresorhus@gmail.com",
-        "url": "sindresorhus.com",
-        "path": "fayr_tv_live/node_modules/prettylint/node_modules/globby",
-        "licenseFile": "fayr_tv_live/node_modules/prettylint/node_modules/globby/license"
-    },
     "globule@1.3.3": {
         "licenses": "MIT",
         "repository": "https://github.com/cowboy/node-globule",
@@ -9874,8 +9793,8 @@
         "publisher": "Rebecca Turner",
         "email": "me@re-becca.org",
         "url": "http://re-becca.org",
-        "path": "fayr_tv_live/node_modules/normalize-package-data/node_modules/hosted-git-info",
-        "licenseFile": "fayr_tv_live/node_modules/normalize-package-data/node_modules/hosted-git-info/LICENSE"
+        "path": "fayr_tv_live/node_modules/read-package-json/node_modules/hosted-git-info",
+        "licenseFile": "fayr_tv_live/node_modules/read-package-json/node_modules/hosted-git-info/LICENSE"
     },
     "hosted-git-info@4.1.0": {
         "licenses": "ISC",
@@ -10167,13 +10086,6 @@
         "path": "fayr_tv_live/node_modules/ignore-walk",
         "licenseFile": "fayr_tv_live/node_modules/ignore-walk/LICENSE"
     },
-    "ignore@3.3.10": {
-        "licenses": "MIT",
-        "repository": "https://github.com/kaelzhang/node-ignore",
-        "publisher": "kael",
-        "path": "fayr_tv_live/node_modules/prettylint/node_modules/ignore",
-        "licenseFile": "fayr_tv_live/node_modules/prettylint/node_modules/ignore/README.md"
-    },
     "ignore@4.0.6": {
         "licenses": "MIT",
         "repository": "https://github.com/kaelzhang/node-ignore",
@@ -10260,15 +10172,6 @@
         "url": "https://github.com/homebrewing",
         "path": "fayr_tv_live/node_modules/imurmurhash",
         "licenseFile": "fayr_tv_live/node_modules/imurmurhash/README.md"
-    },
-    "indent-string@2.1.0": {
-        "licenses": "MIT",
-        "repository": "https://github.com/sindresorhus/indent-string",
-        "publisher": "Sindre Sorhus",
-        "email": "sindresorhus@gmail.com",
-        "url": "sindresorhus.com",
-        "path": "fayr_tv_live/node_modules/prettylint/node_modules/indent-string",
-        "licenseFile": "fayr_tv_live/node_modules/prettylint/node_modules/indent-string/license"
     },
     "indent-string@4.0.0": {
         "licenses": "MIT",
@@ -10436,15 +10339,6 @@
         "path": "fayr_tv_live/node_modules/ipaddr.js",
         "licenseFile": "fayr_tv_live/node_modules/ipaddr.js/LICENSE"
     },
-    "irregular-plurals@1.4.0": {
-        "licenses": "MIT",
-        "repository": "https://github.com/sindresorhus/irregular-plurals",
-        "publisher": "Sindre Sorhus",
-        "email": "sindresorhus@gmail.com",
-        "url": "sindresorhus.com",
-        "path": "fayr_tv_live/node_modules/irregular-plurals",
-        "licenseFile": "fayr_tv_live/node_modules/irregular-plurals/license"
-    },
     "is-accessor-descriptor@0.1.6": {
         "licenses": "MIT",
         "repository": "https://github.com/jonschlinkert/is-accessor-descriptor",
@@ -10609,15 +10503,6 @@
         "url": "https://github.com/jonschlinkert",
         "path": "fayr_tv_live/node_modules/is-extglob",
         "licenseFile": "fayr_tv_live/node_modules/is-extglob/LICENSE"
-    },
-    "is-finite@1.1.0": {
-        "licenses": "MIT",
-        "repository": "https://github.com/sindresorhus/is-finite",
-        "publisher": "Sindre Sorhus",
-        "email": "sindresorhus@gmail.com",
-        "url": "sindresorhus.com",
-        "path": "fayr_tv_live/node_modules/is-finite",
-        "licenseFile": "fayr_tv_live/node_modules/is-finite/license"
     },
     "is-fullwidth-code-point@1.0.0": {
         "licenses": "MIT",
@@ -10986,13 +10871,6 @@
         "path": "fayr_tv_live/node_modules/is-unicode-supported",
         "licenseFile": "fayr_tv_live/node_modules/is-unicode-supported/license"
     },
-    "is-utf8@0.2.1": {
-        "licenses": "MIT",
-        "repository": "https://github.com/wayfind/is-utf8",
-        "publisher": "wayfind",
-        "path": "fayr_tv_live/node_modules/is-utf8",
-        "licenseFile": "fayr_tv_live/node_modules/is-utf8/LICENSE"
-    },
     "is-weakref@1.0.2": {
         "licenses": "MIT",
         "repository": "https://github.com/inspect-js/is-weakref",
@@ -11192,17 +11070,11 @@
         "path": "fayr_tv_live/node_modules/jest-diff",
         "licenseFile": "fayr_tv_live/node_modules/jest-diff/LICENSE"
     },
-    "jest-docblock@21.2.0": {
-        "licenses": "MIT",
-        "repository": "https://github.com/facebook/jest",
-        "path": "fayr_tv_live/node_modules/jest-docblock",
-        "licenseFile": "fayr_tv_live/node_modules/jest-docblock/README.md"
-    },
     "jest-docblock@27.5.1": {
         "licenses": "MIT",
         "repository": "https://github.com/facebook/jest",
-        "path": "fayr_tv_live/node_modules/jest-runner/node_modules/jest-docblock",
-        "licenseFile": "fayr_tv_live/node_modules/jest-runner/node_modules/jest-docblock/LICENSE"
+        "path": "fayr_tv_live/node_modules/jest-docblock",
+        "licenseFile": "fayr_tv_live/node_modules/jest-docblock/LICENSE"
     },
     "jest-each@27.5.1": {
         "licenses": "MIT",
@@ -11565,6 +11437,14 @@
         "path": "fayr_tv_live/node_modules/json-stringify-safe",
         "licenseFile": "fayr_tv_live/node_modules/json-stringify-safe/LICENSE"
     },
+    "json5@0.5.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/aseemk/json5",
+        "publisher": "Aseem Kishore",
+        "email": "aseem.kishore@gmail.com",
+        "path": "fayr_tv_live/node_modules/svg-react-loader/node_modules/json5",
+        "licenseFile": "fayr_tv_live/node_modules/svg-react-loader/node_modules/json5/LICENSE.md"
+    },
     "json5@1.0.1": {
         "licenses": "MIT",
         "repository": "https://github.com/json5/json5",
@@ -11588,6 +11468,12 @@
         "email": "jprichardson@gmail.com",
         "path": "fayr_tv_live/node_modules/jsonfile",
         "licenseFile": "fayr_tv_live/node_modules/jsonfile/LICENSE"
+    },
+    "jsonp@0.2.1": {
+        "licenses": "MIT*",
+        "repository": "https://github.com/LearnBoost/jsonp",
+        "path": "fayr_tv_live/node_modules/jsonp",
+        "licenseFile": "fayr_tv_live/node_modules/jsonp/Readme.md"
     },
     "jsonparse@1.3.1": {
         "licenses": "MIT",
@@ -11923,15 +11809,6 @@
         "path": "fayr_tv_live/node_modules/lines-and-columns",
         "licenseFile": "fayr_tv_live/node_modules/lines-and-columns/LICENSE"
     },
-    "load-json-file@1.1.0": {
-        "licenses": "MIT",
-        "repository": "https://github.com/sindresorhus/load-json-file",
-        "publisher": "Sindre Sorhus",
-        "email": "sindresorhus@gmail.com",
-        "url": "sindresorhus.com",
-        "path": "fayr_tv_live/node_modules/prettylint/node_modules/load-json-file",
-        "licenseFile": "fayr_tv_live/node_modules/prettylint/node_modules/load-json-file/license"
-    },
     "load-json-file@4.0.0": {
         "licenses": "MIT",
         "repository": "https://github.com/sindresorhus/load-json-file",
@@ -11956,6 +11833,13 @@
         "publisher": "Tobias Koppers @sokra",
         "path": "fayr_tv_live/node_modules/loader-runner",
         "licenseFile": "fayr_tv_live/node_modules/loader-runner/LICENSE"
+    },
+    "loader-utils@1.1.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/webpack/loader-utils",
+        "publisher": "Tobias Koppers @sokra",
+        "path": "fayr_tv_live/node_modules/svg-react-loader/node_modules/loader-utils",
+        "licenseFile": "fayr_tv_live/node_modules/svg-react-loader/node_modules/loader-utils/LICENSE"
     },
     "loader-utils@1.2.3": {
         "licenses": "MIT",
@@ -12239,23 +12123,14 @@
         "path": "fayr_tv_live/node_modules/log-node",
         "licenseFile": "fayr_tv_live/node_modules/log-node/LICENSE"
     },
-    "log-symbols@2.2.0": {
-        "licenses": "MIT",
-        "repository": "https://github.com/sindresorhus/log-symbols",
-        "publisher": "Sindre Sorhus",
-        "email": "sindresorhus@gmail.com",
-        "url": "sindresorhus.com",
-        "path": "fayr_tv_live/node_modules/log-symbols",
-        "licenseFile": "fayr_tv_live/node_modules/log-symbols/license"
-    },
     "log-symbols@4.1.0": {
         "licenses": "MIT",
         "repository": "https://github.com/sindresorhus/log-symbols",
         "publisher": "Sindre Sorhus",
         "email": "sindresorhus@gmail.com",
         "url": "https://sindresorhus.com",
-        "path": "fayr_tv_live/node_modules/ora/node_modules/log-symbols",
-        "licenseFile": "fayr_tv_live/node_modules/ora/node_modules/log-symbols/license"
+        "path": "fayr_tv_live/node_modules/log-symbols",
+        "licenseFile": "fayr_tv_live/node_modules/log-symbols/license"
     },
     "log@6.3.1": {
         "licenses": "ISC",
@@ -12290,15 +12165,6 @@
         "email": "zertosh@gmail.com",
         "path": "fayr_tv_live/node_modules/loose-envify",
         "licenseFile": "fayr_tv_live/node_modules/loose-envify/LICENSE"
-    },
-    "loud-rejection@1.6.0": {
-        "licenses": "MIT",
-        "repository": "https://github.com/sindresorhus/loud-rejection",
-        "publisher": "Sindre Sorhus",
-        "email": "sindresorhus@gmail.com",
-        "url": "sindresorhus.com",
-        "path": "fayr_tv_live/node_modules/loud-rejection",
-        "licenseFile": "fayr_tv_live/node_modules/loud-rejection/license"
     },
     "lower-case@2.0.2": {
         "licenses": "MIT",
@@ -12568,15 +12434,6 @@
         "url": "https://github.com/JSBizon",
         "path": "fayr_tv_live/node_modules/memorystream",
         "licenseFile": "fayr_tv_live/node_modules/memorystream/LICENSE"
-    },
-    "meow@3.7.0": {
-        "licenses": "MIT",
-        "repository": "https://github.com/sindresorhus/meow",
-        "publisher": "Sindre Sorhus",
-        "email": "sindresorhus@gmail.com",
-        "url": "sindresorhus.com",
-        "path": "fayr_tv_live/node_modules/prettylint/node_modules/meow",
-        "licenseFile": "fayr_tv_live/node_modules/prettylint/node_modules/meow/license"
     },
     "meow@8.1.2": {
         "licenses": "MIT",
@@ -13172,6 +13029,14 @@
         "path": "fayr_tv_live/node_modules/next-auth",
         "licenseFile": "fayr_tv_live/node_modules/next-auth/LICENSE"
     },
+    "next-react-svg@1.1.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jeremybarbet/next-react-svg",
+        "publisher": "Jérémy Barbet",
+        "email": "jeremgraph@gmail.com",
+        "path": "fayr_tv_live/node_modules/next-react-svg",
+        "licenseFile": "fayr_tv_live/node_modules/next-react-svg/LICENSE"
+    },
     "next-seo@4.26.0": {
         "licenses": "MIT",
         "repository": "https://github.com/garmeeh/next-seo",
@@ -13371,16 +13236,16 @@
         "repository": "https://github.com/npm/normalize-package-data",
         "publisher": "Meryn Stol",
         "email": "merynstol@gmail.com",
-        "path": "fayr_tv_live/node_modules/normalize-package-data",
-        "licenseFile": "fayr_tv_live/node_modules/normalize-package-data/LICENSE"
+        "path": "fayr_tv_live/node_modules/read-package-json/node_modules/normalize-package-data",
+        "licenseFile": "fayr_tv_live/node_modules/read-package-json/node_modules/normalize-package-data/LICENSE"
     },
     "normalize-package-data@3.0.3": {
         "licenses": "BSD-2-Clause",
         "repository": "https://github.com/npm/normalize-package-data",
         "publisher": "Meryn Stol",
         "email": "merynstol@gmail.com",
-        "path": "fayr_tv_live/node_modules/meow/node_modules/normalize-package-data",
-        "licenseFile": "fayr_tv_live/node_modules/meow/node_modules/normalize-package-data/LICENSE"
+        "path": "fayr_tv_live/node_modules/normalize-package-data",
+        "licenseFile": "fayr_tv_live/node_modules/normalize-package-data/LICENSE"
     },
     "normalize-path@3.0.0": {
         "licenses": "MIT",
@@ -14136,15 +14001,6 @@
         "path": "fayr_tv_live/node_modules/parse-asn1",
         "licenseFile": "fayr_tv_live/node_modules/parse-asn1/LICENSE"
     },
-    "parse-json@2.2.0": {
-        "licenses": "MIT",
-        "repository": "https://github.com/sindresorhus/parse-json",
-        "publisher": "Sindre Sorhus",
-        "email": "sindresorhus@gmail.com",
-        "url": "sindresorhus.com",
-        "path": "fayr_tv_live/node_modules/prettylint/node_modules/parse-json",
-        "licenseFile": "fayr_tv_live/node_modules/prettylint/node_modules/parse-json/license"
-    },
     "parse-json@4.0.0": {
         "licenses": "MIT",
         "repository": "https://github.com/sindresorhus/parse-json",
@@ -14230,15 +14086,6 @@
         "url": "http://substack.net",
         "path": "fayr_tv_live/node_modules/path-browserify",
         "licenseFile": "fayr_tv_live/node_modules/path-browserify/LICENSE"
-    },
-    "path-exists@2.1.0": {
-        "licenses": "MIT",
-        "repository": "https://github.com/sindresorhus/path-exists",
-        "publisher": "Sindre Sorhus",
-        "email": "sindresorhus@gmail.com",
-        "url": "sindresorhus.com",
-        "path": "fayr_tv_live/node_modules/prettylint/node_modules/path-exists",
-        "licenseFile": "fayr_tv_live/node_modules/prettylint/node_modules/path-exists/license"
     },
     "path-exists@3.0.0": {
         "licenses": "MIT",
@@ -14328,15 +14175,6 @@
         "repository": "https://github.com/pillarjs/path-to-regexp",
         "path": "fayr_tv_live/node_modules/path-to-regexp",
         "licenseFile": "fayr_tv_live/node_modules/path-to-regexp/LICENSE"
-    },
-    "path-type@1.1.0": {
-        "licenses": "MIT",
-        "repository": "https://github.com/sindresorhus/path-type",
-        "publisher": "Sindre Sorhus",
-        "email": "sindresorhus@gmail.com",
-        "url": "sindresorhus.com",
-        "path": "fayr_tv_live/node_modules/prettylint/node_modules/path-type",
-        "licenseFile": "fayr_tv_live/node_modules/prettylint/node_modules/path-type/license"
     },
     "path-type@3.0.0": {
         "licenses": "MIT",
@@ -14526,15 +14364,6 @@
         "publisher": "typicode",
         "path": "fayr_tv_live/node_modules/please-upgrade-node",
         "licenseFile": "fayr_tv_live/node_modules/please-upgrade-node/LICENSE"
-    },
-    "plur@2.1.2": {
-        "licenses": "MIT",
-        "repository": "https://github.com/sindresorhus/plur",
-        "publisher": "Sindre Sorhus",
-        "email": "sindresorhus@gmail.com",
-        "url": "sindresorhus.com",
-        "path": "fayr_tv_live/node_modules/plur",
-        "licenseFile": "fayr_tv_live/node_modules/plur/license"
     },
     "pnp-webpack-plugin@1.6.4": {
         "licenses": "MIT",
@@ -15291,15 +15120,6 @@
         "path": "fayr_tv_live/node_modules/pretty-quick",
         "licenseFile": "fayr_tv_live/node_modules/pretty-quick/LICENSE"
     },
-    "prettylint@1.0.0": {
-        "licenses": "MIT",
-        "repository": "https://github.com/ikatyang/prettylint",
-        "publisher": "Ika",
-        "email": "ikatyang@gmail.com",
-        "url": "https://github.com/ikatyang",
-        "path": "fayr_tv_live/node_modules/prettylint",
-        "licenseFile": "fayr_tv_live/node_modules/prettylint/LICENSE"
-    },
     "printj@1.3.1": {
         "licenses": "Apache-2.0",
         "repository": "https://github.com/SheetJS/printj",
@@ -15628,6 +15448,15 @@
         "path": "fayr_tv_live/node_modules/raf",
         "licenseFile": "fayr_tv_live/node_modules/raf/LICENSE"
     },
+    "ramda@0.21.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/ramda/ramda",
+        "publisher": "Scott Sauyet",
+        "email": "scott@sauyet.com",
+        "url": "scott.sauyet.com",
+        "path": "fayr_tv_live/node_modules/svg-react-loader/node_modules/ramda",
+        "licenseFile": "fayr_tv_live/node_modules/svg-react-loader/node_modules/ramda/LICENSE.txt"
+    },
     "ramda@0.27.2": {
         "licenses": "MIT",
         "repository": "https://github.com/ramda/ramda",
@@ -15847,6 +15676,15 @@
         "path": "fayr_tv_live/node_modules/react-scripts",
         "licenseFile": "fayr_tv_live/node_modules/react-scripts/LICENSE"
     },
+    "react-share@4.4.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/nygardk/react-share",
+        "publisher": "Klaus Nygård",
+        "email": "klaus.nygard@gmail.com",
+        "url": "http://klausnygard.fi",
+        "path": "fayr_tv_live/node_modules/react-share",
+        "licenseFile": "fayr_tv_live/node_modules/react-share/LICENSE"
+    },
     "react-transition-group@4.4.2": {
         "licenses": "BSD-3-Clause",
         "repository": "https://github.com/reactjs/react-transition-group",
@@ -15926,15 +15764,6 @@
         "path": "fayr_tv_live/node_modules/read-package-tree",
         "licenseFile": "fayr_tv_live/node_modules/read-package-tree/LICENSE"
     },
-    "read-pkg-up@1.0.1": {
-        "licenses": "MIT",
-        "repository": "https://github.com/sindresorhus/read-pkg-up",
-        "publisher": "Sindre Sorhus",
-        "email": "sindresorhus@gmail.com",
-        "url": "sindresorhus.com",
-        "path": "fayr_tv_live/node_modules/prettylint/node_modules/read-pkg-up",
-        "licenseFile": "fayr_tv_live/node_modules/prettylint/node_modules/read-pkg-up/license"
-    },
     "read-pkg-up@3.0.0": {
         "licenses": "MIT",
         "repository": "https://github.com/sindresorhus/read-pkg-up",
@@ -15952,15 +15781,6 @@
         "url": "sindresorhus.com",
         "path": "fayr_tv_live/node_modules/read-pkg-up",
         "licenseFile": "fayr_tv_live/node_modules/read-pkg-up/license"
-    },
-    "read-pkg@1.1.0": {
-        "licenses": "MIT",
-        "repository": "https://github.com/sindresorhus/read-pkg",
-        "publisher": "Sindre Sorhus",
-        "email": "sindresorhus@gmail.com",
-        "url": "sindresorhus.com",
-        "path": "fayr_tv_live/node_modules/prettylint/node_modules/read-pkg",
-        "licenseFile": "fayr_tv_live/node_modules/prettylint/node_modules/read-pkg/license"
     },
     "read-pkg@3.0.0": {
         "licenses": "MIT",
@@ -16086,15 +15906,6 @@
         "url": "http://jamisondance.com/",
         "path": "fayr_tv_live/node_modules/recursive-readdir",
         "licenseFile": "fayr_tv_live/node_modules/recursive-readdir/LICENSE"
-    },
-    "redent@1.0.0": {
-        "licenses": "MIT",
-        "repository": "https://github.com/sindresorhus/redent",
-        "publisher": "Sindre Sorhus",
-        "email": "sindresorhus@gmail.com",
-        "url": "sindresorhus.com",
-        "path": "fayr_tv_live/node_modules/prettylint/node_modules/redent",
-        "licenseFile": "fayr_tv_live/node_modules/prettylint/node_modules/redent/license"
     },
     "redent@3.0.0": {
         "licenses": "MIT",
@@ -16282,15 +16093,6 @@
         "url": "http://github.com/jonschlinkert",
         "path": "fayr_tv_live/node_modules/repeat-string",
         "licenseFile": "fayr_tv_live/node_modules/repeat-string/LICENSE"
-    },
-    "repeating@2.0.1": {
-        "licenses": "MIT",
-        "repository": "https://github.com/sindresorhus/repeating",
-        "publisher": "Sindre Sorhus",
-        "email": "sindresorhus@gmail.com",
-        "url": "sindresorhus.com",
-        "path": "fayr_tv_live/node_modules/repeating",
-        "licenseFile": "fayr_tv_live/node_modules/repeating/license"
     },
     "request@2.88.2": {
         "licenses": "Apache-2.0",
@@ -16578,6 +16380,14 @@
         "email": "me@mmalecki.com",
         "path": "fayr_tv_live/node_modules/rust-result",
         "licenseFile": "fayr_tv_live/node_modules/rust-result/LICENSE"
+    },
+    "rx@4.1.0": {
+        "licenses": "Apache-2.0",
+        "repository": "https://github.com/Reactive-Extensions/RxJS",
+        "publisher": "Cloud Programmability Team",
+        "url": "https://github.com/Reactive-Extensions/RxJS/blob/master/authors.txt",
+        "path": "fayr_tv_live/node_modules/rx",
+        "licenseFile": "fayr_tv_live/node_modules/rx/license.txt"
     },
     "rxjs@6.6.7": {
         "licenses": "Apache-2.0",
@@ -17721,15 +17531,6 @@
         "path": "fayr_tv_live/node_modules/jest-watch-typeahead/node_modules/strip-ansi",
         "licenseFile": "fayr_tv_live/node_modules/jest-watch-typeahead/node_modules/strip-ansi/license"
     },
-    "strip-bom@2.0.0": {
-        "licenses": "MIT",
-        "repository": "https://github.com/sindresorhus/strip-bom",
-        "publisher": "Sindre Sorhus",
-        "email": "sindresorhus@gmail.com",
-        "url": "sindresorhus.com",
-        "path": "fayr_tv_live/node_modules/prettylint/node_modules/strip-bom",
-        "licenseFile": "fayr_tv_live/node_modules/prettylint/node_modules/strip-bom/license"
-    },
     "strip-bom@3.0.0": {
         "licenses": "MIT",
         "repository": "https://github.com/sindresorhus/strip-bom",
@@ -17772,15 +17573,6 @@
         "url": "sindresorhus.com",
         "path": "fayr_tv_live/node_modules/strip-final-newline",
         "licenseFile": "fayr_tv_live/node_modules/strip-final-newline/license"
-    },
-    "strip-indent@1.0.1": {
-        "licenses": "MIT",
-        "repository": "https://github.com/sindresorhus/strip-indent",
-        "publisher": "Sindre Sorhus",
-        "email": "sindresorhus@gmail.com",
-        "url": "http://sindresorhus.com",
-        "path": "fayr_tv_live/node_modules/prettylint/node_modules/strip-indent",
-        "licenseFile": "fayr_tv_live/node_modules/prettylint/node_modules/strip-indent/license"
     },
     "strip-indent@3.0.0": {
         "licenses": "MIT",
@@ -17959,6 +17751,14 @@
         "publisher": "Rich Harris",
         "path": "fayr_tv_live/node_modules/svg-parser",
         "licenseFile": "fayr_tv_live/node_modules/svg-parser/README.md"
+    },
+    "svg-react-loader@0.4.6": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jhamlet/svg-react-loader",
+        "publisher": "Jerry Hamlet",
+        "email": "jerry@hamletink.com",
+        "path": "fayr_tv_live/node_modules/svg-react-loader",
+        "licenseFile": "fayr_tv_live/node_modules/svg-react-loader/LICENSE"
     },
     "svgo@1.3.2": {
         "licenses": "MIT",
@@ -18432,15 +18232,6 @@
         "path": "fayr_tv_live/node_modules/tree-kill",
         "licenseFile": "fayr_tv_live/node_modules/tree-kill/LICENSE"
     },
-    "trim-newlines@1.0.0": {
-        "licenses": "MIT",
-        "repository": "https://github.com/sindresorhus/trim-newlines",
-        "publisher": "Sindre Sorhus",
-        "email": "sindresorhus@gmail.com",
-        "url": "sindresorhus.com",
-        "path": "fayr_tv_live/node_modules/prettylint/node_modules/trim-newlines",
-        "licenseFile": "fayr_tv_live/node_modules/prettylint/node_modules/trim-newlines/license"
-    },
     "trim-newlines@3.0.1": {
         "licenses": "MIT",
         "repository": "https://github.com/sindresorhus/trim-newlines",
@@ -18499,8 +18290,8 @@
         "publisher": "Blake Embrey",
         "email": "hello@blakeembrey.com",
         "url": "http://blakeembrey.me",
-        "path": "fayr_tv_live/node_modules/fayr-api/node_modules/ts-node",
-        "licenseFile": "fayr_tv_live/node_modules/fayr-api/node_modules/ts-node/LICENSE"
+        "path": "fayr_tv_live/node_modules/@fayr/api/node_modules/ts-node",
+        "licenseFile": "fayr_tv_live/node_modules/@fayr/api/node_modules/ts-node/LICENSE"
     },
     "ts-pnp@1.2.0": {
         "licenses": "MIT",
@@ -18782,8 +18573,8 @@
         "licenses": "Apache-2.0",
         "repository": "https://github.com/Microsoft/TypeScript",
         "publisher": "Microsoft Corp.",
-        "path": "fayr_tv_live/node_modules/fayr-api/node_modules/typescript",
-        "licenseFile": "fayr_tv_live/node_modules/fayr-api/node_modules/typescript/LICENSE.txt"
+        "path": "fayr_tv_live/node_modules/@fayr/api/node_modules/typescript",
+        "licenseFile": "fayr_tv_live/node_modules/@fayr/api/node_modules/typescript/LICENSE.txt"
     },
     "typescript@4.6.3": {
         "licenses": "Apache-2.0",
@@ -19823,6 +19614,15 @@
         "path": "fayr_tv_live/node_modules/xml-name-validator",
         "licenseFile": "fayr_tv_live/node_modules/xml-name-validator/LICENSE.txt"
     },
+    "xml2js@0.4.17": {
+        "licenses": "MIT",
+        "repository": "https://github.com/Leonidas-from-XIV/node-xml2js",
+        "publisher": "Marek Kubica",
+        "email": "marek@xivilization.net",
+        "url": "https://xivilization.net",
+        "path": "fayr_tv_live/node_modules/svg-react-loader/node_modules/xml2js",
+        "licenseFile": "fayr_tv_live/node_modules/svg-react-loader/node_modules/xml2js/LICENSE"
+    },
     "xml2js@0.4.19": {
         "licenses": "MIT",
         "repository": "https://github.com/Leonidas-from-XIV/node-xml2js",
@@ -19831,6 +19631,14 @@
         "url": "https://xivilization.net",
         "path": "fayr_tv_live/node_modules/xml2js",
         "licenseFile": "fayr_tv_live/node_modules/xml2js/LICENSE"
+    },
+    "xmlbuilder@4.2.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/oozcitak/xmlbuilder-js",
+        "publisher": "Ozgur Ozcitak",
+        "email": "oozcitak@gmail.com",
+        "path": "fayr_tv_live/node_modules/svg-react-loader/node_modules/xmlbuilder",
+        "licenseFile": "fayr_tv_live/node_modules/svg-react-loader/node_modules/xmlbuilder/LICENSE"
     },
     "xmlbuilder@9.0.7": {
         "licenses": "MIT",

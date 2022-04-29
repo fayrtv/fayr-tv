@@ -15,4 +15,9 @@ export type Translations = {
     Settings: "Einstellungen";
     Cancel: "Abbrechen";
     Save: "Speichern";
+    Invitation: "Einladung";
+    LinkCopied: "Link erfolgreich kopiert!";
+    LinkToWatchPartyRoom: "Link zur Watch Party Sitzung";
+    Close: "Schließen";
+    InvitationPrompt: "{{0}} möchte dich zu einer FAYR TV Sitzung einladen!";
 };
