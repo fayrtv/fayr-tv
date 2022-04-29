@@ -34,6 +34,12 @@ export const StreamHealthIndicator = ({ player, driftSyncStrategy }: Props) => {
             direction="Row"
             crossAlign="Center"
         >
+            {drift?.driftedPastBoundary && (
+                <MaterialIcon color="white" iconName="sync" onClick={onSyncClicked} />
+            )}
+            <span className="mr-2 select-none">
+                {drift?.driftedPastBoundary ? `- ${drift!.measurement.toFixed(0)} s` : "Live"}
+            </span>
             <span
                 className={classNames(
                     styles.LiveDot,
@@ -41,12 +47,6 @@ export const StreamHealthIndicator = ({ player, driftSyncStrategy }: Props) => {
                     drift?.driftedPastBoundary ? styles.Drifted : styles.Live,
                 )}
             />
-            <span className="mr-2 select-none">
-                {drift?.driftedPastBoundary ? `- ${drift!.measurement.toFixed(0)} s` : "Live"}
-            </span>
-            {drift?.driftedPastBoundary && (
-                <MaterialIcon color="white" iconName="sync" onClick={onSyncClicked} />
-            )}
         </Flex>
     );
 };

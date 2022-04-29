@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 // Framework
 import { MediaPlayer } from "amazon-ivs-player";
+import classNames from "classnames";
 import * as React from "react";
 // Functionality
 import { useMediaQuery } from "react-responsive";
@@ -10,15 +11,18 @@ import useGlobalKeyHandler from "hooks/useGlobalKeyHandler";
 // Styles
 import styles from "./StreamVolumeControl.module.scss";
 
+import { ButtonPopupExpansionDirection } from "../types";
+
 const RAIL_BG_COLOR = "#707070";
 const RAIL_GRADIENT_COLOR = "#D2D2D2";
 const RAIL_VALUE_COLOR = "#D2D2D2";
 
 type Props = {
     player: MediaPlayer | undefined;
+    expansionDirection?: keyof typeof ButtonPopupExpansionDirection;
 };
 
-export const StreamVolumeControl = ({ player }: Props) => {
+export const StreamVolumeControl = ({ player, expansionDirection = "Downwards" }: Props) => {
     const containerRef = React.useRef<HTMLDivElement>(null);
     const pinRef = React.useRef<HTMLSpanElement>(null);
     const railRef = React.useRef<HTMLDivElement>(null);
@@ -204,7 +208,10 @@ export const StreamVolumeControl = ({ player }: Props) => {
                 <path d="M 24.939453 2.7460938 A 1.0001 1.0001 0 0 0 24.160156 4.3847656 C 26.558398 7.3678979 28 11.139729 28 15.255859 C 28 19.153774 26.697579 22.735437 24.521484 25.642578 A 1.0003912 1.0003912 0 1 0 26.123047 26.841797 C 28.542952 23.608938 30 19.599944 30 15.255859 C 30 10.67199 28.388509 6.4517271 25.71875 3.1308594 A 1.0001 1.0001 0 0 0 24.939453 2.7460938 z M 20.037109 5.6464844 A 1.0001 1.0001 0 0 0 19.236328 7.2734375 C 20.963426 9.4832305 22 12.243759 22 15.255859 C 22 18.055119 21.105815 20.636923 19.59375 22.763672 A 1.0001 1.0001 0 1 0 21.222656 23.921875 C 22.962591 21.474623 24 18.4826 24 15.255859 C 24 11.78396 22.799402 8.5851757 20.8125 6.0429688 A 1.0001 1.0001 0 0 0 20.037109 5.6464844 z M 11 7 L 6.7929688 11 L 3 11 C 1.343 11 0 12.343 0 14 L 0 16 C 0 17.657 1.343 19 3 19 L 6.7929688 19 L 11 23 L 11 7 z M 14.738281 8.5917969 A 1.0001 1.0001 0 0 0 14.001953 10.291016 C 15.239451 11.587484 16 13.328154 16 15.255859 C 16 16.979025 15.392559 18.553804 14.380859 19.796875 A 1.0001 1.0001 0 1 0 15.931641 21.058594 C 17.219941 19.475665 18 17.450694 18 15.255859 C 18 12.799565 17.023721 10.559688 15.449219 8.9101562 A 1.0001 1.0001 0 0 0 14.738281 8.5917969 z" />
             </svg>
             <div
-                className={styles.SliderContainer}
+                className={classNames(styles.SliderContainer, {
+                    [styles.Upwards]: expansionDirection === "Upwards",
+                    [styles.Downwards]: expansionDirection === "Downwards",
+                })}
                 ref={containerRef}
                 onClick={(event) => {
                     event.stopPropagation();

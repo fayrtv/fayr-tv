@@ -81,6 +81,8 @@ export const VideoPlayerControls = ({ fullScreen, player, video, driftSyncStrate
             <Flex className={styles.PlayerControlsContainer} direction="Row" crossAlign="Center">
                 {streamControl}
 
+                <QualityPicker player={player} />
+
                 {/* Button: Volume */}
                 <StreamVolumeControl player={player} />
 
@@ -117,7 +119,6 @@ export const VideoPlayerControls = ({ fullScreen, player, video, driftSyncStrate
                         )}
                     </button>
                 )}
-                <QualityPicker player={player} />
             </Flex>
         </div>
     );

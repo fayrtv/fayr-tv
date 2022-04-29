@@ -2,6 +2,8 @@
     position: relative;
     bottom: 0px;
 
+    width: 60px;
+
     .Icon {
         transition: transform 0.15s ease-in-out;
 
@@ -12,13 +14,21 @@
 
     .Options {
         position: absolute;
-        top: -300%;
-        left: 100%;
         border: 1px solid grey;
         border-radius: 5px;
         height: 300%;
-        width: 250%;
+        width: 135%;
         background: rgb(170, 168, 168);
+
+        $distanceFromContainer: -310%;
+
+        &.Upwards {
+            top: $distanceFromContainer;
+        }
+
+        &.Downwards {
+            bottom: $distanceFromContainer;
+        }
 
         overflow-y: scroll;
 

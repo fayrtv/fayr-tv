@@ -1,5 +1,5 @@
 // Framework
-import { MediaPlayer, Quality } from "amazon-ivs-player";
+import { MediaPlayer, Quality, PlayerState } from "amazon-ivs-player";
 import classNames from "classnames";
 import React from "react";
 import { isInRect } from "util/coordinateUtil";
@@ -14,27 +14,37 @@ import { Flex } from "@fayr/common";
 import styles from "./QualityPicker.module.scss";
 
 import useTranslations from "../../../hooks/useTranslations";
+import { ButtonPopupExpansionDirection } from "../types";
 
 type Props = {
     player: MediaPlayer | undefined;
+    expansionDirection?: keyof typeof ButtonPopupExpansionDirection;
 };
 
-export default function QualityPicker({ player }: Props) {
+export default function QualityPicker({ player, expansionDirection = "Downwards" }: Props) {
     const [availableQualities, setAvailableQualities] = React.useState<Array<Quality>>([]);
+    const [currentQuality, setCurrentQuality] = React.useState<string>("");
     const [showQualitySettings, setShowQualitySettings] = React.useState(false);
     const qualityPickerRef = React.useRef<HTMLDivElement>(null);
     const tl = useTranslations();
 
-    const onQualityWheelClick: React.MouseEventHandler = React.useCallback((event) => {
-        event.stopPropagation();
-        setShowQualitySettings((current) => !current);
-    }, []);
+    const onQualityWheelClick: React.MouseEventHandler = React.useCallback(
+        (event) => {
+            event.stopPropagation();
+            setAvailableQualities(player?.getQualities() ?? []);
+            setShowQualitySettings((current) => !current);
+        },
+        [player],
+    );
 
     const onQualityClick = React.useCallback(
         (event: React.MouseEvent<HTMLSpanElement, MouseEvent>, quality: Quality) => {
             event.stopPropagation();
 
-            player?.setQuality(quality);
+            if (!!player) {
+                player.setQuality(quality);
+                setCurrentQuality(quality.name);
+            }
 
             setShowQualitySettings(false);
         },
@@ -54,7 +64,18 @@ export default function QualityPicker({ player }: Props) {
         }
     });
 
-    React.useEffect(() => setAvailableQualities(player?.getQualities() ?? []), [player]);
+    React.useEffect(() => {
+        if (!player || currentQuality !== "") {
+            return;
+        }
+
+        const onReady = () => {
+            setCurrentQuality(player.getQuality().name);
+            player.removeEventListener(PlayerState.READY, onReady);
+        };
+
+        player.addEventListener(PlayerState.READY, onReady);
+    }, [currentQuality, player]);
 
     return (
         <button
@@ -65,21 +86,17 @@ export default function QualityPicker({ player }: Props) {
             )}
             onClick={onQualityWheelClick}
         >
-            <svg
-                className={classNames("icon", styles.Icon, {
-                    [styles.Open]: showQualitySettings,
-                })}
-                height="24"
-                viewBox="0 0 24 24"
-                width="24"
-                xmlns="http://www.w3.org/2000/svg"
-            >
-                <path d="m0 0h24v24h-24z" fill="none" />
-                <path d="m19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65c-.03-.24-.24-.42-.49-.42h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64zm-7.43 2.52c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z" />
-            </svg>
+            <span>{currentQuality}</span>
 
             {showQualitySettings && availableQualities && (
-                <Flex ref={qualityPickerRef} className={styles.Options} direction="Column">
+                <Flex
+                    ref={qualityPickerRef}
+                    className={classNames(styles.Options, {
+                        [styles.Upwards]: expansionDirection === "Upwards",
+                        [styles.Downwards]: expansionDirection === "Downwards",
+                    })}
+                    direction="Column"
+                >
                     {availableQualities.length === 0 || availableQualities[0].name === "unknown"
                         ? tl.NoQualitySettingsAvailable
                         : availableQualities.map((x) => (

@@ -7,3 +7,8 @@ export type HeartBeat<T> = {
      */
     eventTimestamp: number;
 };
+
+export enum ButtonPopupExpansionDirection {
+    Upwards,
+    Downwards,
+}
