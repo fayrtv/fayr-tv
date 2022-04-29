@@ -4,10 +4,6 @@ import React, { useEffect, useRef, useCallback } from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
 
-// import ArrowUp from '../../public/icons/arrow-up.svg';
-// import Delete from '../../public/icons/delete.svg';
-// import Move from '../../public/icons/move.svg';
-
 const IndicatorDiv = styled.div`
     height: 30px;
     margin-top: -29px;
@@ -22,10 +18,11 @@ const IndicatorDiv = styled.div`
 `;
 
 const Btn = styled.a`
-    padding: 0 0px;
+    padding: 0 0;
     opacity: 0.9;
     display: flex;
     align-items: center;
+
     > div {
         position: relative;
         top: -50%;
@@ -33,7 +30,7 @@ const Btn = styled.a`
     }
 `;
 
-export const RenderNode = ({ render }) => {
+export const RenderNode = ({ render }: { render: () => JSX.Element }) => {
     const { id } = useNode();
     const { actions, query, isActive } = useEditor((_, query) => ({
         isActive: query.getEvent("selected").contains(id),
@@ -57,7 +54,7 @@ export const RenderNode = ({ render }) => {
         props: node.data.props,
     }));
 
-    const currentRef = useRef<HTMLDivElement>();
+    const currentRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (dom) {
@@ -79,23 +76,23 @@ export const RenderNode = ({ render }) => {
     const scroll = useCallback(() => {
         const { current: currentDOM } = currentRef;
 
-        if (!currentDOM) return;
+        if (!currentDOM || !dom) return;
         const { top, left } = getPos(dom);
         currentDOM.style.top = top;
         currentDOM.style.left = left;
     }, [dom, getPos]);
 
     useEffect(() => {
-        document.querySelector(".craftjs-renderer").addEventListener("scroll", scroll);
+        document.querySelector(".craftjs-renderer")?.addEventListener("scroll", scroll);
 
         return () => {
-            document.querySelector(".craftjs-renderer").removeEventListener("scroll", scroll);
+            document.querySelector(".craftjs-renderer")?.removeEventListener("scroll", scroll);
         };
     }, [scroll]);
 
     return (
         <>
-            {isHover || isActive
+            {(isHover || isActive) && dom
                 ? ReactDOM.createPortal(
                       <IndicatorDiv
                           ref={currentRef}
@@ -108,6 +105,7 @@ export const RenderNode = ({ render }) => {
                       >
                           <h2 className="flex-1 mr-4">{name}</h2>
                           {moveable ? (
+                              // @ts-ignore
                               <Btn className="mr-2 cursor-move" ref={drag}>
                                   {"move icon"}
                               </Btn>
@@ -134,6 +132,7 @@ export const RenderNode = ({ render }) => {
                               </Btn>
                           ) : null}
                       </IndicatorDiv>,
+                      // @ts-ignore
                       document.querySelector(".page-container"),
                   )
                 : null}
