@@ -1,42 +1,63 @@
 @use "../mediaQueries" as mq;
 
-.Reaction {
-    position: absolute;
-
-    * span {
-        font-size: 2rem;
-    }
-}
-
-.ReactionEmojiEnter {
-    opacity: 0;
-}
-
-.ReactionEmojiEnterActive {
-    opacity: 1;
-    transition: all 1s;
-}
-
-.ReactionEmojiExit {
-    opacity: 1;
-}
-
-.ReactionEmojiExitActive {
-    opacity: 0;
-    transition: all 1s;
-}
-
-.FullScreenCams {
+.PlayerWrapper {
     height: 100%;
-    width: 20%;
-    z-index: 5000;
+    width: 100%;
+    background: black;
+    position: relative;
+    overflow: hidden;
 
-    > div {
-        height: 100%;
-    }
+    display: flex;
+    flex-direction: row;
 
     @media (max-width: mq.$mobile) {
-        height: 50%;
-        width: 100%;
+        flex-direction: column;
+    }
+
+    .Overlay {
+        &:hover {
+            opacity: 1 !important;
+        }
+    }
+
+    .Reaction {
+        position: absolute;
+
+        * span {
+            font-size: 2rem;
+        }
+    }
+
+    .ReactionEmojiEnter {
+        opacity: 0;
+    }
+
+    .ReactionEmojiEnterActive {
+        opacity: 1;
+        transition: all 1s;
+    }
+
+    .ReactionEmojiExit {
+        opacity: 1;
+    }
+
+    .ReactionEmojiExitActive {
+        opacity: 0;
+        transition: all 1s;
+    }
+
+    .FullScreenCams {
+        height: 100%;
+        width: 20%;
+        z-index: 5000;
+
+        > div {
+            height: 100%;
+        }
+
+        @media (max-width: mq.$mobile) {
+            height: 50%;
+            width: 100%;
+        }
     }
 }

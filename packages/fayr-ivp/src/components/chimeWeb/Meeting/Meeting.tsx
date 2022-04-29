@@ -97,17 +97,15 @@ const Meeting = ({
                             videoStream={playbackURL}
                             fullScreenCamSection={camSection}
                             attendeeId={attendeeId!}
+                            baseHref={config.BASE_HREF}
+                            ssName={formatMeetingSsKey(roomTitle)}
+                            role={role}
+                            title={title}
                         />
 
                         <VotingContainer attendeeId={attendeeId!} />
 
-                        <Controls
-                            baseHref={config.BASE_HREF}
-                            ssName={formatMeetingSsKey(roomTitle)}
-                            title={title}
-                            openSettings={() => setShowSettings(true)}
-                            role={role}
-                        />
+                        <Controls title={title} openSettings={() => setShowSettings(true)} />
 
                         <Chat title={title} userName={userName} />
                     </div>

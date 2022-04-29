@@ -123,28 +123,6 @@ input:disabled {
     background: transparent;
 }
 
-/* Player */
-.player-wrapper {
-    height: 100%;
-    width: 100%;
-    background: black;
-    position: relative;
-    overflow: hidden;
-
-    display: flex;
-    flex-direction: row;
-
-    @media (max-width: mq.$mobile) {
-        flex-direction: column;
-    }
-
-    &:hover {
-        #overlay {
-            opacity: 1;
-        }
-    }
-}
-
 .el-player {
     width: 100%;
     height: 100%;
