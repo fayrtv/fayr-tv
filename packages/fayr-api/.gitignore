@@ -7,6 +7,3 @@ jspm_packages
 
 # esbuild directories
 .esbuild
-
-# yarn.lock build output
-yarn.lock
