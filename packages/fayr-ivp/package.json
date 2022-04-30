@@ -34,6 +34,7 @@
     },
     "scripts": {
         "start": "craco start",
+        "dev": "cross-env BROWSER=none craco start",
         "startHttps": "cross-env HTTPS=true craco start",
         "build": "craco build",
         "test": "craco test --passWithNoTests"
