@@ -15,7 +15,10 @@
         "format:check": "prettylint \"**/*.{ts,js,html,jsx,tsx,css,less,scss,json}\"",
         "test": "lerna run test",
         "dev:shared": "lerna run dev --parallel --scope @fayr/{common,ivp-components}",
-        "dev:all": "lerna run dev --parallel --no-bail"
+        "dev:all": "lerna run dev --parallel --no-bail",
+        "kill": "run-script-os",
+        "kill:windows": "taskkill /im node.exe /F",
+        "kill:default": "killall -s KILL node"
     },
     "devDependencies": {
         "@trivago/prettier-plugin-sort-imports": "^2.0.4",
