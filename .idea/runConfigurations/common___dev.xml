@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="root | dev:shared" type="js.build_tools.npm">
-    <package-json value="$PROJECT_DIR$/package.json" />
+  <configuration default="false" name="common | dev" type="js.build_tools.npm">
+    <package-json value="$PROJECT_DIR$/packages/common/package.json" />
     <command value="run" />
     <scripts>
-      <script value="dev:shared" />
+      <script value="dev" />
     </scripts>
     <node-interpreter value="project" />
     <envs />
