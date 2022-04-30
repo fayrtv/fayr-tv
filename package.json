@@ -24,6 +24,8 @@
         "@trivago/prettier-plugin-sort-imports": "^2.0.4",
         "husky": "^7.0.0",
         "lerna": "^4.0.0",
-        "prettier": "^2.5.1"
+        "markserv": "^1.17.4",
+        "prettier": "^2.5.1",
+        "run-script-os": "^1.1.6"
     }
 }
