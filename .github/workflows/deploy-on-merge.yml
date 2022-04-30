@@ -2,8 +2,8 @@ name: Deploy FAYR API
 
 on:
     push:
-        branches:
-            - main
+        # branches:
+        # - main
 
 jobs:
     deploy-fayr-api:
