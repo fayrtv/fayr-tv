@@ -20,6 +20,6 @@ jobs:
                   role-to-assume: arn:aws:iam::111111111111:role/my-github-actions-role-test
                   aws-region: us-east-1
             - working-directory: packages/fayr-api
-              run: yarn install
+              run: yarn install --frozen-lockfile
             - working-directory: packages/fayr-api
               run: yarn deploy
