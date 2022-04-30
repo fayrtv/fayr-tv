@@ -27,9 +27,7 @@ jobs:
                   role-session-name: GitHubActions
             - working-directory: packages/fayr-api
               run: yarn install --frozen-lockfile
-            - name: Install Serverless Framework
-              run: npm install -g serverless
             - name: Serverless Authentication
-              run: sls config credentials --provider aws --key ${{ env.AWS_ACCESS_KEY_ID }} --secret ${{ env.AWS_SECRET_ACCESS_KEY }}
+              run: yarn run serverless config credentials --provider aws --key ${{ env.AWS_ACCESS_KEY_ID }} --secret ${{ env.AWS_SECRET_ACCESS_KEY }}
             - working-directory: packages/fayr-api
               run: yarn deploy
