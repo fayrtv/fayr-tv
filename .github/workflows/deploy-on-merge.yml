@@ -2,9 +2,8 @@ name: Deploy FAYR API
 
 on:
     push:
-# TODO(before-merge): Uncomment
-#        branches:
-#            - main
+        branches:
+            - main
 
 jobs:
     deploy-fayr-api:
