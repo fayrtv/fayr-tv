@@ -17,7 +17,7 @@ jobs:
             - name: Setup node
               uses: actions/setup-node@v2
               with:
-                  node-version: "16"
+                  node-version: [16.x]
             - uses: aws-actions/configure-aws-credentials@v1
               with:
                   # TODO: Create IAM role
@@ -27,7 +27,9 @@ jobs:
                   role-session-name: GitHubActions
             - working-directory: packages/fayr-api
               run: yarn install --frozen-lockfile
+            - name: Install Serverless Framework
+              run: npm install -g serverless
             - name: Serverless Authentication
-              run: sls config credentials --provider aws --key ${{ env.AKIAZ22BDZ2LUDCZONUS }} --secret ${{ env.ttGiI4prymDA8ixjJryY4eh9OGKT4nSc7a8KWQNe }}
+              run: sls config credentials --provider aws --key ${{ env.AWS_ACCESS_KEY_ID }} --secret ${{ env.AWS_SECRET_ACCESS_KEY }}
             - working-directory: packages/fayr-api
               run: yarn deploy
