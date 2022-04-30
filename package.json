@@ -11,10 +11,11 @@
         "setup": "npx lerna bootstrap && yarn install && yarn build && yarn prepare",
         "prepare": "husky install",
         "build": "lerna run build --ignore chime-sdk-meeting-demo",
-        "clean": "lerna run clean --ignore chime-sdk-meeting-demo",
-        "format": "prettier --write \"**/*.{ts,js,html,jsx,tsx,css,less,scss,json}\"",
-        "format:check": "prettier --check \"**/*.{ts,js,html,jsx,tsx,css,less,scss,json}\"",
-        "test": "lerna run test"
+        "format": "prettylint \"**/*.{ts,js,html,jsx,tsx,css,less,scss,json}\" --fix",
+        "format:check": "prettylint \"**/*.{ts,js,html,jsx,tsx,css,less,scss,json}\"",
+        "test": "lerna run test",
+        "dev:shared": "lerna run dev --parallel --scope @fayr/{common,ivp-components}",
+        "dev:all": "lerna run dev --parallel --no-bail"
     },
     "devDependencies": {
         "@trivago/prettier-plugin-sort-imports": "^2.0.4",
