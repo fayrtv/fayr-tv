@@ -4,7 +4,7 @@
     "description": "Serverless aws-nodejs-typescript template",
     "main": "serverless.ts",
     "scripts": {
-        "dev": "serverless offline start",
+        "dev": "serverless offline start --httpPort 5000 --websocketPort 5001 --lambdaPort 5002",
         "build": "serverless package",
         "deploy": "serverless deploy"
     },

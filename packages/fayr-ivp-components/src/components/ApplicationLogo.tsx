@@ -1,18 +1,21 @@
+import { useNode } from "@craftjs/core";
 import React from "react";
 
-type Props = React.HTMLAttributes<SVGElement> & { fill?: string };
+import { withCraft } from "./craftTypes";
 
-export default function FayrLogo({
-    fill = "var(--color-primary)",
-    className = "h-8 w-auto",
-    ...props
-}: Props) {
+const ApplicationLogo = (props: React.HTMLAttributes<SVGElement>) => {
+    const {
+        connectors: { connect },
+    } = useNode();
+
     return (
         <svg
+            // @ts-ignore
+            ref={connect}
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 445.1 190"
-            fill={fill}
-            className={className}
+            fill="var(--color-primary)"
+            className="h-8 w-auto"
             style={{ border: "none" }}
             {...props}
         >
@@ -36,4 +39,6 @@ export default function FayrLogo({
             </g>
         </svg>
     );
-}
+};
+
+export default withCraft(ApplicationLogo);
