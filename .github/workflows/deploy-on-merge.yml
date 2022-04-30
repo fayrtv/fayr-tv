@@ -23,6 +23,7 @@ jobs:
                   # Docs: https://github.com/aws-actions/configure-aws-credentials
                   role-to-assume: arn:aws:iam::676057042583:policy/fayr-deploy-on-merge
                   aws-region: us-east-1
+                  role-session-name: GitHubActions
             - working-directory: packages/fayr-api
               run: yarn install
             - working-directory: packages/fayr-api
