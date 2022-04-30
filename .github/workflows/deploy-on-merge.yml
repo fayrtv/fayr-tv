@@ -22,7 +22,7 @@ jobs:
                   # TODO: Create IAM role
                   # Docs: https://github.com/aws-actions/configure-aws-credentials
                   role-to-assume: arn:aws:iam::676057042583:user/fayr-github-actions
-                  aws-region: us-east-1
+                  aws-region: Global
                   role-session-name: GitHubActions
             - working-directory: packages/fayr-api
               run: yarn install
