@@ -4,7 +4,7 @@
     "main": "lib/index.js",
     "scripts": {
         "build": "yarn clean && yarn copy-files && tsc",
-        "dev": "yarn clean && yarn copy-files && tsc -w",
+        "dev": "yarn clean && nodemon --watch ./src -e js,ts,tsx,css,scss,less --exec \"yarn run copy-files && tsc\"",
         "clean": "rimraf lib/",
         "copy-files": "copyfiles -u 1 \"src/**/*.scss\" lib/"
     },
@@ -22,6 +22,7 @@
         "@types/react": "^17.0.14",
         "copyfiles": "^2.4.1",
         "node-sass": "^7.0.0",
+        "nodemon": "^2.0.16",
         "react": "^17.0.2",
         "rimraf": "^3.0.2",
         "type-fest": "^2.11.2",
