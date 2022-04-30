@@ -1,4 +1,4 @@
-import { PlatformConfig, PlatformType } from "@fayr/api-contracts";
+import type { PlatformConfig, PlatformType } from "@fayr/api-contracts";
 import { API_BASE_URL } from "config";
 import { useMemo } from "react";
 import { useQuery } from "react-query";
@@ -36,7 +36,7 @@ export const usePlatformConfig = () => {
                 styling: {
                     theme: FAYR_THEME,
                 },
-                type: PlatformType.WatchParty,
+                type: "wp",
             } as PlatformConfig),
         [tl],
     );
