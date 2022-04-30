@@ -23,7 +23,6 @@ import MeetingContainer from "./chimeWeb/Meeting/MeetingContainer";
 import ChatOpenContextProvider from "./contexts/ChatOpenContext";
 import IvpTranslationContextProvider from "./contexts/IvpTranslationContext";
 import SelectedReactionContextProvider from "./contexts/SelectedReactionContext";
-import VotingOpenContextProvider from "./contexts/VotingOpenContext";
 
 const queryClient = new QueryClient();
 
@@ -52,13 +51,11 @@ function MainIvpRouter() {
                 <Route path={`${path}/meeting`}>
                     <Provider store={store}>
                         <ChatOpenContextProvider>
-                            <VotingOpenContextProvider>
-                                <SocketContextProvider>
-                                    <SelectedReactionContextProvider>
-                                        <MeetingContainer />
-                                    </SelectedReactionContextProvider>
-                                </SocketContextProvider>
-                            </VotingOpenContextProvider>
+                            <SocketContextProvider>
+                                <SelectedReactionContextProvider>
+                                    <MeetingContainer />
+                                </SelectedReactionContextProvider>
+                            </SocketContextProvider>
                         </ChatOpenContextProvider>
                     </Provider>
                 </Route>

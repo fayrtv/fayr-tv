@@ -19,10 +19,13 @@ const RAIL_VALUE_COLOR = "#D2D2D2";
 
 type Props = {
     player: MediaPlayer | undefined;
-    expansionDirection?: keyof typeof ButtonPopupExpansionDirection;
+    expansionDirection?: ButtonPopupExpansionDirection;
 };
 
-export const StreamVolumeControl = ({ player, expansionDirection = "Downwards" }: Props) => {
+export const StreamVolumeControl = ({
+    player,
+    expansionDirection = ButtonPopupExpansionDirection.Downwards,
+}: Props) => {
     const containerRef = React.useRef<HTMLDivElement>(null);
     const pinRef = React.useRef<HTMLSpanElement>(null);
     const railRef = React.useRef<HTMLDivElement>(null);
@@ -209,8 +212,9 @@ export const StreamVolumeControl = ({ player, expansionDirection = "Downwards" }
             </svg>
             <div
                 className={classNames(styles.SliderContainer, {
-                    [styles.Upwards]: expansionDirection === "Upwards",
-                    [styles.Downwards]: expansionDirection === "Downwards",
+                    [styles.Upwards]: expansionDirection === ButtonPopupExpansionDirection.Upwards,
+                    [styles.Downwards]:
+                        expansionDirection === ButtonPopupExpansionDirection.Downwards,
                 })}
                 ref={containerRef}
                 onClick={(event) => {

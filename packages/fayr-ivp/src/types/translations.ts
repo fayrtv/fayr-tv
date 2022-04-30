@@ -20,4 +20,5 @@ export type Translations = {
     LinkToWatchPartyRoom: "Link zur Watch Party Sitzung";
     Close: "Schließen";
     InvitationPrompt: "{{0}} möchte dich zu einer FAYR TV Sitzung einladen!";
+    ConfirmLeave: "Willst du die Sitzung wirklich verlassen?";
 };

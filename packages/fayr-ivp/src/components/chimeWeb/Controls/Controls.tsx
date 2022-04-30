@@ -17,10 +17,11 @@ import ReactionButton from "./emoji-reactions/ReactionButton";
 
 type Props = {
     title: string;
+    attendeeId: string;
     openSettings(): void;
 };
 
-const Controls: React.FC<Props> = ({ title, openSettings }) => {
+const Controls: React.FC<Props> = ({ title, attendeeId, openSettings }) => {
     const { isOpen: isChatOpen, set: setChatOpen } = React.useContext(ChatOpenContext);
 
     const isMobile = useMediaQuery({ maxWidth: 1024 });
@@ -76,7 +77,7 @@ const Controls: React.FC<Props> = ({ title, openSettings }) => {
         chatButton,
         <ReactionButton key="ReactionButton" />,
         // Voting Button
-        <VotingButton key="VotingButton" />,
+        <VotingButton attendeeId={attendeeId} key="VotingButton" />,
     ];
 
     return (

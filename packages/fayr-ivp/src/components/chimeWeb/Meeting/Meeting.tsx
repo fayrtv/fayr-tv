@@ -103,9 +103,11 @@ const Meeting = ({
                             title={title}
                         />
 
-                        <VotingContainer attendeeId={attendeeId!} />
-
-                        <Controls title={title} openSettings={() => setShowSettings(true)} />
+                        <Controls
+                            attendeeId={attendeeId!}
+                            title={title}
+                            openSettings={() => setShowSettings(true)}
+                        />
 
                         <Chat title={title} userName={userName} />
                     </div>

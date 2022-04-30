@@ -1,6 +1,7 @@
 // Framework
 import classNames from "classnames";
 import { useInjection } from "inversify-react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { GlobalResetAction } from "redux/store";
@@ -9,12 +10,15 @@ import { RoomMemberRole } from "types/Room";
 import Types from "types/inject";
 import { withoutPropagation } from "util/mouseUtils";
 
+import Portal from "components/common/Portal";
+
 import { MaterialIcon } from "@fayr/common";
 
 // Styles
 import styles from "./CommonButton.module.scss";
 
 import IRoomManager from "../../../chime/interfaces/IRoomManager";
+import EndPartyConfirmation from "../EndPartyConfirmation";
 
 const StyledButton = styled.div`
     max-width: 80px;
@@ -47,10 +51,19 @@ type Props = {
     title: string;
 };
 
+enum LeaveState {
+    Participating,
+    AwaitingConfirmation,
+}
+
 export const EndPartyButton = ({ ssName, role, baseHref, title }: Props) => {
     const dispatch = useDispatch();
     const history = useHistory();
     const roomManager = useInjection<IRoomManager>(Types.IRoomManager);
+
+    const [leaveState, setLeaveState] = React.useState<LeaveState>(LeaveState.Participating);
+
+    const onExitClick = () => setLeaveState(LeaveState.AwaitingConfirmation);
 
     const onEndButtonClick = async () => {
         await roomManager.leaveRoom(role === "host");
@@ -61,16 +74,26 @@ export const EndPartyButton = ({ ssName, role, baseHref, title }: Props) => {
     };
 
     return (
-        <StyledButton
-            className={classNames(styles.Button, "btn rounded btn--destruct btn--leave")}
-            onClick={withoutPropagation(onEndButtonClick)}
-            title="Verlasse die Watch Party"
-        >
-            <LeftNavigationButton>
-                <MaterialIcon iconName="navigate_before" />
-            </LeftNavigationButton>
-            <ExitSpan>EXIT</ExitSpan>
-        </StyledButton>
+        <>
+            <StyledButton
+                className={classNames(styles.Button, "btn rounded btn--destruct btn--leave")}
+                onClick={withoutPropagation(onExitClick)}
+                title="Verlasse die Watch Party"
+            >
+                <LeftNavigationButton>
+                    <MaterialIcon iconName="navigate_before" />
+                </LeftNavigationButton>
+                <ExitSpan>EXIT</ExitSpan>
+            </StyledButton>
+            {leaveState === LeaveState.AwaitingConfirmation && (
+                <Portal.Client>
+                    <EndPartyConfirmation
+                        onConfirm={onEndButtonClick}
+                        onDeny={() => setLeaveState(LeaveState.Participating)}
+                    />
+                </Portal.Client>
+            )}
+        </>
     );
 };
 

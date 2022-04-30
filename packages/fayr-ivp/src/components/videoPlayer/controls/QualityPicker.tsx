@@ -18,10 +18,13 @@ import { ButtonPopupExpansionDirection } from "../types";
 
 type Props = {
     player: MediaPlayer | undefined;
-    expansionDirection?: keyof typeof ButtonPopupExpansionDirection;
+    expansionDirection?: ButtonPopupExpansionDirection;
 };
 
-export default function QualityPicker({ player, expansionDirection = "Downwards" }: Props) {
+export default function QualityPicker({
+    player,
+    expansionDirection = ButtonPopupExpansionDirection.Downwards,
+}: Props) {
     const [availableQualities, setAvailableQualities] = React.useState<Array<Quality>>([]);
     const [currentQuality, setCurrentQuality] = React.useState<string>("");
     const [showQualitySettings, setShowQualitySettings] = React.useState(false);
@@ -92,8 +95,10 @@ export default function QualityPicker({ player, expansionDirection = "Downwards"
                 <Flex
                     ref={qualityPickerRef}
                     className={classNames(styles.Options, {
-                        [styles.Upwards]: expansionDirection === "Upwards",
-                        [styles.Downwards]: expansionDirection === "Downwards",
+                        [styles.Upwards]:
+                            expansionDirection === ButtonPopupExpansionDirection.Upwards,
+                        [styles.Downwards]:
+                            expansionDirection === ButtonPopupExpansionDirection.Downwards,
                     })}
                     direction="Column"
                 >

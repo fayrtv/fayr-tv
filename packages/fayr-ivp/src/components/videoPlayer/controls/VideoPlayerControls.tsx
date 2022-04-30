@@ -100,13 +100,7 @@ export const VideoPlayerControls = ({
                 crossAlign="Center"
                 space="Between"
             >
-                <EndPartyButton
-                    ssName={ssName}
-                    role={role}
-                    baseHref={baseHref}
-                    title={title}
-                    key="EndPartyButton"
-                />
+                <EndPartyButton ssName={ssName} role={role} baseHref={baseHref} title={title} />
 
                 <Flex direction="Row">
                     {streamControl}

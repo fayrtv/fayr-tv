@@ -230,7 +230,7 @@ const VideoPlayer = ({
         <div ref={videoElement} className={styles.PlayerWrapper}>
             <div
                 id="overlay"
-                className={classNames(`overlay ${fullScreen ? "fullscreen" : ""}`, styles.Overlay)}
+                className={classNames("overlay", { fullScreen: fullScreen }, styles.Overlay)}
                 onClick={videoClickHandler}
             >
                 <VideoPlayerControls

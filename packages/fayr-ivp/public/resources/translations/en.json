@@ -19,5 +19,6 @@
     "LinkCopied": "Link copied to clipboard!",
     "LinkToWatchPartyRoom": "Link to the watch party room",
     "Close": "Close",
-    "InvitationPrompt": "{{0}} wants to invite you to a Fayr TV session!"
+    "InvitationPrompt": "{{0}} wants to invite you to a Fayr TV session!",
+    "ConfirmLeave": "Do you really want to leave the session?"
 }
