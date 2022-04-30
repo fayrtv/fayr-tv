@@ -17,6 +17,7 @@ import styles from "./Meeting.module.scss";
 import * as config from "../../../config";
 import Chat from "../../chat/Chat";
 import IRoomManager from "../../chime/interfaces/IRoomManager";
+import Portal from "../../common/Portal";
 // Components
 import VideoPlayer from "../../videoPlayer/VideoPlayer";
 import CamSection from "../Cams/CamSection";
@@ -114,6 +115,8 @@ const Meeting = ({
                     <div className={`full-height pos-relative ${styles.CamContainer}`}>
                         {camSection}
                     </div>
+
+                    <Portal.Root />
 
                     {showSettings && (
                         <ModalSettingsView

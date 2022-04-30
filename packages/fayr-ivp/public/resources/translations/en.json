@@ -14,5 +14,10 @@
     "StartWatchPartyBody": " Share the thrill of watching live and sport events together with your friends!",
     "Settings": "Settings",
     "Cancel": "Cancel",
-    "Save": "Save"
+    "Save": "Save",
+    "Invitation": "Invitation",
+    "LinkCopied": "Link copied to clipboard!",
+    "LinkToWatchPartyRoom": "Link to the watch party room",
+    "Close": "Close",
+    "InvitationPrompt": "{{0}} wants to invite you to a Fayr TV session!"
 }

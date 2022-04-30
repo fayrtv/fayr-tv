@@ -15,6 +15,7 @@
         "^hooks/?(.*)$",
         "(^components/(.*)$)",
         "^@fayr/common/?(.*)$",
+        "^@fayr/ivp-components/?(.*)$",
         "(\\.styles|\\.less|\\.scss)$",
         "^[\\./]"
     ],

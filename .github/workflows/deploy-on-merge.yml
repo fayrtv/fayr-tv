@@ -2,6 +2,7 @@ name: Deploy FAYR API
 
 on:
     push:
+        # TODO: Uncomment before merge
         # branches:
         # - main
 
@@ -25,6 +26,6 @@ jobs:
                   aws-region: us-east-1
                   role-session-name: GitHubActions
             - working-directory: packages/fayr-api
-              run: yarn install
+              run: yarn install --frozen-lockfile
             - working-directory: packages/fayr-api
               run: yarn deploy

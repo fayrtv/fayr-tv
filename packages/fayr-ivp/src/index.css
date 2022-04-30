@@ -1169,7 +1169,6 @@ select:active {
 .btn.rounded,
 input.rounded {
     border-radius: 6px;
-    background: blur(4px);
 }
 
 .btn {

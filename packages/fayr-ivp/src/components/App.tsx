@@ -12,7 +12,7 @@ import { usePlatformConfig } from "hooks/usePlatformConfig";
 import End from "components/chimeWeb/End";
 import Welcome from "components/chimeWeb/Welcome";
 
-import { applyTheme } from "@fayr/common";
+import { applyTheme, ErrorBoundary } from "@fayr/common";
 
 import styles from "./App.module.scss";
 
@@ -66,7 +66,9 @@ function MainIvpRouter() {
                     <Join />
                 </Route>
                 <Route path={`${path}/`}>
-                    <Welcome />
+                    <ErrorBoundary>
+                        <Welcome />
+                    </ErrorBoundary>
                 </Route>
             </Switch>
         </Router>
