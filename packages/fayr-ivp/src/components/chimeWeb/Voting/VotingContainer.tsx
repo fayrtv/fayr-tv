@@ -8,7 +8,6 @@ import { Callback, Nullable } from "types/global";
 import Types from "types/inject";
 import { isInRect } from "util/coordinateUtil";
 
-import useGlobalClickHandler from "hooks/useGlobalClickHandler";
 import useGlobalKeyHandler from "hooks/useGlobalKeyHandler";
 import useSocket from "hooks/useSocket";
 

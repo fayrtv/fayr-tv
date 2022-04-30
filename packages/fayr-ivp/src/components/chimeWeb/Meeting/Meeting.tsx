@@ -22,7 +22,6 @@ import Portal from "../../common/Portal";
 import VideoPlayer from "../../videoPlayer/VideoPlayer";
 import CamSection from "../Cams/CamSection";
 import Controls from "../Controls/Controls";
-import VotingContainer from "../Voting/VotingContainer";
 import ModalSettingsView from "./Settings/ModalSettingsView";
 
 type PublicProps = {
