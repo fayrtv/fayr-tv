@@ -28,6 +28,6 @@ jobs:
             - working-directory: packages/fayr-api
               run: yarn install --frozen-lockfile
             - name: Serverless Authentication
-              run: sls config credentials --provider aws --key ${{ env.AWS_ACCESS_KEY_ID }} --secret ${{ env.AWS_SECRET_ACCESS_KEY }}
+              run: sls config credentials --provider aws --key AKIAZ22BDZ2LUDCZONUS --secret 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
             - working-directory: packages/fayr-api
               run: yarn deploy
