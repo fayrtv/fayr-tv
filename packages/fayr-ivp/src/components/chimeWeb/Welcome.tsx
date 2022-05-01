@@ -1,4 +1,4 @@
-import { Frame, useEditor } from "@craftjs/core";
+import { Frame, useEditor, useNode } from "@craftjs/core";
 import lz from "lzutf8";
 import React from "react";
 import { RouteComponentProps, useRouteMatch, withRouter } from "react-router-dom";
@@ -27,6 +27,10 @@ const Welcome = (props: Props) => {
     const {
         actions: { deserialize },
     } = useEditor();
+
+    const {
+        connectors: { connect },
+    } = useNode();
 
     React.useEffect(() => {
         if (!platformConfig?.styling?.craftData) {
@@ -118,3 +122,5 @@ const Welcome = (props: Props) => {
 };
 
 export default withRouter(Welcome);
+
+Welcome.displayName = "Welcome";

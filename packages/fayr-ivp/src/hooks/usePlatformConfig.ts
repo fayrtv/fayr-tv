@@ -1,4 +1,4 @@
-import type { PlatformConfig, PlatformType } from "@fayr/api-contracts";
+import type { PlatformConfig } from "@fayr/api-contracts";
 import { API_BASE_URL } from "config";
 import { useMemo } from "react";
 import { useQuery } from "react-query";
