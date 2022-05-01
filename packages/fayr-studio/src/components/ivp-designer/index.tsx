@@ -1,13 +1,25 @@
 import { Editor, Element, Frame } from "@craftjs/core";
-import { QRCode } from "@fayr/ivp-components";
+import { QueryMethods } from "@craftjs/core/lib/editor/query";
+import { QueryCallbacksFor } from "@craftjs/utils";
+import { ErrorBoundary } from "@fayr/common";
+import { Container, IVP_COMPONENT_RESOLVER, QRCode, Text } from "@fayr/ivp-components";
 import { SaveLoadActions } from "components/ivp-designer/SaveLoadActions";
 import { SelectedElementPropertiesPanel } from "components/ivp-designer/SelectedElementPropertiesPanel";
 import { Toolbox } from "components/ivp-designer/Toolbox";
-import { Button } from "components/user/Button";
-import { Card, CardBottom, CardTop } from "components/user/Card";
-import { Container } from "components/user/Container";
-import { QRCodeDefaultProps, QRCodeSettings } from "components/user/QRCode";
-import { Text } from "components/user/Text";
+import {
+    ContainerDefaultProps,
+    ContainerSettings,
+} from "components/ivp-designer/ivp-component-settings/Container";
+import {
+    QRCodeDefaultProps,
+    QRCodeSettings,
+} from "components/ivp-designer/ivp-component-settings/QRCode";
+import {
+    TextDefaultProps,
+    TextSettings,
+} from "components/ivp-designer/ivp-component-settings/Text";
+import lz from "lzutf8";
+import { PlatformConfiguratorContext } from "platform-config/PlatformConfiguratorContextProvider";
 import React from "react";
 
 //#region Link CraftJS components (only once)
@@ -19,21 +31,41 @@ QRCode.craft = {
     },
 };
 
+Container.craft = {
+    props: ContainerDefaultProps,
+    related: {
+        settings: ContainerSettings,
+    },
+};
+
+Text.craft = {
+    props: TextDefaultProps,
+    related: {
+        settings: TextSettings,
+    },
+};
+
 //#endregion
 
 const IVPDesigner = () => {
+    const { styling, setStyling } = React.useContext(PlatformConfiguratorContext);
+
+    const frameData = React.useMemo(() => {
+        if (!styling?.craftData) {
+            return undefined;
+        }
+        return lz.decompress(lz.decodeBase64(styling.craftData));
+    }, [styling?.craftData]);
+
     return (
-        <>
+        <ErrorBoundary>
             <Editor
-                resolver={{
-                    Card,
-                    Button,
-                    Text,
-                    Container,
-                    CardTop,
-                    CardBottom,
-                    QRCode,
+                onNodesChange={(query: QueryCallbacksFor<typeof QueryMethods>) => {
+                    const json = query.serialize();
+                    const craftData = lz.encodeBase64(lz.compress(json));
+                    setStyling({ craftData, theme: styling.theme });
                 }}
+                resolver={IVP_COMPONENT_RESOLVER}
             >
                 <div className="flex-grow w-full lg:flex">
                     <div>
@@ -51,7 +83,7 @@ const IVPDesigner = () => {
                                 {/* Start main area*/}
                                 <div className="relative h-full" style={{ minHeight: "36rem" }}>
                                     {/*<div className="absolute inset-0 border-2 border-gray-200 border-dashed rounded-lg" />*/}
-                                    <Frame>
+                                    <Frame data={frameData}>
                                         <Element
                                             canvas
                                             is={Container}
@@ -59,37 +91,37 @@ const IVPDesigner = () => {
                                             background="#eeeeee"
                                             data-cy="root-container"
                                         >
-                                            {/*<Card data-cy="frame-card" />*/}
-                                            <Text
-                                                fontSize="large"
-                                                color="primary"
-                                                text="It's me again!"
-                                                data-cy="frame-container-text"
-                                            />
-                                            <Button
-                                                text="Der Watch Party beitreten"
-                                                size="small"
-                                                data-cy="frame-button"
-                                            />
-                                            <QRCode content="hello world" color="red" />
                                             <Text
                                                 fontSize={20}
                                                 text="Fiebere zusammen mit deinen Freunden bei diesem Event mit!"
                                                 data-cy="frame-text"
                                             />
-                                            <Element
-                                                canvas
-                                                is={Container}
-                                                padding={6}
-                                                background="#999999"
-                                                data-cy="frame-container"
-                                            >
-                                                <Text
-                                                    fontSize="small"
-                                                    text="It's me again!"
-                                                    data-cy="frame-container-text"
-                                                />
-                                            </Element>
+                                            <QRCode content="hello world" color="red" />
+                                            {/*<Text*/}
+                                            {/*    fontSize="large"*/}
+                                            {/*    color="primary"*/}
+                                            {/*    text="It's me again!"*/}
+                                            {/*    data-cy="frame-container-text"*/}
+                                            {/*/>*/}
+                                            {/*<Button*/}
+                                            {/*    text="Der Watch Party beitreten"*/}
+                                            {/*    size="small"*/}
+                                            {/*    data-cy="frame-button"*/}
+                                            {/*/>*/}
+
+                                            {/*<Element*/}
+                                            {/*    canvas*/}
+                                            {/*    is={Container}*/}
+                                            {/*    padding={6}*/}
+                                            {/*    background="#999999"*/}
+                                            {/*    data-cy="frame-container"*/}
+                                            {/*>*/}
+                                            {/*    <Text*/}
+                                            {/*        fontSize="small"*/}
+                                            {/*        text="It's me again!"*/}
+                                            {/*        data-cy="frame-container-text"*/}
+                                            {/*    />*/}
+                                            {/*</Element>*/}
                                         </Element>
                                     </Frame>
                                 </div>
@@ -99,7 +131,7 @@ const IVPDesigner = () => {
                     </div>
                 </div>
             </Editor>
-        </>
+        </ErrorBoundary>
     );
 };
 

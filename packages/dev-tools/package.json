@@ -1,0 +1,11 @@
+{
+    "name": "@fayr/dev-tools",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "dev": "markserv ./DEVELOPMENT.md -p 12345"
+    },
+    "devDependencies": {
+        "markserv": "^1.17.4"
+    }
+}

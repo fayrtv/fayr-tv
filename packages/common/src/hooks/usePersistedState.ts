@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from "react";
 
-import { isFalsyOrWhitespace } from "..";
+import { isFalsyOrWhitespace } from "../utils/stringUtils";
 
 function parseAsJson<T>(rawJson: string) {
     if (isFalsyOrWhitespace(rawJson)) {

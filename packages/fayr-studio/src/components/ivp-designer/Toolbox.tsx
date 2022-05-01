@@ -1,10 +1,9 @@
 import { Element, useEditor } from "@craftjs/core";
-import { QRCode } from "@fayr/ivp-components";
+import { Container, QRCode } from "@fayr/ivp-components";
+import { Text } from "@fayr/ivp-components";
 import { Box, Button as MaterialButton, Grid } from "@material-ui/core";
-import { Button } from "components/user/Button";
-import { Card } from "components/user/Card";
-import { Container } from "components/user/Container";
-import { Text } from "components/user/Text";
+import { Button } from "components/ivp-designer/ivp-component-settings/Button";
+import { Card } from "components/ivp-designer/ivp-component-settings/Card";
 import React from "react";
 
 export const Toolbox = () => {

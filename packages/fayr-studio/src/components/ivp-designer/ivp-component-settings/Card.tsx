@@ -1,7 +1,10 @@
-import { Button } from "./Button";
-import { Container, ContainerSettings, ContainerDefaultProps } from "./Container";
-import { Text } from "./Text";
 import { Element, useNode } from "@craftjs/core";
+import { Container, Text } from "@fayr/ivp-components";
+import { Button } from "components/ivp-designer/ivp-component-settings/Button";
+import {
+    ContainerDefaultProps,
+    ContainerSettings,
+} from "components/ivp-designer/ivp-component-settings/Container";
 import React from "react";
 
 type CardTopProps = {};
@@ -63,19 +66,17 @@ type CardProps = {
     padding?: number;
 };
 
-export const Card = ({ background, padding = 20, ...props }: CardProps) => {
-    return (
-        <Container {...props} background={background} padding={padding}>
-            <Element canvas id="text" is={CardTop} data-cy="card-top">
-                <Text text="Only texts" fontSize={20} data-cy="card-top-text-1" />
-                <Text text="are allowed up here" fontSize={15} data-cy="card-top-text-2" />
-            </Element>
-            <Element canvas id="buttons" is={CardBottom} data-cy="card-bottom">
-                <Button size="small" text="Only buttons down here" data-cy="card-bottom-button" />
-            </Element>
-        </Container>
-    );
-};
+export const Card = ({ background, padding = 20, ...props }: CardProps) => (
+    <Container {...props} background={background ?? "black"} padding={padding}>
+        <Element canvas id="text" is={CardTop} data-cy="card-top">
+            <Text text="Only texts" fontSize={20} data-cy="card-top-text-1" />
+            <Text text="are allowed up here" fontSize={15} data-cy="card-top-text-2" />
+        </Element>
+        <Element canvas id="buttons" is={CardBottom} data-cy="card-bottom">
+            <Button size="small" text="Only buttons down here" data-cy="card-bottom-button" />
+        </Element>
+    </Container>
+);
 
 Card.craft = {
     props: ContainerDefaultProps,

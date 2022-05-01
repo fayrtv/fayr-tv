@@ -8,11 +8,14 @@ export enum PlatformType {
 
 export type PlatformStyling = {
     theme: Theme;
+    craftData?: string;
 };
 
 export type PlatformInfo = {
     name?: string;
     companyName?: string;
+    // TODO: Translations should probably be handled separately, maybe by sharing JSON files for
+    // every language...
     welcomeMessage?: string;
 };
 

@@ -1,5 +1,8 @@
+import { LoadingAnimation } from "@fayr/common";
+import { CheckCircleIcon, DotsCircleHorizontalIcon } from "@heroicons/react/outline";
 import { CheckIcon } from "@heroicons/react/solid";
 import { A } from "components/A";
+import { PlatformConfiguratorContext } from "platform-config/PlatformConfiguratorContextProvider";
 import React, { Dispatch, SetStateAction } from "react";
 
 export type StepInfo = {
@@ -48,13 +51,33 @@ function Bubble({ isComplete, isCurrent }: { isComplete: boolean; isCurrent: boo
     );
 }
 
-function Text({ description, name }: Pick<StepInfo, "description" | "name">) {
+function HeadlineSection({
+    description,
+    name,
+    isCurrentStep,
+}: Pick<StepInfo, "description" | "name"> & { isCurrentStep: boolean }) {
+    const { isSaving } = React.useContext(PlatformConfiguratorContext);
+
     return (
         <>
             <span className="min-w-0 flex flex-col">
-                <span className="text-lg tracking-wide font-upper text-primary hover:text-primary-light">
-                    {name}
-                </span>
+                <div className="flex flex-row">
+                    <div className="flex-1 text-lg tracking-wide font-upper text-primary hover:text-primary-light">
+                        {name}
+                    </div>
+                    {isCurrentStep && (
+                        <div className="">
+                            {isSaving ? (
+                                <DotsCircleHorizontalIcon
+                                    color="var(--color-primary)"
+                                    className="w-6 h-6"
+                                />
+                            ) : (
+                                <CheckCircleIcon color="var(--color-primary)" className="w-6 h-6" />
+                            )}
+                        </div>
+                    )}
+                </div>
                 {description && <span className="text-md text-neutral">{description}</span>}
             </span>
         </>
@@ -94,15 +117,19 @@ export default function VerticalSteps({ currentStepId, setCurrentStepId, steps }
 
                         <div className="relative flex items-start group">
                             <Bubble isComplete={step.isComplete} isCurrent={isCurrentStep(step)} />
-                            <div className="ml-4 w-full block flex-row">
+                            <div className="ml-4 w-full block">
                                 <div
                                     className={classNames(
-                                        "w-full block relative",
+                                        "w-full block",
                                         currentStepId === step.id ? "pb-8" : "",
                                     )}
                                 >
                                     <A href={step.href}>
-                                        <Text name={step.name} description={step.description} />
+                                        <HeadlineSection
+                                            name={step.name}
+                                            description={step.description}
+                                            isCurrentStep={isCurrentStep(step)}
+                                        />
                                     </A>
                                 </div>
                                 <div className="w-full text-sm block relative bg-black">

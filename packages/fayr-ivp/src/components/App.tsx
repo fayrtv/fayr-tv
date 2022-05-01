@@ -1,3 +1,4 @@
+import { Editor, Frame } from "@craftjs/core";
 import { Provider as InversifyProvider } from "inversify-react";
 import { container } from "inversify.config";
 import React from "react";
@@ -10,9 +11,12 @@ import store from "redux/store";
 import { usePlatformConfig } from "hooks/usePlatformConfig";
 
 import End from "components/chimeWeb/End";
+import { JoinInfoForm } from "components/chimeWeb/JoinInfoForm";
 import Welcome from "components/chimeWeb/Welcome";
 
 import { applyTheme, ErrorBoundary } from "@fayr/common";
+
+import { IVP_COMPONENT_RESOLVER } from "@fayr/ivp-components";
 
 import styles from "./App.module.scss";
 
@@ -67,7 +71,14 @@ function MainIvpRouter() {
                 </Route>
                 <Route path={`${path}/`}>
                     <ErrorBoundary>
-                        <Welcome />
+                        <Editor
+                            resolver={{ JoinInfoForm, ...IVP_COMPONENT_RESOLVER }}
+                            enabled={false}
+                        >
+                            <Frame>
+                                <Welcome />
+                            </Frame>
+                        </Editor>
                     </ErrorBoundary>
                 </Route>
             </Switch>

@@ -75,8 +75,8 @@ export const SaveLoadActions = () => {
                         color="secondary"
                         onClick={() => {
                             const json = query.serialize();
+                            console.log(json);
                             copy(lz.encodeBase64(lz.compress(json)));
-                            setSnackbarMessage("State copied to clipboard");
                         }}
                         style={{ marginRight: "10px" }}
                     >

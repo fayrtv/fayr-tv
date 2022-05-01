@@ -1,10 +1,12 @@
+import { Frame, useEditor, useNode } from "@craftjs/core";
+import lz from "lzutf8";
 import React from "react";
 import { RouteComponentProps, useRouteMatch, withRouter } from "react-router-dom";
 
 import { usePlatformConfig } from "hooks/usePlatformConfig";
 import useTranslations from "hooks/useTranslations";
 
-import { FayrLogo, usePersistedState } from "@fayr/common";
+import { FayrLogo, LoadingAnimation, usePersistedState } from "@fayr/common";
 
 import * as config from "../../config";
 import Error from "./Error";
@@ -20,7 +22,22 @@ const Welcome = (props: Props) => {
         url = "";
     }
 
-    const { platformConfig } = usePlatformConfig();
+    const { isLoading, platformConfig } = usePlatformConfig();
+
+    const {
+        actions: { deserialize },
+    } = useEditor();
+
+    const {
+        connectors: { connect },
+    } = useNode();
+
+    React.useEffect(() => {
+        if (!platformConfig?.styling?.craftData) {
+            return;
+        }
+        deserialize(lz.decompress(lz.decodeBase64(platformConfig.styling.craftData)));
+    }, [deserialize, platformConfig?.styling?.craftData]);
 
     const tl = useTranslations();
 
@@ -71,36 +88,39 @@ const Welcome = (props: Props) => {
     const welcomeMessage = platformConfig?.info?.welcomeMessage ?? tl.WelcomeMessageHeader;
 
     return (
-        <>
-            <div className="welcome form-grid">
-                <div className="welcome__intro">
-                    <div className="intro__inner formatted-text">
-                        <FayrLogo style={{ border: "none" }} />
-                        <br />
-                        <h2>{welcomeMessage}</h2>
-                        <h3>{tl.WelcomeMessageBody}</h3>
-                    </div>
-                </div>
-
-                <div className="welcome__content pd-4">
-                    <div className="content__inner">
-                        <h2 className="mg-b-2">{tl.StartWatchPartyHeader}</h2>
-                        <h3>{tl.StartWatchPartyBody}</h3>
-                        <JoinInfoForm
-                            username={username}
-                            usernameInputRef={usernameInputRef}
-                            onUsernameChanged={setUsername}
-                            roomTitle={roomTitle}
-                            onRoomTitleChanged={setRoomTitle}
-                            disableSubmit={!playbackURL}
-                            onSubmit={handleCreateRoom}
-                        />
-                    </div>
+        <div className="welcome form-grid">
+            <div className="welcome__intro">
+                <div className="intro__inner formatted-text">
+                    <FayrLogo style={{ border: "none" }} />
+                    <br />
+                    <h2>{welcomeMessage}</h2>
+                    <h3>{tl.WelcomeMessageBody}</h3>
                 </div>
             </div>
+
+            <div className="welcome__content pd-4">
+                <div className="content__inner">
+                    <h2 className="mg-b-2">{tl.StartWatchPartyHeader}</h2>
+                    <h3>{tl.StartWatchPartyBody}</h3>
+                    <JoinInfoForm
+                        username={username}
+                        usernameInputRef={usernameInputRef}
+                        onUsernameChanged={setUsername}
+                        roomTitle={roomTitle}
+                        onRoomTitleChanged={setRoomTitle}
+                        disableSubmit={!playbackURL}
+                        onSubmit={handleCreateRoom}
+                    />
+                </div>
+
+                {isLoading ? <LoadingAnimation /> : <Frame />}
+            </div>
+
             {showError && <Error closeError={() => setShowError(false)} errorMsg={errorMessage} />}
-        </>
+        </div>
     );
 };
 
 export default withRouter(Welcome);
+
+Welcome.displayName = "Welcome";
