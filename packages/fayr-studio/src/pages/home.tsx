@@ -2,7 +2,7 @@
 import styles from "./home.module.scss";
 import classNames from "classnames";
 import { A } from "components/A";
-import FayrStudioLayout from "components/layout/FayrStudioLayout";
+import DashboardLayout from "components/layout/DashboardLayout";
 import { NextSeo } from "next-seo";
 import React from "react";
 
@@ -71,5 +71,5 @@ const Home = () => {
 export default Home;
 
 Home.layoutProps = {
-    Layout: FayrStudioLayout,
+    Layout: DashboardLayout,
 };

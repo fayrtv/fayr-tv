@@ -1,7 +1,7 @@
 import { useEditor } from "@craftjs/core";
 import { XCircleIcon } from "@heroicons/react/outline";
 import { Box, Button as MaterialButton, Chip, Grid } from "@material-ui/core";
-import { ThemeSettingsContainer } from "components/ivp-designer/ThemeSettingsContainer";
+import { ThemeSettingsContainer } from "components/designer/ThemeSettingsContainer";
 import React from "react";
 
 export const SelectedElementPropertiesPanel = () => {

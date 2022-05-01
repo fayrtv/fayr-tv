@@ -1,4 +1,4 @@
-import FayrStudioLayout from "components/layout/FayrStudioLayout";
+import DashboardLayout from "components/layout/DashboardLayout";
 import React from "react";
 
 const Content = () => {
@@ -8,5 +8,5 @@ const Content = () => {
 export default Content;
 
 Content.layoutProps = {
-    Layout: FayrStudioLayout,
+    Layout: DashboardLayout,
 };

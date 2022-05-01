@@ -22,7 +22,7 @@ function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(" ");
 }
 
-export default function FayrStudioLayout({ children }: PropsWithChildren<{}>) {
+export default function DashboardLayout({ children }: PropsWithChildren<{}>) {
     React.useEffect(() => {
         applyTheme(FAYR_THEME, document.getElementById("fayr-studio-root")!);
     }, []);
