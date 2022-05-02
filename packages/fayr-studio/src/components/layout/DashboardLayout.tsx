@@ -13,19 +13,14 @@ import {
     UserGroupIcon,
     XIcon,
 } from "@heroicons/react/solid";
+import classNames from "classnames";
 import { A } from "components/A";
 import Header from "components/layout/Header";
 import SidebarNav from "components/navigation/SidebarNav";
 import React, { Fragment, PropsWithChildren, useState } from "react";
 
-function classNames(...classes: any[]) {
-    return classes.filter(Boolean).join(" ");
-}
-
 export default function DashboardLayout({ children }: PropsWithChildren<{}>) {
-    React.useEffect(() => {
-        applyTheme(FAYR_THEME, document.getElementById("fayr-studio-root")!);
-    }, []);
+    React.useEffect(() => applyTheme(FAYR_THEME, document.getElementById("fayr-studio-root")!), []);
 
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
