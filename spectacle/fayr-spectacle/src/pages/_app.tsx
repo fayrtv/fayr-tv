@@ -30,7 +30,7 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
     return (
         <>
             <Head>
-                <title>Web3 Starter</title>
+                <title>Zeiss Vision Center</title>
                 <meta
                     name="viewport"
                     content="minimum-scale=1, initial-scale=1, width=device-width"
