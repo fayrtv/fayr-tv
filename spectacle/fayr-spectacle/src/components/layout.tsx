@@ -7,12 +7,10 @@ import Header from "./header";
 type Props = {
     children: ReactChild;
 };
-const Layout = ({ children }: Props) => {
-    return (
-        <AppShell padding="md" header={<Header />} footer={<Footer />}>
-            <Container>{children}</Container>
-        </AppShell>
-    );
-};
+const Layout = ({ children }: Props) => (
+    <AppShell padding="md" header={<Header />} footer={<Footer />}>
+        <Container>{children}</Container>
+    </AppShell>
+);
 
 export default Layout;

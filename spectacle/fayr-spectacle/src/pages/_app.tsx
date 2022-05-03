@@ -8,7 +8,7 @@ import { useState } from "react";
 import "../styles/globals.scss";
 
 // mantine theming
-import yourMantineTheme from "../themes/mantine";
+import zeissTheme from "../themes/mantine";
 
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
     const { Component, pageProps } = props;
@@ -35,7 +35,7 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
                     withGlobalStyles
                     withNormalizeCSS
                     theme={{
-                        ...yourMantineTheme,
+                        ...zeissTheme,
                         colorScheme,
                         // you can change primaryColor w.r.t colorScheme here
                     }}
