@@ -28,12 +28,8 @@ jobs:
             - working-directory: packages/fayr-api
               run: yarn install --frozen-lockfile
             - name: Serverless Authentication
-              run: yarn run serverless config credentials --provider aws --key ${{ env.AWS_ACCESS_KEY_ID }} --secret ${{ env.AWS_SECRET_ACCESS_KEY }} --overwrite
-            - name: Check Serverless
               working-directory: packages/fayr-api
               run: |
-                  yarn run serverless doctor
-                  aws get-current-user
-            - name: Serverless Deploy
-              working-directory: packages/fayr-api
-              run: yarn deploy --verbose
+                  yarn run serverless config credentials --provider aws --key ${{ env.AWS_ACCESS_KEY_ID }} --secret ${{ env.AWS_SECRET_ACCESS_KEY }} --overwrite
+                  aws get-caller-identity
+                  yarn deploy --verbose
