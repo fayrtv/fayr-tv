@@ -11,7 +11,7 @@ const useManyClickHandlers = (...handlers: Array<(e: React.MouseEvent<HTMLElemen
         }
     };
 
-    const debounceHandler = debounce(function (e: React.MouseEvent<HTMLElement>) {
+    const debounceHandler = debounce(function(e: React.MouseEvent<HTMLElement>) {
         callEventHandler(e);
     }, 250);
 

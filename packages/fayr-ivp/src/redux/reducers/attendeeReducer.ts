@@ -18,12 +18,12 @@ type CouldBeMinimalAttendee = Attendee | MinimalAttendee;
 
 type AttendeeReducerAction = ReducerAction<CouldBeMinimalAttendee>;
 
-const generateAction =
-    <TPayload extends CouldBeMinimalAttendee>(type: string) =>
-    (data: TPayload): AttendeeReducerAction => ({
-        payload: data,
-        type,
-    });
+const generateAction = <TPayload extends CouldBeMinimalAttendee>(type: string) => (
+    data: TPayload,
+): AttendeeReducerAction => ({
+    payload: data,
+    type,
+});
 
 export const addAttendee = generateAction<Attendee>(ADD_ATTENDEE);
 export const updateAttendee = generateAction<MinimalAttendee>(UPDATE_ATTENDEE);

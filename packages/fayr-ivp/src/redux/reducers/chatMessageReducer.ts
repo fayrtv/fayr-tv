@@ -9,12 +9,10 @@ const CHAT_MARK_MESSAGE_AS_SEEN = "CHAT_MARK_MESSAGE_AS_SEEN";
 
 type MessageAction = ReducerAction<CouldBeArray<Message>>;
 
-const generateAction =
-    (type: string) =>
-    (payload: CouldBeArray<Message>): MessageAction => ({
-        type,
-        payload,
-    });
+const generateAction = (type: string) => (payload: CouldBeArray<Message>): MessageAction => ({
+    type,
+    payload,
+});
 
 export const addMessage = generateAction(CHAT_ADD_MESSAGE);
 

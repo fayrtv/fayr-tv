@@ -104,20 +104,20 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
         );
 
         // Attach event listeners
-        initializedPlayer.addEventListener(PlayerState.PLAYING, function () {
+        initializedPlayer.addEventListener(PlayerState.PLAYING, function() {
             if (config.DEBUG) console.log("Player State - PLAYING");
         });
-        initializedPlayer.addEventListener(PlayerState.ENDED, function () {
+        initializedPlayer.addEventListener(PlayerState.ENDED, function() {
             if (config.DEBUG) console.log("Player State - ENDED");
         });
-        initializedPlayer.addEventListener(PlayerState.READY, function () {
+        initializedPlayer.addEventListener(PlayerState.READY, function() {
             if (config.DEBUG) console.log("Player State - READY");
         });
-        initializedPlayer.addEventListener(PlayerEventType.ERROR, function (err: any) {
+        initializedPlayer.addEventListener(PlayerEventType.ERROR, function(err: any) {
             if (config.DEBUG) console.warn("Player Event - ERROR:", err);
         });
 
-        initializedPlayer.addEventListener(PlayerEventType.TEXT_METADATA_CUE, function (cue: any) {
+        initializedPlayer.addEventListener(PlayerEventType.TEXT_METADATA_CUE, function(cue: any) {
             const metadataText = cue.text;
             const position = initializedPlayer.getPosition().toFixed(2);
             if (config.DEBUG)
@@ -140,13 +140,13 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
         // Show/Hide player controls
         playerOverlay.addEventListener(
             "mouseover",
-            function () {
+            function() {
                 playerOverlay.classList.add("overlay--hover");
             },
             false,
         );
 
-        playerOverlay.addEventListener("mouseout", function () {
+        playerOverlay.addEventListener("mouseout", function() {
             playerOverlay.classList.remove("overlay--hover");
         });
 

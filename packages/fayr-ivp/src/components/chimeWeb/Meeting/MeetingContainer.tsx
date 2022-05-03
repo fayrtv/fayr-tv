@@ -85,8 +85,11 @@ export const MeetingContainer = ({
                 if (meetingMetaData.meetingInputOutputDevices) {
                     const promises: Array<Promise<void>> = [];
 
-                    const { audioInput, audioOutput, cam } =
-                        meetingMetaData.meetingInputOutputDevices;
+                    const {
+                        audioInput,
+                        audioOutput,
+                        cam,
+                    } = meetingMetaData.meetingInputOutputDevices;
 
                     if (audioInput && !meetingMetaData.muted && !meetingMetaData.forceMuted) {
                         promises.push(

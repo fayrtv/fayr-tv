@@ -20,9 +20,21 @@ container
     .to(AudioVideoManager)
     .inSingletonScope();
 
-container.bind<ISocketProvider>(Types.ISocketProvider).to(SocketProvider).inSingletonScope();
-container.bind<LogProvider>(Types.LogProvider).to(LogProvider).inSingletonScope();
-container.bind<IRoomManager>(Types.IRoomManager).to(RoomManager).inSingletonScope();
-container.bind<IChimeEvents>(Types.IChimeEvents).to(ChimeEvents).inSingletonScope();
+container
+    .bind<ISocketProvider>(Types.ISocketProvider)
+    .to(SocketProvider)
+    .inSingletonScope();
+container
+    .bind<LogProvider>(Types.LogProvider)
+    .to(LogProvider)
+    .inSingletonScope();
+container
+    .bind<IRoomManager>(Types.IRoomManager)
+    .to(RoomManager)
+    .inSingletonScope();
+container
+    .bind<IChimeEvents>(Types.IChimeEvents)
+    .to(ChimeEvents)
+    .inSingletonScope();
 
 export { container };

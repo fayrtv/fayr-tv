@@ -176,9 +176,8 @@ export const StreamVolumeControl = ({ player }: Props) => {
     const volumePercentage = volumeRatio * 100;
 
     const sliderStyle = {
-        backgroundImage: `linear-gradient(0, ${RAIL_VALUE_COLOR} ${
-            volumePercentage / 3
-        }%, ${RAIL_GRADIENT_COLOR} ${volumePercentage}%, ${RAIL_BG_COLOR} ${volumePercentage}%)`,
+        backgroundImage: `linear-gradient(0, ${RAIL_VALUE_COLOR} ${volumePercentage /
+            3}%, ${RAIL_GRADIENT_COLOR} ${volumePercentage}%, ${RAIL_BG_COLOR} ${volumePercentage}%)`,
     };
     return (
         <div

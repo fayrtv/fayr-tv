@@ -12,5 +12,5 @@ type WithCraftStatics<C extends React.ComponentType> = {
 export function withCraft<C extends (props: P) => JSX.Element, P>(
     component: C,
 ): C & WithCraftStatics<C> {
-    return component as unknown as C & WithCraftStatics<C>;
+    return (component as unknown) as C & WithCraftStatics<C>;
 }
