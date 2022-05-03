@@ -1,13 +1,14 @@
+import { MantineProvider, ColorScheme, ColorSchemeProvider } from "@mantine/core";
+import { NotificationsProvider } from "@mantine/notifications";
 import { AppProps } from "next/app";
-import { useState } from "react";
 import Head from "next/head";
+import { useState } from "react";
+
 // global styles
 import "../styles/globals.scss";
+
 // mantine theming
 import yourMantineTheme from "../themes/mantine";
-import { MantineProvider, ColorScheme, ColorSchemeProvider } from "@mantine/core";
-import { Web3ContextWrapper } from "../context/web3.context";
-import { NotificationsProvider } from "@mantine/notifications";
 
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
     const { Component, pageProps } = props;
@@ -39,11 +40,9 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
                         // you can change primaryColor w.r.t colorScheme here
                     }}
                 >
-                    <Web3ContextWrapper>
-                        <NotificationsProvider>
-                            <Component {...pageProps} />
-                        </NotificationsProvider>
-                    </Web3ContextWrapper>
+                    <NotificationsProvider>
+                        <Component {...pageProps} />
+                    </NotificationsProvider>
                 </MantineProvider>
             </ColorSchemeProvider>
         </>

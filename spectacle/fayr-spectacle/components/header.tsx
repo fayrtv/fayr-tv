@@ -2,8 +2,6 @@ import { Box, Container, Text, Group } from "@mantine/core";
 import Link from "next/link";
 
 import ThemeToggleButton from "../components/theme-toggle-button";
-import WalletConnectionButton from "./wallet-connection-button";
-import WalletDisplayButton from "./wallet-display-button";
 
 const Header = () => {
     return (
@@ -25,8 +23,6 @@ const Header = () => {
                     {/* pushes the succeeding contents to the right */}
                     <span style={{ flexGrow: 1 }} />
 
-                    <WalletConnectionButton />
-                    <WalletDisplayButton />
                     <ThemeToggleButton />
                 </Group>
             </Container>
