@@ -36,6 +36,6 @@ jobs:
             - name: Serverless Check
               working-directory: packages/fayr-api
               run: serverless doctor
-            - name: Serverless deploy
+            - name: Serverless Deploy
               working-directory: packages/fayr-api
-              run: yarn run deploy --verbose
+              run: serverless deploy --verbose
