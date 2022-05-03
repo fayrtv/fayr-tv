@@ -1,8 +1,10 @@
-import type { NextPage } from "next";
-import Layout from "../components/layout";
 import { List, Text, Title, Anchor } from "@mantine/core";
+import { NextPageWithLayout } from "~/types/next-types";
 
-const Home: NextPage = () => {
+import MainLayout from "../components/MainLayout";
+import Layout from "../components/layout";
+
+const Home: NextPageWithLayout = () => {
     return (
         <Layout>
             <>
@@ -47,6 +49,10 @@ const Home: NextPage = () => {
             </>
         </Layout>
     );
+};
+
+Home.layoutProps = {
+    Layout: MainLayout,
 };
 
 export default Home;

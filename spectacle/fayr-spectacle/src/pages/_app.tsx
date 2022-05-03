@@ -2,17 +2,24 @@ import { MantineProvider, ColorScheme, ColorSchemeProvider } from "@mantine/core
 import { NotificationsProvider } from "@mantine/notifications";
 import { AppProps } from "next/app";
 import Head from "next/head";
-import { useState } from "react";
+import { Fragment, ReactNode, useState } from "react";
 
-// global styles
 import "../styles/globals.scss";
 
-// mantine theming
 import zeissTheme from "../themes/mantine";
 
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
     const { Component, pageProps } = props;
     const [colorScheme, setColorScheme] = useState<ColorScheme>(props.colorScheme);
+
+    const Layout =
+        (
+            Component as typeof Component & {
+                layoutProps: {
+                    Layout: (props: { children: ReactNode } & unknown) => JSX.Element;
+                };
+            }
+        ).layoutProps?.Layout || Fragment;
 
     const toggleColorScheme = (value?: ColorScheme) => {
         const nextColorScheme = value || (colorScheme === "dark" ? "light" : "dark");
@@ -41,7 +48,9 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
                     }}
                 >
                     <NotificationsProvider>
-                        <Component {...pageProps} />
+                        <Layout>
+                            <Component {...pageProps} />
+                        </Layout>
                     </NotificationsProvider>
                 </MantineProvider>
             </ColorSchemeProvider>
