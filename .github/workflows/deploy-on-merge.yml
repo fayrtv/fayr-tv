@@ -33,6 +33,11 @@ jobs:
               run: serverless doctor
             - name: Serverless Authentication
               run: sls config credentials --provider aws --key ${{ env.AWS_ACCESS_KEY_ID }} --secret ${{ env.AWS_SECRET_ACCESS_KEY }}
+            - name: Serverless Check
+              working-directory: packages/fayr-api
+              run: serverless doctor
             - name: Serverless deploy
               working-directory: packages/fayr-api
-              run: yarn deploy --verbose
+              run: |
+                  yarn deploy --verbose
+                  serverless doctor
