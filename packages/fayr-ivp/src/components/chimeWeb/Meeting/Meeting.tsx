@@ -42,7 +42,6 @@ const Meeting = ({
     joinInfo,
     playbackURL,
     meetingStatus,
-    forceMuted,
     roomTitle,
 }: Props) => {
     const [showSettings, setShowSettings] = React.useState(false);

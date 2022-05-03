@@ -151,19 +151,6 @@ const VideoPlayer = ({
         window.seek = (aheadOrBehind: number) =>
             initializedPlayer.seekTo(initializedPlayer.getPosition() + aheadOrBehind);
 
-        // Show/Hide player controls
-        playerOverlay.addEventListener(
-            "mouseover",
-            function () {
-                playerOverlay.classList.add("overlay--hover");
-            },
-            false,
-        );
-
-        playerOverlay.addEventListener("mouseout", function () {
-            playerOverlay.classList.remove("overlay--hover");
-        });
-
         //@ts-ignore
         window.ivpDebug = {
             seek(plusMinus: number) {
@@ -246,7 +233,7 @@ const VideoPlayer = ({
             </div>
             <video
                 id="video-player"
-                className={`el-player ${fullScreen ? "fullscreen" : ""}`}
+                className={classNames(styles.VideoPlayer, { [styles.fullscreen]: fullScreen })}
                 playsInline
             />
             {reactionElements}

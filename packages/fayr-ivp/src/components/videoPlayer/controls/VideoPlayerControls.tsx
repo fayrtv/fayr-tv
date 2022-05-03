@@ -93,7 +93,7 @@ export const VideoPlayerControls = ({
         );
 
     return (
-        <div id="player-controls" className={fullScreen ? "fullscreen" : ""}>
+        <div id="player-controls" className={fullScreen ? styles.FullScreen : ""}>
             <Flex
                 className={styles.PlayerControlsContainer}
                 direction="Row"

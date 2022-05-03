@@ -15,9 +15,7 @@
     }
 
     .Overlay {
-        &:hover {
-            opacity: 1 !important;
-        }
+        opacity: var(--videoplayer-controls-opacity) !important;
     }
 
     .Reaction {
@@ -44,6 +42,22 @@
     .ReactionEmojiExitActive {
         opacity: 0;
         transition: all 1s;
+    }
+
+    .VideoPlayer {
+        width: 100%;
+        height: 100%;
+        top: 0;
+        background: #000;
+
+        &.fullscreen {
+            width: 80%;
+            @media (max-width: mq.$mobile) {
+                position: relative;
+                width: 100%;
+                height: 50%;
+            }
+        }
     }
 
     .FullScreenCams {

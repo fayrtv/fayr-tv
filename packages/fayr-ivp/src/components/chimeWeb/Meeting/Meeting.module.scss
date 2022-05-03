@@ -43,6 +43,16 @@
 
         overflow: hidden;
 
+        :global {
+            --videoplayer-controls-opacity: 0;
+        }
+
+        &:hover {
+            :global {
+                --videoplayer-controls-opacity: 1;
+            }
+        }
+
         audio {
             display: none;
         }
