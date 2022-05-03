@@ -1545,6 +1545,10 @@ yarn licenses v1.22.18
 │  ├─ idb@6.1.5
 │  │  ├─ URL: git://github.com/jakearchibald/idb.git
 │  │  └─ VendorName: Jake Archibald
+│  ├─ ignore-by-default@1.0.1
+│  │  ├─ URL: git+https://github.com/novemberborn/ignore-by-default.git
+│  │  ├─ VendorName: Mark Wubben
+│  │  └─ VendorUrl: https://github.com/novemberborn/ignore-by-default#readme
 │  ├─ ignore-walk@3.0.4
 │  │  ├─ URL: git+https://github.com/isaacs/ignore-walk.git
 │  │  ├─ VendorName: Isaac Z. Schlueter
@@ -1903,6 +1907,10 @@ yarn licenses v1.22.18
 │  │  ├─ URL: git://github.com/medikoo/timers-ext.git
 │  │  ├─ VendorName: Mariusz Nowak
 │  │  └─ VendorUrl: http://www.medikoo.com/
+│  ├─ touch@3.1.0
+│  │  ├─ URL: git://github.com/isaacs/node-touch.git
+│  │  ├─ VendorName: Isaac Z. Schlueter
+│  │  └─ VendorUrl: http://blog.izs.me/
 │  ├─ type@1.2.0
 │  │  ├─ URL: https://github.com/medikoo/type.git
 │  │  ├─ VendorName: Mariusz Nowak
@@ -6672,6 +6680,14 @@ yarn licenses v1.22.18
 │  │  ├─ URL: https://github.com/node-schedule/node-schedule.git
 │  │  ├─ VendorName: Matt Patenaude
 │  │  └─ VendorUrl: http://mattpatenaude.com
+│  ├─ nodemon@2.0.16
+│  │  ├─ URL: https://github.com/remy/nodemon.git
+│  │  ├─ VendorName: Remy Sharp
+│  │  └─ VendorUrl: https://nodemon.io/
+│  ├─ nopt@1.0.10
+│  │  ├─ URL: http://github.com/isaacs/nopt
+│  │  ├─ VendorName: Isaac Z. Schlueter
+│  │  └─ VendorUrl: http://blog.izs.me/
 │  ├─ normalize-path@3.0.0
 │  │  ├─ URL: https://github.com/jonschlinkert/normalize-path.git
 │  │  ├─ VendorName: Jon Schlinkert
@@ -7401,6 +7417,9 @@ yarn licenses v1.22.18
 │  │  ├─ URL: git@github.com:lupomontero/psl.git
 │  │  ├─ VendorName: Lupo Montero
 │  │  └─ VendorUrl: https://lupomontero.com/
+│  ├─ pstree.remy@1.1.8
+│  │  ├─ URL: https://github.com/remy/pstree.git
+│  │  └─ VendorName: Remy Sharp
 │  ├─ public-encrypt@4.0.3
 │  │  ├─ URL: https://github.com/crypto-browserify/publicEncrypt.git
 │  │  ├─ VendorName: Calvin Metcalf
@@ -8589,6 +8608,9 @@ yarn licenses v1.22.18
 │  ├─ unbzip2-stream@1.4.3
 │  │  ├─ URL: https://github.com/regular/unbzip2-stream.git
 │  │  └─ VendorName: Jan Bölsche
+│  ├─ undefsafe@2.0.5
+│  │  ├─ URL: https://github.com/remy/undefsafe.git
+│  │  └─ VendorName: Remy Sharp
 │  ├─ unicode-canonical-property-names-ecmascript@2.0.0
 │  │  ├─ URL: https://github.com/mathiasbynens/unicode-canonical-property-names-ecmascript.git
 │  │  ├─ VendorName: Mathias Bynens

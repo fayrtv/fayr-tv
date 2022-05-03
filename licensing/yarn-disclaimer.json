@@ -11233,7 +11233,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 -----
 
-The following software may be included in this product: common-path-prefix. A copy of the source code may be downloaded from git+https://github.com/novemberborn/common-path-prefix.git. This software contains the following license and notice below:
+The following software may be included in this product: common-path-prefix, ignore-by-default. A copy of the source code may be downloaded from git+https://github.com/novemberborn/common-path-prefix.git (common-path-prefix), git+https://github.com/novemberborn/ignore-by-default.git (ignore-by-default). This software contains the following license and notice below:
 
 ISC License (ISC)
 Copyright (c) 2016, Mark Wubben
@@ -18076,7 +18076,7 @@ SOFTWARE.
 
 -----
 
-The following software may be included in this product: inflight, mkdirp-infer-owner, promzard, slide, uid-number. A copy of the source code may be downloaded from https://github.com/npm/inflight.git (inflight), git+https://github.com/isaacs/mkdirp-infer-owner (mkdirp-infer-owner), git://github.com/isaacs/promzard (promzard), git://github.com/isaacs/slide-flow-control.git (slide), git://github.com/isaacs/uid-number.git (uid-number). This software contains the following license and notice below:
+The following software may be included in this product: inflight, mkdirp-infer-owner, promzard, slide, touch, uid-number. A copy of the source code may be downloaded from https://github.com/npm/inflight.git (inflight), git+https://github.com/isaacs/mkdirp-infer-owner (mkdirp-infer-owner), git://github.com/isaacs/promzard (promzard), git://github.com/isaacs/slide-flow-control.git (slide), git://github.com/isaacs/node-touch.git (touch), git://github.com/isaacs/uid-number.git (uid-number). This software contains the following license and notice below:
 
 The ISC License
 
@@ -23342,6 +23342,60 @@ THE SOFTWARE.
 
 -----
 
+The following software may be included in this product: nodemon. A copy of the source code may be downloaded from https://github.com/remy/nodemon.git. This software contains the following license and notice below:
+
+MIT License
+
+Copyright (c) 2010 - present, Remy Sharp, https://remysharp.com <remy@remysharp.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+-----
+
+The following software may be included in this product: nopt. A copy of the source code may be downloaded from http://github.com/isaacs/nopt. This software contains the following license and notice below:
+
+Copyright 2009, 2010, 2011 Isaac Z. Schlueter.
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+-----
+
 The following software may be included in this product: normalize-package-data. A copy of the source code may be downloaded from git://github.com/npm/normalize-package-data.git. This software contains the following license and notice below:
 
 This package contains code originally written by Isaac Z. Schlueter.
@@ -25891,6 +25945,18 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+-----
+
+The following software may be included in this product: pstree.remy. A copy of the source code may be downloaded from https://github.com/remy/pstree.git. This software contains the following license and notice below:
+
+The MIT License (MIT)
+Copyright © 2019 Remy Sharp, https://remysharp.com <remy@remysharp.com>
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 -----
 
@@ -33348,6 +33414,33 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
 DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
 THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+-----
+
+The following software may be included in this product: undefsafe. A copy of the source code may be downloaded from https://github.com/remy/undefsafe.git. This software contains the following license and notice below:
+
+The MIT License (MIT)
+
+Copyright © 2016 Remy Sharp, http://remysharp.com <remy@remysharp.com>
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 -----
 
