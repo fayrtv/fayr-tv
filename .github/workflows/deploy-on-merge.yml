@@ -25,6 +25,7 @@ jobs:
                   role-to-assume: arn:aws:iam::676057042583:role/fayr-github-actions-workflow-v1
                   aws-region: us-east-1
                   role-session-name: GitHubActions
+<<<<<<< HEAD
             - working-directory: packages/fayr-api
               run: yarn install --frozen-lockfile
             - name: Install Serverless Framework
@@ -35,3 +36,11 @@ jobs:
               run: sls config credentials --provider aws --key ${{ env.AWS_ACCESS_KEY_ID }} --secret ${{ env.AWS_SECRET_ACCESS_KEY }}
             - working-directory: packages/fayr-api
               run: yarn deploy
+=======
+            - name: "Serverless deploy"
+              working-directory: packages/fayr-api
+              run: |
+                  yarn install --frozen-lockfile
+                  yarn run serverless config credentials --provider aws --key ${{ env.AWS_ACCESS_KEY_ID }} --secret ${{ env.AWS_SECRET_ACCESS_KEY }}
+                  yarn deploy --verbose
+>>>>>>> 0721c52256f9369cedefce53e260a4471ad617d4
