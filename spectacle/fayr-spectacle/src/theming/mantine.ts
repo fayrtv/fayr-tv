@@ -1,4 +1,5 @@
 import type { MantineThemeOverride } from "@mantine/core";
+import { Tuple, DefaultMantineColor } from "@mantine/core";
 
 // theme colors must be a 10-tuple string of colors
 type ThemeColor = [string, string, string, string, string, string, string, string, string, string];
@@ -29,7 +30,7 @@ const secondary: ThemeColor = [
     "#E8590C",
     "#D9480F",
 ];
-const yourMantineTheme: MantineThemeOverride = {
+const spectacleTheme: MantineThemeOverride = {
     colors: {
         primary,
         secondary,
@@ -40,4 +41,14 @@ const yourMantineTheme: MantineThemeOverride = {
     primaryColor: "primary",
 };
 
-export default yourMantineTheme;
+// see https://mantine.dev/theming/extend-theme/#adding-custom-colors
+// TODO: Add color names
+type ExtendedCustomColors = "primaryColorName" | "secondaryColorName" | DefaultMantineColor;
+
+declare module "@mantine/core" {
+    export interface MantineThemeColorsOverride {
+        colors: Record<ExtendedCustomColors, Tuple<string, 10>>;
+    }
+}
+
+export default spectacleTheme;

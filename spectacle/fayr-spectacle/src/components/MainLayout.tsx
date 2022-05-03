@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
 
 export default function MainLayout({ children }: PropsWithChildren<{}>) {
-    return <>main layout {children}</>;
+    return <div style={{ height: "100vh" }}>{children}</div>;
 }

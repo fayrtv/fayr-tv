@@ -6,7 +6,7 @@ import { Fragment, ReactNode, useState } from "react";
 
 import "../styles/globals.scss";
 
-import zeissTheme from "../themes/mantine";
+import zeissTheme from "../theming/mantine";
 
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
     const { Component, pageProps } = props;
