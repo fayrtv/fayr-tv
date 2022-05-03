@@ -17,8 +17,8 @@ const Header = () => {
                 backgroundColor: "#000000",
             }}
         >
-            <Container>
-                <Group spacing="xs">
+            <Container fluid>
+                <Group direction="column" spacing="xs">
                     <Text color="white" sx={defaultTextProps}>
                         <Link href="/">ZEISS VISION CENTER Osnabrück</Link>
                     </Text>
