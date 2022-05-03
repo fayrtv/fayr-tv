@@ -1,8 +1,16 @@
+@font-face {
+    font-family: "SFPro";
+    src: url("/fonts/sfproregular.ttf");
+    font-style: normal;
+    font-weight: normal;
+}
+
 a {
     color: inherit;
     text-decoration: none;
 }
 
 * {
+    font-family: "SFPro";
     box-sizing: border-box;
 }

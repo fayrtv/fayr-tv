@@ -16,7 +16,7 @@ const Header = () => (
                     gradient={{ from: "primary", to: "secondary", deg: 45 }}
                     sx={{ fontSize: "1.5em", fontWeight: 800 }}
                 >
-                    <Link href="/">Web3 Starter</Link>
+                    <Link href="/">ZEISS VISION CENTER Osnabrück</Link>
                 </Text>
 
                 {/* pushes the succeeding contents to the right */}

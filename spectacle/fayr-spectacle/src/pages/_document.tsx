@@ -9,7 +9,10 @@ export default class _Document extends Document {
     render() {
         return (
             <Html>
-                <Head>{/* add some <link>s here */}</Head>
+                <Head>
+                    <link rel="icon" href="/images/favicon.ico" />
+                    <link rel="preload" href="fonts/sfproregular.ttf" as="font" crossOrigin="*" />
+                </Head>
                 <body>
                     <Main />
                     <NextScript />
