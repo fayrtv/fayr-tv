@@ -10077,6 +10077,14 @@
         "path": "fayr_tv_live/node_modules/ieee754",
         "licenseFile": "fayr_tv_live/node_modules/ieee754/LICENSE"
     },
+    "ignore-by-default@1.0.1": {
+        "licenses": "ISC",
+        "repository": "https://github.com/novemberborn/ignore-by-default",
+        "publisher": "Mark Wubben",
+        "url": "https://novemberborn.net/",
+        "path": "fayr_tv_live/node_modules/ignore-by-default",
+        "licenseFile": "fayr_tv_live/node_modules/ignore-by-default/LICENSE"
+    },
     "ignore-walk@3.0.4": {
         "licenses": "ISC",
         "repository": "https://github.com/isaacs/ignore-walk",
@@ -13206,12 +13214,29 @@
         "path": "fayr_tv_live/node_modules/node-schedule",
         "licenseFile": "fayr_tv_live/node_modules/node-schedule/LICENSE"
     },
+    "nodemon@2.0.16": {
+        "licenses": "MIT",
+        "repository": "https://github.com/remy/nodemon",
+        "publisher": "Remy Sharp",
+        "url": "https://github.com/remy",
+        "path": "fayr_tv_live/node_modules/nodemon",
+        "licenseFile": "fayr_tv_live/node_modules/nodemon/LICENSE"
+    },
     "noms@0.0.0": {
         "licenses": "ISC",
         "repository": "https://github.com/calvinmetcalf/noms",
         "publisher": "Calvin Metcalf",
         "path": "fayr_tv_live/node_modules/noms",
         "licenseFile": "fayr_tv_live/node_modules/noms/readme.md"
+    },
+    "nopt@1.0.10": {
+        "licenses": "MIT",
+        "repository": "https://github.com/isaacs/nopt",
+        "publisher": "Isaac Z. Schlueter",
+        "email": "i@izs.me",
+        "url": "http://blog.izs.me/",
+        "path": "fayr_tv_live/node_modules/touch/node_modules/nopt",
+        "licenseFile": "fayr_tv_live/node_modules/touch/node_modules/nopt/LICENSE"
     },
     "nopt@4.0.3": {
         "licenses": "ISC",
@@ -15289,6 +15314,13 @@
         "url": "https://lupomontero.com/",
         "path": "fayr_tv_live/node_modules/psl",
         "licenseFile": "fayr_tv_live/node_modules/psl/LICENSE"
+    },
+    "pstree.remy@1.1.8": {
+        "licenses": "MIT",
+        "repository": "https://github.com/remy/pstree",
+        "publisher": "Remy Sharp",
+        "path": "fayr_tv_live/node_modules/pstree.remy",
+        "licenseFile": "fayr_tv_live/node_modules/pstree.remy/LICENSE"
     },
     "public-encrypt@4.0.3": {
         "licenses": "MIT",
@@ -18175,6 +18207,15 @@
         "path": "fayr_tv_live/node_modules/token-types",
         "licenseFile": "fayr_tv_live/node_modules/token-types/LICENSE"
     },
+    "touch@3.1.0": {
+        "licenses": "ISC",
+        "repository": "https://github.com/isaacs/node-touch",
+        "publisher": "Isaac Z. Schlueter",
+        "email": "i@izs.me",
+        "url": "http://blog.izs.me/",
+        "path": "fayr_tv_live/node_modules/touch",
+        "licenseFile": "fayr_tv_live/node_modules/touch/LICENSE"
+    },
     "tough-cookie@2.5.0": {
         "licenses": "BSD-3-Clause",
         "repository": "https://github.com/salesforce/tough-cookie",
@@ -18642,6 +18683,13 @@
         "email": "jan@lagomorph.de",
         "path": "fayr_tv_live/node_modules/unbzip2-stream",
         "licenseFile": "fayr_tv_live/node_modules/unbzip2-stream/LICENSE"
+    },
+    "undefsafe@2.0.5": {
+        "licenses": "MIT",
+        "repository": "https://github.com/remy/undefsafe",
+        "publisher": "Remy Sharp",
+        "path": "fayr_tv_live/node_modules/undefsafe",
+        "licenseFile": "fayr_tv_live/node_modules/undefsafe/LICENSE"
     },
     "uni-global@1.0.0": {
         "licenses": "ISC",
