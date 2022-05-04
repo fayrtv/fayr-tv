@@ -13,7 +13,7 @@ const dynamoDBConfig: DynamoDBClientConfig = {
     region: process.env.NEXT_AUTH_AWS_REGION,
 };
 
-const client = DynamoDBDocument.from(new DynamoDB(dynamoDBConfig), {
+const client = DynamoDBDocument.from(null!, {
     marshallOptions: {
         convertEmptyValues: true,
         removeUndefinedValues: true,
