@@ -1,11 +1,23 @@
-import { Anchor, Button, Group, PasswordInput } from "@mantine/core";
+import {
+    Anchor,
+    Box,
+    Button,
+    Center,
+    Checkbox,
+    CheckboxGroup,
+    Container,
+    Grid,
+    Group,
+    Image,
+    PasswordInput,
+    Text,
+    TextInput,
+} from "@mantine/core";
 import { useForm } from "@mantine/hooks";
-import classNames from "classnames";
 import { GetServerSideProps } from "next";
 import { getProviders } from "next-auth/react";
 import { ClientSafeProvider } from "next-auth/react/types";
-import React, { useState } from "react";
-import AuthBodyShell from "~/components/auth/AuthBodyShell";
+import React, { PropsWithChildren, useState } from "react";
 import Layout from "~/components/layout";
 import { NextPageWithLayout } from "~/types/next-types";
 
@@ -15,52 +27,117 @@ type ServerProps = {
 
 type Props = ServerProps;
 
-const SignUp: NextPageWithLayout = ({ providers }: Props) => {
+const BodyShell = ({ children }: PropsWithChildren<{}>) => {
+    return (
+        <Container size="md" mt="lg">
+            <Group sx={{ alignItems: "flex-start" }}>
+                <Image src={"/assets/zeiss_logo.svg"} alt="ZEISS Logo" width={80} />
+                <Box>
+                    <Text transform="uppercase" color="primary" weight="bold" size="lg">
+                        Registrierung
+                    </Text>
+                    <Text color="black" size="lg" weight="bold" mt="xs">
+                        Legen Sie sich Ihren kostenlosen Digitalen Brillenpass an.
+                    </Text>
+                </Box>
+            </Group>
+            <Box mt="xl">{children}</Box>
+        </Container>
+    );
+};
+
+const SignUp: NextPageWithLayout<Props> = ({ providers }) => {
     const isValid = false;
-
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
-
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-
-    const [receiveUpdates, setReceiveUpdates] = useState(false);
-    const [termsAccepted, setTermsAccepted] = useState(false);
 
     const form = useForm({
         initialValues: {
+            address: "",
+            title: "",
+            firstName: "",
+            lastName: "",
+            email: "",
             password: "",
             confirmPassword: "",
+            newsletter: false,
+            termsAndConditions: false,
         },
 
-        validate: {
+        errorMessages: {
             confirmPassword: (value, values) =>
-                value !== values.password ? "Passwords did not match" : null,
+                value !== values?.password ? <>"Passwords did not match"</> : null,
+        },
+
+        validationRules: {
+            confirmPassword: (value, values) =>
+                value !== values?.password ? "Passwords did not match" : null,
         },
     });
 
     return (
-        <AuthBodyShell title="Registrierung">
+        <BodyShell>
             <form onSubmit={form.onSubmit((values) => console.log(values))}>
-                <PasswordInput
-                    label="Password"
-                    placeholder="Password"
-                    {...form.getInputProps("password")}
-                />
+                {/* TODO: No grid with columns on mobile */}
+                <Grid gutter="lg">
+                    <Grid.Col span={6}>
+                        <Group grow>
+                            <TextInput
+                                label="Anrede"
+                                placeholder="Herr / Frau"
+                                {...form.getInputProps("address")}
+                            />
+                            <TextInput label="Titel" {...form.getInputProps("title")} />
+                        </Group>
+                        <TextInput label="Vorname" {...form.getInputProps("firstName")} />
+                        <TextInput label="Nachname" {...form.getInputProps("lastName")} />
 
-                <PasswordInput
-                    mt="sm"
-                    label="Confirm password"
-                    placeholder="Confirm password"
-                    {...form.getInputProps("confirmPassword")}
-                />
+                        <Box mt="md">
+                            <Checkbox
+                                label="Bitte informieren Sie mich regelmäßig über Angebote und Neuigkeiten per E-Mail."
+                                {...form.getInputProps("newsletter")}
+                            />
+                            <Checkbox
+                                mt="sm"
+                                label={
+                                    <>
+                                        Ich akzeptiere die{" "}
+                                        <Anchor href="/legal/terms" size="sm" target="__blank">
+                                            Allgemeinen Geschäftsbedingungen
+                                        </Anchor>{" "}
+                                        und die{" "}
+                                        <Anchor
+                                            href="/legal/data-protection"
+                                            size="sm"
+                                            target="__blank"
+                                        >
+                                            Bestimmungen zum Datenschutz
+                                        </Anchor>
+                                    </>
+                                }
+                                {...form.getInputProps("termsAndConditions")}
+                            />
+                        </Box>
+                    </Grid.Col>
 
-                <Group position="right" mt="md">
-                    <Button type="submit">Submit</Button>
-                </Group>
+                    <Grid.Col span={6}>
+                        <TextInput label="E-Mail" {...form.getInputProps("email")} />
+                        <PasswordInput
+                            label="Passwort"
+                            placeholder="Passwort"
+                            {...form.getInputProps("password")}
+                        />
+                        <PasswordInput
+                            label="Passwort bestätigen"
+                            placeholder="erneut eingeben"
+                            {...form.getInputProps("confirmPassword")}
+                        />
+
+                        <Group position="right" mt="md">
+                            <Button type="submit">Benutzerkonto anlegen</Button>
+                        </Group>
+                    </Grid.Col>
+                </Grid>
             </form>
-        </AuthBodyShell>
+        </BodyShell>
     );
 };
 

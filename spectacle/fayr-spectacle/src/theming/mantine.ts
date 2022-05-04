@@ -127,7 +127,7 @@ const spectacleTheme: MantineThemeOverride = {
     },
 
     other: {},
-    datesLocale: "en",
+    datesLocale: "de",
 };
 
 declare module "@mantine/core" {

@@ -45,6 +45,11 @@ const BodyShell = ({ children }: PropsWithChildren<{}>) => {
                 <Text transform="uppercase" color="primary" weight="bold" size="lg" mt={60}>
                     Anmeldung
                 </Text>
+                <Text color="black" size="lg" weight="bold" mt="xs">
+                    Willkommen bei Ihrem
+                    <br />
+                    ZEISS VISION CENTER Osnabrück
+                </Text>
                 {children}
             </Container>
         </Center>
@@ -66,12 +71,7 @@ const SignIn: NextPageWithLayout<Props> = ({ providers }) => {
 
     return (
         <BodyShell>
-            <Text color="black" size="lg" weight="bold" mt="xs">
-                Willkommen bei Ihrem
-                <br />
-                ZEISS VISION CENTER Osnabrück
-            </Text>
-            <TextInput required label="Email" {...form.getInputProps("email")} mt="md" />
+            <TextInput required label="E-Mail" {...form.getInputProps("email")} mt="md" />
             <PasswordInput required label="Password" {...form.getInputProps("password")} mt="xs" />
 
             <Group position="right" mt="xs">
