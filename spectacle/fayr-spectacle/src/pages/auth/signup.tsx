@@ -5,6 +5,7 @@ import { GetServerSideProps } from "next";
 import { getProviders } from "next-auth/react";
 import { ClientSafeProvider } from "next-auth/react/types";
 import React, { useState } from "react";
+import AuthBodyShell from "~/components/auth/AuthBodyShell";
 import Layout from "~/components/layout";
 import { NextPageWithLayout } from "~/types/next-types";
 
@@ -40,24 +41,26 @@ const SignUp: NextPageWithLayout = ({ providers }: Props) => {
     });
 
     return (
-        <form onSubmit={form.onSubmit((values) => console.log(values))}>
-            <PasswordInput
-                label="Password"
-                placeholder="Password"
-                {...form.getInputProps("password")}
-            />
+        <AuthBodyShell title="Registrierung">
+            <form onSubmit={form.onSubmit((values) => console.log(values))}>
+                <PasswordInput
+                    label="Password"
+                    placeholder="Password"
+                    {...form.getInputProps("password")}
+                />
 
-            <PasswordInput
-                mt="sm"
-                label="Confirm password"
-                placeholder="Confirm password"
-                {...form.getInputProps("confirmPassword")}
-            />
+                <PasswordInput
+                    mt="sm"
+                    label="Confirm password"
+                    placeholder="Confirm password"
+                    {...form.getInputProps("confirmPassword")}
+                />
 
-            <Group position="right" mt="md">
-                <Button type="submit">Submit</Button>
-            </Group>
-        </form>
+                <Group position="right" mt="md">
+                    <Button type="submit">Submit</Button>
+                </Group>
+            </form>
+        </AuthBodyShell>
     );
 };
 
