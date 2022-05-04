@@ -16477,8 +16477,8 @@
         "publisher": "Natalie Weizenbaum",
         "email": "nweiz@google.com",
         "url": "https://github.com/nex3",
-        "path": "fayr_tv_live/node_modules/sass",
-        "licenseFile": "fayr_tv_live/node_modules/sass/LICENSE"
+        "path": "fayr_tv_live/node_modules/@fayr/common/node_modules/sass",
+        "licenseFile": "fayr_tv_live/node_modules/@fayr/common/node_modules/sass/LICENSE"
     },
     "sass@1.49.9": {
         "licenses": "MIT",
@@ -16486,8 +16486,8 @@
         "publisher": "Natalie Weizenbaum",
         "email": "nweiz@google.com",
         "url": "https://github.com/nex3",
-        "path": "fayr_tv_live/node_modules/next/node_modules/sass",
-        "licenseFile": "fayr_tv_live/node_modules/next/node_modules/sass/LICENSE"
+        "path": "fayr_tv_live/node_modules/sass",
+        "licenseFile": "fayr_tv_live/node_modules/sass/LICENSE"
     },
     "sax@1.2.1": {
         "licenses": "ISC",

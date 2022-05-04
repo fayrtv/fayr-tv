@@ -3,6 +3,9 @@
     "version": "1.0.0",
     "private": true,
     "workspaces": {
+        "spectacle": [
+            "spectacle/*"
+        ],
         "packages": [
             "packages/*"
         ]

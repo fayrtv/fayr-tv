@@ -42,7 +42,7 @@ export const setIntervalAsync = async (
             await executor();
             await delay(delayBetween);
         }
-    } catch (e: any) {
+    } catch (e) {
         if (e.name === "AbortError") {
             return;
         }

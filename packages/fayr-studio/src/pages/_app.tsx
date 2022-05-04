@@ -42,13 +42,11 @@ function FayrStudioApp({ Component, pageProps, router }: AppProps): JSX.Element 
     const canonicalPath = router.pathname === "/" ? "" : router.pathname;
     const url = `${DEFAULT_CANONICAL}${canonicalPath}`;
     const Layout =
-        (
-            Component as typeof Component & {
-                layoutProps: {
-                    Layout: (props: { children: ReactNode } & unknown) => JSX.Element;
-                };
-            }
-        ).layoutProps?.Layout || Fragment;
+        (Component as typeof Component & {
+            layoutProps: {
+                Layout: (props: { children: ReactNode } & unknown) => JSX.Element;
+            };
+        }).layoutProps?.Layout || Fragment;
     return (
         <SessionProvider session={pageProps.session}>
             <Layout>

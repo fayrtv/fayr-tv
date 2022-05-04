@@ -11,8 +11,10 @@ import IAudioVideoManager from "components/chime/interfaces/IAudioVideoManager";
 import MicrophoneToggle from "./MicrophoneToggle";
 
 export const MicrophoneToggleButton = () => {
-    const [{ forceMuted, meetingInputOutputDevices, muted }, setMeetingMetaData] =
-        useMeetingMetaData();
+    const [
+        { forceMuted, meetingInputOutputDevices, muted },
+        setMeetingMetaData,
+    ] = useMeetingMetaData();
     const audioVideoManager = useInjection<IAudioVideoManager>(Types.IAudioVideoManager);
 
     const toggleMute = async () => {

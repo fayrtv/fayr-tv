@@ -45,8 +45,7 @@ export const CamToggleButton = () => {
                         videoEnabled: true,
                     });
                 } catch (err) {
-                    const videoInputDevices =
-                        await audioVideoManager.audioVideo.listVideoInputDevices();
+                    const videoInputDevices = await audioVideoManager.audioVideo.listVideoInputDevices();
                     await audioVideoManager.audioVideo.chooseVideoInputDevice(
                         videoInputDevices[0].deviceId,
                     );

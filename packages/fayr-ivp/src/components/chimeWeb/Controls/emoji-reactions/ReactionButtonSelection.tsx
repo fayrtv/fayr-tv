@@ -38,8 +38,9 @@ export const ReactionsDisabledIcon = (
 
 export const ReactionButtonSelection = ({ onClose }: Props) => {
     const buttonContainerRef = React.useRef<HTMLDivElement>(null);
-    const { setSelectedEmojiReaction, setReactionsDisabled } =
-        React.useContext(SelectedReactionContext);
+    const { setSelectedEmojiReaction, setReactionsDisabled } = React.useContext(
+        SelectedReactionContext,
+    );
 
     useGlobalClickHandler(
         (clickEvent) => {

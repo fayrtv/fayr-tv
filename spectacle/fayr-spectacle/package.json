@@ -1,0 +1,34 @@
+{
+    "name": "@fayr/spectacle",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint"
+    },
+    "dependencies": {
+        "@aws-sdk/client-dynamodb": "^3.82.0",
+        "@mantine/core": "^4.1.4",
+        "@mantine/hooks": "^4.1.4",
+        "@mantine/next": "^4.1.4",
+        "@mantine/notifications": "^4.1.5",
+        "next": "12.1.5",
+        "next-auth": "^4.2.1",
+        "react": "18.0.0",
+        "react-dom": "18.0.0",
+        "tabler-icons-react": "^1.46.0"
+    },
+    "devDependencies": {
+        "@types/node": "17.0.25",
+        "@types/react": "18.0.5",
+        "@types/react-dom": "18.0.1",
+        "eslint": "8.13.0",
+        "eslint-config-next": "12.1.5",
+        "eslint-config-prettier": "^8.5.0",
+        "prettier": "^2.6.2",
+        "sass": "^1.50.1",
+        "typescript": "4.6.3"
+    }
+}

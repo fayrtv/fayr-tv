@@ -52,10 +52,10 @@ const Welcome = (props: Props) => {
         createRoom();
     };
 
-    const roomUrlRelative = React.useMemo(
-        () => `${url}/meeting?room=${roomTitle}`,
-        [roomTitle, url],
-    );
+    const roomUrlRelative = React.useMemo(() => `${url}/meeting?room=${roomTitle}`, [
+        roomTitle,
+        url,
+    ]);
 
     const createRoom = () => {
         const data = {
