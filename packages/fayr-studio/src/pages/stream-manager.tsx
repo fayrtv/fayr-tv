@@ -1,4 +1,4 @@
-import FayrStudioLayout from "components/layout/FayrStudioLayout";
+import DashboardLayout from "components/layout/DashboardLayout";
 import React from "react";
 
 const StreamManager = () => {
@@ -8,5 +8,5 @@ const StreamManager = () => {
 export default StreamManager;
 
 StreamManager.layoutProps = {
-    Layout: FayrStudioLayout,
+    Layout: DashboardLayout,
 };

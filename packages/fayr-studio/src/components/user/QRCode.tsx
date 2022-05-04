@@ -1,6 +1,6 @@
 import { useNode } from "@craftjs/core";
 import { QRCode } from "@fayr/ivp-components";
-import ColorPicker from "components/ivp-designer/ColorPicker";
+import ColorPicker from "components/designer/ColorPicker";
 import React from "react";
 
 type Props = React.ComponentProps<typeof QRCode>;

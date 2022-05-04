@@ -1,8 +1,8 @@
 import { Editor, Element, Frame } from "@craftjs/core";
 import { QRCode } from "@fayr/ivp-components";
-import { SaveLoadActions } from "components/ivp-designer/SaveLoadActions";
-import { SelectedElementPropertiesPanel } from "components/ivp-designer/SelectedElementPropertiesPanel";
-import { Toolbox } from "components/ivp-designer/Toolbox";
+import { SaveLoadActions } from "components/designer/SaveLoadActions";
+import { SelectedElementPropertiesPanel } from "components/designer/SelectedElementPropertiesPanel";
+import { Toolbox } from "components/designer/Toolbox";
 import { Button } from "components/user/Button";
 import { Card, CardBottom, CardTop } from "components/user/Card";
 import { Container } from "components/user/Container";

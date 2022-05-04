@@ -1,6 +1,6 @@
 import { NoSsr } from "@material-ui/core";
 import Banner from "components/Banner";
-import FayrStudioLayout from "components/layout/FayrStudioLayout";
+import DashboardLayout from "components/layout/DashboardLayout";
 import { NextSeo } from "next-seo";
 import PlatformConfigurator from "platform-config/PlatformConfigurator";
 import PlatformConfiguratorContextProvider from "platform-config/PlatformConfiguratorContextProvider";
@@ -27,5 +27,5 @@ const Home = () => {
 export default Home;
 
 Home.layoutProps = {
-    Layout: FayrStudioLayout,
+    Layout: DashboardLayout,
 };
