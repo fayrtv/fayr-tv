@@ -1,10 +1,12 @@
-import {Anchor, Button, Group, PasswordInput} from "@mantine/core";
+import { Anchor, Button, Group, PasswordInput } from "@mantine/core";
+import { useForm } from "@mantine/hooks";
 import classNames from "classnames";
 import { GetServerSideProps } from "next";
 import { getProviders } from "next-auth/react";
 import { ClientSafeProvider } from "next-auth/react/types";
 import React, { useState } from "react";
-import {useForm} from "@mantine/hooks";
+import Layout from "~/components/layout";
+import { NextPageWithLayout } from "~/types/next-types";
 
 type ServerProps = {
     providers: ClientSafeProvider[];
@@ -12,7 +14,7 @@ type ServerProps = {
 
 type Props = ServerProps;
 
-export default function SignUp({ providers }: Props) {
+const SignUp: NextPageWithLayout = ({ providers }: Props) => {
     const isValid = false;
 
     const [firstName, setFirstName] = useState("");
@@ -27,37 +29,41 @@ export default function SignUp({ providers }: Props) {
 
     const form = useForm({
         initialValues: {
-            password: '',
-            confirmPassword: '',
+            password: "",
+            confirmPassword: "",
         },
 
         validate: {
             confirmPassword: (value, values) =>
-                value !== values.password ? 'Passwords did not match' : null,
+                value !== values.password ? "Passwords did not match" : null,
         },
     });
 
-    return <>
+    return (
         <form onSubmit={form.onSubmit((values) => console.log(values))}>
             <PasswordInput
                 label="Password"
                 placeholder="Password"
-                {...form.getInputProps('password')}
+                {...form.getInputProps("password")}
             />
 
             <PasswordInput
                 mt="sm"
                 label="Confirm password"
                 placeholder="Confirm password"
-                {...form.getInputProps('confirmPassword')}
+                {...form.getInputProps("confirmPassword")}
             />
 
             <Group position="right" mt="md">
                 <Button type="submit">Submit</Button>
             </Group>
         </form>
-    </div>;
-}
+    );
+};
+
+SignUp.layoutProps = {
+    Layout,
+};
 
 const validateEmail = (email: string) =>
     String(email)
@@ -72,3 +78,5 @@ export const getServerSideProps: GetServerSideProps = async () => {
         props: { providers },
     };
 };
+
+export default SignUp;

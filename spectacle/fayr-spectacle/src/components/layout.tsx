@@ -8,7 +8,14 @@ type Props = {
 };
 const Layout = ({ children }: Props) => {
     return (
-        <AppShell padding="md" header={<Header />} sx={{ main: { padding: 0, height: "100%" } }}>
+        <AppShell
+            header={<Header />}
+            styles={{
+                root: { height: "100vh", display: "flex", flexDirection: "column" },
+                main: { padding: 0 },
+                body: { flexGrow: 1 },
+            }}
+        >
             {children}
         </AppShell>
     );
