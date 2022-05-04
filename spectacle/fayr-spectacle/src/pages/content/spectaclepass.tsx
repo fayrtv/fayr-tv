@@ -1,6 +1,6 @@
 import Layout from "../../components/layout";
 import { NextPageWithLayout } from "~/types/next-types";
-import { CircleX, Eye, Printer } from "tabler-icons-react";
+import { CircleX, Edit, Eye, Printer, Qrcode } from "tabler-icons-react";
 import {
     Group,
     Container,
@@ -19,7 +19,7 @@ const SpectaclePass: NextPageWithLayout = () => {
     const [areButtonsEnabled, setAreButtonsEnabled] = React.useState(true);
 
     return (
-        <Container fluid>
+        <Container fluid sx={(theme) => ({ backgroundColor: "#6C6C6C" })}>
             <Group direction="column" grow>
                 <Group direction="row" position="right">
                     <CircleX size={30} />
@@ -74,15 +74,43 @@ const SpectaclePass: NextPageWithLayout = () => {
                     <Space
                         sx={(_) => ({ borderBottom: `1px solid ${theme.white}`, width: "100%" })}
                     />
-                    <Container fluid>
+                    <Container fluid sx={(theme) => ({ margin: "auto 0", width: "100%" })}>
                         <Group direction="row" position="apart">
-                            <Printer />
+                            <Printer
+                                size={"30px"}
+                                style={{
+                                    backgroundColor: theme.white,
+                                    color: "#4498D8",
+                                    borderRadius: "5px",
+                                    padding: "2px",
+                                }}
+                            />
                             <Group direction="row">
                                 <Button
-                                    color="transparent"
+                                    size="sm"
                                     disabled={!areButtonsEnabled}
-                                    sx={(theme) => ({ backgroundColor: theme.white })}
-                                />
+                                    sx={(theme) => ({
+                                        backgroundColor: theme.white,
+                                        padding: "5px",
+                                    })}
+                                    leftIcon={<Qrcode color="#4498D8" />}
+                                >
+                                    <Text size="xs" color="#4498D8">
+                                        QR-Code
+                                    </Text>
+                                </Button>
+                                <Button
+                                    disabled={!areButtonsEnabled}
+                                    sx={(theme) => ({
+                                        backgroundColor: theme.white,
+                                        padding: "5px",
+                                    })}
+                                    leftIcon={<Edit color="#4498D8" />}
+                                >
+                                    <Text size="xs" color="#4498D8">
+                                        Bearbeiten
+                                    </Text>
+                                </Button>
                             </Group>
                         </Group>
                     </Container>
