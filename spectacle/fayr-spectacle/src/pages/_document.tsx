@@ -10,8 +10,9 @@ export default class _Document extends Document {
         return (
             <Html>
                 <Head>
+                    <link rel="manifest" href="/manifest.json" />
                     <link rel="icon" href="/images/favicon.ico" />
-                    <link rel="preload" href="fonts/sfproregular.ttf" as="font" crossOrigin="*" />
+                    <link rel="preload" href="/fonts/sfproregular.ttf" as="font" crossOrigin="*" />
                 </Head>
                 <body>
                     <Main />
