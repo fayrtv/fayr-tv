@@ -1,22 +1,17 @@
-import { List, Text, Title, Anchor } from "@mantine/core";
-import { NextPageWithLayout } from "~/types/next-types";
-
-import MainLayout from "../components/MainLayout";
-import Layout from "../components/layout";
 import Link from "next/link";
+import Layout from "~/components/layout";
+import { NextPageWithLayout } from "~/types/next-types";
 
 const Home: NextPageWithLayout = () => {
     return (
-        <Layout>
-            <>
-                <Link href={"/content/spectaclepass"}>SpectaclePass</Link>
-            </>
-        </Layout>
+        <>
+            <Link href={"/content/spectaclepass"}>hallo welt</Link>
+        </>
     );
 };
 
 Home.layoutProps = {
-    Layout: MainLayout,
+    Layout: Layout,
 };
 
 export default Home;

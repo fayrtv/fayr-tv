@@ -1,9 +1,10 @@
-import { Anchor } from "@mantine/core";
+import {Anchor, Button, Group, PasswordInput} from "@mantine/core";
 import classNames from "classnames";
 import { GetServerSideProps } from "next";
 import { getProviders } from "next-auth/react";
 import { ClientSafeProvider } from "next-auth/react/types";
 import React, { useState } from "react";
+import {useForm} from "@mantine/hooks";
 
 type ServerProps = {
     providers: ClientSafeProvider[];
@@ -24,7 +25,38 @@ export default function SignUp({ providers }: Props) {
     const [receiveUpdates, setReceiveUpdates] = useState(false);
     const [termsAccepted, setTermsAccepted] = useState(false);
 
-    return <div></div>;
+    const form = useForm({
+        initialValues: {
+            password: '',
+            confirmPassword: '',
+        },
+
+        validate: {
+            confirmPassword: (value, values) =>
+                value !== values.password ? 'Passwords did not match' : null,
+        },
+    });
+
+    return <>
+        <form onSubmit={form.onSubmit((values) => console.log(values))}>
+            <PasswordInput
+                label="Password"
+                placeholder="Password"
+                {...form.getInputProps('password')}
+            />
+
+            <PasswordInput
+                mt="sm"
+                label="Confirm password"
+                placeholder="Confirm password"
+                {...form.getInputProps('confirmPassword')}
+            />
+
+            <Group position="right" mt="md">
+                <Button type="submit">Submit</Button>
+            </Group>
+        </form>
+    </div>;
 }
 
 const validateEmail = (email: string) =>

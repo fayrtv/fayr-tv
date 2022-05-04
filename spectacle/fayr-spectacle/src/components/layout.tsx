@@ -8,8 +8,8 @@ type Props = {
 };
 const Layout = ({ children }: Props) => {
     return (
-        <AppShell padding="md" header={<Header />}>
-            <Container>{children}</Container>
+        <AppShell padding="md" header={<Header />} sx={{ main: { padding: 0, height: "100%" } }}>
+            {children}
         </AppShell>
     );
 };

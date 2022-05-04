@@ -1,49 +1,70 @@
 import type { MantineThemeOverride } from "@mantine/core";
 import { Tuple, DefaultMantineColor } from "@mantine/core";
 
+// NOTE:
+// Color palettes are generated using
+// https://omatsuri.app/color-shades-generator
+// settings that produce exactly 10 colors, e.g. 16% / -20%.
+
 // theme colors must be a 10-tuple string of colors
 type ThemeColor = [string, string, string, string, string, string, string, string, string, string];
 
-// your primary color
-const primary: ThemeColor = [
-    "#F3F0FF",
-    "#E5DBFF",
-    "#D0BFFF",
-    "#B197FC",
-    "#9775FA",
-    "#845EF7",
-    "#7950F2",
-    "#7048E8",
-    "#6741D9",
-    "#5F3DC4",
-];
-// your secondary color
+const sameColor = (color: string) => Array(10).fill(color) as ThemeColor;
+
+const primary = sameColor("#4498D8");
+
 const secondary: ThemeColor = [
-    "#FFF4E6",
-    "#FFE8CC",
-    "#FFD8A8",
-    "#FFC078",
-    "#FFA94D",
-    "#FF922B",
-    "#FD7E14",
-    "#F76707",
-    "#E8590C",
-    "#D9480F",
+    "#F9FDFA",
+    "#D5F4E0",
+    "#B2EDC8",
+    "#91E8B2",
+    "#75DE9D",
+    "#5ED48A",
+    "#4AC97A",
+    "#3DBB6C",
+    "#3AA562",
+    "#379159",
 ];
+const success: ThemeColor = [
+    "#C9EDD6",
+    "#8BDEAB",
+    "#53D885",
+    "#24D366",
+    "#249F52",
+    "#227842",
+    "#1E5B35",
+    "#1B452B",
+    "#173522",
+    "#13291B",
+];
+const danger: ThemeColor = [
+    "#F9C0C0",
+    "#F77979",
+    "#F93939",
+    "#FF0000",
+    "#C60606",
+    "#9A0909",
+    "#780B0B",
+    "#5D0B0B",
+    "#480B0B",
+    "#380A0A",
+];
+
+type ExtendedCustomColors = "primary" | "secondary" | "success" | "danger" | DefaultMantineColor;
 const spectacleTheme: MantineThemeOverride = {
+    // see https://mantine.dev/theming/extend-theme/#adding-custom-colors
     colors: {
         primary,
         secondary,
+        success,
+        danger,
     },
     fontFamily:
-        "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif",
+        "SFPro, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif",
     fontFamilyMonospace: "Courier New, Courier, monospace",
     primaryColor: "primary",
+    defaultRadius: "sm",
 };
-
-// see https://mantine.dev/theming/extend-theme/#adding-custom-colors
-// TODO: Add color names
-type ExtendedCustomColors = "primaryColorName" | "secondaryColorName" | DefaultMantineColor;
 
 declare module "@mantine/core" {
     export interface MantineThemeColorsOverride {
