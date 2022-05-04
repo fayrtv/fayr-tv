@@ -1,9 +1,23 @@
 import Layout from "../../components/layout";
 import { NextPageWithLayout } from "~/types/next-types";
 import { CircleX, Eye, Printer } from "tabler-icons-react";
-import { Group, Container, Text, Space, Badge } from "@mantine/core";
+import {
+    Group,
+    Container,
+    Text,
+    Space,
+    Badge,
+    Button,
+    useMantineColorScheme,
+    useMantineTheme,
+} from "@mantine/core";
+import React from "react";
 
 const SpectaclePass: NextPageWithLayout = () => {
+    const theme = useMantineTheme();
+
+    const [areButtonsEnabled, setAreButtonsEnabled] = React.useState(true);
+
     return (
         <Container fluid>
             <Group direction="column" grow>
@@ -23,34 +37,53 @@ const SpectaclePass: NextPageWithLayout = () => {
                             <Eye
                                 size={50}
                                 style={{
-                                    backgroundColor: "white",
+                                    backgroundColor: theme.white,
                                     color: "#4498D8",
                                     borderRadius: "10px",
                                 }}
                             />
-                            <Text color="white" size="xs">
+                            <Text color={theme.white} size="xs">
                                 REFRAKTIONSPROTOKOLL
                             </Text>
                             <Group direction="column" align="end" spacing="xs">
-                                <Badge size="md" color="black" radius="xs">
+                                <Badge
+                                    size="md"
+                                    color="transparent"
+                                    radius="xs"
+                                    style={{ backgroundColor: theme.white }}
+                                >
                                     Aktuell
                                 </Badge>
-                                <Text size="xs" color="white">
+                                <Text size="xs" color={theme.white}>
                                     28.04.2018
                                 </Text>
                             </Group>
                         </Group>
                     </Container>
-                    <Space sx={(_) => ({ borderBottom: "1px solid white", width: "100%" })} />
+                    <Space
+                        sx={(theme) => ({
+                            borderBottom: `1px solid ${theme.white}`,
+                            width: "100%",
+                        })}
+                    />
                     <Container>
                         <Group direction="row">
                             <Text>Blub</Text>
                         </Group>
                     </Container>
-                    <Space sx={(_) => ({ borderBottom: "1px solid white", width: "100%" })} />
+                    <Space
+                        sx={(_) => ({ borderBottom: `1px solid ${theme.white}`, width: "100%" })}
+                    />
                     <Container fluid>
                         <Group direction="row" position="apart">
                             <Printer />
+                            <Group direction="row">
+                                <Button
+                                    color="transparent"
+                                    disabled={!areButtonsEnabled}
+                                    sx={(theme) => ({ backgroundColor: theme.white })}
+                                />
+                            </Group>
                         </Group>
                     </Container>
                     <Space />
