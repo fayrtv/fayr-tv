@@ -1,42 +1,77 @@
 @use "../mediaQueries" as mq;
 
-.Reaction {
-    position: absolute;
-
-    * span {
-        font-size: 2rem;
-    }
-}
-
-.ReactionEmojiEnter {
-    opacity: 0;
-}
-
-.ReactionEmojiEnterActive {
-    opacity: 1;
-    transition: all 1s;
-}
-
-.ReactionEmojiExit {
-    opacity: 1;
-}
-
-.ReactionEmojiExitActive {
-    opacity: 0;
-    transition: all 1s;
-}
-
-.FullScreenCams {
+.PlayerWrapper {
     height: 100%;
-    width: 20%;
-    z-index: 5000;
+    width: 100%;
+    background: black;
+    position: relative;
+    overflow: hidden;
 
-    > div {
-        height: 100%;
-    }
+    display: flex;
+    flex-direction: row;
 
     @media (max-width: mq.$mobile) {
-        height: 50%;
+        flex-direction: column;
+    }
+
+    .Overlay {
+        opacity: var(--videoplayer-controls-opacity) !important;
+    }
+
+    .Reaction {
+        position: absolute;
+
+        * span {
+            font-size: 2rem;
+        }
+    }
+
+    .ReactionEmojiEnter {
+        opacity: 0;
+    }
+
+    .ReactionEmojiEnterActive {
+        opacity: 1;
+        transition: all 1s;
+    }
+
+    .ReactionEmojiExit {
+        opacity: 1;
+    }
+
+    .ReactionEmojiExitActive {
+        opacity: 0;
+        transition: all 1s;
+    }
+
+    .VideoPlayer {
         width: 100%;
+        height: 100%;
+        top: 0;
+        background: #000;
+
+        &.fullscreen {
+            width: 80%;
+            @media (max-width: mq.$mobile) {
+                position: relative;
+                width: 100%;
+                height: 50%;
+            }
+        }
+    }
+
+    .FullScreenCams {
+        height: 100%;
+        width: 20%;
+        z-index: 5000;
+
+        > div {
+            height: 100%;
+        }
+
+        @media (max-width: mq.$mobile) {
+            height: 50%;
+            width: 100%;
+        }
     }
 }

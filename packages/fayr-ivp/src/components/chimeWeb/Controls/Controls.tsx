@@ -5,12 +5,10 @@ import { Cell, FayrLogo, Flex, Grid } from "@fayr/common";
 
 import styles from "./Controls.module.scss";
 
-import { RoomMemberRole } from "../../../types/Room";
 import { ChatOpenContext } from "../../contexts/ChatOpenContext";
 // Buttons
 import CamToggleButton from "./Buttons/CamToggleButton";
 import ChatButton from "./Buttons/ChatButton";
-import EndPartyButton from "./Buttons/EndPartyButton";
 import MicrophoneToggleButton from "./Buttons/MicrophoneToggleButton";
 import SettingsButton from "./Buttons/SettingsButton";
 import SharePartyButton from "./Buttons/SharePartyButton";
@@ -19,13 +17,11 @@ import ReactionButton from "./emoji-reactions/ReactionButton";
 
 type Props = {
     title: string;
+    attendeeId: string;
     openSettings(): void;
-    role: RoomMemberRole;
-    ssName: string;
-    baseHref: string;
 };
 
-const Controls: React.FC<Props> = ({ title, openSettings, role, ssName, baseHref }) => {
+const Controls: React.FC<Props> = ({ title, attendeeId, openSettings }) => {
     const { isOpen: isChatOpen, set: setChatOpen } = React.useContext(ChatOpenContext);
 
     const isMobile = useMediaQuery({ maxWidth: 1024 });
@@ -81,15 +77,7 @@ const Controls: React.FC<Props> = ({ title, openSettings, role, ssName, baseHref
         chatButton,
         <ReactionButton key="ReactionButton" />,
         // Voting Button
-        <VotingButton key="VotingButton" />,
-        // End button
-        <EndPartyButton
-            ssName={ssName}
-            role={role}
-            baseHref={baseHref}
-            title={title}
-            key="EndPartyButton"
-        />,
+        <VotingButton attendeeId={attendeeId} key="VotingButton" />,
     ];
 
     return (

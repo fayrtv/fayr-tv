@@ -22,7 +22,6 @@ import Portal from "../../common/Portal";
 import VideoPlayer from "../../videoPlayer/VideoPlayer";
 import CamSection from "../Cams/CamSection";
 import Controls from "../Controls/Controls";
-import VotingContainer from "../Voting/VotingContainer";
 import ModalSettingsView from "./Settings/ModalSettingsView";
 
 type PublicProps = {
@@ -43,7 +42,6 @@ const Meeting = ({
     joinInfo,
     playbackURL,
     meetingStatus,
-    forceMuted,
     roomTitle,
 }: Props) => {
     const [showSettings, setShowSettings] = React.useState(false);
@@ -97,16 +95,16 @@ const Meeting = ({
                             videoStream={playbackURL}
                             fullScreenCamSection={camSection}
                             attendeeId={attendeeId!}
-                        />
-
-                        <VotingContainer attendeeId={attendeeId!} />
-
-                        <Controls
                             baseHref={config.BASE_HREF}
                             ssName={formatMeetingSsKey(roomTitle)}
+                            role={role}
+                            title={title}
+                        />
+
+                        <Controls
+                            attendeeId={attendeeId!}
                             title={title}
                             openSettings={() => setShowSettings(true)}
-                            role={role}
                         />
 
                         <Chat title={title} userName={userName} />

@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { useInjection } from "inversify-react";
 import * as React from "react";
 import { connect, useDispatch } from "react-redux";
@@ -7,7 +8,6 @@ import { Callback, Nullable } from "types/global";
 import Types from "types/inject";
 import { isInRect } from "util/coordinateUtil";
 
-import useGlobalClickHandler from "hooks/useGlobalClickHandler";
 import useGlobalKeyHandler from "hooks/useGlobalKeyHandler";
 import useSocket from "hooks/useSocket";
 
@@ -18,16 +18,16 @@ import { Flex } from "@fayr/common";
 import styles from "./styles/VotingContainer.module.scss";
 
 import IRoomManager, { RosterMap } from "../../chime/interfaces/IRoomManager";
-import { VotingOpenContext } from "../../contexts/VotingOpenContext";
 import Voting from "./Voting";
 import { AttendeeVoteDto, VotingData } from "./types";
 
 type Props = {
     attendeeId: string;
     votings: Array<VotingData>;
+    onClose(): void;
 };
 
-export const VotingContainer = ({ attendeeId, votings }: Props) => {
+export const VotingContainer = ({ attendeeId, votings, onClose }: Props) => {
     const votingRef = React.createRef<HTMLDivElement>();
 
     const roomManager = useInjection<IRoomManager>(Types.IRoomManager);
@@ -36,9 +36,7 @@ export const VotingContainer = ({ attendeeId, votings }: Props) => {
 
     const { socket } = useSocket();
 
-    const [currentVoting, setCurrentVoting] = React.useState<Nullable<VotingData>>(null);
-
-    const { isOpen, set: setIsOpen } = React.useContext(VotingOpenContext);
+    const [currentVoting, setCurrentVoting] = React.useState<Nullable<VotingData>>(votings[0]);
 
     const [idNameMapping, setIdNameMapping] = React.useState<Map<string, string>>(
         new Map<string, string>(),
@@ -81,20 +79,25 @@ export const VotingContainer = ({ attendeeId, votings }: Props) => {
         setCurrentVoting(votings[0]);
     }, [votings]);
 
-    useGlobalClickHandler((clickEvent) => {
-        if (!currentVoting || !votingRef.current || !isOpen) {
+    const onClick: React.MouseEventHandler<HTMLDivElement> = (clickEvent) => {
+        clickEvent.stopPropagation();
+        clickEvent.preventDefault();
+        if (!currentVoting || !votingRef.current) {
             return;
         }
 
-        if (!isInRect(votingRef.current!.getBoundingClientRect(), clickEvent.x, clickEvent.y)) {
-            setIsOpen(false);
+        if (
+            !isInRect(
+                votingRef.current!.getBoundingClientRect(),
+                clickEvent.clientX,
+                clickEvent.clientY,
+            )
+        ) {
+            onClose();
         }
-    });
+    };
 
-    useGlobalKeyHandler(
-        "Escape",
-        React.useCallback(() => setIsOpen(false), [setIsOpen]),
-    );
+    useGlobalKeyHandler("Escape", onClose);
 
     const updateTip = (hostTip: number, guestTip: number) => {
         const nameOfAttendee = idNameMapping.has(attendeeId)
@@ -121,20 +124,16 @@ export const VotingContainer = ({ attendeeId, votings }: Props) => {
     };
 
     return (
-        <>
-            {!!currentVoting && isOpen && (
-                <div className={`${styles.VotingContainer} ${styles.VotingActive}`}>
-                    <Flex className={styles.VotingWrapper} direction="Row" mainAlign="Center">
-                        <Voting
-                            voting={currentVoting!}
-                            votingRef={votingRef}
-                            updateTip={updateTip}
-                            closeVoting={() => setIsOpen(false)}
-                        />
-                    </Flex>
-                </div>
-            )}
-        </>
+        <div className={classNames(styles.VotingContainer, styles.VotingActive)} onClick={onClick}>
+            <Flex className={styles.VotingWrapper} direction="Row" mainAlign="Center">
+                <Voting
+                    voting={currentVoting!}
+                    votingRef={votingRef}
+                    updateTip={updateTip}
+                    closeVoting={onClose}
+                />
+            </Flex>
+        </div>
     );
 };
 

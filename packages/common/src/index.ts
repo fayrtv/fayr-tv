@@ -3,6 +3,7 @@ import Cell from "./GridLayout/Cell";
 import Grid from "./GridLayout/Grid";
 import { MaterialIcon } from "./MaterialIcon";
 import EaseInOutCheckmark from "./accessibility/EaseInOutCheckmark";
+import ConfirmationDialog from "./interactivity/ConfirmationDialog";
 import LoadingAnimation from "./interactivity/LoadingAnimation";
 import Spinner from "./interactivity/Spinner";
 import Toggle from "./interactivity/Toggle";
@@ -22,6 +23,7 @@ export {
     Spinner,
     uuid,
     Toggle,
+    ConfirmationDialog,
 };
 
 export { isFalsyOrWhitespace } from "./utils/stringUtils";

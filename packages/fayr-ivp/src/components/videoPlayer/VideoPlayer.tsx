@@ -1,5 +1,7 @@
 import { isPlayerSupported, MediaPlayer, PlayerEventType, PlayerState } from "amazon-ivs-player";
+import classNames from "classnames";
 import React, { MouseEventHandler } from "react";
+import { RoomMemberRole } from "types/Room";
 import { makeid } from "util/guidHelper";
 
 import useGlobalKeyHandler from "hooks/useGlobalKeyHandler";
@@ -22,9 +24,21 @@ type Props = {
     videoStream: string;
     fullScreenCamSection: React.ReactNode;
     attendeeId: string;
+    title: string;
+    role: RoomMemberRole;
+    ssName: string;
+    baseHref: string;
 };
 
-const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) => {
+const VideoPlayer = ({
+    videoStream,
+    fullScreenCamSection,
+    attendeeId,
+    title,
+    role,
+    ssName,
+    baseHref,
+}: Props) => {
     const videoElement = React.useRef<HTMLDivElement>(null);
     const [player, setPlayer] = React.useState<MediaPlayer>();
     const [paused, setPaused] = React.useState(false);
@@ -213,10 +227,10 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
     useGlobalKeyHandler([" ", "Space"], pause);
 
     return (
-        <div ref={videoElement} className="player-wrapper">
+        <div ref={videoElement} className={styles.PlayerWrapper}>
             <div
                 id="overlay"
-                className={`overlay ${fullScreen ? "fullscreen" : ""}`}
+                className={classNames("overlay", { fullScreen: fullScreen }, styles.Overlay)}
                 onClick={videoClickHandler}
             >
                 <VideoPlayerControls
@@ -224,11 +238,15 @@ const VideoPlayer = ({ videoStream, fullScreenCamSection, attendeeId }: Props) =
                     player={player}
                     video={videoElement.current}
                     driftSyncStrategy={driftSyncStrategy}
+                    role={role}
+                    title={title}
+                    ssName={ssName}
+                    baseHref={baseHref}
                 />
             </div>
             <video
                 id="video-player"
-                className={`el-player ${fullScreen ? "fullscreen" : ""}`}
+                className={classNames(styles.VideoPlayer, { [styles.fullscreen]: fullScreen })}
                 playsInline
             />
             {reactionElements}

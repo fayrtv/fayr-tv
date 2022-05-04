@@ -43,19 +43,23 @@
 }
 
 .Controls {
-    position: relative;
+    position: absolute;
     padding: 2rem;
+
+    z-index: 1;
+
+    opacity: var(--videoplayer-controls-opacity);
 
     @media (max-width: 1024px) {
         padding: 0.5rem;
     }
 
-    top: 0px;
-    left: 0px;
+    bottom: 0px;
+    width: 100%;
 
     overflow-x: clip;
 
-    transition: transform 0.5s ease-in-out;
+    transition: opacity 0.3s ease-in-out, transform 0.5s ease-in-out;
 
     .FayrIcon {
         height: 35px;
