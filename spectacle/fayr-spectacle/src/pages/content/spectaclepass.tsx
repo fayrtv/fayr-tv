@@ -1,12 +1,32 @@
-import { Container, Group, Stack, Text } from "@mantine/core";
+import { Container, Group, Space, Stack, Text } from "@mantine/core";
 import React from "react";
 import { CircleX } from "tabler-icons-react";
 import { RefractionProtocol } from "~/components/RefractionProtocol";
+import RefractionProtocolArchive from "~/components/RefractionProtocolArchive";
 import { NextPageWithLayout } from "~/types/next-types";
+import { RefractionProtocol as RefractionProtocolModel } from "~/types/RefractionProtocol";
 
 import Layout from "../../components/layout";
 
 const SpectaclePass: NextPageWithLayout = () => {
+    const refractionProtocol: RefractionProtocolModel = {
+        date: new Date(),
+        left: {
+            axis: 170,
+            cylinder: -0.25,
+            pd: 35,
+            sphere: -2.5,
+            addition: undefined,
+        },
+        right: {
+            axis: 168,
+            cylinder: -0.75,
+            pd: 34.5,
+            sphere: -1.75,
+            addition: undefined,
+        },
+    };
+
     return (
         <Container fluid sx={(theme) => ({ backgroundColor: "#6C6C6C", height: "100%" })}>
             <Stack>
@@ -20,24 +40,10 @@ const SpectaclePass: NextPageWithLayout = () => {
                     </Group>
                     <RefractionProtocol
                         areActionsAllowed={false}
-                        refractionProtocol={{
-                            date: new Date(),
-                            left: {
-                                axis: 170,
-                                cylinder: -0.25,
-                                pd: 35,
-                                sphere: -2.5,
-                                addition: undefined,
-                            },
-                            right: {
-                                axis: 168,
-                                cylinder: -0.75,
-                                pd: 34.5,
-                                sphere: -1.75,
-                                addition: undefined,
-                            },
-                        }}
+                        refractionProtocol={refractionProtocol}
                     />
+                    <Space h="lg" />
+                    <RefractionProtocolArchive refractionProtocol={refractionProtocol} />
                 </Container>
             </Stack>
         </Container>
