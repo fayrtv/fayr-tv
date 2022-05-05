@@ -48,6 +48,12 @@ const danger: ThemeColor = [
     "#380A0A",
 ];
 
+type MantineSizeOverride = "xxxs" | "xxs" | "xs" | "sm" | "md" | "lg" | "xl";
+
+declare module "@mantine/styles" {
+    export type MantineSize = MantineSizeOverride;
+}
+
 type ExtendedCustomColors = "primary" | "secondary" | "success" | "danger" | DefaultMantineColor;
 const spectacleTheme: MantineThemeOverride = {
     dir: "ltr",
@@ -81,12 +87,14 @@ const spectacleTheme: MantineThemeOverride = {
     },
 
     fontSizes: {
+        xxxs: 8.5,
+        xxs: 10,
         xs: 12,
         sm: 14,
         md: 16,
         lg: 18,
         xl: 20,
-    },
+    } as Record<MantineSizeOverride, number>,
 
     radius: {
         xs: 2,

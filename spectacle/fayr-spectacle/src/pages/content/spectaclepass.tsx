@@ -18,7 +18,26 @@ const SpectaclePass: NextPageWithLayout = () => {
                         <Text weight="bold">Digitaler Brillenpass</Text>
                         <Text weight="normal">Max Mustermann</Text>
                     </Group>
-                    <RefractionProtocol />
+                    <RefractionProtocol
+                        areActionsAllowed={false}
+                        refractionProtocol={{
+                            date: new Date(),
+                            left: {
+                                axis: 170,
+                                cylinder: -0.25,
+                                pd: 35,
+                                sphere: -2.5,
+                                addition: undefined,
+                            },
+                            right: {
+                                axis: 168,
+                                cylinder: -0.75,
+                                pd: 34.5,
+                                sphere: -1.75,
+                                addition: undefined,
+                            },
+                        }}
+                    />
                 </Container>
             </Stack>
         </Container>
