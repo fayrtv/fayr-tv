@@ -92,7 +92,7 @@ export const RefractionProtocol = ({ areActionsAllowed, refractionProtocol }: Pr
             <Container mt="xs">
                 <Group direction="row" position="center" noWrap>
                     <Eye
-                        size={50}
+                        size={40}
                         style={{
                             backgroundColor: theme.white,
                             color: CyanColor,
