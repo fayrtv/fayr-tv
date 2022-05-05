@@ -9,8 +9,10 @@ import {
     PasswordInput,
     Text,
     TextInput,
+    useMantineColorScheme,
+    useMantineTheme,
 } from "@mantine/core";
-import { useForm } from "@mantine/hooks";
+import { useColorScheme, useForm } from "@mantine/hooks";
 import { GetServerSideProps } from "next";
 import { getProviders } from "next-auth/react";
 import { ClientSafeProvider } from "next-auth/react/types";
@@ -25,6 +27,8 @@ type ServerProps = {
 type Props = ServerProps;
 
 const BodyShell = ({ children }: PropsWithChildren<{}>) => {
+    const { colorScheme } = useMantineColorScheme();
+
     return (
         <Center
             style={{
@@ -40,7 +44,7 @@ const BodyShell = ({ children }: PropsWithChildren<{}>) => {
                     position: "relative",
                     "&:before": {
                         content: '""',
-                        backgroundColor: theme.white,
+                        backgroundColor: colorScheme === "light" ? theme.white : theme.black,
                         position: "absolute",
                         zIndex: -1,
                         top: 0,
@@ -60,7 +64,12 @@ const BodyShell = ({ children }: PropsWithChildren<{}>) => {
                 <Text transform="uppercase" color="primary" weight="bold" size="lg" mt={60}>
                     Anmeldung
                 </Text>
-                <Text color="black" size="lg" weight="bold" mt="xs">
+                <Text
+                    color={colorScheme === "light" ? "black" : "white"}
+                    size="lg"
+                    weight="bold"
+                    mt="xs"
+                >
                     Willkommen bei Ihrem
                     <br />
                     ZEISS VISION CENTER Osnabrück

@@ -47,8 +47,6 @@ const BodyShell = ({ children }: PropsWithChildren<{}>) => {
 };
 
 const SignUp: NextPageWithLayout<Props> = ({ providers }) => {
-    const isValid = false;
-
     const form = useForm({
         initialValues: {
             address: "",
