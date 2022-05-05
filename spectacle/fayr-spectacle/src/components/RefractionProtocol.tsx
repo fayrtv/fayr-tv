@@ -1,4 +1,4 @@
-import { Badge, Button, Container, Group, Space, Text, useMantineTheme } from "@mantine/core";
+import { Badge, Button, Container, Group, Space, Text, Grid, useMantineTheme } from "@mantine/core";
 import React from "react";
 import { Edit, Eye, Printer, Qrcode } from "tabler-icons-react";
 
@@ -43,9 +43,41 @@ export const RefractionProtocol = () => {
                 })}
             />
             <Container>
-                <Group direction="row">
-                    <Text>Blub</Text>
-                </Group>
+                <Grid columns={11}>
+                    <Grid.Col span={2} offset={1}>
+                        <Group align="center" direction="column" sx={(theme) => ({ gap: 0 })}>
+                            <Text size="sm" color="" weight="bold">
+                                Sphäre
+                            </Text>
+                            <Text sx={(theme) => ({ fontSize: "10px" })}>S / SPH</Text>
+                        </Group>
+                    </Grid.Col>
+                    <Grid.Col span={2}>
+                        <Group align="center" direction="column" sx={(theme) => ({ gap: 0 })}>
+                            <Text size="sm" color="" weight="bold">
+                                Zylinder
+                            </Text>
+                            <Text sx={(theme) => ({ fontSize: "9px" })}>ZYL / CYL</Text>
+                        </Group>
+                    </Grid.Col>
+                    <Grid.Col span={2}>Achse</Grid.Col>
+                    <Grid.Col span={2}>Addition</Grid.Col>
+                    <Grid.Col span={2}>PD</Grid.Col>
+
+                    <Grid.Col span={1}>R</Grid.Col>
+                    <Grid.Col span={2}>-2,50</Grid.Col>
+                    <Grid.Col span={2}>-0,25</Grid.Col>
+                    <Grid.Col span={2}>170,00°</Grid.Col>
+                    <Grid.Col span={2}>-</Grid.Col>
+                    <Grid.Col span={2}>35,00</Grid.Col>
+
+                    <Grid.Col span={1}>L</Grid.Col>
+                    <Grid.Col span={2}>-1,75</Grid.Col>
+                    <Grid.Col span={2}>-0,75</Grid.Col>
+                    <Grid.Col span={2}>168,00°</Grid.Col>
+                    <Grid.Col span={2}>-</Grid.Col>
+                    <Grid.Col span={2}>34,50</Grid.Col>
+                </Grid>
             </Container>
             <Space sx={(_) => ({ borderBottom: `1px solid ${theme.white}`, width: "100%" })} />
             <Container fluid sx={(theme) => ({ margin: "auto 0", width: "100%" })}>
