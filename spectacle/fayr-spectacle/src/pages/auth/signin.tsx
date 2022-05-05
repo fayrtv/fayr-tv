@@ -34,7 +34,22 @@ const BodyShell = ({ children }: PropsWithChildren<{}>) => {
             }}
         >
             <Container
-                sx={(theme) => ({ backgroundColor: theme.white })}
+                sx={(theme) => ({
+                    zIndex: 1,
+                    background: "transparent",
+                    position: "relative",
+                    "&:before": {
+                        content: '""',
+                        backgroundColor: theme.white,
+                        position: "absolute",
+                        zIndex: -1,
+                        top: 0,
+                        left: 0,
+                        bottom: 0,
+                        right: 0,
+                        opacity: 0.96,
+                    },
+                })}
                 size={"lg"}
                 px="xl"
                 py="lg"

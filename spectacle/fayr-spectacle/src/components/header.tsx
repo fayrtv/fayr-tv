@@ -1,12 +1,14 @@
-import { Box, Container, Text, Group, Sx, Burger } from "@mantine/core";
-import Link from "next/link";
+import { Anchor, Box, Burger, Container, Group, Sx, Text } from "@mantine/core";
 import React from "react";
 import ThemeToggleButton from "~/components/theme-toggle-button";
 
-const defaultTextProps: Sx = { fontSize: "1em", fontWeight: 600 };
-
 const Header = () => {
     const [burgerOpen, setBurgerOpen] = React.useState(false);
+
+    const city = "Osnabrück";
+
+    const shopOwner = "Reiner Siekemeyer";
+    const shopOwnerHeadline = `Inhaber: ${shopOwner}`;
 
     return (
         <Box
@@ -20,11 +22,18 @@ const Header = () => {
         >
             <Container fluid>
                 <Group direction="column" spacing="xs">
-                    <Text color="white" sx={defaultTextProps}>
-                        <Link href="/">ZEISS VISION CENTER Osnabrück</Link>
-                    </Text>
-                    <Group direction="row" position="apart" style={{ width: "100%" }}>
-                        <Text color="primary" sx={defaultTextProps}>
+                    <Anchor
+                        href="/"
+                        sx={(theme) => ({
+                            color: theme.white,
+                            ":hover": { textDecoration: "none" },
+                        })}
+                        size="sm"
+                    >
+                        ZEISS VISION CENTER {city} | {shopOwnerHeadline}
+                    </Anchor>
+                    <Group direction="row" position="apart" style={{ width: "100%" }} mt="xs">
+                        <Text color="primary" size="xl" weight="bold">
                             Digitaler Brillenpass
                         </Text>
                         <ThemeToggleButton />
