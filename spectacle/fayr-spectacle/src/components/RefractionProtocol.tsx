@@ -148,31 +148,18 @@ export const RefractionProtocol = ({ areActionsAllowed, refractionProtocol }: Pr
                             padding: "2px",
                         }}
                     />
-                    <Group direction="row">
-                        <Button
-                            size="sm"
-                            disabled={!areActionsAllowed}
-                            sx={(theme) => ({
-                                padding: "5px",
-                            })}
-                            leftIcon={<Qrcode color={CyanColor} />}
-                        >
-                            <Text size="xs" color={CyanColor}>
-                                QR-Code
-                            </Text>
-                        </Button>
-                        <Button
-                            disabled={!areActionsAllowed}
-                            sx={(theme) => ({
-                                padding: "5px",
-                            })}
-                            leftIcon={<Edit color={CyanColor} />}
-                        >
-                            <Text size="xs" color={CyanColor}>
-                                Bearbeiten
-                            </Text>
-                        </Button>
-                    </Group>
+                    <Button
+                        size="sm"
+                        disabled={!areActionsAllowed}
+                        sx={(theme) => ({
+                            padding: "5px",
+                        })}
+                        leftIcon={<Qrcode color={CyanColor} />}
+                    >
+                        <Text size="xs" color={CyanColor}>
+                            QR-Code
+                        </Text>
+                    </Button>
                 </Group>
             </Container>
             <Space />
