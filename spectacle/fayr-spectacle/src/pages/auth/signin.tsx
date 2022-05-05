@@ -17,6 +17,7 @@ import { GetServerSideProps } from "next";
 import { getProviders } from "next-auth/react";
 import { ClientSafeProvider } from "next-auth/react/types";
 import React, { PropsWithChildren, useState } from "react";
+import ZeissLogo from "~/components/ZeissLogo";
 import Layout from "~/components/layout";
 import { NextPageWithLayout } from "~/types/next-types";
 
@@ -59,7 +60,7 @@ const BodyShell = ({ children }: PropsWithChildren<{}>) => {
                 py="lg"
             >
                 <Center>
-                    <Image src={"/assets/zeiss_logo.svg"} alt="ZEISS Logo" width={80} />
+                    <ZeissLogo />
                 </Center>
                 <Text transform="uppercase" color="primary" weight="bold" size="lg" mt={60}>
                     Anmeldung

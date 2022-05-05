@@ -10,14 +10,19 @@ import {
     Group,
     Image,
     PasswordInput,
+    Select,
+    Stack,
     Text,
     TextInput,
+    useMantineColorScheme,
 } from "@mantine/core";
+import { SelectDropdown } from "@mantine/core/lib/components/Select/SelectDropdown/SelectDropdown";
 import { useForm } from "@mantine/hooks";
 import { GetServerSideProps } from "next";
 import { getProviders } from "next-auth/react";
 import { ClientSafeProvider } from "next-auth/react/types";
 import React, { PropsWithChildren, useState } from "react";
+import ZeissLogo from "~/components/ZeissLogo";
 import Layout from "~/components/layout";
 import { NextPageWithLayout } from "~/types/next-types";
 
@@ -28,15 +33,21 @@ type ServerProps = {
 type Props = ServerProps;
 
 const BodyShell = ({ children }: PropsWithChildren<{}>) => {
+    const { colorScheme } = useMantineColorScheme();
     return (
-        <Container size="md" mt="lg">
+        <Container size="sm" mt="lg">
             <Group sx={{ alignItems: "flex-start" }}>
-                <Image src={"/assets/zeiss_logo.svg"} alt="ZEISS Logo" width={80} />
+                <ZeissLogo />
                 <Box>
                     <Text transform="uppercase" color="primary" weight="bold" size="lg">
                         Registrierung
                     </Text>
-                    <Text color="black" size="lg" weight="bold" mt="xs">
+                    <Text
+                        // color={colorScheme === "light" ? "black" : "white"}
+                        size="lg"
+                        weight="bold"
+                        mt="xs"
+                    >
                         Legen Sie sich Ihren kostenlosen Digitalen Brillenpass an.
                     </Text>
                 </Box>
@@ -77,19 +88,51 @@ const SignUp: NextPageWithLayout<Props> = ({ providers }) => {
                 {/* TODO: No grid with columns on mobile */}
                 <Grid gutter="lg">
                     <Grid.Col span={6}>
-                        <Group grow>
+                        <Stack spacing="sm">
+                            <Group grow>
+                                <Select
+                                    data={[
+                                        { label: "Herr", value: "m" },
+                                        { label: "Frau", value: "f" },
+                                    ]}
+                                    label="Anrede"
+                                    placeholder="Herr / Frau"
+                                    required
+                                    {...form.getInputProps("address")}
+                                />
+                                <TextInput label="Titel" {...form.getInputProps("title")} />
+                            </Group>
                             <TextInput
-                                label="Anrede"
-                                placeholder="Herr / Frau"
-                                {...form.getInputProps("address")}
+                                required
+                                label="Vorname"
+                                {...form.getInputProps("firstName")}
                             />
-                            <TextInput label="Titel" {...form.getInputProps("title")} />
-                        </Group>
-                        <TextInput label="Vorname" {...form.getInputProps("firstName")} />
-                        <TextInput label="Nachname" {...form.getInputProps("lastName")} />
+                            <TextInput
+                                required
+                                label="Nachname"
+                                {...form.getInputProps("lastName")}
+                            />
+                        </Stack>
+                    </Grid.Col>
 
-                        <Box mt="md">
+                    <Grid.Col span={6}>
+                        <Stack spacing="sm">
+                            <TextInput required label="E-Mail" {...form.getInputProps("email")} />
+                            <PasswordInput
+                                required
+                                label="Passwort"
+                                placeholder="Passwort"
+                                {...form.getInputProps("password")}
+                            />
+                            <PasswordInput
+                                required
+                                label="Passwort bestätigen"
+                                placeholder="erneut eingeben"
+                                {...form.getInputProps("confirmPassword")}
+                            />
+
                             <Checkbox
+                                mt="sm"
                                 label="Bitte informieren Sie mich regelmäßig über Angebote und Neuigkeiten per E-Mail."
                                 {...form.getInputProps("newsletter")}
                             />
@@ -111,29 +154,16 @@ const SignUp: NextPageWithLayout<Props> = ({ providers }) => {
                                         </Anchor>
                                     </>
                                 }
+                                required
                                 {...form.getInputProps("termsAndConditions")}
                             />
-                        </Box>
-                    </Grid.Col>
-
-                    <Grid.Col span={6}>
-                        <TextInput label="E-Mail" {...form.getInputProps("email")} />
-                        <PasswordInput
-                            label="Passwort"
-                            placeholder="Passwort"
-                            {...form.getInputProps("password")}
-                        />
-                        <PasswordInput
-                            label="Passwort bestätigen"
-                            placeholder="erneut eingeben"
-                            {...form.getInputProps("confirmPassword")}
-                        />
-
-                        <Group position="right" mt="md">
-                            <Button type="submit">Benutzerkonto anlegen</Button>
-                        </Group>
+                        </Stack>
                     </Grid.Col>
                 </Grid>
+
+                <Group position="right" mt="md">
+                    <Button type="submit">Benutzerkonto anlegen</Button>
+                </Group>
             </form>
         </BodyShell>
     );
