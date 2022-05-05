@@ -33,3 +33,7 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# service worker stuff
+public/sw.js.map
+public/workbox-*
