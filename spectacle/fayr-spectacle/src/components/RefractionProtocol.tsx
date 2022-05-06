@@ -35,9 +35,6 @@ const GridText = (
     </Text>
 );
 
-// TODO: Where to move this?
-const CyanColor = "#4498D8";
-
 type Props = {
     areActionsAllowed: boolean;
     refractionProtocol: RefractionProtocolModel;
@@ -66,7 +63,7 @@ export const RefractionProtocol = ({ areActionsAllowed, refractionProtocol }: Pr
             <>
                 <Grid.Col span={1}>
                     <ColorSwatch color={themedColor} radius={5}>
-                        <Text color={CyanColor} size="md" weight="800">
+                        <Text color={theme.colors.cyan[0]} size="md" weight="800">
                             {side}
                         </Text>
                     </ColorSwatch>
@@ -91,14 +88,14 @@ export const RefractionProtocol = ({ areActionsAllowed, refractionProtocol }: Pr
     };
 
     return (
-        <Stack spacing="xs" sx={(_) => ({ background: CyanColor })}>
+        <Stack spacing="xs" sx={(_) => ({ background: theme.colors.cyan[0] })}>
             <Container mt="xs">
                 <Group direction="row" position="center" noWrap>
                     <Eye
                         size={40}
                         style={{
                             backgroundColor: theme.white,
-                            color: CyanColor,
+                            color: theme.colors.cyan[0],
                             borderRadius: "10px",
                         }}
                     />
@@ -142,11 +139,11 @@ export const RefractionProtocol = ({ areActionsAllowed, refractionProtocol }: Pr
             <Container fluid sx={(_) => ({ margin: "auto 0", width: "100%" })}>
                 <Group direction="row" position="apart">
                     <Printer
-                        size={"30px"}
+                        size={30}
                         style={{
                             backgroundColor:
                                 theme.colorScheme === "dark" ? theme.black : theme.white,
-                            color: CyanColor,
+                            color: theme.colors.cyan[0],
                             borderRadius: "5px",
                             padding: "2px",
                         }}
@@ -154,12 +151,10 @@ export const RefractionProtocol = ({ areActionsAllowed, refractionProtocol }: Pr
                     <Button
                         size="sm"
                         disabled={!areActionsAllowed}
-                        sx={(theme) => ({
-                            padding: "5px",
-                        })}
-                        leftIcon={<Qrcode color={CyanColor} />}
+                        sx={{ padding: "5px" }}
+                        leftIcon={<Qrcode color={theme.colors.cyan[0]} />}
                     >
-                        <Text size="xs" color={CyanColor}>
+                        <Text size="xs" color={theme.colors.cyan[0]}>
                             QR-Code
                         </Text>
                     </Button>

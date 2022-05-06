@@ -54,7 +54,13 @@ declare module "@mantine/styles" {
     export type MantineSize = MantineSizeOverride;
 }
 
-type ExtendedCustomColors = "primary" | "secondary" | "success" | "danger" | DefaultMantineColor;
+type ExtendedCustomColors =
+    | "primary"
+    | "secondary"
+    | "success"
+    | "danger"
+    | "cyan"
+    | DefaultMantineColor;
 const spectacleTheme: MantineThemeOverride = {
     dir: "ltr",
     focusRing: "auto",
@@ -71,6 +77,7 @@ const spectacleTheme: MantineThemeOverride = {
         secondary,
         success,
         danger,
+        cyan: sameColor("#4498D8"),
     },
     lineHeight: 1.55,
     fontFamily:
