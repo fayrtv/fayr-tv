@@ -71,15 +71,15 @@ const SignUp: NextPageWithLayout<Props> = ({ providers }) => {
             termsAndConditions: false,
         },
 
-        errorMessages: {
-            confirmPassword: (value, values) =>
-                value !== values?.password ? <>"Passwords did not match"</> : null,
-        },
-
-        validationRules: {
-            confirmPassword: (value, values) =>
-                value !== values?.password ? "Passwords did not match" : null,
-        },
+        // errorMessages: {
+        //     confirmPassword: (value, values) =>
+        //         value !== values?.password ? <>"Passwords did not match"</> : null,
+        // },
+        //
+        // validationRules: {
+        //     confirmPassword: (value, values) =>
+        //         value !== values?.password ? "Passwords did not match" : null,
+        // },
     });
 
     return (
