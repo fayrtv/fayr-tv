@@ -1,9 +1,9 @@
-import { Anchor, Container, Group, Space, Stack, Text } from "@mantine/core";
+import { Container, Group, Space, Stack, Text } from "@mantine/core";
 import React from "react";
 import { CircleX } from "tabler-icons-react";
 import { RefractionProtocol } from "~/components/RefractionProtocol";
 import RefractionProtocolArchive from "~/components/RefractionProtocolArchive";
-import { RefractionProtocol as RefractionProtocolModel } from "~/models";
+import { RefractionProtocol as RefractionProtocolModel } from "~/models/refraction-protocol";
 import { NextPageWithLayout } from "~/types/next-types";
 
 import Layout from "../../components/layout";

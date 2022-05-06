@@ -13,7 +13,7 @@ import {
 import moment from "moment";
 import React, { PropsWithChildren } from "react";
 import { Eye, Printer, Qrcode } from "tabler-icons-react";
-import { RefractionProtocol as Model } from "~/models";
+import { RefractionProtocol as Model } from "~/models/refraction-protocol";
 
 const GridText = (
     props: PropsWithChildren<

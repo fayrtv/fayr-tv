@@ -1,7 +1,7 @@
 import { Group, Text, Badge, useMantineTheme, Container } from "@mantine/core";
 import moment from "moment";
 import { Eye } from "tabler-icons-react";
-import { RefractionProtocol as RefractionProtocolModel } from "~/models";
+import { RefractionProtocol as RefractionProtocolModel } from "~/models/refraction-protocol";
 
 type Props = {
     refractionProtocol: RefractionProtocolModel;

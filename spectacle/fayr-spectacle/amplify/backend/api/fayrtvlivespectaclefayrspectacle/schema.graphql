@@ -1,10 +1,21 @@
+type RefractionProtocol @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  userID: ID! @index(name: "byUser")
+  data: AWSJSON!
+  recordedAt: AWSDateTime!
+}
+
 type User @model @auth(rules: [{allow: public}]) {
   id: ID!
   shopID: ID! @index(name: "byShop")
+  ProtocolHistory: [RefractionProtocol] @hasMany(indexName: "byUser", fields: ["id"])
 }
 
 type Appointment @model @auth(rules: [{allow: public}]) {
   id: ID!
+  User: User @hasOne
+  date: AWSDateTime!
+  Location: Shop @hasOne
 }
 
 type ShopOwner @model @auth(rules: [{allow: public}]) {
@@ -17,8 +28,4 @@ type Shop @model @auth(rules: [{allow: public}]) {
   id: ID!
   AdminUsers: [User] @hasMany(indexName: "byShop", fields: ["id"])
 }
-
-type Tenant @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  Shop: Shop @hasOne
-}
+ 
