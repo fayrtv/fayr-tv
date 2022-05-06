@@ -13,6 +13,7 @@ export default class _Document extends Document {
                     <link rel="manifest" href="/manifest.json" />
                     <link rel="icon" href="/images/favicon.ico" />
                     <link rel="preload" href="/fonts/sfproregular.ttf" as="font" crossOrigin="*" />
+                    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.1.4/dist/mindar-face-three.prod.js"></script>
                 </Head>
                 <body>
                     <Main />

@@ -14,6 +14,8 @@
 		"@mantine/hooks": "^4.1.4",
 		"@mantine/next": "^4.1.4",
 		"@mantine/notifications": "^4.1.5",
+		"aframe": "^1.2.0",
+		"mind-ar": "^1.0.0",
 		"moment": "^2.29.3",
 		"next": "12.1.5",
 		"next-auth": "^4.2.1",

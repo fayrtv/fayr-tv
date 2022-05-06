@@ -24,6 +24,9 @@ const Home: NextPageWithLayout = () => {
                         Infos zum Brillenpass
                     </Anchor>
                 </li>
+                <li>
+                    <Anchor href={"/content/fittingroom"}>Anprobe</Anchor>
+                </li>
             </ul>
         </Box>
     );
