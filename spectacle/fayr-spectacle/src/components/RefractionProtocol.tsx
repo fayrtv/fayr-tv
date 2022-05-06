@@ -13,7 +13,7 @@ import {
 import moment from "moment";
 import React, { PropsWithChildren } from "react";
 import { Eye, Printer, Qrcode } from "tabler-icons-react";
-import { RefractionProtocol as RefractionProtocolModel } from "~/types/RefractionProtocol";
+import { RefractionProtocol as Model } from "~/models";
 
 const GridText = (
     props: PropsWithChildren<
@@ -36,7 +36,7 @@ const GridText = (
 
 type Props = {
     areActionsAllowed: boolean;
-    refractionProtocol: RefractionProtocolModel;
+    refractionProtocol: Model;
 };
 
 export const RefractionProtocol = ({ areActionsAllowed, refractionProtocol }: Props) => {
