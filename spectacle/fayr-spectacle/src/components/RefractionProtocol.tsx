@@ -26,7 +26,10 @@ const GridText = (
         size="sm"
         align="center"
         weight="bold"
-        sx={(theme) => ({ color: theme.colorScheme === "light" ? theme.white : theme.black })}
+        sx={(theme) => ({
+            color: theme.colorScheme === "light" ? theme.white : theme.black,
+            userSelect: "all",
+        })}
     >
         {props.children}
     </Text>
@@ -99,8 +102,8 @@ export const RefractionProtocol = ({ areActionsAllowed, refractionProtocol }: Pr
                             borderRadius: "10px",
                         }}
                     />
-                    <Text color={theme.white} size="xxs">
-                        REFRAKTIONSPROTOKOLL
+                    <Text color={theme.white} size="xxs" transform="uppercase">
+                        Refraktionsprotokoll
                     </Text>
                     <Group direction="column" align="end" spacing="xs">
                         <Badge
