@@ -1,0 +1,24 @@
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  shopID: ID! @index(name: "byShop")
+}
+
+type Appointment @model @auth(rules: [{allow: public}]) {
+  id: ID!
+}
+
+type ShopOwner @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  firstName: String
+  lastName: String
+}
+
+type Shop @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  AdminUsers: [User] @hasMany(indexName: "byShop", fields: ["id"])
+}
+
+type Tenant @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  Shop: Shop @hasOne
+}

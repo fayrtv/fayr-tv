@@ -1,0 +1,30 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-amplify8243574c29744-staging-224333-authRole",
+      "UnauthRoleArn": "arn:aws:iam::676057042583:role/amplify-amplify8243574c29744-staging-224333-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::676057042583:role/amplify-amplify8243574c29744-staging-224333-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-amplify8243574c29744-staging-224333-deployment",
+      "UnauthRoleName": "amplify-amplify8243574c29744-staging-224333-unauthRole",
+      "StackName": "amplify-amplify8243574c29744-staging-224333",
+      "StackId": "arn:aws:cloudformation:eu-central-1:676057042583:stack/amplify-amplify8243574c29744-staging-224333/f617cb00-cd8d-11ec-9825-06d9e99e3852",
+      "AmplifyAppId": "dennyp5lsvuo7",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-amplify8243574c29744-staging-224333-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "auth": {
+        "fayrtvlivespectaclefb8de33e7": {}
+      },
+      "function": {
+        "fayrtvlivespectaclefb8de33e7CustomMessage": {
+          "REDIRECTURL": "localhost:3000/auth/success",
+          "EMAILSUBJECT": "E-Mail Adresse bestätigen",
+          "EMAILMESSAGE": "hallo",
+          "deploymentBucketName": "amplify-amplify8243574c29744-staging-224333-deployment",
+          "s3Key": "amplify-builds/fayrtvlivespectaclefb8de33e7CustomMessage-4845567a4a694a736e6f-build.zip"
+        }
+      }
+    }
+  }
+}
