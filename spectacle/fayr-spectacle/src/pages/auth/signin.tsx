@@ -6,6 +6,8 @@ import {
     Container,
     Group,
     Image,
+    Overlay,
+    Paper,
     PasswordInput,
     Text,
     TextInput,
@@ -38,27 +40,8 @@ const BodyShell = ({ children }: PropsWithChildren<{}>) => {
                 width: "100%",
             }}
         >
-            <Container
-                sx={(theme) => ({
-                    zIndex: 1,
-                    background: "transparent",
-                    position: "relative",
-                    "&:before": {
-                        content: '""',
-                        backgroundColor: colorScheme === "light" ? theme.white : theme.black,
-                        position: "absolute",
-                        zIndex: -1,
-                        top: 0,
-                        left: 0,
-                        bottom: 0,
-                        right: 0,
-                        opacity: 0.96,
-                    },
-                })}
-                size={"lg"}
-                px="xl"
-                py="lg"
-            >
+            {colorScheme === "dark" && <Overlay opacity={0.6} color="black" zIndex={1} blur={2} />}
+            <Paper sx={{ zIndex: 1, position: "relative" }} px="xl" py="lg">
                 <Center>
                     <ZeissLogo />
                 </Center>
@@ -76,15 +59,13 @@ const BodyShell = ({ children }: PropsWithChildren<{}>) => {
                     ZEISS VISION CENTER Osnabrück
                 </Text>
                 {children}
-            </Container>
+            </Paper>
         </Center>
     );
 };
 
 const SignIn: NextPageWithLayout<Props> = ({ providers }) => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [rememberMe, setRememberMe] = useState(false);
+    const { colorScheme } = useMantineColorScheme();
 
     const form = useForm({
         initialValues: {
@@ -120,7 +101,7 @@ const SignIn: NextPageWithLayout<Props> = ({ providers }) => {
             </Group>
 
             <Box sx={{ textAlign: "center", maxWidth: 250 }} mx="auto" mt="lg">
-                <Text color="black" size="sm">
+                <Text size="sm">
                     Noch kein Benutzerkonto?{" "}
                     <Anchor href="signup" size="sm">
                         Hier kostenlos registrieren
@@ -128,7 +109,7 @@ const SignIn: NextPageWithLayout<Props> = ({ providers }) => {
                     für den{" "}
                     <Anchor
                         sx={(theme) => ({
-                            color: theme.black,
+                            color: colorScheme === "dark" ? theme.white : theme.black,
                             textDecoration: "underline",
                             ":hover": { color: theme.colors.primary },
                         })}

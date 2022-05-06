@@ -18,6 +18,7 @@ const Header = () => {
                 textAlign: "center",
                 borderBottom: "1px solid lightgray",
                 backgroundColor: "#000000",
+                zIndex: 3,
             }}
         >
             <Container fluid>
@@ -33,9 +34,11 @@ const Header = () => {
                         ZEISS VISION CENTER {city} | {shopOwnerHeadline}
                     </Anchor>
                     <Group direction="row" position="apart" style={{ width: "100%" }} mt="xs">
-                        <Text color="primary" size="xl" weight="bold">
-                            Digitaler Brillenpass
-                        </Text>
+                        <Anchor href="/">
+                            <Text color="primary" size="xl" weight="bold">
+                                Digitaler Brillenpass
+                            </Text>
+                        </Anchor>
                         <ThemeToggleButton />
                         <Burger
                             color="white"

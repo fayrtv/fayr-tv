@@ -1,10 +1,10 @@
-import { Container, Group, Space, Stack, Text } from "@mantine/core";
+import { Anchor, Container, Group, Space, Stack, Text } from "@mantine/core";
 import React from "react";
 import { CircleX } from "tabler-icons-react";
 import { RefractionProtocol } from "~/components/RefractionProtocol";
 import RefractionProtocolArchive from "~/components/RefractionProtocolArchive";
-import { NextPageWithLayout } from "~/types/next-types";
 import { RefractionProtocol as RefractionProtocolModel } from "~/types/RefractionProtocol";
+import { NextPageWithLayout } from "~/types/next-types";
 
 import Layout from "../../components/layout";
 
@@ -28,7 +28,7 @@ const SpectaclePass: NextPageWithLayout = () => {
     };
 
     return (
-        <Container fluid sx={(theme) => ({ backgroundColor: "#6C6C6C", height: "100%" })}>
+        <Container fluid sx={(theme) => ({ backgroundColor: theme.colors.red[1], height: "100%" })}>
             <Stack>
                 <Group direction="row" position="right">
                     <CircleX size={30} />

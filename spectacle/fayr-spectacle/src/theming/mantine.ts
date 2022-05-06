@@ -1,12 +1,13 @@
 import type { MantineThemeOverride } from "@mantine/core";
 import { Tuple, DefaultMantineColor } from "@mantine/core";
+import { Theme } from "next-auth";
 
 // NOTE:
 // Color palettes are generated using
 // https://omatsuri.app/color-shades-generator
 // settings that produce exactly 10 colors, e.g. 16% / -20%.
 
-// theme colors must be a 10-tuple string of colors
+// theme colors must be a 10-tuple string of colors from light to dark shade
 type ThemeColor = [string, string, string, string, string, string, string, string, string, string];
 
 const sameColor = (color: string) => Array(10).fill(color) as ThemeColor;
@@ -47,6 +48,19 @@ const danger: ThemeColor = [
     "#480B0B",
     "#380A0A",
 ];
+const gray: ThemeColor = [
+    "#A8A8A8",
+    "#A8A8A8",
+    "#A8A8A8",
+    "#A8A8A8",
+    "#A8A8A8",
+    // TODO: oh oh, what a crap...
+    "#6C6C6C",
+    "#6C6C6C",
+    "#6C6C6C",
+    "#6C6C6C",
+    "#6C6C6C",
+];
 
 type MantineSizeOverride = "xxxs" | "xxs" | "xs" | "sm" | "md" | "lg" | "xl";
 
@@ -54,13 +68,8 @@ declare module "@mantine/styles" {
     export type MantineSize = MantineSizeOverride;
 }
 
-type ExtendedCustomColors =
-    | "primary"
-    | "secondary"
-    | "success"
-    | "danger"
-    | "cyan"
-    | DefaultMantineColor;
+type CustomColors = "primary" | "secondary" | "success" | "danger" | "cyan" | "gray";
+// | DefaultMantineColor;
 const spectacleTheme: MantineThemeOverride = {
     dir: "ltr",
     focusRing: "auto",
@@ -78,6 +87,7 @@ const spectacleTheme: MantineThemeOverride = {
         success,
         danger,
         cyan: sameColor("#4498D8"),
+        gray,
     },
     lineHeight: 1.55,
     fontFamily:
@@ -103,6 +113,20 @@ const spectacleTheme: MantineThemeOverride = {
         xl: 20,
     } as Record<MantineSizeOverride, number>,
 
+    headings: {
+        fontFamily:
+            "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji",
+        fontWeight: 700,
+        sizes: {
+            h1: { fontSize: 32, lineHeight: 1.3 },
+            h2: { fontSize: 20, lineHeight: 1.3 },
+            h3: { fontSize: 18, lineHeight: 1.4 },
+            h4: { fontSize: 16, lineHeight: 1.45 },
+            h5: { fontSize: 16, lineHeight: 1.5 },
+            h6: { fontSize: 14, lineHeight: 1.5 },
+        },
+    },
+
     radius: {
         xs: 2,
         sm: 4,
@@ -127,27 +151,13 @@ const spectacleTheme: MantineThemeOverride = {
         xl: 1400,
     },
 
-    headings: {
-        fontFamily:
-            "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji",
-        fontWeight: 700,
-        sizes: {
-            h1: { fontSize: 34, lineHeight: 1.3 },
-            h2: { fontSize: 26, lineHeight: 1.35 },
-            h3: { fontSize: 22, lineHeight: 1.4 },
-            h4: { fontSize: 18, lineHeight: 1.45 },
-            h5: { fontSize: 16, lineHeight: 1.5 },
-            h6: { fontSize: 14, lineHeight: 1.5 },
-        },
-    },
-
     other: {},
     datesLocale: "de",
 };
 
 declare module "@mantine/core" {
     export interface MantineThemeColorsOverride {
-        colors: Record<ExtendedCustomColors, Tuple<string, 10>>;
+        colors: Record<CustomColors, Tuple<string, 10>>;
     }
 }
 

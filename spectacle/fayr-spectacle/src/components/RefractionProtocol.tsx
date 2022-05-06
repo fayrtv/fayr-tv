@@ -1,20 +1,18 @@
 import {
     Badge,
     Button,
+    ColorSwatch,
     Container,
+    Grid,
     Group,
     Space,
-    Text,
-    Grid,
-    useMantineTheme,
     Stack,
-    Center,
-    ColorSwatch,
+    Text,
+    useMantineTheme,
 } from "@mantine/core";
 import moment from "moment";
 import React, { PropsWithChildren } from "react";
-import { Edit, Eye, Printer, Qrcode } from "tabler-icons-react";
-import QRCode from "~/components/QRCode";
+import { Eye, Printer, Qrcode } from "tabler-icons-react";
 import { RefractionProtocol as RefractionProtocolModel } from "~/types/RefractionProtocol";
 
 const GridText = (
