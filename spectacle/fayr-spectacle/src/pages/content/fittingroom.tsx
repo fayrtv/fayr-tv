@@ -36,7 +36,7 @@ const FittingRoom: NextPageWithLayout = () => {
         const anchor = mindArThreeJs.addAnchor(1);
         const geometry = new three.SphereGeometry(0.1, 32, 16);
         const material = new three.MeshBasicMaterial({
-            color: 0x00ffff,
+            color: "red",
             transparent: true,
             opacity: 0.5,
         });
@@ -50,6 +50,8 @@ const FittingRoom: NextPageWithLayout = () => {
             });
         };
         start();
+
+        return () => mindArThreeJs.stop();
     }, [mindArThreeJs]);
 
     React.useEffect(() => setRunningOnDevice(true), []);
@@ -57,7 +59,7 @@ const FittingRoom: NextPageWithLayout = () => {
     return (
         <Container
             ref={containerRef}
-            sx={(theme) => ({ height: "500px", width: "400px" })}
+            sx={(theme) => ({ height: "500px", width: "800px" })}
             fluid
         ></Container>
     );
