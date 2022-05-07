@@ -68,7 +68,14 @@ declare module "@mantine/styles" {
     export type MantineSize = MantineSizeOverride;
 }
 
-type CustomColors = "primary" | "secondary" | "success" | "danger" | "cyan" | "gray";
+type CustomColors =
+    | "primary"
+    | "secondary"
+    | "success"
+    | "danger"
+    | "cyan"
+    | "gray"
+    | /*builtin, used for dark mode*/ "dark";
 // | DefaultMantineColor;
 const spectacleTheme: MantineThemeOverride = {
     dir: "ltr",

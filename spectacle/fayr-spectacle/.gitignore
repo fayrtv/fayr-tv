@@ -37,7 +37,7 @@ yarn-error.log*
 # service worker stuff
 #public/sw.js
 #public/sw.js.map
-#public/workbox-*
+public/workbox-*
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend

@@ -1,5 +1,5 @@
 import { Box, Center, Container, Group, Image, Paper, Stack, Text } from "@mantine/core";
-import { PropsWithChildren } from "react";
+import React, { PropsWithChildren } from "react";
 import PassportQRCodeExample from "~/components/PassportQRCode";
 import Layout from "~/components/layout";
 import { NextPageWithLayout } from "~/types/next-types";
