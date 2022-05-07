@@ -2,7 +2,7 @@ import { GetServerSideProps } from "next";
 import React from "react";
 import Layout from "~/components/layout";
 import { NextPageWithLayout } from "~/types/next-types";
-import { formatFormalAddress, User } from "~/models/user";
+import { formatFormalAddress, User } from "~/types/user";
 import { getUser } from "~/helpers/authentication";
 import { useMantineColorScheme } from "@mantine/core";
 

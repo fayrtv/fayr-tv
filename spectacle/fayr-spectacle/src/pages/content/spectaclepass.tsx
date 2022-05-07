@@ -4,7 +4,7 @@ import { CircleX } from "tabler-icons-react";
 import { RefractionProtocol } from "~/components/RefractionProtocol";
 import RefractionProtocolArchive from "~/components/RefractionProtocolArchive";
 import { RefractionProtocol as RefractionProtocolEntity } from "~/models";
-import { RefractionProtocol as RefractionProtocolModel } from "~/models/refraction-protocol";
+import { RefractionProtocol as RefractionProtocolModel } from "~/types/refraction-protocol";
 import { NextPageWithLayout } from "~/types/next-types";
 
 import Layout from "../../components/layout";
@@ -12,7 +12,7 @@ import { GetServerSideProps } from "next";
 import { getUser } from "~/helpers/authentication";
 import { DataStore } from "@aws-amplify/datastore";
 import { withSSRContext } from "aws-amplify";
-import { deserializeModel, serializeModel } from "@aws-amplify/datastore/ssr";
+import { serializeModel } from "@aws-amplify/datastore/ssr";
 
 type ServerProps = {
     refractionProtocols: RefractionProtocolEntity[];
@@ -23,7 +23,10 @@ const SpectaclePass: NextPageWithLayout<ServerProps> = ({ refractionProtocols })
     const protocolHistory = refractionProtocols.splice(1);
 
     return (
-        <Container fluid sx={(theme) => ({ backgroundColor: theme.colors.dark[3], height: "100%" })}>
+        <Container
+            fluid
+            sx={(theme) => ({ backgroundColor: theme.colors.dark[3], height: "100%" })}
+        >
             <Stack>
                 <Group direction="row" position="right">
                     <CircleX size={30} />
@@ -33,10 +36,7 @@ const SpectaclePass: NextPageWithLayout<ServerProps> = ({ refractionProtocols })
                         <Text weight="bold">Digitaler Brillenpass</Text>
                         <Text weight="normal">Max Mustermann</Text>
                     </Group>
-                    <RefractionProtocol
-                        areActionsAllowed={false}
-                        entity={currentProtocol}
-                    />
+                    <RefractionProtocol areActionsAllowed={false} entity={currentProtocol} />
                     <Space h="lg" />
                     <RefractionProtocolArchive protocolHistory={protocolHistory} />
                 </Container>

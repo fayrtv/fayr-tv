@@ -1,6 +1,6 @@
 import { NextApiRequestCookies } from "next/dist/server/api-utils";
 import { withSSRContext } from "aws-amplify";
-import { User } from "~/models/user";
+import { User } from "~/types/user";
 
 export const getUser = async (req: { cookies: NextApiRequestCookies }) => {
     const SSR = withSSRContext({ req });

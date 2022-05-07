@@ -13,7 +13,7 @@ import moment from "moment";
 import React, { PropsWithChildren } from "react";
 import { Eye, Printer, Qrcode } from "tabler-icons-react";
 import { RefractionProtocol as RefractionProtocolEntity } from "~/models";
-import { RefractionProtocol as RefractionProtocolModel } from "~/models/refraction-protocol";
+import { RefractionProtocol as RefractionProtocolModel } from "~/types/refraction-protocol";
 import { useMantineTheme } from "@mantine/core";
 
 const GridText = (
