@@ -1,4 +1,6 @@
 export type User = {
+    email: string;
+    emailVerified: boolean;
     address: "m" | "f";
     title?: string;
     firstName: string;

@@ -1,12 +1,22 @@
 import { MantineProvider, ColorScheme, ColorSchemeProvider } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
+import Amplify from "aws-amplify";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import { Fragment, ReactNode, useState } from "react";
+import config from "~/aws-exports";
 
 import "../styles/globals.scss";
 
 import zeissTheme from "../theming/mantine";
+
+// TODO: https://ordinarycoders.com/blog/article/nextjs-aws-amplify
+// https://www.youtube.com/watch?v=YvoyHgZWSFY&ab_channel=BojidarYovchev
+
+Amplify.configure({
+    ...config,
+    ssr: true,
+});
 
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
     const { Component, pageProps } = props;

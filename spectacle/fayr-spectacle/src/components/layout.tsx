@@ -1,4 +1,4 @@
-import { AppShell, Container, Navbar, useMantineTheme } from "@mantine/core";
+import { AppShell } from "@mantine/core";
 import { ReactChild } from "react";
 
 import Header from "./header";

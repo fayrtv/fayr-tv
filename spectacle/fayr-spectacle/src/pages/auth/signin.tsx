@@ -3,31 +3,21 @@ import {
     Box,
     Button,
     Center,
-    Container,
     Group,
-    Image,
     Overlay,
     Paper,
     PasswordInput,
     Text,
     TextInput,
     useMantineColorScheme,
-    useMantineTheme,
 } from "@mantine/core";
-import { useColorScheme, useForm } from "@mantine/hooks";
-import { GetServerSideProps } from "next";
-import { getProviders } from "next-auth/react";
-import { ClientSafeProvider } from "next-auth/react/types";
-import React, { PropsWithChildren, useState } from "react";
+import { useForm } from "@mantine/hooks";
+import { Auth } from "aws-amplify";
+import Router from "next/router";
+import React, { PropsWithChildren } from "react";
 import ZeissLogo from "~/components/ZeissLogo";
 import Layout from "~/components/layout";
 import { NextPageWithLayout } from "~/types/next-types";
-
-type ServerProps = {
-    providers: ClientSafeProvider[];
-};
-
-type Props = ServerProps;
 
 const BodyShell = ({ children }: PropsWithChildren<{}>) => {
     const { colorScheme } = useMantineColorScheme();
@@ -64,41 +54,57 @@ const BodyShell = ({ children }: PropsWithChildren<{}>) => {
     );
 };
 
-const SignIn: NextPageWithLayout<Props> = ({ providers }) => {
+const SignIn: NextPageWithLayout = () => {
     const { colorScheme } = useMantineColorScheme();
 
     const form = useForm({
         initialValues: {
             email: "",
             password: "",
-            termsOfService: false,
         },
     });
 
     return (
         <BodyShell>
-            <TextInput required label="E-Mail" {...form.getInputProps("email")} mt="md" />
-            <PasswordInput required label="Password" {...form.getInputProps("password")} mt="xs" />
+            <form
+                onSubmit={form.onSubmit(async ({ email, password }) => {
+                    try {
+                        const user = await Auth.signIn(email, password);
+                        console.log(user);
+                        await Router.push("/auth/welcome");
+                    } catch (error) {
+                        console.log("error signing in", error);
+                    }
+                })}
+            >
+                <TextInput required label="E-Mail" {...form.getInputProps("email")} mt="md" />
+                <PasswordInput
+                    required
+                    label="Password"
+                    {...form.getInputProps("password")}
+                    mt="xs"
+                />
 
-            <Group position="right" mt="xs">
-                <Anchor
-                    href="/auth/recover"
-                    size="xs"
-                    sx={(theme) => ({
-                        color: theme.colors.gray[5],
-                        textDecoration: "underline",
-                        ":hover": { color: theme.colors.primary },
-                    })}
-                >
-                    Login-Daten vergessen?
-                </Anchor>
-            </Group>
+                <Group position="right" mt="xs">
+                    <Anchor
+                        href="/auth/recover"
+                        size="xs"
+                        sx={(theme) => ({
+                            color: theme.colors.gray[5],
+                            textDecoration: "underline",
+                            ":hover": { color: theme.colors.primary },
+                        })}
+                    >
+                        Login-Daten vergessen?
+                    </Anchor>
+                </Group>
 
-            <Group position="center" mt="md">
-                <Button type="submit" styles={{ inner: { fontWeight: "lighter" } }}>
-                    Anmelden
-                </Button>
-            </Group>
+                <Group position="center" mt="md">
+                    <Button type="submit" styles={{ inner: { fontWeight: "lighter" } }}>
+                        Anmelden
+                    </Button>
+                </Group>
+            </form>
 
             <Box sx={{ textAlign: "center", maxWidth: 250 }} mx="auto" mt="lg">
                 <Text size="sm">
@@ -128,13 +134,6 @@ const SignIn: NextPageWithLayout<Props> = ({ providers }) => {
 
 SignIn.layoutProps = {
     Layout,
-};
-
-export const getServerSideProps: GetServerSideProps = async () => {
-    const providers = await getProviders();
-    return {
-        props: { providers },
-    };
 };
 
 export default SignIn;

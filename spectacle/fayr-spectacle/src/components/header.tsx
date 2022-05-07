@@ -1,4 +1,4 @@
-import { Anchor, Box, Burger, Container, Group, Sx, Text } from "@mantine/core";
+import { Anchor, Box, Burger, Container, Group, Text } from "@mantine/core";
 import React from "react";
 import ThemeToggleButton from "~/components/theme-toggle-button";
 

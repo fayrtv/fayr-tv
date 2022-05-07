@@ -2,13 +2,10 @@ import {
     Anchor,
     Box,
     Button,
-    Center,
     Checkbox,
-    CheckboxGroup,
     Container,
     Grid,
     Group,
-    Image,
     PasswordInput,
     Select,
     Stack,
@@ -16,21 +13,14 @@ import {
     TextInput,
     useMantineColorScheme,
 } from "@mantine/core";
-import { SelectDropdown } from "@mantine/core/lib/components/Select/SelectDropdown/SelectDropdown";
 import { useForm } from "@mantine/hooks";
+import { Auth } from "aws-amplify";
 import { GetServerSideProps } from "next";
-import { getProviders } from "next-auth/react";
-import { ClientSafeProvider } from "next-auth/react/types";
-import React, { PropsWithChildren, useState } from "react";
+import Router from "next/router";
+import React, { PropsWithChildren } from "react";
 import ZeissLogo from "~/components/ZeissLogo";
 import Layout from "~/components/layout";
 import { NextPageWithLayout } from "~/types/next-types";
-
-type ServerProps = {
-    providers: ClientSafeProvider[];
-};
-
-type Props = ServerProps;
 
 const BodyShell = ({ children }: PropsWithChildren<{}>) => {
     const { colorScheme } = useMantineColorScheme();
@@ -57,7 +47,7 @@ const BodyShell = ({ children }: PropsWithChildren<{}>) => {
     );
 };
 
-const SignUp: NextPageWithLayout<Props> = ({ providers }) => {
+const SignUp: NextPageWithLayout = () => {
     const form = useForm({
         initialValues: {
             address: "",
@@ -84,7 +74,37 @@ const SignUp: NextPageWithLayout<Props> = ({ providers }) => {
 
     return (
         <BodyShell>
-            <form onSubmit={form.onSubmit((values) => console.log(values))}>
+            <form
+                onSubmit={form.onSubmit(
+                    async ({
+                        address,
+                        firstName,
+                        title,
+                        lastName,
+                        password,
+                        email,
+                        newsletter,
+                    }) => {
+                        try {
+                            const { user } = await Auth.signUp({
+                                username: email,
+                                password,
+                                attributes: {
+                                    family_name: lastName,
+                                    "custom:address": address,
+                                    "custom:first_name": firstName,
+                                    "custom:title": title,
+                                    "custom:newsletter": String(newsletter),
+                                },
+                            });
+                            await Router.push("/auth/confirm");
+                            console.log(user);
+                        } catch (error) {
+                            console.log("error signing up:", error);
+                        }
+                    },
+                )}
+            >
                 {/* TODO: No grid with columns on mobile */}
                 <Grid gutter="lg">
                     <Grid.Col span={6}>
@@ -179,12 +199,5 @@ const validateEmail = (email: string) =>
         .match(
             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
         );
-
-export const getServerSideProps: GetServerSideProps = async () => {
-    const providers = await getProviders();
-    return {
-        props: { providers },
-    };
-};
 
 export default SignUp;

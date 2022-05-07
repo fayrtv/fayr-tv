@@ -1,6 +1,5 @@
 import type { MantineThemeOverride } from "@mantine/core";
-import { Tuple, DefaultMantineColor } from "@mantine/core";
-import { Theme } from "next-auth";
+import { Tuple } from "@mantine/core";
 
 // NOTE:
 // Color palettes are generated using
