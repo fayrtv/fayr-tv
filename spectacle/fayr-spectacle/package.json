@@ -10,6 +10,7 @@
 	},
 	"dependencies": {
 		"@aws-amplify/datastore": "^3.11.0",
+		"@aws-amplify/ui-react": "^2.16.1",
 		"@aws-sdk/client-dynamodb": "^3.52.0",
 		"@aws-sdk/lib-dynamodb": "^3.52.0",
 		"@mantine/core": "^4.1.4",
@@ -18,6 +19,7 @@
 		"@mantine/notifications": "^4.1.5",
 		"@next-auth/dynamodb-adapter": "^1.1.0",
 		"aframe": "^1.2.0",
+		"aws-amplify": "^4.3.21",
 		"mind-ar": "^1.0.0",
 		"moment": "^2.29.3",
 		"next": "12.1.5",
