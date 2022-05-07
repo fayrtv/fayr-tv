@@ -45,6 +45,16 @@ const FittingRoom: NextPageWithLayout = () => {
 
         const start = async () => {
             await mindArThreeJs.start();
+            // Overwrite weird internal styling computations
+            // TODO: Unhackify this
+            mindArThreeJs.renderer.domElement.style.top = "0px";
+            mindArThreeJs.renderer.domElement.style.height = "100%";
+            mindArThreeJs.renderer.domElement.style.width = "100%";
+            mindArThreeJs.video.style.top = "0px";
+            mindArThreeJs.video.style.height = "100%";
+            mindArThreeJs.video.style.width = "100%";
+            mindArThreeJs.cssRenderer.domElement.style.top = "0px";
+            mindArThreeJs.cssRenderer.domElement.style.transform = "none";
             renderer.setAnimationLoop(() => {
                 renderer.render(scene, camera);
             });
@@ -59,7 +69,7 @@ const FittingRoom: NextPageWithLayout = () => {
     return (
         <Container
             ref={containerRef}
-            sx={(theme) => ({ height: "500px", width: "800px" })}
+            sx={(theme) => ({ height: "100%", width: "100%" })}
             fluid
         ></Container>
     );
