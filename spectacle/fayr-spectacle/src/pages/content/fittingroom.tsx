@@ -1,8 +1,7 @@
 import { Container } from "~/components/common";
 import React from "react";
 import Layout from "~/components/layout";
-import { NextPageWithLayout } from "../../types/next-types";
-import styled from "styled-components";
+import { NextPageWithLayout } from "~/types/next-types";
 
 declare global {
     interface Window {
