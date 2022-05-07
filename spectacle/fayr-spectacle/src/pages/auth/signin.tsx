@@ -71,7 +71,7 @@ const SignIn: NextPageWithLayout = () => {
                     try {
                         const user = await Auth.signIn(email, password);
                         console.log(user);
-                        await Router.push("/auth/welcome");
+                        await Router.push("/welcome");
                     } catch (error) {
                         console.log("error signing in", error);
                     }
