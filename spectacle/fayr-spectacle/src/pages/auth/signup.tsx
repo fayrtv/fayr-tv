@@ -15,7 +15,6 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import { Auth } from "aws-amplify";
-import { GetServerSideProps } from "next";
 import Router from "next/router";
 import React, { PropsWithChildren } from "react";
 import ZeissLogo from "~/components/ZeissLogo";
