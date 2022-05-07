@@ -35,9 +35,9 @@ yarn-error.log*
 *.tsbuildinfo
 
 # service worker stuff
-public/sw.js
-public/sw.js.map
-public/workbox-*
+#public/sw.js
+#public/sw.js.map
+#public/workbox-*
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
