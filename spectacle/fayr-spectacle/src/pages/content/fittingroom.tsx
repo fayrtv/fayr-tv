@@ -1,7 +1,8 @@
-import { Button, Container } from "@mantine/core";
+import { Container } from "@mantine/core";
 import React from "react";
 import Layout from "~/components/layout";
 import { NextPageWithLayout } from "../../types/next-types";
+import styled from "styled-components";
 
 declare global {
     interface Window {
@@ -53,7 +54,13 @@ const FittingRoom: NextPageWithLayout = () => {
 
     React.useEffect(() => setRunningOnDevice(true), []);
 
-    return <Container ref={containerRef} sx={(theme) => ({ height: "100%" })} fluid></Container>;
+    return (
+        <Container
+            ref={containerRef}
+            sx={(theme) => ({ height: "500px", width: "400px" })}
+            fluid
+        ></Container>
+    );
 };
 
 FittingRoom.layoutProps = {
