@@ -4,6 +4,7 @@ import Layout from "~/components/layout";
 import { NextPageWithLayout } from "~/types/next-types";
 
 declare global {
+    // noinspection JSUnusedGlobalSymbols
     interface Window {
         MINDAR: any;
     }
@@ -19,11 +20,9 @@ const FittingRoom: NextPageWithLayout = () => {
             return;
         }
 
-        const mindarThree = new window.MINDAR.FACE.MindARThree({
+        return new window.MINDAR.FACE.MindARThree({
             container: containerRef.current,
         });
-
-        return mindarThree;
     }, [runningOnDevice]);
 
     React.useEffect(() => {
@@ -65,13 +64,7 @@ const FittingRoom: NextPageWithLayout = () => {
 
     React.useEffect(() => setRunningOnDevice(true), []);
 
-    return (
-        <Container
-            ref={containerRef}
-            sx={(theme) => ({ height: "100%", width: "100%" })}
-            fluid
-        ></Container>
-    );
+    return <Container ref={containerRef} sx={{ height: "100%", width: "100%" }} fluid />;
 };
 
 FittingRoom.layoutProps = {

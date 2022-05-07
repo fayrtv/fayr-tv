@@ -27,6 +27,9 @@ const Home: NextPageWithLayout = () => {
                 <li>
                     <Anchor href={"/content/fittingroom"}>Anprobe</Anchor>
                 </li>
+                <li>
+                    <Anchor href={"/appointment"}>Terminvereinbarung</Anchor>
+                </li>
             </ul>
         </Box>
     );
