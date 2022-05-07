@@ -1,11 +1,12 @@
 import {
+    Alert,
     Anchor,
     Box,
     Button,
     Checkbox,
     Container,
     Grid,
-    Group,
+    Group, LoadingOverlay,
     PasswordInput,
     Select,
     Stack,
@@ -15,11 +16,12 @@ import {
 import { useForm } from "@mantine/hooks";
 import { Auth } from "aws-amplify";
 import Router from "next/router";
-import React, { PropsWithChildren } from "react";
+import React, {PropsWithChildren, useState} from "react";
 import ZeissLogo from "~/components/ZeissLogo";
 import Layout from "~/components/layout";
 import { NextPageWithLayout } from "~/types/next-types";
 import { useMantineColorScheme } from "@mantine/core";
+import {AlertCircle} from "tabler-icons-react";
 
 const BodyShell = ({ children }: PropsWithChildren<{}>) => {
     const { colorScheme } = useMantineColorScheme();
@@ -47,6 +49,9 @@ const BodyShell = ({ children }: PropsWithChildren<{}>) => {
 };
 
 const SignUp: NextPageWithLayout = () => {
+    const [isSubmitting, setSubmitting] = useState(false);
+    const [loginError, setSignupError] = useState<string | undefined>();
+
     const form = useForm({
         initialValues: {
             address: "",
@@ -85,7 +90,8 @@ const SignUp: NextPageWithLayout = () => {
                         newsletter,
                     }) => {
                         try {
-                            const { user } = await Auth.signUp({
+                            setSubmitting(true);
+                            await Auth.signUp({
                                 username: email,
                                 password,
                                 attributes: {
@@ -97,13 +103,26 @@ const SignUp: NextPageWithLayout = () => {
                                 },
                             });
                             await Router.push("/auth/confirm");
-                            console.log(user);
                         } catch (error) {
-                            console.log("error signing up:", error);
+                            setSignupError(String(error).replace(/^.*Exception: /, ""));
+                            setSubmitting(false);
                         }
                     },
                 )}
             >
+                {loginError && (
+                    <Alert
+                        mb="md"
+                        // variant="filled"
+                        icon={<AlertCircle size={16} />}
+                        title="Fehler beim Einloggen"
+                        color="red"
+                        radius="xs"
+                    >
+                        {loginError}
+                    </Alert>
+                )}
+                <LoadingOverlay visible={isSubmitting} />
                 {/* TODO: No grid with columns on mobile */}
                 <Grid gutter="lg">
                     <Grid.Col span={6}>

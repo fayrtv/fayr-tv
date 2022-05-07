@@ -1,16 +1,16 @@
 import { Group, Text, Badge, Container } from "~/components/common";
 import moment from "moment";
 import { Eye } from "tabler-icons-react";
-import { RefractionProtocol as RefractionProtocolModel } from "~/models/refraction-protocol";
+import { RefractionProtocol as RefractionProtocolEntity } from "~/models";
 import { useMantineTheme } from "@mantine/core";
 
 type Props = {
-    refractionProtocol: RefractionProtocolModel;
+    protocolHistory: RefractionProtocolEntity[];
 };
 
 const BackgroundGrey = "#A8A8A8";
 
-export const RefractionProtocolArchive = ({ refractionProtocol }: Props) => {
+export const RefractionProtocolArchive = ({ protocolHistory }: Props) => {
     const theme = useMantineTheme();
 
     return (
@@ -33,17 +33,21 @@ export const RefractionProtocolArchive = ({ refractionProtocol }: Props) => {
                     REFRAKTIONSPROTOKOLL
                 </Text>
                 <Group direction="column" align="end" spacing="xs">
-                    <Badge
-                        size="md"
-                        color="transparent"
-                        radius="xs"
-                        style={{ backgroundColor: theme.white }}
-                    >
-                        ARCHIV
-                    </Badge>
-                    <Text size="xs" color={theme.white}>
-                        {moment(refractionProtocol.date).format("DD.MM.YYYY")}
-                    </Text>
+                    {protocolHistory.length && (
+                        <>
+                            <Badge
+                                size="md"
+                                color="transparent"
+                                radius="xs"
+                                style={{ backgroundColor: theme.white }}
+                            >
+                                ARCHIV
+                            </Badge>
+                            <Text size="xs" color={theme.white}>
+                                {moment(protocolHistory[0].recordedAt).format("DD.MM.YYYY")}
+                            </Text>
+                        </>
+                    )}
                 </Group>
             </Group>
         </Container>

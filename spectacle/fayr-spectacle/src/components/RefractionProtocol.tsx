@@ -12,7 +12,8 @@ import {
 import moment from "moment";
 import React, { PropsWithChildren } from "react";
 import { Eye, Printer, Qrcode } from "tabler-icons-react";
-import { RefractionProtocol as Model } from "~/models/refraction-protocol";
+import { RefractionProtocol as RefractionProtocolEntity } from "~/models";
+import { RefractionProtocol as RefractionProtocolModel } from "~/models/refraction-protocol";
 import { useMantineTheme } from "@mantine/core";
 
 const GridText = (
@@ -36,11 +37,13 @@ const GridText = (
 
 type Props = {
     areActionsAllowed: boolean;
-    refractionProtocol: Model;
+    entity: RefractionProtocolEntity;
 };
 
-export const RefractionProtocol = ({ areActionsAllowed, refractionProtocol }: Props) => {
+export const RefractionProtocol = ({ areActionsAllowed, entity }: Props) => {
     const theme = useMantineTheme();
+
+    const refractionProtocol = entity.data as unknown as RefractionProtocolModel;
 
     const themedColor = theme.colorScheme === "light" ? theme.white : theme.black;
 
@@ -111,7 +114,7 @@ export const RefractionProtocol = ({ areActionsAllowed, refractionProtocol }: Pr
                             Aktuell
                         </Badge>
                         <Text size="xs" color={theme.white}>
-                            {moment(refractionProtocol.date).format("DD.MM.YYYY")}
+                            {moment(entity.recordedAt).format("DD.MM.YYYY")}
                         </Text>
                     </Group>
                 </Group>

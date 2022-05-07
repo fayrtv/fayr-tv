@@ -9,15 +9,18 @@ import {
     PasswordInput,
     Text,
     TextInput,
+    LoadingOverlay,
+    Alert,
 } from "~/components/common";
 import { useForm } from "@mantine/hooks";
 import { Auth } from "aws-amplify";
 import Router from "next/router";
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, useState } from "react";
 import ZeissLogo from "~/components/ZeissLogo";
 import Layout from "~/components/layout";
 import { NextPageWithLayout } from "~/types/next-types";
 import { useMantineColorScheme } from "@mantine/core";
+import { AlertCircle } from "tabler-icons-react";
 
 const BodyShell = ({ children }: PropsWithChildren<{}>) => {
     const { colorScheme } = useMantineColorScheme();
@@ -56,6 +59,8 @@ const BodyShell = ({ children }: PropsWithChildren<{}>) => {
 
 const SignIn: NextPageWithLayout = () => {
     const { colorScheme } = useMantineColorScheme();
+    const [isSubmitting, setSubmitting] = useState(false);
+    const [loginError, setLoginError] = useState<string | undefined>();
 
     const form = useForm({
         initialValues: {
@@ -69,14 +74,28 @@ const SignIn: NextPageWithLayout = () => {
             <form
                 onSubmit={form.onSubmit(async ({ email, password }) => {
                     try {
-                        const user = await Auth.signIn(email, password);
-                        console.log(user);
+                        setSubmitting(true);
+                        await Auth.signIn(email, password);
                         await Router.push("/welcome");
                     } catch (error) {
-                        console.log("error signing in", error);
+                        setSubmitting(false);
+                        setLoginError(String(error).replace(/^.*Exception: /, ""));
                     }
                 })}
             >
+                {loginError && (
+                    <Alert
+                        mt="md"
+                        // variant="filled"
+                        icon={<AlertCircle size={16} />}
+                        title="Fehler beim Einloggen"
+                        color="red"
+                        radius="xs"
+                    >
+                        {loginError}
+                    </Alert>
+                )}
+                <LoadingOverlay visible={isSubmitting} />
                 <TextInput required label="E-Mail" {...form.getInputProps("email")} mt="md" />
                 <PasswordInput
                     required

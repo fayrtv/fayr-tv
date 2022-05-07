@@ -3,32 +3,27 @@ import React from "react";
 import { CircleX } from "tabler-icons-react";
 import { RefractionProtocol } from "~/components/RefractionProtocol";
 import RefractionProtocolArchive from "~/components/RefractionProtocolArchive";
+import { RefractionProtocol as RefractionProtocolEntity } from "~/models";
 import { RefractionProtocol as RefractionProtocolModel } from "~/models/refraction-protocol";
 import { NextPageWithLayout } from "~/types/next-types";
 
 import Layout from "../../components/layout";
+import { GetServerSideProps } from "next";
+import { getUser } from "~/helpers/authentication";
+import { DataStore } from "@aws-amplify/datastore";
+import { withSSRContext } from "aws-amplify";
+import { deserializeModel, serializeModel } from "@aws-amplify/datastore/ssr";
 
-const SpectaclePass: NextPageWithLayout = () => {
-    const refractionProtocol: RefractionProtocolModel = {
-        date: new Date(),
-        left: {
-            axis: 170,
-            cylinder: -0.25,
-            pd: 35,
-            sphere: -2.5,
-            addition: undefined,
-        },
-        right: {
-            axis: 168,
-            cylinder: -0.75,
-            pd: 34.5,
-            sphere: -1.75,
-            addition: undefined,
-        },
-    };
+type ServerProps = {
+    refractionProtocols: RefractionProtocolEntity[];
+};
+
+const SpectaclePass: NextPageWithLayout<ServerProps> = ({ refractionProtocols }) => {
+    const currentProtocol = refractionProtocols[0];
+    const protocolHistory = refractionProtocols.splice(1);
 
     return (
-        <Container fluid sx={(theme) => ({ backgroundColor: theme.colors.red[1], height: "100%" })}>
+        <Container fluid sx={(theme) => ({ backgroundColor: theme.colors.dark[3], height: "100%" })}>
             <Stack>
                 <Group direction="row" position="right">
                     <CircleX size={30} />
@@ -40,10 +35,10 @@ const SpectaclePass: NextPageWithLayout = () => {
                     </Group>
                     <RefractionProtocol
                         areActionsAllowed={false}
-                        refractionProtocol={refractionProtocol}
+                        entity={currentProtocol}
                     />
                     <Space h="lg" />
-                    <RefractionProtocolArchive refractionProtocol={refractionProtocol} />
+                    <RefractionProtocolArchive protocolHistory={protocolHistory} />
                 </Container>
             </Stack>
         </Container>
@@ -52,6 +47,55 @@ const SpectaclePass: NextPageWithLayout = () => {
 
 SpectaclePass.layoutProps = {
     Layout: Layout,
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+    const SSR = withSSRContext({ req });
+    const store = SSR.DataStore as typeof DataStore;
+
+    const user = await getUser(req);
+    if (!user) {
+        res.writeHead(301, { Location: "/auth/signin" });
+        res.end();
+        return { props: {} };
+    }
+
+    const userProtocols = await store.query(RefractionProtocolEntity, (x) =>
+        x.userID("eq", user.email),
+    );
+
+    if (!userProtocols || userProtocols.length === 0) {
+        // Create some dummy entries if none exist yet
+        const dummy: RefractionProtocolModel = {
+            left: {
+                axis: 170,
+                cylinder: -0.25,
+                pd: 35,
+                sphere: -2.5,
+                addition: undefined,
+            },
+            right: {
+                axis: 168,
+                cylinder: -0.75,
+                pd: 34.5,
+                sphere: -1.75,
+                addition: undefined,
+            },
+        };
+        await store.save(
+            new RefractionProtocolEntity({
+                recordedAt: new Date().toISOString(),
+                data: JSON.stringify(dummy),
+                userID: user.email,
+            }),
+        );
+    }
+
+    return {
+        props: {
+            refractionProtocols: userProtocols.map(serializeModel),
+        },
+    };
 };
 
 export default SpectaclePass;

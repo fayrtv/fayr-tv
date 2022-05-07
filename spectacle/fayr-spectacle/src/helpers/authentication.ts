@@ -26,3 +26,4 @@ export const getUser = async (req: { cookies: NextApiRequestCookies }) => {
 
     return user;
 };
+
