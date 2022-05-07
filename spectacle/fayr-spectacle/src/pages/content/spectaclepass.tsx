@@ -1,4 +1,4 @@
-import { Container, Group, Space, Stack, Text } from "@mantine/core";
+import { Container, Group, Space, Stack, Text } from "~/components/common";
 import React from "react";
 import { CircleX } from "tabler-icons-react";
 import { RefractionProtocol } from "~/components/RefractionProtocol";

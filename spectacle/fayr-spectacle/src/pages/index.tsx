@@ -1,6 +1,6 @@
-import { Anchor, Box, Center, Container, Stack } from "@mantine/core";
 import Layout from "~/components/layout";
 import { NextPageWithLayout } from "~/types/next-types";
+import { Box, Anchor } from "~/components/common";
 
 const Home: NextPageWithLayout = () => {
     return (

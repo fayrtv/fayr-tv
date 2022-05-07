@@ -1,10 +1,10 @@
-import { useMantineColorScheme } from "@mantine/core";
 import { GetServerSideProps } from "next";
 import React from "react";
 import Layout from "~/components/layout";
 import { NextPageWithLayout } from "~/types/next-types";
-import { formatUserAddress, User } from "~/models/user";
+import { formatFormalAddress, User } from "~/models/user";
 import { getUser } from "~/helpers/authentication";
+import { useMantineColorScheme } from "@mantine/core";
 
 type Props = {
     user: User;
@@ -13,7 +13,7 @@ type Props = {
 const Welcome: NextPageWithLayout<Props> = ({ user }) => {
     const { colorScheme } = useMantineColorScheme();
 
-    return <>Willkommen {formatUserAddress(user)}</>;
+    return <>Willkommen {formatFormalAddress(user)}</>;
 };
 
 Welcome.layoutProps = {

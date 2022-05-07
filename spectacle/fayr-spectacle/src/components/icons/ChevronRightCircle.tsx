@@ -1,4 +1,4 @@
-import { Box, Center } from "@mantine/core";
+import { Box, Center } from "~/components/common";
 import { ChevronRight } from "tabler-icons-react";
 
 export default function ChevronRightCircle({ size = 25 }: { size?: number }) {

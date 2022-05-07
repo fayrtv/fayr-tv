@@ -11,8 +11,7 @@ import {
     Stack,
     Text,
     TextInput,
-    useMantineColorScheme,
-} from "@mantine/core";
+} from "~/components/common";
 import { useForm } from "@mantine/hooks";
 import { Auth } from "aws-amplify";
 import Router from "next/router";
@@ -20,6 +19,7 @@ import React, { PropsWithChildren } from "react";
 import ZeissLogo from "~/components/ZeissLogo";
 import Layout from "~/components/layout";
 import { NextPageWithLayout } from "~/types/next-types";
+import { useMantineColorScheme } from "@mantine/core";
 
 const BodyShell = ({ children }: PropsWithChildren<{}>) => {
     const { colorScheme } = useMantineColorScheme();

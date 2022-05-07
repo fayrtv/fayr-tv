@@ -1,4 +1,4 @@
-import { Box, Center, Container, Group, Image, Paper, Stack, Text } from "@mantine/core";
+import { Box, Center, Container, Group, Image, Paper, Stack, Text } from "~/components/common";
 import React, { PropsWithChildren } from "react";
 import PassportQRCodeExample from "~/components/PassportQRCode";
 import Layout from "~/components/layout";

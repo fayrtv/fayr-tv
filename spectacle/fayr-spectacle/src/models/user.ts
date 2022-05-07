@@ -7,7 +7,7 @@ export type User = {
     lastName: string;
     newsletter: boolean;
 };
-export const formatUserAddress = (user: User) => {
+export const formatFormalAddress = (user: User) => {
     const parts = [user.address === "m" ? "Herr" : "Frau"];
 
     if (user.title) {

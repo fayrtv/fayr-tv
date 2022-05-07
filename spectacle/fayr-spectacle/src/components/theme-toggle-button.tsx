@@ -1,5 +1,6 @@
-import { Button, useMantineColorScheme } from "@mantine/core";
+import { Button } from "~/components/common";
 import { Sun, SunOff } from "tabler-icons-react";
+import { useMantineColorScheme } from "@mantine/core";
 
 const ICON_SIZE = 24;
 const ThemeToggleButton = () => {

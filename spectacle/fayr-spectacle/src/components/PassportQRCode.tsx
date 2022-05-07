@@ -1,10 +1,12 @@
-import { Box, Center, Grid, Group, SimpleGrid, Stack, Text, useMantineTheme } from "@mantine/core";
+import { Box, Center, Group, Stack, Text } from "~/components/common";
 import QRCode from "~/components/QRCode";
 import ChevronRightCircle from "~/components/icons/ChevronRightCircle";
+import { useMantineTheme } from "@mantine/core";
 
 export default function PassportQRCodeExample() {
-    // TODO: Define
     const theme = useMantineTheme();
+
+    // TODO: Define
     const qrCodeContent = "https://example.com";
 
     return (

@@ -8,12 +8,12 @@ import {
     Space,
     Stack,
     Text,
-    useMantineTheme,
-} from "@mantine/core";
+} from "~/components/common";
 import moment from "moment";
 import React, { PropsWithChildren } from "react";
 import { Eye, Printer, Qrcode } from "tabler-icons-react";
 import { RefractionProtocol as Model } from "~/models/refraction-protocol";
+import { useMantineTheme } from "@mantine/core";
 
 const GridText = (
     props: PropsWithChildren<
