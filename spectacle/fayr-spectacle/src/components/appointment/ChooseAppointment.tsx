@@ -1,44 +1,37 @@
-import React, { Dispatch, PropsWithChildren, SetStateAction, useEffect, useMemo } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useMemo } from "react";
 import { useScrollIntoView } from "@mantine/hooks";
-import { createStyles, Group, Paper, Stack, useMantineColorScheme } from "@mantine/core";
+import { createStyles, Group, Stack } from "@mantine/core";
 import { Button, Text } from "~/components/common";
 import { Calendar } from "@mantine/dates";
-import { TimeSlot, EARLIEST, LATEST } from "~/components/appointment/types";
+import { EARLIEST, LATEST, TimeSlot } from "~/components/appointment/types";
 import dayjs from "dayjs";
+import { useStoreInfo } from "~/components/StoreInfoProvider";
+import { InfoBox } from "~/components/appointment/InfoBox";
 
 const canSelectDate = (date: Date): boolean => {
     // No weekends
     return date.getDay() !== 0 && date.getDay() !== 6;
 };
 
-const InfoBox = ({ children }: PropsWithChildren<{}>) => (
-    <Paper sx={(theme) => ({ backgroundColor: theme.colors.primary[3] })} py={7} px="sm">
-        <Text size="sm" color="primary">
-            {children}
-        </Text>
-    </Paper>
-);
-
 const TimeRangeSelectItem = ({
     slot,
     isSelected,
     onClick,
+    onConfirm,
 }: {
     slot: [number, number];
     isSelected: boolean;
     onClick: (value: TimeSlot) => void;
+    onConfirm: () => void;
 }) => {
     const start = `${String(slot[0]).padStart(2, "0")}:00 Uhr`;
     const end = `${String(slot[1]).padStart(2, "0")}:00 Uhr`;
 
     return isSelected ? (
         <Group spacing={0} position="apart" grow>
-            {/*<Badge variant="dot" size="md" gradient={{ from: "teal", to: "lime", deg: 105 }}>*/}
-            {/*    {start}*/}
-            {/*</Badge>*/}
             <InfoBox>{start}</InfoBox>
 
-            <Button onClick={() => onClick(slot)} color="green" size="sm" p="sm">
+            <Button onClick={onConfirm} color="green" size="sm" p="sm">
                 Auswählen
             </Button>
         </Group>
@@ -72,11 +65,18 @@ type Props = {
     setDate: Dispatch<SetStateAction<Date | null>>;
     selectedSlot: TimeSlot | null;
     setSelectedSlot: Dispatch<SetStateAction<TimeSlot | null>>;
+    onConfirm: () => void;
 };
-export const ChooseAppointment = ({ date, setDate, selectedSlot, setSelectedSlot }: Props) => {
+export const ChooseAppointment = ({
+    date,
+    setDate,
+    selectedSlot,
+    setSelectedSlot,
+    onConfirm,
+}: Props) => {
     const { classes } = useStyles();
 
-    const shopAddress = "Lorzingstraße 4, 49074 Osnabrück";
+    const storeInfo = useStoreInfo();
 
     const availableSlots = useMemo(() => {
         const slots: TimeSlot[] = [];
@@ -106,7 +106,7 @@ export const ChooseAppointment = ({ date, setDate, selectedSlot, setSelectedSlot
                 </Text>
                 <Text size="sm">Besuchen Sie uns in unserer Filiale</Text>
                 <Text size="sm" color="primary">
-                    {shopAddress}
+                    {storeInfo.fullAddress}
                 </Text>
                 <Calendar
                     minDate={dayjs(new Date()).toDate()}
@@ -124,6 +124,7 @@ export const ChooseAppointment = ({ date, setDate, selectedSlot, setSelectedSlot
                         <TimeRangeSelectItem
                             isSelected={slot === selectedSlot}
                             onClick={setSelectedSlot}
+                            onConfirm={onConfirm}
                             slot={slot}
                             key={n}
                         />

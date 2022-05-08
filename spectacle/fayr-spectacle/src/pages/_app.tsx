@@ -10,6 +10,7 @@ import "dayjs/locale/de";
 import "../styles/globals.scss";
 
 import zeissTheme from "../theming/mantine";
+import StoreInfoProvider from "~/components/StoreInfoProvider";
 
 // TODO: https://ordinarycoders.com/blog/article/nextjs-aws-amplify
 // https://www.youtube.com/watch?v=YvoyHgZWSFY&ab_channel=BojidarYovchev
@@ -21,7 +22,7 @@ Amplify.configure({
 
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
     const { Component, pageProps } = props;
-    const [colorScheme, setColorScheme] = useState<ColorScheme>(props.colorScheme);
+    const [colorScheme, setColorScheme] = useState<ColorScheme>(props.colorScheme ?? "light");
 
     const Layout =
         (
@@ -59,9 +60,16 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
                     }}
                 >
                     <NotificationsProvider>
-                        <Layout>
-                            <Component {...pageProps} />
-                        </Layout>
+                        <StoreInfoProvider value={{
+                            name: "ZEISS Vision Center",
+                            city: "Osnabrück",
+                            owner: "Reiner Siekemeyer",
+                            fullAddress: "Lorzingstraße 4, 49074 Osnabrück"
+                        }}>
+                            <Layout>
+                                <Component {...pageProps} />
+                            </Layout>
+                        </StoreInfoProvider>
                     </NotificationsProvider>
                 </MantineProvider>
             </ColorSchemeProvider>
