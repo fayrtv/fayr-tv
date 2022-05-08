@@ -1,11 +1,20 @@
 .ArDiv {
-    width: 1400px;
-    height: 700px;
-    visibility: hidden;
+    @media (max-width: 500px) {
+        width: 1200px;
+        height: 600px;
+    }
+    width: 50%;
+    height: 50%;
     background-image: url("/assets/klipartz.com.png");
     background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
     color: white;
+}
+
+.Controls {
+    position: absolute;
+    bottom: 0px;
+    height: 10%;
 }
