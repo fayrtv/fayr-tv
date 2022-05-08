@@ -2,6 +2,9 @@ import { Container } from "~/components/common";
 import React from "react";
 import Layout from "~/components/layout";
 import { NextPageWithLayout } from "~/types/next-types";
+import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
+
+import styles from "./fittingroom.module.scss";
 
 declare global {
     // noinspection JSUnusedGlobalSymbols
@@ -15,7 +18,7 @@ const FittingRoom: NextPageWithLayout = () => {
 
     const [runningOnDevice, setRunningOnDevice] = React.useState(false);
 
-    const mindArThreeJs = React.useMemo(() => {
+    const mindArThree = React.useMemo(() => {
         if (!runningOnDevice) {
             return;
         }
@@ -26,45 +29,41 @@ const FittingRoom: NextPageWithLayout = () => {
     }, [runningOnDevice]);
 
     React.useEffect(() => {
-        if (!mindArThreeJs) {
+        if (!mindArThree) {
             return;
         }
-        const { renderer, scene, camera } = mindArThreeJs;
-        const three = window.MINDAR.FACE.THREE;
-        const anchor = mindArThreeJs.addAnchor(1);
-        const geometry = new three.SphereGeometry(0.1, 32, 16);
-        const material = new three.MeshBasicMaterial({
-            color: "red",
-            transparent: true,
-            opacity: 0.5,
-        });
-        const sphere = new three.Mesh(geometry, material);
-        anchor.group.add(sphere);
+
+        const { renderer, cssRenderer, cssScene, camera } = mindArThree;
+
+        const obj = new CSS3DObject(document.querySelector("#ar-div")!);
+        const cssAnchor = mindArThree.addCSSAnchor(1);
+        cssAnchor.group.add(obj);
 
         const start = async () => {
-            await mindArThreeJs.start();
+            await mindArThree.start();
             // Overwrite weird internal styling computations
-            // TODO: Unhackify this
-            mindArThreeJs.renderer.domElement.style.top = "0px";
-            mindArThreeJs.renderer.domElement.style.height = "100%";
-            mindArThreeJs.renderer.domElement.style.width = "100%";
-            mindArThreeJs.video.style.top = "0px";
-            mindArThreeJs.video.style.height = "100%";
-            mindArThreeJs.video.style.width = "100%";
-            mindArThreeJs.cssRenderer.domElement.style.top = "0px";
-            mindArThreeJs.cssRenderer.domElement.style.transform = "none";
-            renderer.setAnimationLoop(() => {
-                renderer.render(scene, camera);
-            });
+            mindArThree.camera.position.x = -1;
+            mindArThree.camera.position.y = -6;
+            renderer.setAnimationLoop(() => cssRenderer.render(cssScene, camera));
         };
         start();
 
-        return () => mindArThreeJs.stop();
-    }, [mindArThreeJs]);
+        return () => mindArThree.stop();
+    }, [mindArThree]);
 
     React.useEffect(() => setRunningOnDevice(true), []);
 
-    return <Container ref={containerRef} sx={{ height: "100%", width: "100%" }} fluid />;
+    return (
+        <>
+            <Container
+                ref={containerRef}
+                sx={(theme) => ({ height: "100%", width: "100%", position: "relative" })}
+                fluid
+            ></Container>
+
+            <div id="ar-div" className={styles.ArDiv}></div>
+        </>
+    );
 };
 
 FittingRoom.layoutProps = {

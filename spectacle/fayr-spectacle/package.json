@@ -29,6 +29,7 @@
         "react-dom": "18.0.0",
         "styled-components": "^5.3.5",
         "tabler-icons-react": "^1.46.0",
+		"three": "^0.140.0",
         "webpack": "^4.46.0"
     },
     "devDependencies": {
