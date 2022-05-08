@@ -35,8 +35,8 @@ yarn-error.log*
 *.tsbuildinfo
 
 # service worker stuff
-#public/sw.js
-#public/sw.js.map
+public/sw.js
+public/sw.js.map
 public/workbox-*
 
 #amplify-do-not-edit-begin
