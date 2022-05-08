@@ -42,8 +42,8 @@ const FittingRoomPage: NextPageWithLayout = () => {
         const start = async () => {
             await mindArThree.start();
             // Overwrite weird internal styling computations
-            mindArThree.camera.position.x = -1;
             mindArThree.camera.position.y = -6;
+            mindArThree.camera.position.z = -5;
             renderer.setAnimationLoop(() => cssRenderer.render(cssScene, camera));
         };
         start();
