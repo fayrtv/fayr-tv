@@ -51,7 +51,7 @@ const DigitalSpectaclePassport: NextPageWithLayout = () => {
                     </Box>
                 </Stack>
                 <Box ml="xl">
-                    <Text color="cyan">
+                    <Text color="primary">
                         <h1>So funktioniert der Digitale Brillenpass</h1>
                     </Text>
                     <Stack spacing="lg">

@@ -65,7 +65,7 @@ export const RefractionProtocol = ({ areActionsAllowed, entity }: Props) => {
             <>
                 <Grid.Col span={1}>
                     <ColorSwatch color={themedColor} radius={5}>
-                        <Text color={theme.colors.cyan[0]} size="md" weight="800">
+                        <Text color={theme.colors.primary[7]} size="md" weight="800">
                             {side}
                         </Text>
                     </ColorSwatch>
@@ -90,14 +90,14 @@ export const RefractionProtocol = ({ areActionsAllowed, entity }: Props) => {
     };
 
     return (
-        <Stack spacing="xs" sx={(_) => ({ background: theme.colors.cyan[0] })}>
+        <Stack spacing="xs" sx={(_) => ({ background: theme.colors.primary[7] })}>
             <Container mt="xs">
                 <Group direction="row" position="center" noWrap>
                     <Eye
                         size={40}
                         style={{
                             backgroundColor: theme.white,
-                            color: theme.colors.cyan[0],
+                            color: theme.colors.primary[7],
                             borderRadius: "10px",
                         }}
                     />
@@ -145,7 +145,7 @@ export const RefractionProtocol = ({ areActionsAllowed, entity }: Props) => {
                         style={{
                             backgroundColor:
                                 theme.colorScheme === "dark" ? theme.black : theme.white,
-                            color: theme.colors.cyan[0],
+                            color: theme.colors.primary[7],
                             borderRadius: "5px",
                             padding: "2px",
                         }}
@@ -154,9 +154,9 @@ export const RefractionProtocol = ({ areActionsAllowed, entity }: Props) => {
                         size="sm"
                         disabled={!areActionsAllowed}
                         sx={{ padding: "5px" }}
-                        leftIcon={<Qrcode color={theme.colors.cyan[0]} />}
+                        leftIcon={<Qrcode color={theme.colors.primary[7]} />}
                     >
-                        <Text size="xs" color={theme.colors.cyan[0]}>
+                        <Text size="xs" color={theme.colors.primary[7]}>
                             QR-Code
                         </Text>
                     </Button>

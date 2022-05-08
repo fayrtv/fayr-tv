@@ -1,11 +1,13 @@
 import { GetServerSideProps } from "next";
-import React, { useMemo, useState } from "react";
+import React, { PropsWithChildren, useMemo, useState } from "react";
+import dayjs from "dayjs";
 import Layout from "~/components/layout";
 import { NextPageWithLayout } from "~/types/next-types";
 import { User } from "~/types/user";
-import { Badge, Group, Stack, useMantineColorScheme } from "@mantine/core";
+import {Badge, Box, createStyles, Group, Paper, Stack, useMantineColorScheme} from "@mantine/core";
 import { Button, Text } from "~/components/common";
 import { Calendar } from "@mantine/dates";
+import { useMediaQuery } from "@mantine/hooks";
 
 const EARLIEST = 8;
 const LATEST = 15;
@@ -14,6 +16,11 @@ type TimeSlot = [number, number];
 
 type Props = {
     user: User;
+};
+
+const canSelectDate = (date: Date): boolean => {
+    // No weekends
+    return date.getDay() !== 0 && date.getDay() !== 6;
 };
 
 const TimeRangeSelectItem = ({
@@ -29,11 +36,13 @@ const TimeRangeSelectItem = ({
     const end = `${String(slot[1]).padStart(2, "0")}:00 Uhr`;
 
     return isSelected ? (
-        <Group>
-            <Badge variant="gradient" size="md" gradient={{ from: "teal", to: "lime", deg: 105 }}>
-                {start}
-            </Badge>
-            <Button onClick={() => onClick(slot)} color="green">
+        <Group spacing={0} position="apart" grow>
+            {/*<Badge variant="dot" size="md" gradient={{ from: "teal", to: "lime", deg: 105 }}>*/}
+            {/*    {start}*/}
+            {/*</Badge>*/}
+            <InfoBox>{start}</InfoBox>
+
+            <Button onClick={() => onClick(slot)} color="green" size="sm" p="sm">
                 Auswählen
             </Button>
         </Group>
@@ -46,8 +55,55 @@ const TimeRangeSelectItem = ({
     );
 };
 
+const InfoBox = ({ children }: PropsWithChildren<{}>) => {
+    const { colorScheme } = useMantineColorScheme();
+
+    return (
+        <Paper sx={(theme) => ({ backgroundColor: theme.colors.primary[3] })} py={7} px="sm">
+            <Text size="sm" color="primary">
+                {children}
+            </Text>
+        </Paper>
+    );
+};
+
+const useStyles = createStyles((theme, _params, getRef) => ({
+    wrapper: {
+        // subscribe to color scheme changes right in your styles
+        backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1],
+        maxWidth: 400,
+        width: '100%',
+        height: 180,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        borderRadius: theme.radius.sm,
+
+        // Dynamic media queries, define breakpoints in theme, use anywhere
+        [`@media (max-width: ${theme.breakpoints.sm}px)`]: {
+            // Type safe child reference in nested selectors via ref
+            [`& .${getRef('child')}`]: {
+                fontSize: theme.fontSizes.xs,
+            },
+        },
+    },
+
+    child: {
+        // assign ref to element
+        ref: getRef('child'),
+        backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.white,
+        padding: theme.spacing.md,
+        borderRadius: theme.radius.sm,
+        boxShadow: theme.shadows.md,
+        color: theme.colorScheme === 'dark' ? theme.white : theme.black,
+    },
+}));
 const Welcome: NextPageWithLayout<Props> = ({ user }) => {
     const { colorScheme } = useMantineColorScheme();
+    const isMobile = useMediaQuery("(min-width: 500px)", false);
+
     const [date, setDate] = useState<Date | null>(null);
     const [selectedSlot, setSelectedSlot] = useState<TimeSlot | null>(null);
 
@@ -67,18 +123,32 @@ const Welcome: NextPageWithLayout<Props> = ({ user }) => {
     }, [date]);
 
     return (
-        <Stack spacing={0} align="center">
-            <Text weight="bold" size="md">
-                Termin vereinbaren
-            </Text>
-            <Text size="sm">Besuchen Sie uns in unserer Filiale</Text>
-            <Text size="sm" color="primary">
-                {shopAddress}
-            </Text>
-            <Calendar size="xs" mt="md" value={date} onChange={setDate} />
+        <Group
+            direction={isMobile ? "row" : "column"}
+            spacing="md"
+            {...(isMobile ? { position: "center" } : { align: "center" })}
+            mt="md"
+        >
+            <Stack spacing={0} align="center">
+                <Text weight="bold" size="md">
+                    Termin vereinbaren
+                </Text>
+                <Text size="sm">Besuchen Sie uns in unserer Filiale</Text>
+                <Text size="sm" color="primary">
+                    {shopAddress}
+                </Text>
+                <Calendar
+                    minDate={dayjs(new Date()).toDate()}
+                    excludeDate={(x) => !canSelectDate(x)}
+                    size="xs"
+                    mt="md"
+                    value={date}
+                    onChange={setDate}
+                />
+            </Stack>
             {/* IDEA: Use accordion instead: https://mantine.dev/core/accordion/ */}
             {date && (
-                <Stack spacing="sm" mt="md">
+                <Stack spacing="sm">
                     {availableSlots.map((slot, n) => (
                         <TimeRangeSelectItem
                             isSelected={slot === selectedSlot}
@@ -89,7 +159,7 @@ const Welcome: NextPageWithLayout<Props> = ({ user }) => {
                     ))}
                 </Stack>
             )}
-        </Stack>
+        </Group>
     );
 };
 

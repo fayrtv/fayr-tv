@@ -11,6 +11,18 @@ type ThemeColor = [string, string, string, string, string, string, string, strin
 
 const sameColor = (color: string) => Array(10).fill(color) as ThemeColor;
 
+const primary: ThemeColor = [
+    "#EBF5FB",
+    "#EBF5FB",
+    "#EBF5FB",
+    "#EBF5FB",
+    "#EBF5FB",
+    "#4498D8",
+    "#4498D8",
+    "#4498D8",
+    "#4498D8",
+    "#4498D8",
+];
 const secondary: ThemeColor = [
     "#F9FDFA",
     "#D5F4E0",
@@ -72,7 +84,6 @@ type CustomColors =
     | "secondary"
     | "success"
     | "danger"
-    | "cyan"
     | "gray"
     | /*builtin, used for dark mode*/ "dark";
 // | DefaultMantineColor;
@@ -88,11 +99,10 @@ const spectacleTheme: MantineThemeOverride = {
     transitionTimingFunction: "ease",
     // see https://mantine.dev/theming/extend-theme/#adding-custom-colors
     colors: {
-        primary: sameColor("#4498D8"),
+        primary,
         secondary,
         success,
         danger,
-        cyan: sameColor("#4498D8"),
         gray,
     },
     lineHeight: 1.55,
