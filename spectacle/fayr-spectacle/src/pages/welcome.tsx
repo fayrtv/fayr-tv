@@ -10,13 +10,13 @@ type Props = {
     user: User;
 };
 
-const Welcome: NextPageWithLayout<Props> = ({ user }) => {
+const WelcomePage: NextPageWithLayout<Props> = ({ user }) => {
     const { colorScheme } = useMantineColorScheme();
 
     return <>Willkommen {formatFormalAddress(user)}</>;
 };
 
-Welcome.layoutProps = {
+WelcomePage.layoutProps = {
     Layout,
 };
 
@@ -28,4 +28,4 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     };
 };
 
-export default Welcome;
+export default WelcomePage;

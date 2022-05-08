@@ -2,7 +2,7 @@ import Layout from "~/components/layout";
 import { NextPageWithLayout } from "~/types/next-types";
 import { Box, Anchor } from "~/components/common";
 
-const Home: NextPageWithLayout = () => {
+const SitemapPage: NextPageWithLayout = () => {
     return (
         <Box mx="auto" px="md">
             <h2>Sitemap</h2>
@@ -35,8 +35,8 @@ const Home: NextPageWithLayout = () => {
     );
 };
 
-Home.layoutProps = {
+SitemapPage.layoutProps = {
     Layout: Layout,
 };
 
-export default Home;
+export default SitemapPage;

@@ -5,7 +5,7 @@ import Layout from "~/components/layout";
 import { NextPageWithLayout } from "~/types/next-types";
 import { useMantineColorScheme } from "@mantine/core";
 
-const Confirm: NextPageWithLayout = () => {
+const ConfirmPage: NextPageWithLayout = () => {
     const { colorScheme } = useMantineColorScheme();
 
     return (
@@ -41,8 +41,8 @@ const Confirm: NextPageWithLayout = () => {
     );
 };
 
-Confirm.layoutProps = {
+ConfirmPage.layoutProps = {
     Layout,
 };
 
-export default Confirm;
+export default ConfirmPage;

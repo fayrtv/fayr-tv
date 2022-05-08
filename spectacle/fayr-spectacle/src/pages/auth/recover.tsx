@@ -2,12 +2,12 @@ import React from "react";
 import Layout from "~/components/layout";
 import { NextPageWithLayout } from "~/types/next-types";
 
-const Recover: NextPageWithLayout = () => {
+const RecoverPage: NextPageWithLayout = () => {
     return <>TODO: Forgot password page</>;
 };
 
-Recover.layoutProps = {
+RecoverPage.layoutProps = {
     Layout,
 };
 
-export default Recover;
+export default RecoverPage;

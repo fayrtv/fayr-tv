@@ -13,7 +13,7 @@ declare global {
     }
 }
 
-const FittingRoom: NextPageWithLayout = () => {
+const FittingRoomPage: NextPageWithLayout = () => {
     const containerRef = React.useRef<HTMLDivElement>(null);
 
     const [runningOnDevice, setRunningOnDevice] = React.useState(false);
@@ -66,8 +66,8 @@ const FittingRoom: NextPageWithLayout = () => {
     );
 };
 
-FittingRoom.layoutProps = {
+FittingRoomPage.layoutProps = {
     Layout: Layout,
 };
 
-export default FittingRoom;
+export default FittingRoomPage;

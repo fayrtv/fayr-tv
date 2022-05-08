@@ -18,7 +18,7 @@ const NumberBox = ({ n, title, children }: PropsWithChildren<{ n: number; title:
     );
 };
 
-const DigitalSpectaclePassport: NextPageWithLayout = () => {
+const DigitalSpectaclePassportPage: NextPageWithLayout = () => {
     const phoneNumber: string = "0541 80079119";
 
     return (
@@ -80,8 +80,8 @@ const DigitalSpectaclePassport: NextPageWithLayout = () => {
     );
 };
 
-DigitalSpectaclePassport.layoutProps = {
+DigitalSpectaclePassportPage.layoutProps = {
     Layout,
 };
 
-export default DigitalSpectaclePassport;
+export default DigitalSpectaclePassportPage;

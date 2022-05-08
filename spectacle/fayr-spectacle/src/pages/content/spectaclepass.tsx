@@ -18,7 +18,7 @@ type ServerProps = {
     refractionProtocols: RefractionProtocolEntity[];
 };
 
-const SpectaclePass: NextPageWithLayout<ServerProps> = ({ refractionProtocols }) => {
+const SpectaclePassPage: NextPageWithLayout<ServerProps> = ({ refractionProtocols }) => {
     const currentProtocol = refractionProtocols[0];
     const protocolHistory = refractionProtocols.splice(1);
 
@@ -45,7 +45,7 @@ const SpectaclePass: NextPageWithLayout<ServerProps> = ({ refractionProtocols })
     );
 };
 
-SpectaclePass.layoutProps = {
+SpectaclePassPage.layoutProps = {
     Layout: Layout,
 };
 
@@ -98,4 +98,4 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     };
 };
 
-export default SpectaclePass;
+export default SpectaclePassPage;

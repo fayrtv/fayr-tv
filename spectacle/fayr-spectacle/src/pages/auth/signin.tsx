@@ -57,7 +57,7 @@ const BodyShell = ({ children }: PropsWithChildren<{}>) => {
     );
 };
 
-const SignIn: NextPageWithLayout = () => {
+const SignInPage: NextPageWithLayout = () => {
     const { colorScheme } = useMantineColorScheme();
     const [isSubmitting, setSubmitting] = useState(false);
     const [loginError, setLoginError] = useState<string | undefined>();
@@ -149,8 +149,8 @@ const SignIn: NextPageWithLayout = () => {
     );
 };
 
-SignIn.layoutProps = {
+SignInPage.layoutProps = {
     Layout,
 };
 
-export default SignIn;
+export default SignInPage;
