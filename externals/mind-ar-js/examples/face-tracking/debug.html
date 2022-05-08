@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <script src="../../dist-dev/mindar-face.js"></script>
+    <script>
+      const loadImage = async (src) => {
+	return new Promise((resolve, reject) => {
+	  let img = new Image()
+	  img.onload = () => resolve(img);
+	  img.src = src; 
+	})
+      };
+    </script>
+
+    <script>
+      const process = async() => {
+	const queryImage = await loadImage('./assets/face1.jpeg');
+	
+	const controller = new MINDAR.FACE.Controller();
+	await controller.setup();
+	controller.setInputSize(queryImage.width, queryImage.height);
+	controller.setDisplaySize(queryImage.width, queryImage.height);
+
+	const hasFace = await controller.detect(queryImage);
+	console.log("detected face", hasFace, controller.faceGeometry);
+
+	const landmark = controller.getLandmarkProperties(0);
+	console.log("landmark", landmark);
+      }
+      process();
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
+
