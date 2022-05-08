@@ -20,6 +20,7 @@
         "@mantine/notifications": "^4.1.5",
         "aframe": "^1.2.0",
         "aws-amplify": "^4.3.21",
+        "dayjs": "^1.11.2",
         "mind-ar": "^1.0.0",
         "moment": "^2.29.3",
         "next": "12.1.5",
