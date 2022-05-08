@@ -11,7 +11,7 @@ import "dayjs/locale/de";
 import "../styles/globals.scss";
 
 import zeissTheme from "../theming/mantine";
-import StoreInfoProvider from "~/components/StoreInfoProvider";
+import StoreInfoProvider, { useStoreInfo } from "~/components/StoreInfoProvider";
 import { GetServerSidePropsContext } from "next";
 
 // TODO: https://ordinarycoders.com/blog/article/nextjs-aws-amplify
@@ -21,6 +21,14 @@ Amplify.configure({
     ...config,
     ssr: true,
 });
+
+const storeInfo = {
+    name: "ZEISS Vision Center",
+    city: "Osnabrück",
+    owner: "Reiner Siekemeyer",
+    fullAddress: "Lorzingstraße 4, 49074 Osnabrück",
+    phoneNumber: "0541 80079119",
+};
 
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
     const { Component, pageProps } = props;
@@ -44,7 +52,7 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
     return (
         <>
             <Head>
-                <title>Zeiss Vision Center</title>
+                <title>{storeInfo.name}</title>
                 <meta
                     name="viewport"
                     content="minimum-scale=1, initial-scale=1, width=device-width"
@@ -62,14 +70,7 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
                     }}
                 >
                     <NotificationsProvider>
-                        <StoreInfoProvider
-                            value={{
-                                name: "ZEISS Vision Center",
-                                city: "Osnabrück",
-                                owner: "Reiner Siekemeyer",
-                                fullAddress: "Lorzingstraße 4, 49074 Osnabrück",
-                            }}
-                        >
+                        <StoreInfoProvider value={storeInfo}>
                             <Layout>
                                 <Component {...pageProps} />
                             </Layout>
@@ -80,7 +81,6 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
         </>
     );
 }
-
 
 App.getInitialProps = ({ ctx }: { ctx: GetServerSidePropsContext }) => ({
     colorScheme: getCookie("mantine-color-scheme", ctx) || "light",

@@ -36,7 +36,7 @@ const SpectaclePassPage: NextPageWithLayout<ServerProps> = ({ refractionProtocol
                         <Text weight="bold">Digitaler Brillenpass</Text>
                         <Text weight="normal">Max Mustermann</Text>
                     </Group>
-                    <RefractionProtocol areActionsAllowed={false} entity={currentProtocol} />
+                    <RefractionProtocol areActionsAllowed={true} entity={currentProtocol} />
                     <Space h="lg" />
                     <RefractionProtocolArchive protocolHistory={protocolHistory} />
                 </Container>

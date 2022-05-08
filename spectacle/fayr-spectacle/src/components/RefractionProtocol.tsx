@@ -8,13 +8,15 @@ import {
     Space,
     Stack,
     Text,
+    Modal
 } from "~/components/common";
 import moment from "moment";
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, useState } from "react";
 import { Eye, Printer, Qrcode } from "tabler-icons-react";
 import { RefractionProtocol as RefractionProtocolEntity } from "~/models";
 import { RefractionProtocol as RefractionProtocolModel } from "~/types/refraction-protocol";
 import { useMantineTheme } from "@mantine/core";
+import { RefractionProtocolQRCode } from "~/components/QRCode";
 
 const GridText = (
     props: PropsWithChildren<
@@ -42,6 +44,8 @@ type Props = {
 
 export const RefractionProtocol = ({ areActionsAllowed, entity }: Props) => {
     const theme = useMantineTheme();
+
+    const [qrCodeOpen, setQRCodeOpen] = useState(false);
 
     const refractionProtocol = entity.data as unknown as RefractionProtocolModel;
 
@@ -150,13 +154,21 @@ export const RefractionProtocol = ({ areActionsAllowed, entity }: Props) => {
                             padding: "2px",
                         }}
                     />
+                    <Modal
+                        opened={qrCodeOpen}
+                        onClose={() => setQRCodeOpen(false)}
+                        title="Ihr Refraktionsprotokoll"
+                    >
+                        <RefractionProtocolQRCode refractionProtocol={entity} />
+                    </Modal>
                     <Button
                         size="sm"
                         disabled={!areActionsAllowed}
                         sx={{ padding: "5px" }}
-                        leftIcon={<Qrcode color={theme.colors.primary[7]} />}
+                        leftIcon={<Qrcode color={theme.colors.dark[7]} />}
+                        onClick={() => setQRCodeOpen(true)}
                     >
-                        <Text size="xs" color={theme.colors.primary[7]}>
+                        <Text size="xs" color={theme.colors.dark[7]}>
                             QR-Code
                         </Text>
                     </Button>

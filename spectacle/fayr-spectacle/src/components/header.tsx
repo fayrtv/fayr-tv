@@ -9,7 +9,7 @@ const Header = () => {
 
     const storeInfo = useStoreInfo();
 
-    const shouldDisplayStoreOwnerHeadline = useMediaQuery("(min-width: 500px)", false);
+    const shouldDisplayStoreOwnerHeadline = useMediaQuery("(min-width: 500px)", true);
 
     return (
         <Box

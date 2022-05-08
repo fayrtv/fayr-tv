@@ -5,6 +5,7 @@ const StoreInfoContext = createContext({
     city: "",
     owner: "",
     fullAddress: "",
+    phoneNumber: "",
 });
 
 export const useStoreInfo = () => {

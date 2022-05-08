@@ -3,6 +3,7 @@ import React, { PropsWithChildren } from "react";
 import PassportQRCodeExample from "~/components/PassportQRCode";
 import Layout from "~/components/layout";
 import { NextPageWithLayout } from "~/types/next-types";
+import {useStoreInfo} from "~/components/StoreInfoProvider";
 
 const NumberBox = ({ n, title, children }: PropsWithChildren<{ n: number; title: string }>) => {
     return (
@@ -19,7 +20,8 @@ const NumberBox = ({ n, title, children }: PropsWithChildren<{ n: number; title:
 };
 
 const DigitalSpectaclePassportPage: NextPageWithLayout = () => {
-    const phoneNumber: string = "0541 80079119";
+    const storeInfo = useStoreInfo();
+
 
     return (
         <Container sx={{ maxWidth: "unset" }} p="xl">
@@ -56,16 +58,16 @@ const DigitalSpectaclePassportPage: NextPageWithLayout = () => {
                     </Text>
                     <Stack spacing="lg">
                         <NumberBox n={1} title="Vereinbaren Sie einen Termin">
-                            Kommen Sie ins ZEISS VISION CENTER Osnabrück und machen Sie einen
+                            Kommen Sie ins {storeInfo.name} {storeInfo.city} und machen Sie einen
                             Sehtest. Sie können entweder über die Funktion Termin vereinbaren sich
-                            einen Termin aussuchen oder telefonisch vereinbaren unter {phoneNumber}
+                            einen Termin aussuchen oder telefonisch vereinbaren unter {storeInfo.phoneNumber}
                         </NumberBox>
                         <NumberBox
                             n={2}
                             title="Lassen Sie sich ein Refraktionsprotokoll ausstellen"
                         >
                             Ihr/e Optiker/in stellt Ihnen nach dem Sehtest ein Refraktionsprotokoll
-                            aus. Teilen Sie Ihre E-Mail-Adresse an Ihre/m Optiker/in mit, um das
+                            aus. Teilen Sie Ihre E-Mail-Adresse Ihrem/r Optiker/in mit, um das
                             Refraktionsprotokoll Ihrem Digitalen Brillenpass hinzuzufügen.
                         </NumberBox>
                         <NumberBox n={3} title="Zeigen Sie Ihren Digitalen Brillenpass vor">
