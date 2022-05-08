@@ -33,7 +33,7 @@ const Header = () => {
                         size="sm"
                     >
                         <Text transform="uppercase">{}</Text> {storeInfo.city}
-                        {shouldDisplayStoreOwnerHeadline && <>| Inhaber: {storeInfo.owner}</>}
+                        {shouldDisplayStoreOwnerHeadline && <> | Inhaber: {storeInfo.owner}</>}
                     </Anchor>
                     <Group direction="row" position="apart" style={{ width: "100%" }} mt="xs">
                         <Anchor href="/">
