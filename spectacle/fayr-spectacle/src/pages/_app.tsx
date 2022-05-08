@@ -4,6 +4,7 @@ import Amplify from "aws-amplify";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import { Fragment, ReactNode, useState } from "react";
+import { getCookie, setCookies } from "cookies-next";
 import config from "~/aws-exports";
 import "dayjs/locale/de";
 
@@ -11,6 +12,7 @@ import "../styles/globals.scss";
 
 import zeissTheme from "../theming/mantine";
 import StoreInfoProvider from "~/components/StoreInfoProvider";
+import { GetServerSidePropsContext } from "next";
 
 // TODO: https://ordinarycoders.com/blog/article/nextjs-aws-amplify
 // https://www.youtube.com/watch?v=YvoyHgZWSFY&ab_channel=BojidarYovchev
@@ -22,7 +24,7 @@ Amplify.configure({
 
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
     const { Component, pageProps } = props;
-    const [colorScheme, setColorScheme] = useState<ColorScheme>(props.colorScheme ?? "light");
+    const [colorScheme, setColorScheme] = useState<ColorScheme>(props.colorScheme);
 
     const Layout =
         (
@@ -36,7 +38,7 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
     const toggleColorScheme = (value?: ColorScheme) => {
         const nextColorScheme = value || (colorScheme === "dark" ? "light" : "dark");
         setColorScheme(nextColorScheme);
-        // NOTE: if you want to, set cookie here
+        setCookies("mantine-color-scheme", nextColorScheme, { maxAge: 60 * 60 * 24 * 30 });
     };
 
     return (
@@ -60,12 +62,14 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
                     }}
                 >
                     <NotificationsProvider>
-                        <StoreInfoProvider value={{
-                            name: "ZEISS Vision Center",
-                            city: "Osnabrück",
-                            owner: "Reiner Siekemeyer",
-                            fullAddress: "Lorzingstraße 4, 49074 Osnabrück"
-                        }}>
+                        <StoreInfoProvider
+                            value={{
+                                name: "ZEISS Vision Center",
+                                city: "Osnabrück",
+                                owner: "Reiner Siekemeyer",
+                                fullAddress: "Lorzingstraße 4, 49074 Osnabrück",
+                            }}
+                        >
                             <Layout>
                                 <Component {...pageProps} />
                             </Layout>
@@ -76,3 +80,8 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
         </>
     );
 }
+
+
+App.getInitialProps = ({ ctx }: { ctx: GetServerSidePropsContext }) => ({
+    colorScheme: getCookie("mantine-color-scheme", ctx) || "light",
+});
