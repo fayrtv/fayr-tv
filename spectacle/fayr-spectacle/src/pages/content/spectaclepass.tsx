@@ -7,7 +7,7 @@ import { RefractionProtocol as RefractionProtocolEntity } from "~/models";
 import { RefractionProtocol as RefractionProtocolModel } from "~/types/refraction-protocol";
 import { NextPageWithLayout } from "~/types/next-types";
 
-import Layout from "../../components/layout";
+import Layout from "~/components/layout/Layout";
 import { GetServerSideProps } from "next";
 import { getUser } from "~/helpers/authentication";
 import { DataStore } from "@aws-amplify/datastore";

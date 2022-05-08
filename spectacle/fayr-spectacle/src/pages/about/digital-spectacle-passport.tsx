@@ -1,7 +1,7 @@
 import { Box, Center, Container, Group, Image, Paper, Stack, Text } from "~/components/common";
 import React, { PropsWithChildren } from "react";
 import PassportQRCodeExample from "~/components/PassportQRCode";
-import Layout from "~/components/layout";
+import Layout from "~/components/layout/Layout";
 import { NextPageWithLayout } from "~/types/next-types";
 import {useStoreInfo} from "~/components/StoreInfoProvider";
 

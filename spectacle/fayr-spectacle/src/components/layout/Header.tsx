@@ -1,10 +1,17 @@
 import { Anchor, Box, Burger, Container, Group, Text } from "~/components/common";
 import React from "react";
-import ThemeToggleButton from "~/components/theme-toggle-button";
+import ThemeToggleButton from "~/components/layout/ThemeToggleButton";
 import { useMediaQuery } from "@mantine/hooks";
 import { useStoreInfo } from "~/components/StoreInfoProvider";
+import { User } from "~/types/user";
+import {Stack} from "@mantine/core";
+import SubHeader from "~/components/layout/SubHeader";
 
-const Header = () => {
+type Props = {
+    user?: User | null;
+};
+
+const Header = ({user}: Props) => {
     const [burgerOpen, setBurgerOpen] = React.useState(false);
 
     const storeInfo = useStoreInfo();
@@ -12,6 +19,7 @@ const Header = () => {
     const shouldDisplayStoreOwnerHeadline = useMediaQuery("(min-width: 500px)", true);
 
     return (
+        <Stack>
         <Box
             component="header"
             py="md"
@@ -51,6 +59,8 @@ const Header = () => {
                 </Group>
             </Container>
         </Box>
+            {user && <SubHeader user={user} />}
+        </Stack>
     );
 };
 

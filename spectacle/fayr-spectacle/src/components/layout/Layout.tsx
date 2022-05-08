@@ -1,7 +1,7 @@
 import { AppShell } from "~/components/common";
 import { ReactChild } from "react";
 
-import Header from "./header";
+import Header from "~/components/layout/Header";
 
 type Props = {
     children: ReactChild;

@@ -18,7 +18,7 @@ import { Auth } from "aws-amplify";
 import Router from "next/router";
 import React, {PropsWithChildren, useState} from "react";
 import ZeissLogo from "~/components/ZeissLogo";
-import Layout from "~/components/layout";
+import Layout from "~/components/layout/Layout";
 import { NextPageWithLayout } from "~/types/next-types";
 import { useMantineColorScheme } from "@mantine/core";
 import {AlertCircle} from "tabler-icons-react";

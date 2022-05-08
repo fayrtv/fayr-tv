@@ -18,19 +18,8 @@ const primary: ThemeColor = [
     "#4498D8",
     "#4498D8",
 ];
-const secondary: ThemeColor = [
-    "#F9FDFA",
-    "#D5F4E0",
-    "#B2EDC8",
-    "#91E8B2",
-    "#75DE9D",
-    "#5ED48A",
-    "#4AC97A",
-    "#3DBB6C",
-    "#3AA562",
-    "#379159",
-];
-const success: ThemeColor = sameColor("#24D366");
+const secondary = sameColor("#91E9B2");
+const success: ThemeColor = sameColor("#91E9B2");
 const danger: ThemeColor = sameColor("#FF0000");
 const gray: ThemeColor = [
     "#A8A8A8",

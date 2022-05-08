@@ -1,4 +1,4 @@
-import Layout from "~/components/layout";
+import Layout from "~/components/layout/Layout";
 import { NextPageWithLayout } from "~/types/next-types";
 import { Box, Anchor } from "~/components/common";
 
