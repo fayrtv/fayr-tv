@@ -8895,11 +8895,6 @@ react-is@^16.13.1, react-is@^16.7.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
-react-joystick-component@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/react-joystick-component/-/react-joystick-component-4.0.1.tgz#c70a76d1dc8fdb2b9713657b0bb905dafe965ada"
-  integrity sha512-efPaCNoDIiBNs0eUjsrE4Q+q4h5zXDqBs54vTMYSPv73useSl8VsJJeOburMHuxwsS4HoqqMu12Aav9SM7Usew==
-
 react-map-gl@7.0.10:
   version "7.0.10"
   resolved "https://registry.yarnpkg.com/react-map-gl/-/react-map-gl-7.0.10.tgz#4b92b748b9fbc376d88174c2e0c6099c73df96a7"

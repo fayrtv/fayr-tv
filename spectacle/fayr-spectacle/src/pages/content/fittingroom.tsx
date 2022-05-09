@@ -3,10 +3,9 @@ import React from "react";
 import Layout from "~/components/layout/Layout";
 import { NextPageWithLayout } from "~/types/next-types";
 import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
-import { Joystick } from "react-joystick-component";
 import styles from "./fittingroom.module.scss";
-import { Button, Group, Slider } from "@mantine/core";
-import { IJoystickUpdateEvent } from "react-joystick-component/build/lib/Joystick";
+import { Button, Grid, Group, Slider, ThemeIcon } from "@mantine/core";
+import { ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from "tabler-icons-react";
 
 declare global {
     // noinspection JSUnusedGlobalSymbols
@@ -22,17 +21,34 @@ type SliderMark = {
 
 const MARKS: Array<SliderMark> = [
     { value: 0, label: "0" },
-    { value: 10, label: "1" },
-    { value: 20, label: "2" },
-    { value: 30, label: "3" },
-    { value: 40, label: "4" },
-    { value: 50, label: "5" },
-    { value: 60, label: "6" },
-    { value: 70, label: "7" },
-    { value: 80, label: "8" },
-    { value: 90, label: "9" },
-    { value: 100, label: "10" },
+    { value: 5, label: "1" },
+    { value: 10, label: "2" },
+    { value: 15, label: "3" },
+    { value: 20, label: "4" },
+    { value: 25, label: "5" },
+    { value: 30, label: "6" },
+    { value: 35, label: "7" },
+    { value: 40, label: "8" },
+    { value: 45, label: "9" },
+    { value: 50, label: "10" },
+    { value: 55, label: "11" },
+    { value: 60, label: "12" },
+    { value: 65, label: "13" },
+    { value: 70, label: "14" },
+    { value: 75, label: "15" },
+    { value: 80, label: "16" },
+    { value: 85, label: "17" },
+    { value: 90, label: "18" },
+    { value: 95, label: "19" },
+    { value: 100, label: "20" },
 ];
+
+enum Direction {
+    Up,
+    Down,
+    Left,
+    Right,
+}
 
 const FittingRoomPage: NextPageWithLayout = () => {
     const containerRef = React.useRef<HTMLDivElement>(null);
@@ -75,19 +91,18 @@ const FittingRoomPage: NextPageWithLayout = () => {
         return () => mindArThree.stop();
     }, [mindArThree]);
 
-    const onJoystickMove = (event: IJoystickUpdateEvent) => {
-        // Forward is actually upward, backward is downward
-        switch (event.direction) {
-            case "BACKWARD":
+    const moveCamera = (direction: Direction) => {
+        switch (direction) {
+            case Direction.Down:
                 mindArThree.camera.position.y += 1;
                 break;
-            case "FORWARD":
+            case Direction.Up:
                 mindArThree.camera.position.y -= 1;
                 break;
-            case "LEFT":
+            case Direction.Left:
                 mindArThree.camera.position.x += 1;
                 break;
-            case "RIGHT":
+            case Direction.Right:
                 mindArThree.camera.position.x -= 1;
                 break;
         }
@@ -119,14 +134,40 @@ const FittingRoomPage: NextPageWithLayout = () => {
                 position="center"
                 sx={(_) => ({ width: "100%" })}
             >
-                <Joystick
-                    size={80}
-                    sticky={false}
-                    baseColor="grey"
-                    stickColor="black"
-                    move={onJoystickMove}
-                    //stop={handleStop}
-                ></Joystick>
+                <Grid columns={3} sx={(_) => ({ height: "100px", width: "100px" })} gutter={0}>
+                    <Grid.Col span={1} offset={1}>
+                        <ThemeIcon
+                            onClick={() => moveCamera(Direction.Up)}
+                            sx={(_) => ({ cursor: "pointer" })}
+                        >
+                            <ArrowUp />
+                        </ThemeIcon>
+                    </Grid.Col>
+                    <Grid.Col span={2} offset={0}>
+                        <ThemeIcon
+                            onClick={() => moveCamera(Direction.Left)}
+                            sx={(_) => ({ cursor: "pointer" })}
+                        >
+                            <ArrowLeft />
+                        </ThemeIcon>
+                    </Grid.Col>
+                    <Grid.Col span={1} offset={0}>
+                        <ThemeIcon
+                            onClick={() => moveCamera(Direction.Right)}
+                            sx={(_) => ({ cursor: "pointer" })}
+                        >
+                            <ArrowRight />
+                        </ThemeIcon>
+                    </Grid.Col>
+                    <Grid.Col span={1} offset={1}>
+                        <ThemeIcon
+                            onClick={() => moveCamera(Direction.Down)}
+                            sx={(_) => ({ cursor: "pointer" })}
+                        >
+                            <ArrowDown />
+                        </ThemeIcon>
+                    </Grid.Col>
+                </Grid>
                 <Slider
                     label={(val) => MARKS.find((mark) => mark.value === val)!.label}
                     value={zSliderValue}
