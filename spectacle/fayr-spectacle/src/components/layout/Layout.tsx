@@ -1,13 +1,35 @@
 import { AppShell } from "~/components/common";
-import { ReactChild } from "react";
+import { PropsWithChildren, ReactChild } from "react";
 
 import Header from "~/components/layout/Header";
 import React from "react";
-import { Anchor, Aside, Navbar } from "@mantine/core";
+import { Anchor, Aside, Navbar, useMantineColorScheme } from "@mantine/core";
+import { useRouter } from "next/router";
 
 type Props = {
     children: ReactChild;
 };
+
+const ThemeAdaptiveAnchor = (
+    props: PropsWithChildren<Omit<React.ComponentPropsWithoutRef<typeof Anchor>, "sx">> & {
+        href: string;
+    },
+) => {
+    const router = useRouter();
+
+    return (
+        <Anchor
+            {...props}
+            sx={(theme) => ({
+                color: theme.colorScheme === "dark" ? theme.white : theme.black,
+                textDecoration: router.route === props.href ? "underline" : "none",
+            })}
+        >
+            {props.children}
+        </Anchor>
+    );
+};
+
 const Layout = ({ children }: Props) => {
     const [burgerOpen, setBurgerOpen] = React.useState(false);
     return (
@@ -23,6 +45,11 @@ const Layout = ({ children }: Props) => {
                     p="md"
                     hidden={!burgerOpen}
                     width={{ sm: 200, lg: 300 }}
+                    sx={(theme) => ({
+                        backgroundColor: `rgb(${
+                            theme.colorScheme === "light" ? "255, 255, 2555" : "0, 0, 0"
+                        }, 0.25)`,
+                    })}
                     hiddenBreakpoint={50000}
                     fixed
                 >
@@ -30,27 +57,39 @@ const Layout = ({ children }: Props) => {
                         <h2>Sitemap</h2>
                         <ul>
                             <li>
-                                <Anchor href={"/content/spectaclepass"}>Brillenpass</Anchor>
+                                <ThemeAdaptiveAnchor href={"/content/spectaclepass"}>
+                                    Brillenpass
+                                </ThemeAdaptiveAnchor>
                             </li>
                             <li>
-                                <Anchor href={"/auth/signup"}>Registrieren</Anchor>
+                                <ThemeAdaptiveAnchor href={"/auth/signup"}>
+                                    Registrieren
+                                </ThemeAdaptiveAnchor>
                             </li>
                             <li>
-                                <Anchor href={"/auth/signin"}>Einloggen</Anchor>
+                                <ThemeAdaptiveAnchor href={"/auth/signin"}>
+                                    Einloggen
+                                </ThemeAdaptiveAnchor>
                             </li>
                             <li>
-                                <Anchor href={"/auth/recover"}>Passwort vergessen</Anchor>
+                                <ThemeAdaptiveAnchor href={"/auth/recover"}>
+                                    Passwort vergessen
+                                </ThemeAdaptiveAnchor>
                             </li>
                             <li>
-                                <Anchor href={"/about/digital-spectacle-passport"}>
+                                <ThemeAdaptiveAnchor href={"/about/digital-spectacle-passport"}>
                                     Infos zum Brillenpass
-                                </Anchor>
+                                </ThemeAdaptiveAnchor>
                             </li>
                             <li>
-                                <Anchor href={"/content/fittingroom"}>Anprobe</Anchor>
+                                <ThemeAdaptiveAnchor href={"/content/fittingroom"}>
+                                    Anprobe
+                                </ThemeAdaptiveAnchor>
                             </li>
                             <li>
-                                <Anchor href={"/appointment"}>Terminvereinbarung</Anchor>
+                                <ThemeAdaptiveAnchor href={"/appointment"}>
+                                    Terminvereinbarung
+                                </ThemeAdaptiveAnchor>
                             </li>
                         </ul>
                     </Navbar.Section>
