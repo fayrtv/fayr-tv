@@ -8,7 +8,7 @@ import {
     Space,
     Stack,
     Text,
-    Modal
+    Modal,
 } from "~/components/common";
 import moment from "moment";
 import React, { PropsWithChildren, useState } from "react";
@@ -40,9 +40,20 @@ const GridText = (
 type Props = {
     areActionsAllowed: boolean;
     entity: RefractionProtocolEntity;
+    isSelected: boolean;
+    isArchived?: boolean;
+    onClick: () => void;
 };
 
-export const RefractionProtocol = ({ areActionsAllowed, entity }: Props) => {
+const BackgroundGrey = "#A8A8A8";
+
+export const RefractionProtocol = ({
+    areActionsAllowed,
+    entity,
+    isSelected,
+    isArchived = false,
+    onClick,
+}: Props) => {
     const theme = useMantineTheme();
 
     const [qrCodeOpen, setQRCodeOpen] = useState(false);
@@ -94,8 +105,11 @@ export const RefractionProtocol = ({ areActionsAllowed, entity }: Props) => {
     };
 
     return (
-        <Stack spacing="xs" sx={(_) => ({ background: theme.colors.primary[7] })}>
-            <Container mt="xs">
+        <Stack
+            spacing="xs"
+            sx={(_) => ({ background: isArchived ? BackgroundGrey : theme.colors.primary[7] })}
+        >
+            <Container mt="xs" onClick={onClick}>
                 <Group direction="row" position="center" noWrap>
                     <Eye
                         size={40}
@@ -115,7 +129,9 @@ export const RefractionProtocol = ({ areActionsAllowed, entity }: Props) => {
                             radius="xs"
                             style={{ backgroundColor: theme.white }}
                         >
-                            Aktuell
+                            <Text color={theme.colorScheme === "dark" ? theme.black : theme.white}>
+                                {isArchived ? "Archiv" : "Aktuell"}
+                            </Text>
                         </Badge>
                         <Text size="xs" color={theme.white}>
                             {moment(entity.recordedAt).format("DD.MM.YYYY")}
@@ -123,57 +139,63 @@ export const RefractionProtocol = ({ areActionsAllowed, entity }: Props) => {
                     </Group>
                 </Group>
             </Container>
-            <Space
-                sx={(theme) => ({
-                    borderBottom: `1px solid ${theme.white}`,
-                    width: "100%",
-                })}
-            />
-            <Grid columns={11} sx={(_) => ({ margin: "auto 5px" })}>
-                <Grid.Col span={2} offset={1}>
-                    {createGridHeading("Sphäre", "S / SPH")}
-                </Grid.Col>
-                <Grid.Col span={2}>{createGridHeading("Zylinder", "ZYL / CYL")}</Grid.Col>
-                <Grid.Col span={2}>{createGridHeading("Achse", "A / ACH")}</Grid.Col>
-                <Grid.Col span={2}>{createGridHeading("Addition", "ADD")}</Grid.Col>
-                <Grid.Col span={2}>{createGridHeading("PD", "PD")}</Grid.Col>
-
-                {createRefractionProtocolSide("R")}
-                {createRefractionProtocolSide("L")}
-            </Grid>
-            <Space sx={(_) => ({ borderBottom: `1px solid ${theme.white}`, width: "100%" })} />
-            <Container fluid sx={(_) => ({ margin: "auto 0", width: "100%" })}>
-                <Group direction="row" position="apart">
-                    <Printer
-                        size={30}
-                        style={{
-                            backgroundColor:
-                                theme.colorScheme === "dark" ? theme.black : theme.white,
-                            color: theme.colors.primary[7],
-                            borderRadius: "5px",
-                            padding: "2px",
-                        }}
+            {isSelected && (
+                <>
+                    <Space
+                        sx={(theme) => ({
+                            borderBottom: `1px solid ${theme.white}`,
+                            width: "100%",
+                        })}
                     />
-                    <Modal
-                        opened={qrCodeOpen}
-                        onClose={() => setQRCodeOpen(false)}
-                        title="Ihr Refraktionsprotokoll"
-                    >
-                        <RefractionProtocolQRCode refractionProtocol={entity} />
-                    </Modal>
-                    <Button
-                        size="sm"
-                        disabled={!areActionsAllowed}
-                        sx={{ padding: "5px" }}
-                        leftIcon={<Qrcode color={theme.colors.dark[7]} />}
-                        onClick={() => setQRCodeOpen(true)}
-                    >
-                        <Text size="xs" color={theme.colors.dark[7]}>
-                            QR-Code
-                        </Text>
-                    </Button>
-                </Group>
-            </Container>
+                    <Grid columns={11} sx={(_) => ({ margin: "auto 5px" })}>
+                        <Grid.Col span={2} offset={1}>
+                            {createGridHeading("Sphäre", "S / SPH")}
+                        </Grid.Col>
+                        <Grid.Col span={2}>{createGridHeading("Zylinder", "ZYL / CYL")}</Grid.Col>
+                        <Grid.Col span={2}>{createGridHeading("Achse", "A / ACH")}</Grid.Col>
+                        <Grid.Col span={2}>{createGridHeading("Addition", "ADD")}</Grid.Col>
+                        <Grid.Col span={2}>{createGridHeading("PD", "PD")}</Grid.Col>
+
+                        {createRefractionProtocolSide("R")}
+                        {createRefractionProtocolSide("L")}
+                    </Grid>
+                    <Space
+                        sx={(_) => ({ borderBottom: `1px solid ${theme.white}`, width: "100%" })}
+                    />
+                    <Container fluid sx={(_) => ({ margin: "auto 0", width: "100%" })}>
+                        <Group direction="row" position="apart">
+                            <Printer
+                                size={30}
+                                style={{
+                                    backgroundColor:
+                                        theme.colorScheme === "dark" ? theme.black : theme.white,
+                                    color: theme.colors.primary[7],
+                                    borderRadius: "5px",
+                                    padding: "2px",
+                                }}
+                            />
+                            <Modal
+                                opened={qrCodeOpen}
+                                onClose={() => setQRCodeOpen(false)}
+                                title="Ihr Refraktionsprotokoll"
+                            >
+                                <RefractionProtocolQRCode refractionProtocol={entity} />
+                            </Modal>
+                            <Button
+                                size="sm"
+                                disabled={!areActionsAllowed}
+                                sx={{ padding: "5px" }}
+                                leftIcon={<Qrcode color={theme.colors.dark[7]} />}
+                                onClick={() => setQRCodeOpen(true)}
+                            >
+                                <Text size="xs" color={theme.colors.dark[7]}>
+                                    QR-Code
+                                </Text>
+                            </Button>
+                        </Group>
+                    </Container>
+                </>
+            )}
             <Space />
         </Stack>
     );

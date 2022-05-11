@@ -20,7 +20,9 @@ type ServerProps = {
 
 const SpectaclePassPage: NextPageWithLayout<ServerProps> = ({ refractionProtocols }) => {
     const currentProtocol = refractionProtocols[0];
-    const protocolHistory = refractionProtocols.splice(1);
+    const protocolHistory = refractionProtocols.slice(1);
+
+    const [selectedProtocol, setSelectedProtocol] = React.useState(0);
 
     return (
         <Container
@@ -31,14 +33,36 @@ const SpectaclePassPage: NextPageWithLayout<ServerProps> = ({ refractionProtocol
                 <Group direction="row" position="right">
                     <CircleX size={30} />
                 </Group>
-                <Container size="xl">
+                <Container
+                    size="xl"
+                    sx={(_) => ({
+                        overflowY: "scroll",
+                        height: "calc(100vh - 80px)" /* TODO Proper height here */,
+                    })}
+                >
                     <Group direction="column" position="center" spacing="xs">
                         <Text weight="bold">Digitaler Brillenpass</Text>
                         <Text weight="normal">Max Mustermann</Text>
                     </Group>
-                    <RefractionProtocol areActionsAllowed={true} entity={currentProtocol} />
+                    <RefractionProtocol
+                        areActionsAllowed={true}
+                        entity={currentProtocol}
+                        isSelected={selectedProtocol === 0}
+                        onClick={() => setSelectedProtocol(0)}
+                    />
                     <Space h="lg" />
-                    <RefractionProtocolArchive protocolHistory={protocolHistory} />
+                    {protocolHistory.map((oldEntity, index) => (
+                        <>
+                            <RefractionProtocol
+                                areActionsAllowed={false}
+                                entity={oldEntity}
+                                isArchived={true}
+                                isSelected={index + 1 === selectedProtocol}
+                                onClick={() => setSelectedProtocol(index + 1)}
+                            />
+                            <Space h="lg" />
+                        </>
+                    ))}
                 </Container>
             </Stack>
         </Container>
