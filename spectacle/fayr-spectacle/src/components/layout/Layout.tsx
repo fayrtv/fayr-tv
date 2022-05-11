@@ -3,7 +3,7 @@ import { ReactChild } from "react";
 
 import Header from "~/components/layout/Header";
 import React from "react";
-import { Anchor, Navbar } from "@mantine/core";
+import { Anchor, Aside, Navbar } from "@mantine/core";
 
 type Props = {
     children: ReactChild;
@@ -18,8 +18,8 @@ const Layout = ({ children }: Props) => {
                 main: { padding: 0 },
                 body: { flexGrow: 1 },
             }}
-            navbar={
-                <Navbar
+            aside={
+                <Aside
                     p="md"
                     hidden={!burgerOpen}
                     width={{ sm: 200, lg: 300 }}
@@ -54,7 +54,7 @@ const Layout = ({ children }: Props) => {
                             </li>
                         </ul>
                     </Navbar.Section>
-                </Navbar>
+                </Aside>
             }
         >
             {children}
