@@ -2,24 +2,34 @@ name: Deploy FAYR API
 
 on:
     push:
-        branches:
-            - main
+        # TODO: Uncomment before merge
+        # branches:
+        # - main
 
 jobs:
     deploy-fayr-api:
         runs-on: ubuntu-latest
+        permissions:
+            id-token: write
+            contents: read
         steps:
             - uses: actions/checkout@v2
-            - uses: actions/setup-node@v2
+            - name: Setup node
+              uses: actions/setup-node@v2
               with:
-                  node-version: 16.x
+                  node-version: "16"
             - uses: aws-actions/configure-aws-credentials@v1
               with:
                   # TODO: Create IAM role
                   # Docs: https://github.com/aws-actions/configure-aws-credentials
-                  role-to-assume: arn:aws:iam::111111111111:role/my-github-actions-role-test
+                  role-to-assume: arn:aws:iam::676057042583:role/fayr-github-actions-workflow-v1
                   aws-region: us-east-1
+                  role-session-name: GitHubActions
             - working-directory: packages/fayr-api
               run: yarn install --frozen-lockfile
-            - working-directory: packages/fayr-api
-              run: yarn deploy
+            - name: Serverless Authentication
+              working-directory: packages/fayr-api
+              run: |
+                  yarn run serverless config credentials --provider aws --key ${{ env.AWS_ACCESS_KEY_ID }} --secret ${{ env.AWS_SECRET_ACCESS_KEY }} --overwrite
+                  aws sts get-caller-identity --profile default
+                  yarn deploy --verbose
