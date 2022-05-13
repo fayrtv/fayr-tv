@@ -1,5 +1,5 @@
 import { Anchor, Box, Burger, Container, Group, Text } from "~/components/common";
-import React from "react";
+import { useState } from "react";
 import ThemeToggleButton from "~/components/layout/ThemeToggleButton";
 import { useMediaQuery } from "@mantine/hooks";
 import { useStoreInfo } from "~/components/StoreInfoProvider";
@@ -40,9 +40,16 @@ const Header = ({ user, burgerOpen, setBurgerOpen }: Props) => {
                             })}
                             size="sm"
                         >
-                            <Text transform="uppercase">{}</Text> {storeInfo.city}
-                            {shouldDisplayStoreOwnerHeadline && <> | Inhaber: {storeInfo.owner}</>}
-                        </Anchor>
+                            <Text transform="uppercase" size="sm" style={{ display: "inline" }}>
+                                {storeInfo.name}
+                            </Text>
+                            <Text size="sm" style={{ display: "inline" }}>
+                                {" "}
+                                {storeInfo.city}
+                                {shouldDisplayStoreOwnerHeadline && (
+                                    <> | Inhaber: {storeInfo.owner}</>
+                                )}
+                            </Text>                        </Anchor>
                         <Group direction="row" position="apart" style={{ width: "100%" }} mt="xs">
                             <Anchor href="/">
                                 <Text color="primary" size="xl" weight="bold">
@@ -59,7 +66,6 @@ const Header = ({ user, burgerOpen, setBurgerOpen }: Props) => {
                     </Group>
                 </Container>
             </Box>
-            {user && <SubHeader user={user} />}
         </Stack>
     );
 };

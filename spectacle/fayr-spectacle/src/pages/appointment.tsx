@@ -8,6 +8,8 @@ import { TimeSlot } from "~/components/appointment/types";
 import Confirm from "~/pages/auth/confirm";
 import ConfirmAppointment from "~/components/appointment/ConfirmAppointment";
 import dayjs from "dayjs";
+import SubHeader from "~/components/layout/SubHeader";
+import { getUser } from "~/helpers/authentication";
 
 type Props = {
     user: User;
@@ -18,20 +20,25 @@ const AppointmentPage: NextPageWithLayout<Props> = ({ user }) => {
     const [selectedSlot, setSelectedSlot] = useState<TimeSlot | null>(null);
     const [isAppointmentSelected, setAppointmentSelected] = useState(false);
 
-    return isAppointmentSelected ? (
-        <ConfirmAppointment
-            begin={dayjs(date!).add(selectedSlot![0], "hours").toDate()}
-            end={dayjs(date!).add(selectedSlot![1], "hours").toDate()}
-            onCancel={() => setAppointmentSelected(false)}
-        />
-    ) : (
-        <ChooseAppointment
-            date={date}
-            setDate={setDate}
-            selectedSlot={selectedSlot}
-            setSelectedSlot={setSelectedSlot}
-            onConfirm={() => setAppointmentSelected(true)}
-        />
+    return (
+        <>
+            <SubHeader user={user} showTabSwitch={false} showAppointmentCTA={false} />
+            {isAppointmentSelected ? (
+                <ConfirmAppointment
+                    begin={dayjs(date!).add(selectedSlot![0], "hours").toDate()}
+                    end={dayjs(date!).add(selectedSlot![1], "hours").toDate()}
+                    onCancel={() => setAppointmentSelected(false)}
+                />
+            ) : (
+                <ChooseAppointment
+                    date={date}
+                    setDate={setDate}
+                    selectedSlot={selectedSlot}
+                    setSelectedSlot={setSelectedSlot}
+                    onConfirm={() => setAppointmentSelected(true)}
+                />
+            )}
+        </>
     );
 };
 
@@ -41,7 +48,9 @@ AppointmentPage.layoutProps = {
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     return {
-        props: {},
+        props: {
+            user: await getUser(req),
+        },
     };
 };
 
