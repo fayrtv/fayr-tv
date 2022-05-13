@@ -48,7 +48,7 @@ const Layout = ({ children }: Props) => {
                     sx={(theme) => ({
                         backgroundColor: `rgb(${
                             theme.colorScheme === "light" ? "255, 255, 2555" : "0, 0, 0"
-                        }, 0.25)`,
+                        }, 0.75)`,
                     })}
                     hiddenBreakpoint={50000}
                     fixed
@@ -89,6 +89,11 @@ const Layout = ({ children }: Props) => {
                             <li>
                                 <ThemeAdaptiveAnchor href={"/appointment"}>
                                     Terminvereinbarung
+                                </ThemeAdaptiveAnchor>
+                            </li>
+                            <li>
+                                <ThemeAdaptiveAnchor href={"/content/customermanagement"}>
+                                    Kundenverwaltung
                                 </ThemeAdaptiveAnchor>
                             </li>
                         </ul>

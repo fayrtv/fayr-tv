@@ -8,7 +8,7 @@ import { TimeSlot } from "~/components/appointment/types";
 import Confirm from "~/pages/auth/confirm";
 import ConfirmAppointment from "~/components/appointment/ConfirmAppointment";
 import dayjs from "dayjs";
-import SubHeader from "~/components/layout/SubHeader";
+import SubHeader, { SwitchAvailability } from "~/components/layout/SubHeader";
 import { getUser } from "~/helpers/authentication";
 
 type Props = {
@@ -22,7 +22,11 @@ const AppointmentPage: NextPageWithLayout<Props> = ({ user }) => {
 
     return (
         <>
-            <SubHeader user={user} showTabSwitch={false} showAppointmentCTA={false} />
+            <SubHeader
+                user={user}
+                switchAvailability={SwitchAvailability.Unavailable}
+                showAppointmentCTA={false}
+            />
             {isAppointmentSelected ? (
                 <ConfirmAppointment
                     begin={dayjs(date!).add(selectedSlot![0], "hours").toDate()}

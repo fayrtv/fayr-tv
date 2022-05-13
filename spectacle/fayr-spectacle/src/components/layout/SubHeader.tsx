@@ -1,15 +1,26 @@
 import { Button, Text } from "~/components/common";
-import { CalendarPlus, Settings } from "tabler-icons-react";
-import { Avatar, Grid, Group, Paper, Tabs, ThemeIcon } from "@mantine/core";
+import { CalendarPlus } from "tabler-icons-react";
+import { Avatar, Grid, Group, Paper, Tabs } from "@mantine/core";
 import { formatFormalAddress, User } from "~/types/user";
+
+export enum SwitchAvailability {
+    Unavailable,
+    CustomerOnly,
+    OpticianOnly,
+    Both,
+}
 
 type Props = {
     user: User;
     showAppointmentCTA?: boolean;
-    showTabSwitch?: boolean;
+    switchAvailability?: SwitchAvailability;
 };
 
-const SubHeader = ({ user, showTabSwitch = false, showAppointmentCTA = true }: Props) => {
+const SubHeader = ({
+    user,
+    switchAvailability = SwitchAvailability.Both,
+    showAppointmentCTA = true,
+}: Props) => {
     return (
         <Paper px="md" py="sm" shadow="sm" sx={(theme) => ({ fontSize: theme.fontSizes.sm })}>
             <Grid>
@@ -26,7 +37,7 @@ const SubHeader = ({ user, showTabSwitch = false, showAppointmentCTA = true }: P
                     )}
                 </Grid.Col>
                 <Grid.Col span={4}>
-                    {showTabSwitch && (
+                    {switchAvailability !== SwitchAvailability.Unavailable && (
                         <Tabs
                             variant="pills"
                             styles={(theme) => ({
@@ -42,8 +53,24 @@ const SubHeader = ({ user, showTabSwitch = false, showAppointmentCTA = true }: P
                                 tabInner: { margin: "1px" },
                             })}
                         >
-                            <Tabs.Tab label="Für Kunden" />
-                            <Tabs.Tab label="Für Optiker" />
+                            <Tabs.Tab
+                                disabled={
+                                    !(
+                                        switchAvailability === SwitchAvailability.Both ||
+                                        switchAvailability === SwitchAvailability.CustomerOnly
+                                    )
+                                }
+                                label="Für Kunden"
+                            />
+                            <Tabs.Tab
+                                disabled={
+                                    !(
+                                        switchAvailability === SwitchAvailability.Both ||
+                                        switchAvailability === SwitchAvailability.OpticianOnly
+                                    )
+                                }
+                                label="Für Optiker"
+                            />
                         </Tabs>
                     )}
                 </Grid.Col>

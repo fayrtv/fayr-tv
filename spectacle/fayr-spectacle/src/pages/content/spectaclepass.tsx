@@ -13,6 +13,7 @@ import { getUser } from "~/helpers/authentication";
 import { DataStore } from "@aws-amplify/datastore";
 import { withSSRContext } from "aws-amplify";
 import { serializeModel } from "@aws-amplify/datastore/ssr";
+import { Center, Paper } from "@mantine/core";
 
 type ServerProps = {
     refractionProtocols: RefractionProtocolEntity[];
@@ -52,7 +53,7 @@ const SpectaclePassPage: NextPageWithLayout<ServerProps> = ({ refractionProtocol
                     />
                     <Space h="lg" />
                     {protocolHistory.map((oldEntity, index) => (
-                        <>
+                        <Stack key={oldEntity.id}>
                             <RefractionProtocol
                                 areActionsAllowed={false}
                                 entity={oldEntity}
@@ -60,8 +61,8 @@ const SpectaclePassPage: NextPageWithLayout<ServerProps> = ({ refractionProtocol
                                 isSelected={index + 1 === selectedProtocol}
                                 onClick={() => setSelectedProtocol(index + 1)}
                             />
-                            <Space h="lg" />
-                        </>
+                            <Space h="sm" />
+                        </Stack>
                     ))}
                 </Container>
             </Stack>

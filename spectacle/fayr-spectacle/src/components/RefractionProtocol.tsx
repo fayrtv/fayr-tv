@@ -109,7 +109,7 @@ export const RefractionProtocol = ({
             spacing="xs"
             sx={(_) => ({ background: isArchived ? BackgroundGrey : theme.colors.primary[7] })}
         >
-            <Container mt="xs" onClick={onClick}>
+            <Container mt="xs" onClick={onClick} sx={(_) => ({ padding: 0 })}>
                 <Group direction="row" position="center" noWrap>
                     <Eye
                         size={40}
@@ -173,6 +173,7 @@ export const RefractionProtocol = ({
                                     borderRadius: "5px",
                                     padding: "2px",
                                 }}
+                                onClick={() => window.print()}
                             />
                             <Modal
                                 opened={qrCodeOpen}
