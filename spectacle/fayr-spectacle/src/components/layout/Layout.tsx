@@ -92,7 +92,9 @@ const Layout = ({ children }: Props) => {
                                 </ThemeAdaptiveAnchor>
                             </li>
                             <li>
-                                <ThemeAdaptiveAnchor href={"/content/customermanagement"}>
+                                <ThemeAdaptiveAnchor
+                                    href={"/content/customermanagement/createrefractionprotocol"}
+                                >
                                     Kundenverwaltung
                                 </ThemeAdaptiveAnchor>
                             </li>

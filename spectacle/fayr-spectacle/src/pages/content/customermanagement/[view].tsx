@@ -6,33 +6,37 @@ import SubHeader, { SwitchAvailability } from "~/components/layout/SubHeader";
 import Layout from "~/components/layout/Layout";
 import { GetServerSideProps } from "next";
 import { getUser } from "~/helpers/authentication";
-import { User } from "../../types/user";
+import { User } from "../../../types/user";
 import { Container, Paper, Tabs } from "@mantine/core";
 import CreateRefractionProtocol from "~/components/protocol/CreateRefractionProtocol";
+import { useRouter } from "next/router";
 
 type ServerSideProps = {
     user: User;
 };
 
-enum View {
-    CreateRefractionProtcoll,
-    QuerySpectaclePass,
-    ShowAppointments,
-}
+type View = "createrefractionprotocol" | "queryspectaclepass" | "showappointments";
+
+const tabMap = new Map<View, number>([
+    ["createrefractionprotocol", 0],
+    ["queryspectaclepass", 1],
+    ["showappointments", 2],
+]);
 
 const CustomerManagement: NextPageWithLayout<ServerSideProps> = ({ user }: ServerSideProps) => {
-    const [activeTab, setActiveTab] = React.useState<View>(View.CreateRefractionProtcoll);
+    const router = useRouter();
+
+    const view = router.query.view as View;
 
     let tabView: React.ReactNode = null;
-
-    switch (activeTab) {
-        case View.CreateRefractionProtcoll:
+    switch (view) {
+        case "createrefractionprotocol":
             tabView = <CreateRefractionProtocol customer={user} />;
             break;
-        case View.QuerySpectaclePass:
+        case "queryspectaclepass":
             tabView = null;
             break;
-        case View.ShowAppointments:
+        case "showappointments":
             tabView = null;
             break;
     }
@@ -50,8 +54,15 @@ const CustomerManagement: NextPageWithLayout<ServerSideProps> = ({ user }: Serve
                         <Tabs
                             variant="pills"
                             orientation="vertical"
-                            active={activeTab}
-                            onTabChange={setActiveTab}
+                            active={tabMap.get(view)}
+                            onTabChange={(index) => {
+                                const correspondingView = Array.from(tabMap.entries()).find(
+                                    ([_, val]) => val === index,
+                                );
+                                router.push(
+                                    `/content/customermanagement/${correspondingView?.[0]}`,
+                                );
+                            }}
                         >
                             <Tabs.Tab label="Refraktionsprotokoll anlegen" />
                             <Tabs.Tab label="Brillenpass abfragen" />
