@@ -4,6 +4,7 @@ import { useMediaQuery } from "@mantine/hooks";
 import { useStoreInfo } from "~/components/StoreInfoProvider";
 import { User } from "~/types/user";
 import { Stack } from "@mantine/core";
+import { MobileWidthThreshold } from "~/constants/mediaqueries";
 
 type Props = {
     user?: User | null;
@@ -14,7 +15,10 @@ type Props = {
 const Header = ({ user, burgerOpen, setBurgerOpen }: Props) => {
     const storeInfo = useStoreInfo();
 
-    const shouldDisplayStoreOwnerHeadline = useMediaQuery("(min-width: 500px)", true);
+    const shouldDisplayStoreOwnerHeadline = useMediaQuery(
+        `(min-width: ${MobileWidthThreshold}px)`,
+        true,
+    );
 
     return (
         <Stack>

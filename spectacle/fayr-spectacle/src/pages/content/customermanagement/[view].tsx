@@ -7,7 +7,7 @@ import Layout from "~/components/layout/Layout";
 import { GetServerSideProps } from "next";
 import { getUser } from "~/helpers/authentication";
 import { User } from "../../../types/user";
-import { Container, Paper, Tabs } from "@mantine/core";
+import { Center, Container, Paper, Space, Tabs, useMantineTheme } from "@mantine/core";
 import CreateRefractionProtocol from "~/components/protocol/CreateRefractionProtocol";
 import { useRouter } from "next/router";
 
@@ -24,6 +24,7 @@ const tabMap = new Map<View, number>([
 ]);
 
 const CustomerManagement: NextPageWithLayout<ServerSideProps> = ({ user }: ServerSideProps) => {
+    const mantineTheme = useMantineTheme();
     const router = useRouter();
 
     const view = router.query.view as View;
@@ -48,13 +49,25 @@ const CustomerManagement: NextPageWithLayout<ServerSideProps> = ({ user }: Serve
                 switchAvailability={SwitchAvailability.OpticianOnly}
                 showAppointmentCTA={false}
             />
-            <Container sx={(_) => ({ margin: "0", maxWidth: "100%", width: "100%" })}>
-                <Group direction="row">
-                    <Paper sx={(_) => ({ border: "1px solid black" })}>
+            <Container sx={(_) => ({ padding: "50px", maxWidth: "100%", width: "100%" })}>
+                <Group align="flex-start" direction="row">
+                    <Center
+                        sx={(_) => ({
+                            boxShadow: "0px 0px 5px 0px #000000",
+                            padding: "15px",
+                            flexGrow: 1,
+                        })}
+                    >
                         <Tabs
                             variant="pills"
                             orientation="vertical"
+                            color={mantineTheme.colors.primary[5]}
                             active={tabMap.get(view)}
+                            styles={(_) => ({
+                                tabLabel: {
+                                    fontSize: 20,
+                                },
+                            })}
                             onTabChange={(index) => {
                                 const correspondingView = Array.from(tabMap.entries()).find(
                                     ([_, val]) => val === index,
@@ -64,12 +77,20 @@ const CustomerManagement: NextPageWithLayout<ServerSideProps> = ({ user }: Serve
                                 );
                             }}
                         >
-                            <Tabs.Tab label="Refraktionsprotokoll anlegen" />
-                            <Tabs.Tab label="Brillenpass abfragen" />
-                            <Tabs.Tab label="Termine anzeigen" />
+                            <Tabs.Tab label="Refraktionsprotokoll anlegen" p="md" />
+                            <Tabs.Tab label="Brillenpass abfragen" p="md" />
+                            <Tabs.Tab label="Termine anzeigen" p="md" />
                         </Tabs>
-                    </Paper>
-                    <Box sx={(_) => ({ flexGrow: 1 })}>{tabView}</Box>
+                    </Center>
+                    <Center
+                        sx={(_) => ({
+                            boxShadow: "0px 0px 5px 0px #000000",
+                            padding: "15px",
+                            flexGrow: 4,
+                        })}
+                    >
+                        {tabView}
+                    </Center>
                 </Group>
             </Container>
         </>
