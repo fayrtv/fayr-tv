@@ -7,6 +7,9 @@ export type User = {
     lastName: string;
     newsletter: boolean;
 };
+
+export type Customer = Pick<User, "firstName" | "lastName" | "emailVerified" | "email">;
+
 export const formatFormalAddress = (user: User) => {
     const parts = [user.address === "m" ? "Herr" : "Frau"];
 
