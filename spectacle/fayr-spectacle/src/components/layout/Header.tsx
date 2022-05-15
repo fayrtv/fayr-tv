@@ -2,18 +2,30 @@ import { Anchor, Box, Burger, Container, Group, Text } from "~/components/common
 import ThemeToggleButton from "~/components/layout/ThemeToggleButton";
 import { useMediaQuery } from "@mantine/hooks";
 import { useStoreInfo } from "~/components/StoreInfoProvider";
-import { User } from "~/types/user";
 import { Stack } from "@mantine/core";
 import { MobileWidthThreshold } from "~/constants/mediaqueries";
+import { ComponentProps } from "react";
+import { useSession } from "~/hooks/useSession";
+import Link from "next/link";
+import SubHeader from "~/components/layout/SubHeader";
 
 type Props = {
-    user?: User | null;
     burgerOpen: boolean;
     setBurgerOpen: (open: boolean) => void;
+    subHeader:
+        | {
+              enabled: false;
+              props?: undefined;
+          }
+        | {
+              enabled: true;
+              props?: Omit<ComponentProps<typeof SubHeader>, "user">;
+          };
 };
 
-const Header = ({ user, burgerOpen, setBurgerOpen }: Props) => {
+const Header = ({ burgerOpen, setBurgerOpen, subHeader }: Props) => {
     const storeInfo = useStoreInfo();
+    const { user } = useSession();
 
     const shouldDisplayStoreOwnerHeadline = useMediaQuery(
         `(min-width: ${MobileWidthThreshold}px)`,
@@ -21,7 +33,7 @@ const Header = ({ user, burgerOpen, setBurgerOpen }: Props) => {
     );
 
     return (
-        <Stack>
+        <Stack spacing={0}>
             <Box
                 component="header"
                 py="md"
@@ -34,31 +46,34 @@ const Header = ({ user, burgerOpen, setBurgerOpen }: Props) => {
             >
                 <Container fluid>
                     <Group direction="column" spacing="xs">
-                        <Anchor
-                            href="/"
-                            sx={(theme) => ({
-                                color: theme.white,
-                                ":hover": { textDecoration: "none" },
-                            })}
-                            size="sm"
-                        >
-                            <Text transform="uppercase" size="sm" style={{ display: "inline" }}>
-                                {storeInfo.name}
-                            </Text>
-                            <Text size="sm" style={{ display: "inline" }}>
-                                {" "}
-                                {storeInfo.city}
-                                {shouldDisplayStoreOwnerHeadline && (
-                                    <> | Inhaber: {storeInfo.owner}</>
-                                )}
-                            </Text>{" "}
-                        </Anchor>
-                        <Group direction="row" position="apart" style={{ width: "100%" }} mt="xs">
-                            <Anchor href="/">
-                                <Text color="primary" size="xl" weight="bold">
-                                    Digitaler Brillenpass
+                        <Link href="/" passHref>
+                            <Anchor
+                                sx={(theme) => ({
+                                    color: theme.white,
+                                    ":hover": { textDecoration: "none" },
+                                })}
+                                size="sm"
+                            >
+                                <Text transform="uppercase" size="sm" style={{ display: "inline" }}>
+                                    {storeInfo.name}
                                 </Text>
+                                <Text size="sm" style={{ display: "inline" }}>
+                                    {" "}
+                                    {storeInfo.city}
+                                    {shouldDisplayStoreOwnerHeadline && (
+                                        <> | Inhaber: {storeInfo.owner}</>
+                                    )}
+                                </Text>{" "}
                             </Anchor>
+                        </Link>
+                        <Group direction="row" position="apart" style={{ width: "100%" }} mt="xs">
+                            <Link href="/" passHref>
+                                <Anchor>
+                                    <Text color="primary" size="xl" weight="bold">
+                                        Digitaler Brillenpass
+                                    </Text>
+                                </Anchor>
+                            </Link>
                             <ThemeToggleButton />
                             <Burger
                                 color="white"
@@ -69,6 +84,8 @@ const Header = ({ user, burgerOpen, setBurgerOpen }: Props) => {
                     </Group>
                 </Container>
             </Box>
+
+            {subHeader.enabled && !!user && <SubHeader {...subHeader.props} />}
         </Stack>
     );
 };

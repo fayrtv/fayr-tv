@@ -1,5 +1,5 @@
 import React from "react";
-import Layout from "~/components/layout/Layout";
+import Layout, {layoutFactory} from "~/components/layout/Layout";
 import { NextPageWithLayout } from "~/types/next-types";
 
 const RecoverPage: NextPageWithLayout = () => {
@@ -7,7 +7,11 @@ const RecoverPage: NextPageWithLayout = () => {
 };
 
 RecoverPage.layoutProps = {
-    Layout,
+    Layout: layoutFactory({
+        subHeader: {
+            enabled: false,
+        },
+    }),
 };
 
 export default RecoverPage;

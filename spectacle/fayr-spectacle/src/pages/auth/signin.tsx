@@ -17,10 +17,11 @@ import { Auth } from "aws-amplify";
 import Router from "next/router";
 import React, { PropsWithChildren, useState } from "react";
 import ZeissLogo from "~/components/ZeissLogo";
-import Layout from "~/components/layout/Layout";
+import Layout, { layoutFactory } from "~/components/layout/Layout";
 import { NextPageWithLayout } from "~/types/next-types";
 import { useMantineColorScheme } from "@mantine/core";
 import { AlertCircle } from "tabler-icons-react";
+import Link from "next/link";
 
 const BodyShell = ({ children }: PropsWithChildren<{}>) => {
     const { colorScheme } = useMantineColorScheme();
@@ -105,17 +106,18 @@ const SignInPage: NextPageWithLayout = () => {
                 />
 
                 <Group position="right" mt="xs">
-                    <Anchor
-                        href="/auth/recover"
-                        size="xs"
-                        sx={(theme) => ({
-                            color: theme.colors.gray[5],
-                            textDecoration: "underline",
-                            ":hover": { color: theme.colors.primary },
-                        })}
-                    >
-                        Login-Daten vergessen?
-                    </Anchor>
+                    <Link href="/auth/recover" passHref>
+                        <Anchor
+                            size="xs"
+                            sx={(theme) => ({
+                                color: theme.colors.gray[5],
+                                textDecoration: "underline",
+                                ":hover": { color: theme.colors.primary },
+                            })}
+                        >
+                            Login-Daten vergessen?
+                        </Anchor>
+                    </Link>
                 </Group>
 
                 <Group position="center" mt="md">
@@ -126,22 +128,25 @@ const SignInPage: NextPageWithLayout = () => {
             <Box sx={{ textAlign: "center", maxWidth: 250 }} mx="auto" mt="lg">
                 <Text size="sm">
                     Noch kein Benutzerkonto?{" "}
-                    <Anchor href="signup" size="sm">
-                        Hier kostenlos registrieren
-                    </Anchor>{" "}
+                    <Link href="signup" passHref>
+                        <Anchor href="signup" size="sm">
+                            Hier kostenlos registrieren
+                        </Anchor>
+                    </Link>{" "}
                     für den{" "}
-                    <Anchor
-                        sx={(theme) => ({
-                            color: colorScheme === "dark" ? theme.white : theme.black,
-                            textDecoration: "underline",
-                            ":hover": { color: theme.colors.primary },
-                        })}
-                        href="/about/digital-spectacle-passport"
-                        target="__blank"
-                        size="sm"
-                    >
-                        Digitalen Brillenpass
-                    </Anchor>
+                    <Link href="/about/digital-spectacle-passport" passHref>
+                        <Anchor
+                            sx={(theme) => ({
+                                color: colorScheme === "dark" ? theme.white : theme.black,
+                                textDecoration: "underline",
+                                ":hover": { color: theme.colors.primary },
+                            })}
+                            target="__blank"
+                            size="sm"
+                        >
+                            Digitalen Brillenpass
+                        </Anchor>
+                    </Link>
                     .
                 </Text>
             </Box>
@@ -150,7 +155,11 @@ const SignInPage: NextPageWithLayout = () => {
 };
 
 SignInPage.layoutProps = {
-    Layout,
+    Layout: layoutFactory({
+        subHeader: {
+            enabled: false,
+        },
+    }),
 };
 
 export default SignInPage;

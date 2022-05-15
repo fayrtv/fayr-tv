@@ -1,7 +1,7 @@
 import { Button, Center, Container, Overlay, Paper, Text } from "~/components/common";
 import React from "react";
 import ZeissLogo from "~/components/ZeissLogo";
-import Layout from "~/components/layout/Layout";
+import Layout, { layoutFactory } from "~/components/layout/Layout";
 import { NextPageWithLayout } from "~/types/next-types";
 import { useMantineColorScheme } from "@mantine/core";
 
@@ -42,7 +42,11 @@ const ConfirmPage: NextPageWithLayout = () => {
 };
 
 ConfirmPage.layoutProps = {
-    Layout,
+    Layout: layoutFactory({
+        subHeader: {
+            enabled: false,
+        },
+    }),
 };
 
 export default ConfirmPage;

@@ -11,22 +11,13 @@ import dayjs from "dayjs";
 import SubHeader, { SwitchAvailability } from "~/components/layout/SubHeader";
 import { getUser } from "~/helpers/authentication";
 
-type Props = {
-    user: User;
-};
-
-const AppointmentPage: NextPageWithLayout<Props> = ({ user }) => {
+const AppointmentPage: NextPageWithLayout = () => {
     const [date, setDate] = useState<Date | null>(null);
     const [selectedSlot, setSelectedSlot] = useState<TimeSlot | null>(null);
     const [isAppointmentSelected, setAppointmentSelected] = useState(false);
 
     return (
         <>
-            <SubHeader
-                user={user}
-                switchAvailability={SwitchAvailability.Unavailable}
-                showAppointmentCTA={false}
-            />
             {isAppointmentSelected ? (
                 <ConfirmAppointment
                     begin={dayjs(date!).add(selectedSlot![0], "hours").toDate()}
@@ -48,14 +39,6 @@ const AppointmentPage: NextPageWithLayout<Props> = ({ user }) => {
 
 AppointmentPage.layoutProps = {
     Layout,
-};
-
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-    return {
-        props: {
-            user: await getUser(req),
-        },
-    };
 };
 
 export default AppointmentPage;

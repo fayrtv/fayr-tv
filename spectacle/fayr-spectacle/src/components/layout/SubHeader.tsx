@@ -2,6 +2,7 @@ import { Button, Text } from "~/components/common";
 import { CalendarPlus } from "tabler-icons-react";
 import { Avatar, Grid, Group, Paper, Tabs } from "@mantine/core";
 import { formatFormalAddress, User } from "~/types/user";
+import { useSession } from "~/hooks/useSession";
 
 export enum SwitchAvailability {
     Unavailable,
@@ -11,16 +12,16 @@ export enum SwitchAvailability {
 }
 
 type Props = {
-    user: User;
     showAppointmentCTA?: boolean;
     switchAvailability?: SwitchAvailability;
 };
 
 const SubHeader = ({
-    user,
     switchAvailability = SwitchAvailability.Both,
     showAppointmentCTA = true,
 }: Props) => {
+    const { user } = useSession();
+
     return (
         <Paper px="md" py="sm" shadow="sm" sx={(theme) => ({ fontSize: theme.fontSizes.sm })}>
             <Grid>
@@ -76,9 +77,11 @@ const SubHeader = ({
                 </Grid.Col>
                 <Grid.Col span={4} sx={{ justifyContent: "right" }}>
                     <Group position="right">
-                        <Text weight="bold" size="xs">
-                            Willkommen, {formatFormalAddress(user)}
-                        </Text>
+                        {!!user && (
+                            <Text weight="bold" size="xs">
+                                Willkommen, {formatFormalAddress(user)}
+                            </Text>
+                        )}
                         <Avatar size="sm" />
                     </Group>
                 </Grid.Col>

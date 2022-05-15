@@ -1,40 +1,51 @@
 import { AppShell } from "~/components/common";
-import { PropsWithChildren, ReactChild } from "react";
+import React, { ComponentProps, PropsWithChildren, ReactChild } from "react";
 
 import Header from "~/components/layout/Header";
-import React from "react";
-import { Anchor, Aside, Navbar, useMantineColorScheme } from "@mantine/core";
+import { Anchor, Aside, Navbar } from "@mantine/core";
 import { useRouter } from "next/router";
+import { NextLink } from "@mantine/next";
+import Link from "next/link";
 
-type Props = {
-    children: ReactChild;
-};
-
-const ThemeAdaptiveAnchor = (
-    props: PropsWithChildren<Omit<React.ComponentPropsWithoutRef<typeof Anchor>, "sx">> & {
-        href: string;
-    },
-) => {
+const ThemeAdaptiveAnchor = ({
+    href,
+    ...props
+}: PropsWithChildren<Omit<React.ComponentPropsWithoutRef<typeof Anchor>, "sx">> & {
+    href: string;
+}) => {
     const router = useRouter();
 
     return (
-        <Anchor
-            {...props}
-            sx={(theme) => ({
-                color: theme.colorScheme === "dark" ? theme.white : theme.black,
-                textDecoration: router.route === props.href ? "underline" : "none",
-            })}
-        >
-            {props.children}
-        </Anchor>
+        <Link href={href} passHref>
+            <Anchor
+                {...props}
+                sx={(theme) => ({
+                    color: theme.colorScheme === "dark" ? theme.white : theme.black,
+                    textDecoration: router.route === href ? "underline" : "none",
+                })}
+            >
+                {props.children}
+            </Anchor>
+        </Link>
     );
 };
 
-const Layout = ({ children }: Props) => {
+type Props = {
+    children: ReactChild;
+    subHeader?: ComponentProps<typeof Header>["subHeader"];
+};
+
+const Layout = ({ children, subHeader = { enabled: true } }: Props) => {
     const [burgerOpen, setBurgerOpen] = React.useState(false);
     return (
         <AppShell
-            header={<Header burgerOpen={burgerOpen} setBurgerOpen={setBurgerOpen} />}
+            header={
+                <Header
+                    burgerOpen={burgerOpen}
+                    setBurgerOpen={setBurgerOpen}
+                    subHeader={subHeader}
+                />
+            }
             styles={{
                 root: { height: "100vh", display: "flex", flexDirection: "column" },
                 main: { padding: 0 },
@@ -57,9 +68,7 @@ const Layout = ({ children }: Props) => {
                         <h2>Sitemap</h2>
                         <ul>
                             <li>
-                                <ThemeAdaptiveAnchor href={"/content/spectaclepass"}>
-                                    Brillenpass
-                                </ThemeAdaptiveAnchor>
+                                <NextLink href={"/content/spectaclepass"}>Brillenpass</NextLink>
                             </li>
                             <li>
                                 <ThemeAdaptiveAnchor href={"/auth/signup"}>
@@ -107,5 +116,10 @@ const Layout = ({ children }: Props) => {
         </AppShell>
     );
 };
+
+export function layoutFactory(props: Omit<Props, "children">) {
+    // eslint-disable-next-line react/display-name
+    return ({ children }: Pick<Props, "children">) => <Layout {...props}>{children}</Layout>;
+}
 
 export default Layout;

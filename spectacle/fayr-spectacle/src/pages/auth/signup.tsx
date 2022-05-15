@@ -6,7 +6,8 @@ import {
     Checkbox,
     Container,
     Grid,
-    Group, LoadingOverlay,
+    Group,
+    LoadingOverlay,
     PasswordInput,
     Select,
     Stack,
@@ -16,12 +17,13 @@ import {
 import { useForm } from "@mantine/hooks";
 import { Auth } from "aws-amplify";
 import Router from "next/router";
-import React, {PropsWithChildren, useState} from "react";
+import React, { PropsWithChildren, useState } from "react";
 import ZeissLogo from "~/components/ZeissLogo";
-import Layout from "~/components/layout/Layout";
+import Layout, { layoutFactory } from "~/components/layout/Layout";
 import { NextPageWithLayout } from "~/types/next-types";
 import { useMantineColorScheme } from "@mantine/core";
-import {AlertCircle} from "tabler-icons-react";
+import { AlertCircle } from "tabler-icons-react";
+import Link from "next/link";
 
 const BodyShell = ({ children }: PropsWithChildren<{}>) => {
     const { colorScheme } = useMantineColorScheme();
@@ -179,17 +181,17 @@ const SignUpPage: NextPageWithLayout = () => {
                                 label={
                                     <>
                                         Ich akzeptiere die{" "}
-                                        <Anchor href="/legal/terms" size="sm" target="__blank">
-                                            Allgemeinen Geschäftsbedingungen
-                                        </Anchor>{" "}
+                                        <Link href="/legal/terms" passHref>
+                                            <Anchor size="sm" target="__blank">
+                                                Allgemeinen Geschäftsbedingungen
+                                            </Anchor>
+                                        </Link>{" "}
                                         und die{" "}
-                                        <Anchor
-                                            href="/legal/data-protection"
-                                            size="sm"
-                                            target="__blank"
-                                        >
-                                            Bestimmungen zum Datenschutz
-                                        </Anchor>
+                                        <Link href="/legal/data-protection" passHref>
+                                            <Anchor size="sm" target="__blank">
+                                                Bestimmungen zum Datenschutz
+                                            </Anchor>
+                                        </Link>
                                     </>
                                 }
                                 required
@@ -208,7 +210,11 @@ const SignUpPage: NextPageWithLayout = () => {
 };
 
 SignUpPage.layoutProps = {
-    Layout,
+    Layout: layoutFactory({
+        subHeader: {
+            enabled: false,
+        },
+    }),
 };
 
 const validateEmail = (email: string) =>

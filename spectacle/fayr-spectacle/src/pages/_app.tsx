@@ -13,6 +13,7 @@ import "../styles/globals.scss";
 import zeissTheme from "../theming/mantine";
 import StoreInfoProvider, { useStoreInfo } from "~/components/StoreInfoProvider";
 import { GetServerSidePropsContext } from "next";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 // TODO: https://ordinarycoders.com/blog/article/nextjs-aws-amplify
 // https://www.youtube.com/watch?v=YvoyHgZWSFY&ab_channel=BojidarYovchev
@@ -21,6 +22,8 @@ Amplify.configure({
     ...config,
     ssr: true,
 });
+
+const queryClient = new QueryClient();
 
 const storeInfo = {
     name: "ZEISS Vision Center",
@@ -69,13 +72,15 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
                         // you can change primaryColor w.r.t colorScheme here
                     }}
                 >
-                    <NotificationsProvider>
-                        <StoreInfoProvider value={storeInfo}>
-                            <Layout>
-                                <Component {...pageProps} />
-                            </Layout>
-                        </StoreInfoProvider>
-                    </NotificationsProvider>
+                    <QueryClientProvider client={queryClient}>
+                        <NotificationsProvider>
+                            <StoreInfoProvider value={storeInfo}>
+                                <Layout>
+                                    <Component {...pageProps} />
+                                </Layout>
+                            </StoreInfoProvider>
+                        </NotificationsProvider>
+                    </QueryClientProvider>
                 </MantineProvider>
             </ColorSchemeProvider>
         </>
