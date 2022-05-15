@@ -1,8 +1,9 @@
 import { Button, Text } from "~/components/common";
 import { CalendarPlus } from "tabler-icons-react";
-import { Avatar, Grid, Group, Paper, Tabs } from "@mantine/core";
+import { Anchor, Avatar, Grid, Group, Paper, Tabs } from "@mantine/core";
 import { formatFormalAddress, User } from "~/types/user";
 import { useSession } from "~/hooks/useSession";
+import Link from "next/link";
 
 export enum SwitchAvailability {
     Unavailable,
@@ -76,14 +77,18 @@ const SubHeader = ({
                     )}
                 </Grid.Col>
                 <Grid.Col span={4} sx={{ justifyContent: "right" }}>
-                    <Group position="right">
-                        {!!user && (
-                            <Text weight="bold" size="xs">
-                                Willkommen, {formatFormalAddress(user)}
-                            </Text>
-                        )}
-                        <Avatar size="sm" />
-                    </Group>
+                    <Link href="/profile" passHref>
+                        <Anchor>
+                            <Group position="right">
+                                {!!user && (
+                                    <Text weight="bold" size="xs">
+                                        Willkommen, {formatFormalAddress(user)}
+                                    </Text>
+                                )}
+                                <Avatar size="sm" />
+                            </Group>
+                        </Anchor>
+                    </Link>
                 </Grid.Col>
             </Grid>
         </Paper>

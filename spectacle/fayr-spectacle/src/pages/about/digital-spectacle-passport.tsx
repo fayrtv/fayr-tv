@@ -3,7 +3,7 @@ import React, { PropsWithChildren } from "react";
 import PassportQRCodeExample from "~/components/PassportQRCode";
 import Layout from "~/components/layout/Layout";
 import { NextPageWithLayout } from "~/types/next-types";
-import {useStoreInfo} from "~/components/StoreInfoProvider";
+import { useStoreInfo } from "~/components/StoreInfoProvider";
 
 const NumberBox = ({ n, title, children }: PropsWithChildren<{ n: number; title: string }>) => {
     return (
@@ -21,7 +21,6 @@ const NumberBox = ({ n, title, children }: PropsWithChildren<{ n: number; title:
 
 const DigitalSpectaclePassportPage: NextPageWithLayout = () => {
     const storeInfo = useStoreInfo();
-
 
     return (
         <Container sx={{ maxWidth: "unset" }} p="xl">
@@ -60,7 +59,8 @@ const DigitalSpectaclePassportPage: NextPageWithLayout = () => {
                         <NumberBox n={1} title="Vereinbaren Sie einen Termin">
                             Kommen Sie ins {storeInfo.name} {storeInfo.city} und machen Sie einen
                             Sehtest. Sie können entweder über die Funktion Termin vereinbaren sich
-                            einen Termin aussuchen oder telefonisch vereinbaren unter {storeInfo.phoneNumber}
+                            einen Termin aussuchen oder telefonisch vereinbaren unter{" "}
+                            {storeInfo.phoneNumber}
                         </NumberBox>
                         <NumberBox
                             n={2}

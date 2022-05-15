@@ -3,10 +3,10 @@ import React from "react";
 import { NextPageWithLayout } from "~/types/next-types";
 
 import Layout from "~/components/layout/Layout";
-import { User } from "../../../types/user";
 import { Center, Container, Tabs, useMantineTheme } from "@mantine/core";
 import CreateRefractionProtocol from "~/components/protocol/CreateRefractionProtocol";
 import { useRouter } from "next/router";
+import { User } from "~/types/user";
 
 type View = "createrefractionprotocol" | "queryspectaclepass" | "showappointments";
 
@@ -33,7 +33,7 @@ const CustomerManagement: NextPageWithLayout = () => {
     };
 
     let tabView: React.ReactNode = null;
-    switch (view) {
+    switch (view.toLowerCase()) {
         case "createrefractionprotocol":
             tabView = <CreateRefractionProtocol customer={dummyUser} />;
             break;
