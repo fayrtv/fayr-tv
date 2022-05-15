@@ -1,8 +1,7 @@
 import { Container, Group, Space, Stack, Text } from "~/components/common";
 import React from "react";
-import { CircleX } from "tabler-icons-react";
+import { CircleX, LetterF } from "tabler-icons-react";
 import { RefractionProtocol } from "~/components/RefractionProtocol";
-import RefractionProtocolArchive from "~/components/RefractionProtocolArchive";
 import { RefractionProtocol as RefractionProtocolEntity } from "~/models";
 import { RefractionProtocol as RefractionProtocolModel } from "~/types/refraction-protocol";
 import { NextPageWithLayout } from "~/types/next-types";
@@ -13,15 +12,43 @@ import { getUser } from "~/helpers/authentication";
 import { DataStore } from "@aws-amplify/datastore";
 import { withSSRContext } from "aws-amplify";
 import { serializeModel } from "@aws-amplify/datastore/ssr";
-import { Center, Paper } from "@mantine/core";
+import { Moment } from "moment";
+import moment from "moment";
 
 type ServerProps = {
     refractionProtocols: RefractionProtocolEntity[];
 };
 
 const SpectaclePassPage: NextPageWithLayout<ServerProps> = ({ refractionProtocols }) => {
-    const currentProtocol = refractionProtocols[0];
-    const protocolHistory = refractionProtocols.slice(1);
+    const sortedProtocols = React.useMemo(() => {
+        type SortCompatibleProtocol = {
+            protocol: RefractionProtocolEntity;
+            createdAtParsed?: Moment;
+        };
+
+        const protocolSlice = [...refractionProtocols];
+
+        return protocolSlice
+            .map<SortCompatibleProtocol>((x) => ({
+                protocol: x,
+                createdAtParsed: moment.utc(x.createdAt),
+            }))
+            .sort(({ createdAtParsed: leftDate }, { createdAtParsed: rightDate }) => {
+                if (!leftDate && !rightDate) {
+                    return 0;
+                } else if (!leftDate) {
+                    return 1;
+                } else if (!rightDate) {
+                    return -1;
+                } else {
+                    return rightDate.diff(leftDate);
+                }
+            })
+            .map((x) => x.protocol);
+    }, []);
+
+    const currentProtocol = sortedProtocols[0];
+    const protocolHistory = sortedProtocols.slice(1);
 
     const [selectedProtocol, setSelectedProtocol] = React.useState(0);
 

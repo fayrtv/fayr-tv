@@ -15,11 +15,13 @@ import {
 } from "@mantine/core";
 import { Customer } from "../../types/user";
 import React from "react";
-import { RefractionProtocol } from "~/types/refraction-protocol";
+import { DataStore } from "aws-amplify";
+import { RefractionProtocol as RefractionProtocolEntity } from "~/models";
 import { CirclePlus, DeviceFloppy, Edit, Printer, Trash } from "tabler-icons-react";
 import { useForm, useMediaQuery } from "@mantine/hooks";
 import { MobileWidthThreshold } from "~/constants/mediaqueries";
 import { UseForm } from "@mantine/hooks/lib/use-form/use-form";
+import { RefractionProtocol } from "~/types/refraction-protocol";
 
 type Props = {
     customer: Customer;
@@ -125,9 +127,31 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
         },
     });
 
-    const onSubmit = (protocol: PlainProtocol) => {
-        // TODO
-        console.log(protocol);
+    const onSubmit = async (protocol: PlainProtocol) => {
+        const jsonProtocolModel: RefractionProtocol = {
+            left: {
+                axis: protocol.leftAxis!,
+                cylinder: protocol.leftCylinder!,
+                pd: protocol.leftPd!,
+                sphere: protocol.leftSphere!,
+                addition: protocol.leftAddition,
+            },
+            right: {
+                axis: protocol.rightAddition!,
+                cylinder: protocol.rightCylinder!,
+                pd: protocol.rightPd!,
+                sphere: protocol.rightSphere!,
+                addition: protocol.rightAddition,
+            },
+        };
+
+        await DataStore.save(
+            new RefractionProtocolEntity({
+                recordedAt: new Date().toISOString(),
+                data: JSON.stringify(jsonProtocolModel),
+                userID: customer.email,
+            }),
+        );
     };
 
     return (
