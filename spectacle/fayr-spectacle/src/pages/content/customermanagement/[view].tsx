@@ -35,15 +35,6 @@ const CustomerManagement: NextPageWithLayout<ServerSideProps> = ({
     const [selectedCustomer, setSelectedCustomer] = React.useState<Customer | undefined>(undefined);
 
     const view = router.query.view as View;
-    const dummyUser: User = {
-        email: "max.mustermann@website.de",
-        address: "m",
-        title: "Dr.",
-        emailVerified: true,
-        firstName: "Max",
-        lastName: "Mustermann",
-        newsletter: true,
-    };
 
     let tabView: React.ReactNode = null;
     switch (view.toLowerCase()) {
