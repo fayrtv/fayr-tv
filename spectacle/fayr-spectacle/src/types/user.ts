@@ -1,4 +1,5 @@
 export type User = {
+    id: string;
     email: string;
     emailVerified: boolean;
     address: "m" | "f";
