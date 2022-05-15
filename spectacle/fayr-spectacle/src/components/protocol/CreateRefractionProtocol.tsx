@@ -46,6 +46,19 @@ type PlainProtocol = {
     rightAddition?: number;
 };
 
+const defaultProtocol = {
+    leftAxis: undefined,
+    leftCylinder: undefined,
+    leftPd: undefined,
+    leftSphere: undefined,
+    leftAddition: undefined,
+    rightAxis: undefined,
+    rightCylinder: undefined,
+    rightPd: undefined,
+    rightSphere: undefined,
+    rightAddition: undefined,
+};
+
 type RowProps = {
     form: UseForm<PlainProtocol>;
     side: Side;
@@ -117,18 +130,7 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
     const [showSaveFeedback, setShowSaveFeedback] = React.useState(false);
 
     const protocolform = useForm<PlainProtocol>({
-        initialValues: {
-            leftAxis: undefined,
-            leftCylinder: undefined,
-            leftPd: undefined,
-            leftSphere: undefined,
-            leftAddition: undefined,
-            rightAxis: undefined,
-            rightCylinder: undefined,
-            rightPd: undefined,
-            rightSphere: undefined,
-            rightAddition: undefined,
-        },
+        initialValues: { ...defaultProtocol },
     });
 
     const onSubmit = async (protocol: PlainProtocol) => {
@@ -256,6 +258,7 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
                                 boxShadow: "0px 0px 3px 0px #000000",
                                 width: "100%",
                             }}
+                            onClick={protocolform.reset}
                             leftIcon={!isMobile ? <Trash /> : null}
                             color="red"
                         >
