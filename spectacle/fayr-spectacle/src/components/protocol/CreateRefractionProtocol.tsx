@@ -12,6 +12,7 @@ import {
     Stack,
     TextInput,
     useMantineTheme,
+    Modal,
 } from "@mantine/core";
 import { Customer } from "../../types/user";
 import React from "react";
@@ -112,6 +113,9 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
 
     const isMobile = useMediaQuery(`(max-width: ${MobileWidthThreshold}px)`, true);
 
+    const [saving, setSaving] = React.useState(false);
+    const [showSaveFeedback, setShowSaveFeedback] = React.useState(false);
+
     const protocolform = useForm<PlainProtocol>({
         initialValues: {
             leftAxis: undefined,
@@ -128,34 +132,49 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
     });
 
     const onSubmit = async (protocol: PlainProtocol) => {
-        const jsonProtocolModel: RefractionProtocol = {
-            left: {
-                axis: protocol.leftAxis!,
-                cylinder: protocol.leftCylinder!,
-                pd: protocol.leftPd!,
-                sphere: protocol.leftSphere!,
-                addition: protocol.leftAddition,
-            },
-            right: {
-                axis: protocol.rightAddition!,
-                cylinder: protocol.rightCylinder!,
-                pd: protocol.rightPd!,
-                sphere: protocol.rightSphere!,
-                addition: protocol.rightAddition,
-            },
-        };
+        try {
+            setSaving(true);
+            const jsonProtocolModel: RefractionProtocol = {
+                left: {
+                    axis: protocol.leftAxis!,
+                    cylinder: protocol.leftCylinder!,
+                    pd: protocol.leftPd!,
+                    sphere: protocol.leftSphere!,
+                    addition: protocol.leftAddition,
+                },
+                right: {
+                    axis: protocol.rightAddition!,
+                    cylinder: protocol.rightCylinder!,
+                    pd: protocol.rightPd!,
+                    sphere: protocol.rightSphere!,
+                    addition: protocol.rightAddition,
+                },
+            };
 
-        await DataStore.save(
-            new RefractionProtocolEntity({
-                recordedAt: new Date().toISOString(),
-                data: JSON.stringify(jsonProtocolModel),
-                userID: customer.email,
-            }),
-        );
+            await DataStore.save(
+                new RefractionProtocolEntity({
+                    recordedAt: new Date().toISOString(),
+                    data: JSON.stringify(jsonProtocolModel),
+                    userID: customer.email,
+                }),
+            );
+            setShowSaveFeedback(true);
+        } finally {
+            setSaving(false);
+        }
     };
 
     return (
         <Container>
+            <Modal
+                opened={showSaveFeedback}
+                onClose={() => {
+                    setShowSaveFeedback(false);
+                    protocolform.reset();
+                }}
+            >
+                <Text>Protokoll erfolgreich gespeichert</Text>
+            </Modal>
             <form onSubmit={protocolform.onSubmit(onSubmit)}>
                 <Grid columns={6} gutter="xl">
                     <Grid.Col span={3}>
@@ -294,6 +313,7 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
                                 width: "100%",
                             }}
                             type="submit"
+                            loading={saving}
                         >
                             {!isMobile ? <Text size="xs">Speichern</Text> : <DeviceFloppy />}
                         </Button>
