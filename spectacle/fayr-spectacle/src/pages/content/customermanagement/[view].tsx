@@ -6,12 +6,14 @@ import Layout from "~/components/layout/Layout";
 import { GetServerSideProps } from "next";
 import { getUser } from "~/helpers/authentication";
 import { User, Customer } from "../../../types/user";
-import { Center, Container, Grid, Tabs, useMantineTheme } from "@mantine/core";
+import { Burger, Center, Container, Grid, Tabs, useMantineTheme } from "@mantine/core";
 import CreateRefractionProtocol from "~/components/customermanagement/CreateRefractionProtocol";
 import { useRouter } from "next/router";
 import { CustomerSelection } from "~/components/customermanagement/CustomerSelection";
 import { DataStore, withSSRContext } from "aws-amplify";
 import SpectaclePassOverview from "~/components/customermanagement/SpectaclePassOverView";
+import { MobileWidthThreshold } from "~/constants/mediaqueries";
+import { useMediaQuery } from "@mantine/hooks";
 
 type ServerSideProps = {
     customersOfStore: Array<Customer>;
@@ -33,6 +35,8 @@ const CustomerManagement: NextPageWithLayout<ServerSideProps> = ({
     const mantineTheme = useMantineTheme();
     const router = useRouter();
 
+    const isMobile = useMediaQuery(`(max-width: ${MobileWidthThreshold}px)`, true);
+
     const [selectedCustomer, setSelectedCustomer] = React.useState<Customer | undefined>(undefined);
 
     const view = router.query.view as View;
@@ -52,46 +56,54 @@ const CustomerManagement: NextPageWithLayout<ServerSideProps> = ({
 
     return (
         <>
-            <Container sx={(_) => ({ padding: "50px", maxWidth: "100%", width: "100%" })}>
+            <Container
+                sx={(_) => ({
+                    padding: isMobile ? "10px" : "50px",
+                    maxWidth: "100%",
+                    width: "100%",
+                })}
+            >
                 <Grid columns={5}>
-                    <Grid.Col span={1}>
-                        <Center
-                            sx={(_) => ({
-                                boxShadow: "0px 0px 5px 0px #000000",
-                                padding: "15px",
-                                flexGrow: 1,
-                            })}
-                        >
-                            <Tabs
-                                variant="pills"
-                                orientation="vertical"
-                                color={mantineTheme.colors.primary[5]}
-                                active={tabMap.get(view)}
-                                styles={(_) => ({
-                                    tabLabel: {
-                                        fontSize: 20,
-                                    },
+                    {!isMobile && (
+                        <Grid.Col span={1}>
+                            <Center
+                                sx={(_) => ({
+                                    boxShadow: "0px 0px 5px 0px #000000",
+                                    padding: "15px",
+                                    flexGrow: 1,
                                 })}
-                                onTabChange={(index) => {
-                                    const correspondingView = Array.from(tabMap.entries()).find(
-                                        ([_, val]) => val === index,
-                                    );
-                                    router.push(
-                                        `/content/customermanagement/${correspondingView?.[0]}`,
-                                    );
-                                }}
                             >
-                                <Tabs.Tab label="Refraktionsprotokoll anlegen" p="md" />
-                                <Tabs.Tab label="Brillenpass abfragen" p="md" />
-                                <Tabs.Tab label="Termine anzeigen" p="md" />
-                            </Tabs>
-                        </Center>
-                    </Grid.Col>
-                    <Grid.Col span={4}>
+                                <Tabs
+                                    variant="pills"
+                                    orientation="vertical"
+                                    color={mantineTheme.colors.primary[5]}
+                                    active={tabMap.get(view)}
+                                    styles={(_) => ({
+                                        tabLabel: {
+                                            fontSize: 20,
+                                        },
+                                    })}
+                                    onTabChange={(index) => {
+                                        const correspondingView = Array.from(tabMap.entries()).find(
+                                            ([_, val]) => val === index,
+                                        );
+                                        router.push(
+                                            `/content/customermanagement/${correspondingView?.[0]}`,
+                                        );
+                                    }}
+                                >
+                                    <Tabs.Tab label="Refraktionsprotokoll anlegen" p="md" />
+                                    <Tabs.Tab label="Brillenpass abfragen" p="md" />
+                                    <Tabs.Tab label="Termine anzeigen" p="md" />
+                                </Tabs>
+                            </Center>
+                        </Grid.Col>
+                    )}
+                    <Grid.Col span={isMobile ? 5 : 4}>
                         <Center
                             sx={(_) => ({
                                 boxShadow: "0px 0px 5px 0px #000000",
-                                padding: "15px",
+                                padding: isMobile ? "0px" : "15px",
                                 flexGrow: 4,
                             })}
                         >
