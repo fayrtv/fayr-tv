@@ -1,9 +1,11 @@
 import { Button, Text } from "~/components/common";
-import { CalendarPlus } from "tabler-icons-react";
+import { CalendarPlus, Tool, User as UserIcon } from "tabler-icons-react";
 import { Anchor, Avatar, Grid, Group, Paper, Tabs } from "@mantine/core";
 import { formatFormalAddress, User } from "~/types/user";
 import { useSession } from "~/hooks/useSession";
 import Link from "next/link";
+import { useMediaQuery } from "@mantine/hooks";
+import { MobileWidthThreshold } from "~/constants/mediaqueries";
 
 export enum SwitchAvailability {
     Unavailable,
@@ -22,23 +24,26 @@ const SubHeader = ({
     showAppointmentCTA = true,
 }: Props) => {
     const { user } = useSession();
+    const isMobile = useMediaQuery(`(max-width: ${MobileWidthThreshold}px)`, true);
 
     return (
         <Paper px="md" py="sm" shadow="sm" sx={(theme) => ({ fontSize: theme.fontSizes.sm })}>
-            <Grid>
-                <Grid.Col span={4}>
+            <Grid columns={12}>
+                <Grid.Col span={isMobile ? 2 : 4}>
                     {showAppointmentCTA && (
                         <Button color="secondary" size="xs">
                             <Group spacing="sm">
                                 <CalendarPlus color="black" size={15} />
-                                <Text size="sm" color="black">
-                                    Termin vereinbaren
-                                </Text>
+                                {!isMobile && (
+                                    <Text size="sm" color="black">
+                                        Termin vereinbaren
+                                    </Text>
+                                )}
                             </Group>
                         </Button>
                     )}
                 </Grid.Col>
-                <Grid.Col span={4}>
+                <Grid.Col span={isMobile ? 3 : 4}>
                     {switchAvailability !== SwitchAvailability.Unavailable && (
                         <Tabs
                             variant="pills"
@@ -52,8 +57,14 @@ const SubHeader = ({
                                     fontSize: theme.fontSizes.xs,
                                 },
                                 // Account for border of other button
-                                tabInner: { margin: "1px" },
+                                tabInner: {
+                                    margin: "1px",
+                                },
+                                tabControl: {
+                                    padding: isMobile ? "7px !important" : "auto",
+                                },
                             })}
+                            orientation="horizontal"
                         >
                             <Tabs.Tab
                                 disabled={
@@ -62,7 +73,8 @@ const SubHeader = ({
                                         switchAvailability === SwitchAvailability.CustomerOnly
                                     )
                                 }
-                                label="Für Kunden"
+                                label={isMobile ? "" : "Für Kunden"}
+                                icon={<UserIcon size={14} />}
                             />
                             <Tabs.Tab
                                 disabled={
@@ -71,15 +83,16 @@ const SubHeader = ({
                                         switchAvailability === SwitchAvailability.OpticianOnly
                                     )
                                 }
-                                label="Für Optiker"
+                                label={isMobile ? "" : "Für Optiker"}
+                                icon={<Tool size={14} />}
                             />
                         </Tabs>
                     )}
                 </Grid.Col>
-                <Grid.Col span={4} sx={{ justifyContent: "right" }}>
+                <Grid.Col span={isMobile ? 7 : 4} sx={{ justifyContent: "right" }}>
                     <Link href="/profile" passHref>
                         <Anchor>
-                            <Group position="right">
+                            <Group position="right" direction="row">
                                 {!!user && (
                                     <Text weight="bold" size="xs">
                                         Willkommen, {formatFormalAddress(user)}

@@ -333,6 +333,7 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
                                     boxShadow: "0px 0px 3px 0px #000000",
                                 }}
                                 leftIcon={!isMobile ? <Printer color={inverseThemedColor} /> : null}
+                                onClick={() => window.print()}
                             >
                                 {!isMobile ? (
                                     <Text color={inverseThemedColor} size="xs">
