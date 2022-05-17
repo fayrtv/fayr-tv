@@ -4,6 +4,8 @@ import PassportQRCodeExample from "~/components/PassportQRCode";
 import Layout from "~/components/layout/Layout";
 import { NextPageWithLayout } from "~/types/next-types";
 import { useStoreInfo } from "~/components/StoreInfoProvider";
+import Link from "next/link";
+import { Anchor } from "@mantine/core";
 
 const NumberBox = ({ n, title, children }: PropsWithChildren<{ n: number; title: string }>) => {
     return (
@@ -58,9 +60,12 @@ const DigitalSpectaclePassportPage: NextPageWithLayout = () => {
                     <Stack spacing="lg">
                         <NumberBox n={1} title="Vereinbaren Sie einen Termin">
                             Kommen Sie ins {storeInfo.name} {storeInfo.city} und machen Sie einen
-                            Sehtest. Sie können entweder über die Funktion Termin vereinbaren sich
-                            einen Termin aussuchen oder telefonisch vereinbaren unter{" "}
-                            {storeInfo.phoneNumber}
+                            Sehtest. Sie können sich über die Funktion{" "}
+                            <Link href="/appointment" passHref>
+                                <Anchor>Termin vereinbaren</Anchor>
+                            </Link>{" "}
+                            einen Termin aussuchen, oder rufen Sie uns an unter{" "}
+                            <span style={{userSelect: "all"}}>{storeInfo.phoneNumber}</span>.
                         </NumberBox>
                         <NumberBox
                             n={2}

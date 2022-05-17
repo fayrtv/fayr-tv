@@ -134,7 +134,7 @@ const SignInPage: NextPageWithLayout = () => {
                         </Anchor>
                     </Link>{" "}
                     für den{" "}
-                    <Link href="/about/digital-spectacle-passport" passHref>
+                    <Link href="/about" passHref>
                         <Anchor
                             sx={(theme) => ({
                                 color: colorScheme === "dark" ? theme.white : theme.black,

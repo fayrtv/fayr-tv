@@ -31,16 +31,16 @@ const SubHeader = ({
             <Grid columns={12}>
                 <Grid.Col span={isMobile ? 2 : 4}>
                     {showAppointmentCTA && (
-                        <Button color="secondary" size="xs">
-                            <Group spacing="sm">
-                                <CalendarPlus color="black" size={15} />
-                                {!isMobile && (
-                                    <Text size="sm" color="black">
+                        <Link href="/appointment">
+                            <Button color="secondary" size="xs" component="a">
+                                <Group spacing="sm">
+                                    <CalendarPlus color="black" size={15} />
+                                    {!isMobile && (<Text size="sm" color="black">
                                         Termin vereinbaren
-                                    </Text>
-                                )}
-                            </Group>
-                        </Button>
+                                    </Text>)}
+                                </Group>
+                            </Button>
+                        </Link>
                     )}
                 </Grid.Col>
                 <Grid.Col span={isMobile ? 3 : 4}>

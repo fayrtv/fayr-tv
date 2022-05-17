@@ -7,6 +7,8 @@ export type User = {
     firstName: string;
     lastName: string;
     newsletter: boolean;
+    city: string;
+    phone: string;
 };
 
 export type Customer = Pick<User, "firstName" | "lastName" | "emailVerified" | "email">;

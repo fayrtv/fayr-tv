@@ -1,40 +1,55 @@
 {
-    "version": "1",
-    "cognitoConfig": {
-        "identityPoolName": "fayrtvlivespectaclefb8de33e7_identitypool_b8de33e7",
-        "allowUnauthenticatedIdentities": false,
-        "resourceNameTruncated": "fayrtvb8de33e7",
-        "userPoolName": "fayrtvlivespectaclefb8de33e7_userpool_b8de33e7",
-        "autoVerifiedAttributes": ["email"],
-        "mfaConfiguration": "OFF",
-        "mfaTypes": ["SMS Text Message"],
-        "smsAuthenticationMessage": "Your authentication code is {####}",
-        "smsVerificationMessage": "Your verification code is {####}",
-        "emailVerificationSubject": "Your verification code",
-        "emailVerificationMessage": "Your verification code is {####}",
-        "defaultPasswordPolicy": false,
-        "passwordPolicyMinLength": 8,
-        "passwordPolicyCharacters": [],
-        "requiredAttributes": ["email", "family_name"],
-        "aliasAttributes": [],
-        "userpoolClientGenerateSecret": false,
-        "userpoolClientRefreshTokenValidity": 30,
-        "userpoolClientWriteAttributes": ["email"],
-        "userpoolClientReadAttributes": ["email"],
-        "userpoolClientLambdaRole": "fayrtvb8de33e7_userpoolclient_lambda_role",
-        "userpoolClientSetAttributes": false,
-        "sharedId": "b8de33e7",
-        "resourceName": "fayrtvlivespectaclefb8de33e7",
-        "authSelections": "identityPoolAndUserPool",
-        "useDefault": "default",
-        "usernameAttributes": ["email, phone_number"],
-        "triggers": {
-            "CustomMessage": ["verification-link"]
-        },
-        "userPoolGroupList": [],
-        "serviceName": "Cognito",
-        "verificationBucketName": "fayrtvlivespectaclefb8de33e7verificationbucket",
-        "usernameCaseSensitive": false,
-        "useEnabledMfas": true
-    }
+  "version": "1",
+  "cognitoConfig": {
+    "identityPoolName": "fayrtvlivespectaclefb8de33e7_identitypool_b8de33e7",
+    "allowUnauthenticatedIdentities": false,
+    "resourceNameTruncated": "fayrtvb8de33e7",
+    "userPoolName": "fayrtvlivespectaclefb8de33e7_userpool_b8de33e7",
+    "autoVerifiedAttributes": [
+      "email"
+    ],
+    "mfaConfiguration": "OFF",
+    "mfaTypes": [
+      "SMS Text Message"
+    ],
+    "smsAuthenticationMessage": "Your authentication code is {####}",
+    "smsVerificationMessage": "Your verification code is {####}",
+    "emailVerificationSubject": "Your verification code",
+    "emailVerificationMessage": "Your verification code is {####}",
+    "defaultPasswordPolicy": false,
+    "passwordPolicyMinLength": 8,
+    "passwordPolicyCharacters": [],
+    "requiredAttributes": [
+      "email",
+      "family_name"
+    ],
+    "aliasAttributes": [],
+    "userpoolClientGenerateSecret": false,
+    "userpoolClientRefreshTokenValidity": 30,
+    "userpoolClientWriteAttributes": [
+      "email"
+    ],
+    "userpoolClientReadAttributes": [
+      "email"
+    ],
+    "userpoolClientLambdaRole": "fayrtvb8de33e7_userpoolclient_lambda_role",
+    "userpoolClientSetAttributes": false,
+    "sharedId": "b8de33e7",
+    "resourceName": "fayrtvlivespectaclefb8de33e7",
+    "authSelections": "identityPoolAndUserPool",
+    "useDefault": "default",
+    "usernameAttributes": [
+      "email, phone_number"
+    ],
+    "triggers": {
+      "CustomMessage": [
+        "verification-link"
+      ]
+    },
+    "userPoolGroupList": [],
+    "serviceName": "Cognito",
+    "verificationBucketName": "fayrtvlivespectaclefb8de33e7verificationbucket",
+    "usernameCaseSensitive": false,
+    "useEnabledMfas": true
+  }
 }

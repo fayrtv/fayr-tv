@@ -1,24 +1,26 @@
 {
-    "trigger": true,
-    "modules": ["verification-link"],
-    "parentResource": "fayrtvlivespectaclefb8de33e7",
-    "functionName": "fayrtvlivespectaclefb8de33e7CustomMessage",
-    "resourceName": "fayrtvlivespectaclefb8de33e7CustomMessage",
-    "parentStack": "auth",
-    "triggerEnvs": [
-        {
-            "key": "RESOURCENAME",
-            "value": "resourceName"
-        }
-    ],
-    "triggerDir": "C:\\snapshot\\repo\\build\\node_modules\\@aws-amplify\\amplify-category-auth\\provider-utils\\awscloudformation\\triggers\\CustomMessage",
-    "triggerTemplate": "CustomMessage.json.ejs",
-    "triggerEventPath": "CustomMessage.event.json",
-    "roleName": "fayrtvlivespectaclefb8de33e7CustomMessage",
-    "skipEdit": true,
-    "REDIRECTURL": "localhost:3000/auth/success",
-    "EMAILSUBJECT": "E-Mail Adresse bestätigen",
-    "EMAILMESSAGE": "hallo",
-    "RESOURCENAME": "resourceName",
-    "enableCors": false
+  "trigger": true,
+  "modules": [
+    "verification-link"
+  ],
+  "parentResource": "fayrtvlivespectaclefb8de33e7",
+  "functionName": "fayrtvlivespectaclefb8de33e7CustomMessage",
+  "resourceName": "fayrtvlivespectaclefb8de33e7CustomMessage",
+  "parentStack": "auth",
+  "triggerEnvs": [
+    {
+      "key": "RESOURCENAME",
+      "value": "resourceName"
+    }
+  ],
+  "triggerDir": "C:\\snapshot\\repo\\build\\node_modules\\@aws-amplify\\amplify-category-auth\\provider-utils\\awscloudformation\\triggers\\CustomMessage",
+  "triggerTemplate": "CustomMessage.json.ejs",
+  "triggerEventPath": "CustomMessage.event.json",
+  "roleName": "fayrtvlivespectaclefb8de33e7CustomMessage",
+  "skipEdit": true,
+  "REDIRECTURL": "localhost:3000/auth/success",
+  "EMAILSUBJECT": "E-Mail Adresse bestätigen",
+  "EMAILMESSAGE": "hallo",
+  "RESOURCENAME": "resourceName",
+  "enableCors": false
 }

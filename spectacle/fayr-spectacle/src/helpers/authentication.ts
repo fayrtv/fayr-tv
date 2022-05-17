@@ -27,6 +27,8 @@ export const convertAmplifyAuthUser = (response: AmplifyUserResponse) => {
         title: userAttributes["custom:title"] ?? null,
         firstName: userAttributes["custom:first_name"] ?? null,
         newsletter: userAttributes["custom:newsletter"] ?? null,
+        city: userAttributes["custom:city"] ?? null,
+        phone: userAttributes["custom:phone"] ?? null,
     };
 
     return user;

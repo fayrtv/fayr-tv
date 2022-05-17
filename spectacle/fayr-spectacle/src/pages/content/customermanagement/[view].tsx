@@ -4,8 +4,7 @@ import { NextPageWithLayout } from "~/types/next-types";
 
 import Layout from "~/components/layout/Layout";
 import { GetServerSideProps } from "next";
-import { getUser } from "~/helpers/authentication";
-import { User, Customer } from "../../../types/user";
+import { Customer } from "~/types/user";
 import { Burger, Center, Container, Grid, Tabs, useMantineTheme } from "@mantine/core";
 import CreateRefractionProtocol from "~/components/customermanagement/CreateRefractionProtocol";
 import { useRouter } from "next/router";
@@ -17,7 +16,6 @@ import { useMediaQuery } from "@mantine/hooks";
 
 type ServerSideProps = {
     customersOfStore: Array<Customer>;
-    user: User;
 };
 
 type View = "createrefractionprotocol" | "queryspectaclepass" | "showappointments";
@@ -30,7 +28,6 @@ const tabMap = new Map<View, number>([
 
 const CustomerManagement: NextPageWithLayout<ServerSideProps> = ({
     customersOfStore,
-    user,
 }: ServerSideProps) => {
     const mantineTheme = useMantineTheme();
     const router = useRouter();
@@ -128,8 +125,6 @@ CustomerManagement.layoutProps = {
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-    const currentUser = await getUser(req);
-
     const SSR = withSSRContext({ req });
     const store = SSR.DataStore as typeof DataStore;
 
@@ -161,7 +156,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     return {
         props: {
             customersOfStore: dummyCustomerList,
-            user: currentUser,
         },
     };
 };

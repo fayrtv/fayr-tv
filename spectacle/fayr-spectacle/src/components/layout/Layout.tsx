@@ -86,7 +86,7 @@ const Layout = ({ children, subHeader = { enabled: true } }: Props) => {
                                 </ThemeAdaptiveAnchor>
                             </li>
                             <li>
-                                <ThemeAdaptiveAnchor href={"/about/digital-spectacle-passport"}>
+                                <ThemeAdaptiveAnchor href={"/about"}>
                                     Infos zum Brillenpass
                                 </ThemeAdaptiveAnchor>
                             </li>
