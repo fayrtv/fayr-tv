@@ -187,12 +187,7 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
             <Paper p={isMobile ? "sm" : "xl"}>
                 <form onSubmit={protocolform.onSubmit(onSubmit)}>
                     <Grid columns={6} gutter="lg">
-                        <Grid.Col span={3}>
-                            <Text color="primary" size="xl" weight="bold">
-                                Refraktionsprotokoll anlegen
-                            </Text>
-                        </Grid.Col>
-                        <Grid.Col span={2} offset={1}>
+                        <Grid.Col span={2} offset={4}>
                             <Button size="xs" sx={{ width: "100%" }} leftIcon={<CirclePlus />}>
                                 {!isMobile && <Text size="xs">Neues Kundenkonto</Text>}
                             </Button>
