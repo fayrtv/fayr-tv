@@ -1,5 +1,4 @@
-import { Group } from "~/components/common";
-import { Text, Container, Paper, Tabs, useMantineTheme } from "@mantine/core";
+import { Text, Container, Grid, Paper, Tabs, useMantineTheme } from "@mantine/core";
 import React, { useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
 import { useMediaQuery } from "@mantine/hooks";
@@ -46,9 +45,9 @@ export const PathBasedTabMenu = ({ tabs, pathFragmentName }: Props) => {
                 width: "100%",
             }}
         >
-            <Group align="flex-start" direction="row">
+            <Grid columns={5}>
                 {!isMobile && (
-                    <>
+                    <Grid.Col span={1}>
                         <Paper>
                             <Tabs
                                 variant="pills"
@@ -65,15 +64,17 @@ export const PathBasedTabMenu = ({ tabs, pathFragmentName }: Props) => {
                                 ))}
                             </Tabs>
                         </Paper>
-                    </>
+                    </Grid.Col>
                 )}
-                <Paper>
-                    <Text size="xl" color="primary" mb="sm">
-                        {activeTab.title}
-                    </Text>
-                    {activeTab.render()}
-                </Paper>
-            </Group>
+                <Grid.Col span={isMobile ? 5 : 4}>
+                    <Paper>
+                        <Text size="xl" color="primary" mb="sm">
+                            {activeTab.title}
+                        </Text>
+                        {activeTab.render()}
+                    </Paper>
+                </Grid.Col>
+            </Grid>
         </Container>
     );
 };
