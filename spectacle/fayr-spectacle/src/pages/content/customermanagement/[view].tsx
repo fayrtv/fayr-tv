@@ -1,18 +1,17 @@
-import { Group } from "~/components/common";
 import React from "react";
 import { NextPageWithLayout } from "~/types/next-types";
 
 import Layout from "~/components/layout/Layout";
 import { GetServerSideProps } from "next";
 import { Customer } from "~/types/user";
-import { Burger, Center, Container, Grid, Tabs, useMantineTheme } from "@mantine/core";
+import { Center, Container, Grid, Tabs, useMantineTheme } from "@mantine/core";
 import CreateRefractionProtocol from "~/components/customermanagement/CreateRefractionProtocol";
 import { useRouter } from "next/router";
 import { CustomerSelection } from "~/components/customermanagement/CustomerSelection";
 import { DataStore, withSSRContext } from "aws-amplify";
-import SpectaclePassOverview from "~/components/customermanagement/SpectaclePassOverView";
 import { MobileWidthThreshold } from "~/constants/mediaqueries";
 import { useMediaQuery } from "@mantine/hooks";
+import SpectaclePassOverview from "~/components/customermanagement/SpectaclePassOverview";
 
 type ServerSideProps = {
     customersOfStore: Array<Customer>;

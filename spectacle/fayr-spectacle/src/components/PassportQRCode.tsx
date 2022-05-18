@@ -2,9 +2,12 @@ import { Box, Center, Group, Stack, Text } from "~/components/common";
 import ChevronRightCircle from "~/components/icons/ChevronRightCircle";
 import { useMantineTheme } from "@mantine/core";
 import { QRCode } from "~/components/QRCode";
+import { useSession } from "~/hooks/useSession";
+import { formatFormalAddress } from "~/types/user";
 
 export default function PassportQRCodeExample() {
     const theme = useMantineTheme();
+    const { user } = useSession();
 
     // TODO: Define
     const qrCodeContent = "https://example.com";
@@ -18,7 +21,7 @@ export default function PassportQRCodeExample() {
                             Digitaler Brillenpass
                         </Text>
                         <Text size="xs" color="white">
-                            Max Mustermann
+                            {user ? formatFormalAddress(user) : "Max Mustermann"}
                         </Text>
                     </Stack>
                     <ChevronRightCircle />

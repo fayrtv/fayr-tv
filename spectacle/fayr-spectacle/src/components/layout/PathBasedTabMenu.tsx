@@ -27,7 +27,7 @@ export const PathBasedTabMenu = ({ tabs, pathFragmentName }: Props) => {
 
     useEffect(() => {
         if (activeTabIndex === undefined) {
-            router.push(tabs[0].slug);
+            router.push(tabs[0].slug).then();
         }
     });
 
@@ -44,7 +44,7 @@ export const PathBasedTabMenu = ({ tabs, pathFragmentName }: Props) => {
                         onTabChange={(index) => {
                             // TODO: probably need to concat with current path
                             const correspondingView = tabs[index];
-                            router.push(`${correspondingView.slug}`);
+                            router.push(`${correspondingView.slug}`).then();
                         }}
                     >
                         {tabs.map((tab, idx) => (
