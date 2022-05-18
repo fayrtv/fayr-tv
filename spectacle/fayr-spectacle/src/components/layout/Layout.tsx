@@ -102,7 +102,7 @@ const Layout = ({ children, subHeader = { enabled: true } }: Props) => {
                             </li>
                             <li>
                                 <ThemeAdaptiveAnchor
-                                    href={"/content/customermanagement/createrefractionprotocol"}
+                                    href={"/content/customermanagement/create-refraction-protocol"}
                                 >
                                     Kundenverwaltung
                                 </ThemeAdaptiveAnchor>

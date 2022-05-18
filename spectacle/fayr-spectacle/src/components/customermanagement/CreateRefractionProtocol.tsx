@@ -74,7 +74,8 @@ const RefractionProtocolRow = ({ form, side }: RowProps) => {
     const theme = useMantineTheme();
     const themedColor = theme.colorScheme === "light" ? theme.white : theme.black;
 
-    const sideLiteral = Side[side].toLowerCase();
+    const sideIdentifier = Side[side].toLowerCase();
+    const sideCaption = side === Side.Left ? "links" : "rechts";
 
     return (
         <>
@@ -89,36 +90,36 @@ const RefractionProtocolRow = ({ form, side }: RowProps) => {
             </DataGridCell>
             <DataGridCell area={`${Side[side]}Sphere`}>
                 <TextInput
-                    placeholder="Sphäre"
+                    placeholder={`Sphäre ${sideCaption}`}
                     required
-                    {...form.getInputProps(`${sideLiteral}Sphere` as keyof PlainProtocol)}
+                    {...form.getInputProps(`${sideIdentifier}Sphere` as keyof PlainProtocol)}
                 />
             </DataGridCell>
             <DataGridCell area={`${Side[side]}Cylinder`}>
                 <TextInput
-                    placeholder="Zylinder"
+                    placeholder={`Zylinder ${sideCaption}`}
                     required
-                    {...form.getInputProps(`${sideLiteral}Cylinder` as keyof PlainProtocol)}
+                    {...form.getInputProps(`${sideIdentifier}Cylinder` as keyof PlainProtocol)}
                 />
             </DataGridCell>
             <DataGridCell area={`${Side[side]}Axis`}>
                 <TextInput
-                    placeholder="Achse"
+                    placeholder={`Achse ${sideCaption}`}
                     required
-                    {...form.getInputProps(`${sideLiteral}Axis` as keyof PlainProtocol)}
+                    {...form.getInputProps(`${sideIdentifier}Axis` as keyof PlainProtocol)}
                 />
             </DataGridCell>
             <DataGridCell area={`${Side[side]}Addition`}>
                 <TextInput
-                    placeholder="Addition"
-                    {...form.getInputProps(`${sideLiteral}Addition` as keyof PlainProtocol)}
+                    placeholder={`Addition ${sideCaption}`}
+                    {...form.getInputProps(`${sideIdentifier}Addition` as keyof PlainProtocol)}
                 />
             </DataGridCell>
             <DataGridCell area={`${Side[side]}Pd`}>
                 <TextInput
-                    placeholder="PD"
+                    placeholder={`PD ${sideCaption}`}
                     required
-                    {...form.getInputProps(`${sideLiteral}Pd` as keyof PlainProtocol)}
+                    {...form.getInputProps(`${sideIdentifier}Pd` as keyof PlainProtocol)}
                 />
             </DataGridCell>
         </>
@@ -275,31 +276,31 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
                                 <DataGridCell area="SphereHeader">
                                     <Stack align="center" spacing="xs">
                                         <Text>Sphäre</Text>
-                                        <Text>S / SPH</Text>
+                                        <Text size="xs">S / SPH</Text>
                                     </Stack>
                                 </DataGridCell>
                                 <DataGridCell area="CylinderHeader">
                                     <Stack align="center" spacing="xs">
                                         <Text>Zylinder</Text>
-                                        <Text>ZYL / CYL</Text>
+                                        <Text size="xs">ZYL / CYL</Text>
                                     </Stack>
                                 </DataGridCell>
                                 <DataGridCell area="AxisHeader">
                                     <Stack align="center" spacing="xs">
                                         <Text>Achse</Text>
-                                        <Text>A / ACH</Text>
+                                        <Text size="xs">A / ACH</Text>
                                     </Stack>
                                 </DataGridCell>
                                 <DataGridCell area="AdditionHeader">
                                     <Stack align="center" spacing="xs">
                                         <Text>Addition</Text>
-                                        <Text>ADD</Text>
+                                        <Text size="xs">ADD</Text>
                                     </Stack>
                                 </DataGridCell>
                                 <DataGridCell area="Pdheader">
                                     <Stack align="center" spacing="xs">
                                         <Text>PD</Text>
-                                        <Text>PD</Text>
+                                        <Text size="xs">PD</Text>
                                     </Stack>
                                 </DataGridCell>
                                 <RefractionProtocolRow form={protocolform} side={Side.Left} />
