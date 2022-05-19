@@ -24,3 +24,7 @@ export const formatFormalAddress = (user: User) => {
 
     return parts.join(" ");
 };
+
+export const formatCustomerName = (customer: Customer) => {
+    return `${customer.firstName} ${customer.lastName}`;
+};

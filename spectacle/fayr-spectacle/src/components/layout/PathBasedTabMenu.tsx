@@ -1,14 +1,13 @@
 import {
-    Text,
-    Container,
-    Grid,
-    Paper,
-    Tabs,
     Burger,
+    Center,
+    Grid,
     Group,
     Overlay,
-    Center,
+    Paper,
     Stack,
+    Tabs,
+    Text,
     ThemeIcon,
 } from "@mantine/core";
 import React, { useEffect, useMemo } from "react";
@@ -26,6 +25,7 @@ export type Tab = {
 type Props = {
     tabs: Tab[];
     pathFragmentName: string;
+    renderOnRootPath?: () => JSX.Element;
 };
 
 type TabStackProps = {
@@ -54,10 +54,15 @@ const TabStack = ({ activeTabIndex, router, onRoutePushed, tabs }: TabStackProps
     );
 };
 
-export const PathBasedTabMenu = ({ tabs, pathFragmentName }: Props) => {
+export const useUrlFragment = (pathFragmentName: string) => {
+    const router = useRouter();
+    return router.query[pathFragmentName]?.[0] as string | undefined;
+};
+
+export const PathBasedTabMenu = ({ tabs, pathFragmentName, renderOnRootPath }: Props) => {
+    const urlFragment = useUrlFragment(pathFragmentName);
     const router = useRouter();
     const isMobile = useMediaQuery(`(max-width: ${MobileWidthThreshold}px)`, true);
-    const urlFragment = router.query[pathFragmentName]?.[0] as string | undefined;
 
     const activeTabIndex = useMemo(() => {
         if (!urlFragment) {
@@ -67,24 +72,22 @@ export const PathBasedTabMenu = ({ tabs, pathFragmentName }: Props) => {
     }, [tabs, urlFragment]);
 
     useEffect(() => {
-        if (activeTabIndex === undefined) {
+        if (activeTabIndex === undefined && !renderOnRootPath) {
             router.push(tabs[0].slug).then();
         }
     });
 
-    const activeTab = activeTabIndex !== undefined ? tabs[activeTabIndex] : undefined;
+    const activeTab = useMemo(
+        () => (activeTabIndex !== undefined ? tabs[activeTabIndex] : undefined),
+        [activeTabIndex, tabs],
+    );
 
     const [isMobileNavigationOpen, setIsMobileNavigationOpen] = React.useState(false);
 
-    return !activeTab ? null : (
-        <Container
-            size="lg"
-            sx={{
-                padding: isMobile ? "10px" : "50px",
-                maxWidth: "100%",
-                width: "100%",
-            }}
-        >
+    return !activeTab ? (
+        renderOnRootPath?.() ?? null
+    ) : (
+        <>
             {isMobile && isMobileNavigationOpen && (
                 <Overlay opacity={0.85}>
                     <Center style={{ height: "100%", width: "100%" }}>
@@ -133,6 +136,6 @@ export const PathBasedTabMenu = ({ tabs, pathFragmentName }: Props) => {
                     </Paper>
                 </Grid.Col>
             </Grid>
-        </Container>
+        </>
     );
 };

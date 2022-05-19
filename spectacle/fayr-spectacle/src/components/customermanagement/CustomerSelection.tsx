@@ -47,7 +47,7 @@ export const CustomerSelection = ({ customers = [], setCustomerSelection }: Prop
     );
 
     return (
-        <Paper p="lg" sx={(_) => ({ width: "100%" })}>
+        <Paper sx={(_) => ({ width: "100%" })}>
             <Stack align="stretch" justify="flex-start">
                 <Text color="primary" size="xl" weight="bold">
                     Nutzer auswählen

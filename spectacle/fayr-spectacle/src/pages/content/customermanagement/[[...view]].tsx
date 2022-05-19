@@ -1,10 +1,10 @@
-import React from "react";
+import React, { ComponentProps, useEffect, useMemo, useState } from "react";
 import { NextPageWithLayout } from "~/types/next-types";
 
 import Layout from "~/components/layout/Layout";
 import { GetServerSideProps } from "next";
-import { Customer } from "~/types/user";
-import { useMantineTheme } from "@mantine/core";
+import { Customer, formatCustomerName, formatFormalAddress } from "~/types/user";
+import { Anchor, Breadcrumbs, Container, useMantineTheme } from "@mantine/core";
 import CreateRefractionProtocol from "~/components/customermanagement/CreateRefractionProtocol";
 import { useRouter } from "next/router";
 import { CustomerSelection } from "~/components/customermanagement/CustomerSelection";
@@ -12,7 +12,10 @@ import { DataStore, withSSRContext } from "aws-amplify";
 import { MobileWidthThreshold } from "~/constants/mediaqueries";
 import { useMediaQuery } from "@mantine/hooks";
 import SpectaclePassOverview from "~/components/customermanagement/SpectaclePassOverview";
-import { PathBasedTabMenu } from "~/components/layout/PathBasedTabMenu";
+import { PathBasedTabMenu, Tab, useUrlFragment } from "~/components/layout/PathBasedTabMenu";
+import Link from "next/link";
+import { Crumb, Crumbs } from "~/components/Crumbs";
+import CustomerOverview from "~/components/customermanagement/CustomerOverview";
 
 type ServerSideProps = {
     customersOfStore: Array<Customer>;
@@ -21,32 +24,82 @@ type ServerSideProps = {
 const CustomerManagement: NextPageWithLayout<ServerSideProps> = ({ customersOfStore }) => {
     const [selectedCustomer, setSelectedCustomer] = React.useState<Customer | undefined>(undefined);
 
-    return !!selectedCustomer ? (
-        <PathBasedTabMenu
-            tabs={[
-                {
-                    title: "Refraktionsprotokoll anlegen",
-                    slug: "create-refraction-protocol",
-                    render: () => <CreateRefractionProtocol customer={selectedCustomer!} />,
-                },
-                {
-                    title: "Brillenpass abfragen",
-                    slug: "query-spectacle-pass",
-                    render: () => <SpectaclePassOverview customer={selectedCustomer!} />,
-                },
-                {
-                    title: "Termine anzeigen",
-                    slug: "show-appointments",
-                    render: () => <b>TODO</b>,
-                },
-            ]}
-            pathFragmentName="view"
-        />
-    ) : (
-        <CustomerSelection
-            customers={customersOfStore}
-            setCustomerSelection={setSelectedCustomer}
-        />
+    const isMobile = useMediaQuery(`(max-width: ${MobileWidthThreshold}px)`, true);
+
+    const tabs = [
+        {
+            title: "Übersicht",
+            slug: "overview",
+            render: () => <CustomerOverview customer={selectedCustomer!} />,
+        },
+        {
+            title: "Refraktionsprotokoll anlegen",
+            slug: "create-refraction-protocol",
+            render: () => <CreateRefractionProtocol customer={selectedCustomer!} />,
+        },
+        {
+            title: "Brillenpass abfragen",
+            slug: "query-spectacle-pass",
+            render: () => <SpectaclePassOverview customer={selectedCustomer!} />,
+        },
+        {
+            title: "Termine anzeigen",
+            slug: "show-appointments",
+            render: () => <b>TODO</b>,
+        },
+    ];
+
+    const urlFragment = useUrlFragment("view");
+    const currentTab = tabs.find((x) => x.slug === urlFragment);
+
+    useEffect(() => {
+        if (!currentTab) {
+            setSelectedCustomer(undefined);
+        }
+    }, [currentTab]);
+
+    const items = useMemo(() => {
+        const result: Crumb[] = [{ title: "Kundenverwaltung", href: "/content/customermanagement" }];
+
+        if (selectedCustomer) {
+            result.push({
+                title: formatCustomerName(selectedCustomer),
+                href: "/content/customermanagement/overview"
+            });
+        }
+
+        if (currentTab && currentTab.slug !== "overview") {
+            result.push({
+                title: currentTab.title,
+                href: "/content/customermanagement/overview"
+            });
+        }
+
+        return result;
+    }, [currentTab, selectedCustomer]);
+
+    return (
+        <Container
+            size="lg"
+            sx={{
+                padding: isMobile ? "10px" : "50px",
+                maxWidth: "100%",
+                width: "100%",
+            }}
+        >
+            <Crumbs items={items} />
+            {!!selectedCustomer ? (
+                <PathBasedTabMenu
+                    tabs={tabs}
+                    pathFragmentName="view"
+                />
+            ) : (
+                <CustomerSelection
+                    customers={customersOfStore}
+                    setCustomerSelection={setSelectedCustomer}
+                />
+            )}
+        </Container>
     );
 };
 
