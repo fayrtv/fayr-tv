@@ -1,7 +1,8 @@
 // Framework
-import { Stack, Text, Autocomplete, Paper, Grid, Divider, Badge, Button } from "@mantine/core";
+import { Autocomplete, Button, Divider, Grid, Paper, Stack, Text } from "@mantine/core";
 import * as React from "react";
 import { Customer } from "~/types/user";
+import { CustomerStatusBadge } from "~/components/customermanagement/CustomerStatusBadge";
 
 type Props = {
     customers: Array<Customer>;
@@ -24,15 +25,15 @@ const CustomerRow = ({
                 <Text>{customer.firstName}</Text>
             </Grid.Col>
             <Grid.Col span={1}>
-                <Badge size="md" color="transparent" radius="xs">
-                    <Text>{customer.emailVerified ? "Aktiv" : "Inaktiv"}</Text>
-                </Badge>
+                <CustomerStatusBadge customer={customer} />
             </Grid.Col>
             <Grid.Col span={1}>
                 <Text>{customer.email}</Text>
             </Grid.Col>
             <Grid.Col span={1}>
-                <Button onClick={pickCustomer}>Auswählen</Button>
+                <Button onClick={pickCustomer} size="sm">
+                    Auswählen
+                </Button>
             </Grid.Col>
         </>
     );

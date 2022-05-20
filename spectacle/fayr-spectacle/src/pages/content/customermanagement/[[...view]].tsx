@@ -4,7 +4,15 @@ import { NextPageWithLayout } from "~/types/next-types";
 import Layout from "~/components/layout/Layout";
 import { GetServerSideProps } from "next";
 import { Customer, formatCustomerName, formatFormalAddress } from "~/types/user";
-import { Anchor, Breadcrumbs, Container, useMantineTheme } from "@mantine/core";
+import {
+    Anchor,
+    Breadcrumbs,
+    Button,
+    Container,
+    Group,
+    Text,
+    useMantineTheme,
+} from "@mantine/core";
 import CreateRefractionProtocol from "~/components/customermanagement/CreateRefractionProtocol";
 import { useRouter } from "next/router";
 import { CustomerSelection } from "~/components/customermanagement/CustomerSelection";
@@ -16,6 +24,7 @@ import { PathBasedTabMenu, Tab, useUrlFragment } from "~/components/layout/PathB
 import Link from "next/link";
 import { Crumb, Crumbs } from "~/components/Crumbs";
 import CustomerOverview from "~/components/customermanagement/CustomerOverview";
+import { CirclePlus } from "tabler-icons-react";
 
 type ServerSideProps = {
     customersOfStore: Array<Customer>;
@@ -59,19 +68,21 @@ const CustomerManagement: NextPageWithLayout<ServerSideProps> = ({ customersOfSt
     }, [currentTab]);
 
     const items = useMemo(() => {
-        const result: Crumb[] = [{ title: "Kundenverwaltung", href: "/content/customermanagement" }];
+        const result: Crumb[] = [
+            { title: "Kundenverwaltung", href: "/content/customermanagement" },
+        ];
 
         if (selectedCustomer) {
             result.push({
                 title: formatCustomerName(selectedCustomer),
-                href: "/content/customermanagement/overview"
+                href: "/content/customermanagement/overview",
             });
         }
 
         if (currentTab && currentTab.slug !== "overview") {
             result.push({
                 title: currentTab.title,
-                href: "/content/customermanagement/overview"
+                href: "/content/customermanagement/overview",
             });
         }
 
@@ -89,15 +100,20 @@ const CustomerManagement: NextPageWithLayout<ServerSideProps> = ({ customersOfSt
         >
             <Crumbs items={items} />
             {!!selectedCustomer ? (
-                <PathBasedTabMenu
-                    tabs={tabs}
-                    pathFragmentName="view"
-                />
+                <PathBasedTabMenu tabs={tabs} pathFragmentName="view" />
             ) : (
-                <CustomerSelection
-                    customers={customersOfStore}
-                    setCustomerSelection={setSelectedCustomer}
-                />
+                <>
+                    <Group position="right" grow={false}>
+                        <Button size="xs" leftIcon={<CirclePlus />}>
+                            {!isMobile && <Text size="sm">Neues Kundenkonto</Text>}
+                        </Button>
+                    </Group>
+
+                    <CustomerSelection
+                        customers={customersOfStore}
+                        setCustomerSelection={setSelectedCustomer}
+                    />
+                </>
             )}
         </Container>
     );

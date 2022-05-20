@@ -184,59 +184,9 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
             >
                 <Text>Protokoll erfolgreich gespeichert</Text>
             </Modal>
-            <Paper p={isMobile ? "sm" : "xl"}>
+            <Paper>
                 <form onSubmit={protocolform.onSubmit(onSubmit)}>
                     <Grid columns={6} gutter="lg">
-                        <Grid.Col span={2} offset={4}>
-                            <Button size="xs" sx={{ width: "100%" }} leftIcon={<CirclePlus />}>
-                                {!isMobile && <Text size="xs">Neues Kundenkonto</Text>}
-                            </Button>
-                        </Grid.Col>
-                        <Grid.Col span={6}>
-                            {isMobile ? (
-                                <Group direction="row" grow spacing="xl">
-                                    <Group direction="column">
-                                        <Text>
-                                            {customer.lastName}, {customer.firstName}
-                                        </Text>
-                                        <Text>{customer.email}</Text>
-                                    </Group>
-                                    <Badge size="md" color="transparent" radius="xs">
-                                        <Text>{customer.emailVerified ? "Aktiv" : "Inaktiv"}</Text>
-                                    </Badge>
-                                </Group>
-                            ) : (
-                                <Table
-                                    horizontalSpacing="xl"
-                                    sx={(_) => ({ border: "1px solid black" })}
-                                >
-                                    <thead>
-                                        <tr>
-                                            <th>Nachname, Vorname</th>
-                                            <th>Status</th>
-                                            <th>E-Mail</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr key={customer.email}>
-                                            <td>
-                                                {customer.lastName}, {customer.firstName}
-                                            </td>
-                                            <td>
-                                                <Badge size="md" color="transparent" radius="xs">
-                                                    <Text>
-                                                        {customer.emailVerified
-                                                            ? "Aktiv"
-                                                            : "Inaktiv"}
-                                                    </Text>
-                                                </Badge>
-                                            </td>
-                                            <td>{customer.email}</td>
-                                        </tr>
-                                    </tbody>
-                                </Table>
-                            )}
-                        </Grid.Col>
                         <Grid.Col span={6}>
                             <div
                                 style={
