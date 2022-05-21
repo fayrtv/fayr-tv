@@ -21,7 +21,7 @@ import { RefractionProtocolQRCode } from "~/components/QRCode";
 const GridText = (
     props: PropsWithChildren<
         Omit<React.ComponentPropsWithoutRef<typeof Text>, "size" | "align" | "weight">
-    >,
+    > & { isDarkMode: boolean },
 ) => (
     <Text
         {...props}
@@ -29,7 +29,7 @@ const GridText = (
         align="center"
         weight="bold"
         sx={(theme) => ({
-            color: theme.colorScheme === "light" ? theme.white : theme.black,
+            color: props.isDarkMode ? theme.black : theme.white,
             userSelect: "all",
         })}
     >
@@ -60,7 +60,8 @@ export const RefractionProtocol = ({
 
     const refractionProtocol = entity.data as unknown as RefractionProtocolModel;
 
-    const themedColor = theme.colorScheme === "light" ? theme.white : theme.black;
+    const isDarkMode = theme.colorScheme === "dark";
+    const themedColor = isDarkMode ? theme.black : theme.white;
 
     const createGridHeading = (heading: string, shortDescription: string): React.ReactNode => (
         <Group align="center" direction="column" sx={(_) => ({ gap: 0 })}>
@@ -86,23 +87,36 @@ export const RefractionProtocol = ({
                     </ColorSwatch>
                 </Grid.Col>
                 <Grid.Col span={2}>
-                    <GridText>{sideConfiguration.sphere}</GridText>
+                    <GridText isDarkMode={isDarkMode}>{sideConfiguration.sphere}</GridText>
                 </Grid.Col>
                 <Grid.Col span={2}>
-                    <GridText>{sideConfiguration.cylinder}</GridText>
+                    <GridText isDarkMode={isDarkMode}>{sideConfiguration.cylinder}</GridText>
                 </Grid.Col>
                 <Grid.Col span={2}>
-                    <GridText>{sideConfiguration.axis}</GridText>
+                    <GridText isDarkMode={isDarkMode}>{sideConfiguration.axis}</GridText>
                 </Grid.Col>
                 <Grid.Col span={2}>
-                    <GridText>{sideConfiguration.addition ?? "-"}</GridText>
+                    <GridText isDarkMode={isDarkMode}>{sideConfiguration.addition ?? "-"}</GridText>
                 </Grid.Col>
                 <Grid.Col span={2}>
-                    <GridText>{sideConfiguration.pd}</GridText>
+                    <GridText isDarkMode={isDarkMode}>{sideConfiguration.pd}</GridText>
                 </Grid.Col>
             </>
         );
     };
+
+    const actionItemStyleProps = React.useMemo(
+        () => ({
+            size: 30,
+            style: {
+                backgroundColor: isDarkMode ? theme.black : theme.white,
+                color: theme.colors.primary[7],
+                borderRadius: "5px",
+                padding: "2px",
+            },
+        }),
+        [theme],
+    );
 
     return (
         <Stack
@@ -114,12 +128,12 @@ export const RefractionProtocol = ({
                     <Eye
                         size={40}
                         style={{
-                            backgroundColor: theme.white,
+                            backgroundColor: themedColor,
                             color: theme.colors.primary[7],
                             borderRadius: "10px",
                         }}
                     />
-                    <Text color={theme.white} size="xxs" transform="uppercase">
+                    <Text color={themedColor} size="xxs" transform="uppercase">
                         Refraktionsprotokoll
                     </Text>
                     <Group direction="column" align="end" spacing="xs">
@@ -127,13 +141,13 @@ export const RefractionProtocol = ({
                             size="md"
                             color="transparent"
                             radius="xs"
-                            style={{ backgroundColor: theme.white }}
+                            style={{ backgroundColor: themedColor }}
                         >
-                            <Text color={theme.colorScheme === "dark" ? theme.black : theme.white}>
+                            <Text color={theme.colors.primary[isDarkMode ? 0 : 5]}>
                                 {isArchived ? "Archiv" : "Aktuell"}
                             </Text>
                         </Badge>
-                        <Text size="xs" color={theme.white}>
+                        <Text size="xs" color={themedColor}>
                             {moment(entity.recordedAt).format("DD.MM.YYYY")}
                         </Text>
                     </Group>
@@ -163,18 +177,9 @@ export const RefractionProtocol = ({
                         sx={(_) => ({ borderBottom: `1px solid ${theme.white}`, width: "100%" })}
                     />
                     <Container fluid sx={(_) => ({ margin: "auto 0", width: "100%" })}>
-                        <Group direction="row" position="apart">
-                            <Printer
-                                size={30}
-                                style={{
-                                    backgroundColor:
-                                        theme.colorScheme === "dark" ? theme.black : theme.white,
-                                    color: theme.colors.primary[7],
-                                    borderRadius: "5px",
-                                    padding: "2px",
-                                }}
-                                onClick={() => window.print()}
-                            />
+                        <Group direction="row" position="left">
+                            <Printer {...actionItemStyleProps} onClick={() => window.print()} />
+                            <Qrcode {...actionItemStyleProps} onClick={() => setQRCodeOpen(true)} />
                             <Modal
                                 opened={qrCodeOpen}
                                 onClose={() => setQRCodeOpen(false)}
@@ -182,17 +187,6 @@ export const RefractionProtocol = ({
                             >
                                 <RefractionProtocolQRCode refractionProtocol={entity} />
                             </Modal>
-                            <Button
-                                size="sm"
-                                disabled={!areActionsAllowed}
-                                sx={{ padding: "5px" }}
-                                leftIcon={<Qrcode color={theme.colors.dark[7]} />}
-                                onClick={() => setQRCodeOpen(true)}
-                            >
-                                <Text size="xs" color={theme.colors.dark[7]}>
-                                    QR-Code
-                                </Text>
-                            </Button>
                         </Group>
                     </Container>
                 </>
