@@ -1,6 +1,6 @@
-import { Container, Group, Space, Stack, Text } from "~/components/common";
+import { Container, Group, ScrollArea, Stack, Text } from "~/components/common";
 import React from "react";
-import { CircleX, LetterF } from "tabler-icons-react";
+import { CircleX } from "tabler-icons-react";
 import { RefractionProtocol } from "~/components/RefractionProtocol";
 import { RefractionProtocol as RefractionProtocolEntity } from "~/models";
 import { RefractionProtocol as RefractionProtocolModel } from "~/types/refraction-protocol";
@@ -18,7 +18,6 @@ import moment from "moment";
 type ServerProps = {
     refractionProtocols: RefractionProtocolEntity[];
 };
-
 const SpectaclePassPage: NextPageWithLayout<ServerProps> = ({ refractionProtocols }) => {
     const sortedProtocols = React.useMemo(() => {
         type SortCompatibleProtocol = {
@@ -69,29 +68,31 @@ const SpectaclePassPage: NextPageWithLayout<ServerProps> = ({ refractionProtocol
                         <Text weight="bold">Digitaler Brillenpass</Text>
                         <Text weight="normal">Max Mustermann</Text>
                     </Group>
-                    <Stack
-                        sx={(_) => ({
-                            overflowY: "scroll",
+                    <ScrollArea
+                        style={{
                             height: "65vh",
-                        })}
+                        }}
+                        type="always"
                     >
-                        <RefractionProtocol
-                            areActionsAllowed={true}
-                            entity={currentProtocol}
-                            isSelected={selectedProtocol === 0}
-                            onClick={() => setSelectedProtocol(0)}
-                        />
-                        {protocolHistory.map((oldEntity, index) => (
+                        <Stack>
                             <RefractionProtocol
-                                areActionsAllowed={false}
-                                entity={oldEntity}
-                                key={oldEntity.id}
-                                isArchived={true}
-                                isSelected={index + 1 === selectedProtocol}
-                                onClick={() => setSelectedProtocol(index + 1)}
+                                areActionsAllowed={true}
+                                entity={currentProtocol}
+                                isSelected={selectedProtocol === 0}
+                                onClick={() => setSelectedProtocol(0)}
                             />
-                        ))}
-                    </Stack>
+                            {protocolHistory.map((oldEntity, index) => (
+                                <RefractionProtocol
+                                    areActionsAllowed={false}
+                                    entity={oldEntity}
+                                    key={oldEntity.id}
+                                    isArchived={true}
+                                    isSelected={index + 1 === selectedProtocol}
+                                    onClick={() => setSelectedProtocol(index + 1)}
+                                />
+                            ))}
+                        </Stack>
+                    </ScrollArea>
                 </Container>
             </Stack>
         </Container>

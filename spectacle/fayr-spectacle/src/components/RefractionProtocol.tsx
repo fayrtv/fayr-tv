@@ -20,8 +20,10 @@ import { RefractionProtocolQRCode } from "~/components/QRCode";
 
 const GridText = (
     props: PropsWithChildren<
-        Omit<React.ComponentPropsWithoutRef<typeof Text>, "size" | "align" | "weight">
-    > & { isDarkMode: boolean },
+        Omit<React.ComponentPropsWithoutRef<typeof Text>, "size" | "align" | "weight"> & {
+            isDarkMode: boolean;
+        }
+    >,
 ) => (
     <Text
         {...props}
@@ -109,7 +111,11 @@ export const RefractionProtocol = ({
         () => ({
             size: 30,
             style: {
-                backgroundColor: isDarkMode ? theme.black : theme.white,
+                backgroundColor: !areActionsAllowed
+                    ? theme.colors.gray[6]
+                    : isDarkMode
+                    ? theme.black
+                    : theme.white,
                 color: theme.colors.primary[7],
                 borderRadius: "5px",
                 padding: "2px",
@@ -121,9 +127,12 @@ export const RefractionProtocol = ({
     return (
         <Stack
             spacing="xs"
-            sx={(_) => ({ background: isArchived ? BackgroundGrey : theme.colors.primary[7] })}
+            onClick={onClick}
+            sx={(_) => ({
+                background: isArchived ? BackgroundGrey : theme.colors.primary[7],
+            })}
         >
-            <Container mt="xs" onClick={onClick} sx={(_) => ({ padding: 0 })}>
+            <Container mt="xs" sx={(_) => ({ padding: 0 })}>
                 <Group direction="row" position="center" noWrap>
                     <Eye
                         size={40}
@@ -178,8 +187,14 @@ export const RefractionProtocol = ({
                     />
                     <Container fluid sx={(_) => ({ margin: "auto 0", width: "100%" })}>
                         <Group direction="row" position="left">
-                            <Printer {...actionItemStyleProps} onClick={() => window.print()} />
-                            <Qrcode {...actionItemStyleProps} onClick={() => setQRCodeOpen(true)} />
+                            <Printer
+                                {...actionItemStyleProps}
+                                onClick={() => areActionsAllowed && window.print()}
+                            />
+                            <Qrcode
+                                {...actionItemStyleProps}
+                                onClick={() => areActionsAllowed && setQRCodeOpen(true)}
+                            />
                             <Modal
                                 opened={qrCodeOpen}
                                 onClose={() => setQRCodeOpen(false)}
