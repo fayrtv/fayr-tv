@@ -13,11 +13,10 @@ import {
 import React, { useEffect, useMemo } from "react";
 import { NextRouter, useRouter } from "next/router";
 import { useMediaQuery } from "@mantine/hooks";
-import { MobileWidthThreshold } from "~/constants/mediaqueries";
 import { X } from "tabler-icons-react";
 
 export type Tab = {
-    title: string;
+    title?: string;
     slug: string;
     render: () => JSX.Element;
 };
@@ -26,6 +25,7 @@ type Props = {
     tabs: Tab[];
     pathFragmentName: string;
     renderOnRootPath?: () => JSX.Element;
+    renderTitles?: boolean;
 };
 
 type TabStackProps = {
@@ -59,7 +59,12 @@ export const useUrlFragment = (pathFragmentName: string) => {
     return router.query[pathFragmentName]?.[0] as string | undefined;
 };
 
-export const PathBasedTabMenu = ({ tabs, pathFragmentName, renderOnRootPath }: Props) => {
+export const PathBasedTabMenu = ({
+    tabs,
+    pathFragmentName,
+    renderOnRootPath,
+    renderTitles,
+}: Props) => {
     const urlFragment = useUrlFragment(pathFragmentName);
     const router = useRouter();
     const isMobile = useMediaQuery(`(max-width: 900px)`, true);
@@ -128,9 +133,11 @@ export const PathBasedTabMenu = ({ tabs, pathFragmentName, renderOnRootPath }: P
                                     size="sm"
                                 ></Burger>
                             )}
-                            <Text size="xl" color="primary" mb={isMobile ? 0 : "sm"}>
-                                {activeTab.title}
-                            </Text>
+                            {renderTitles && activeTab.title && (
+                                <Text size="xl" color="primary" mb={isMobile ? 0 : "sm"}>
+                                    {activeTab.title}
+                                </Text>
+                            )}
                         </Group>
                         {activeTab.render()}
                     </Paper>

@@ -31,7 +31,7 @@ type ServerSideProps = {
     customersOfStore: Array<Customer>;
 };
 
-const CustomerManagement: NextPageWithLayout<ServerSideProps> = ({ customersOfStore }) => {
+const CustomerManagementRouter: NextPageWithLayout<ServerSideProps> = ({ customersOfStore }) => {
     const [selectedCustomer, setSelectedCustomer] = React.useState<Customer | undefined>(undefined);
 
     const isMobile = useMediaQuery(`(max-width: ${MobileWidthThreshold}px)`, true);
@@ -101,7 +101,7 @@ const CustomerManagement: NextPageWithLayout<ServerSideProps> = ({ customersOfSt
         >
             <Crumbs items={items} />
             {!!selectedCustomer ? (
-                <PathBasedTabMenu tabs={tabs} pathFragmentName="view" />
+                <PathBasedTabMenu tabs={tabs} pathFragmentName="view" renderTitles={false} />
             ) : (
                 <>
                     <Group position="right" grow={false}>
@@ -120,7 +120,7 @@ const CustomerManagement: NextPageWithLayout<ServerSideProps> = ({ customersOfSt
     );
 };
 
-CustomerManagement.layoutProps = {
+CustomerManagementRouter.layoutProps = {
     Layout: layoutFactory({
         subHeader: {
             enabled: false,
@@ -164,4 +164,4 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     };
 };
 
-export default CustomerManagement;
+export default CustomerManagementRouter;
