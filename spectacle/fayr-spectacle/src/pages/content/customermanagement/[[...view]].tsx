@@ -25,6 +25,7 @@ import Link from "next/link";
 import { Crumb, Crumbs } from "~/components/Crumbs";
 import CustomerOverview from "~/components/customermanagement/CustomerOverview";
 import { CirclePlus } from "tabler-icons-react";
+import { layoutFactory } from "../../../components/layout/Layout";
 
 type ServerSideProps = {
     customersOfStore: Array<Customer>;
@@ -120,7 +121,11 @@ const CustomerManagement: NextPageWithLayout<ServerSideProps> = ({ customersOfSt
 };
 
 CustomerManagement.layoutProps = {
-    Layout: Layout,
+    Layout: layoutFactory({
+        subHeader: {
+            enabled: false,
+        },
+    }),
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
