@@ -1,4 +1,4 @@
-import { Group, Text, Badge, Container } from "~/components/common";
+import { Group, Text, Badge, Container } from "@mantine/core";
 import moment from "moment";
 import { Eye } from "tabler-icons-react";
 import { RefractionProtocol as RefractionProtocolEntity } from "~/models";

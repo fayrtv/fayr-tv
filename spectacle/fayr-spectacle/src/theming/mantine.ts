@@ -1,5 +1,6 @@
-import type { MantineThemeOverride } from "@mantine/core";
-import { Tuple } from "@mantine/core";
+import type { ButtonStylesParams, MantineProviderProps, MantineThemeOverride } from "@mantine/core";
+import { MantineProvider, Tuple } from "@mantine/core";
+import { ComponentProps } from "react";
 
 // theme colors must be a 10-tuple string of colors from light to dark shade
 type ThemeColor = [string, string, string, string, string, string, string, string, string, string];
@@ -138,5 +139,14 @@ declare module "@mantine/core" {
         colors: Record<CustomColors, Tuple<string, 10>>;
     }
 }
+
+export const spectacleStyles: MantineProviderProps["styles"] = {
+    // Example:
+    // Button: (theme, params: ButtonStylesParams) => ({
+
+    Button: {
+        inner: { fontWeight: "lighter" },
+    },
+};
 
 export default spectacleTheme;

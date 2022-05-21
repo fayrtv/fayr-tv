@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useProfileForm } from "~/components/profile/hooks/useProfileForm";
-import { Button, Grid, Group, Stack } from "~/components/common";
+import { Button, Grid, Group, Stack } from "@mantine/core";
 import { Auth } from "aws-amplify";
 import Router from "next/router";
 import { User } from "~/types/user";

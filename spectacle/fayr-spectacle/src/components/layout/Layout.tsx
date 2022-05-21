@@ -1,4 +1,4 @@
-import { AppShell } from "~/components/common";
+import { AppShell } from "@mantine/core";
 import React, { ComponentProps, PropsWithChildren, ReactChild } from "react";
 
 import Header from "~/components/layout/Header";

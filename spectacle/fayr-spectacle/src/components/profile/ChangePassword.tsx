@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useProfileForm } from "~/components/profile/hooks/useProfileForm";
-import { Alert, Group, PasswordInput, Stack } from "~/components/common";
+import { Alert, Group, PasswordInput, Stack } from "@mantine/core";
 import { Auth } from "aws-amplify";
 import { Check } from "tabler-icons-react";
 import { useInputState } from "@mantine/hooks";

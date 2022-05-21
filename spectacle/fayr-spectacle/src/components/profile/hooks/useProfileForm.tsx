@@ -10,7 +10,7 @@ import {
     PasswordInput,
     Select,
     TextInput,
-} from "~/components/common";
+} from "@mantine/core";
 import { AlertCircle } from "tabler-icons-react";
 import Link from "next/link";
 

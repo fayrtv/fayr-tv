@@ -1,4 +1,4 @@
-import { Anchor, Box, Burger, Container, Group, Text } from "~/components/common";
+import { Anchor, Box, Burger, Container, Group, Text } from "@mantine/core";
 import ThemeToggleButton from "~/components/layout/ThemeToggleButton";
 import { useMediaQuery } from "@mantine/hooks";
 import { useStoreInfo } from "~/components/StoreInfoProvider";

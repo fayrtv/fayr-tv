@@ -9,7 +9,7 @@ import {
     Stack,
     Text,
     Modal,
-} from "~/components/common";
+} from "@mantine/core";
 import moment from "moment";
 import React, { PropsWithChildren, useState } from "react";
 import { Eye, Printer, Qrcode } from "tabler-icons-react";

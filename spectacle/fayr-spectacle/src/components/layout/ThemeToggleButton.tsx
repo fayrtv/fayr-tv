@@ -1,4 +1,4 @@
-import { Button } from "~/components/common";
+import { Button } from "@mantine/core";
 import { Sun, SunOff } from "tabler-icons-react";
 import { useMantineColorScheme } from "@mantine/core";
 

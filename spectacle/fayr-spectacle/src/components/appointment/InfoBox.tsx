@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from "react";
 import { Paper, useMantineColorScheme } from "@mantine/core";
-import { Text } from "~/components/common";
+import { Text } from "@mantine/core";
 
 export const InfoBox = ({ children }: PropsWithChildren<{}>) => {
     const { colorScheme } = useMantineColorScheme();

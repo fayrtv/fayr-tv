@@ -1,4 +1,4 @@
-import { Button, Center, Container, Overlay, Paper, Text } from "~/components/common";
+import { Button, Center, Container, Overlay, Paper, Text } from "@mantine/core";
 import React from "react";
 import ZeissLogo from "~/components/ZeissLogo";
 import { layoutFactory } from "~/components/layout/Layout";

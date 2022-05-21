@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useEffect, useMemo } from "react";
 import { useScrollIntoView } from "@mantine/hooks";
 import { createStyles, Group, Stack } from "@mantine/core";
-import { Button, Text } from "~/components/common";
+import { Button, Text } from "@mantine/core";
 import { Calendar } from "@mantine/dates";
 import { EARLIEST, LATEST, TimeSlot } from "~/components/appointment/types";
 import dayjs from "dayjs";

@@ -11,7 +11,7 @@ import "dayjs/locale/de";
 
 import "../styles/globals.scss";
 
-import zeissTheme from "../theming/mantine";
+import spectacleTheme, { spectacleStyles } from "../theming/mantine";
 import StoreInfoProvider from "~/components/StoreInfoProvider";
 import { GetServerSidePropsContext } from "next";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -71,8 +71,9 @@ export default function App({
                 <MantineProvider
                     withGlobalStyles
                     withNormalizeCSS
+                    styles={spectacleStyles}
                     theme={{
-                        ...zeissTheme,
+                        ...spectacleTheme,
                         colorScheme: currentColorScheme,
                         // you can change primaryColor w.r.t colorScheme here
                     }}

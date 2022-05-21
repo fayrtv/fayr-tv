@@ -1,4 +1,4 @@
-import { Button, Text } from "~/components/common";
+import { Button, Text } from "@mantine/core";
 import { Center, Container, Group, Paper, Space, Stack, Textarea } from "@mantine/core";
 import { useStoreInfo } from "~/components/StoreInfoProvider";
 import { InfoBox } from "~/components/appointment/InfoBox";

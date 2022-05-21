@@ -1,4 +1,4 @@
-import { Container } from "~/components/common";
+import { Container } from "@mantine/core";
 import React from "react";
 import Layout from "~/components/layout/Layout";
 import { NextPageWithLayout } from "~/types/next-types";

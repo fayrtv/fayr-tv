@@ -11,7 +11,7 @@ import {
     TextInput,
     LoadingOverlay,
     Alert,
-} from "~/components/common";
+} from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import { Auth } from "aws-amplify";
 import Router from "next/router";

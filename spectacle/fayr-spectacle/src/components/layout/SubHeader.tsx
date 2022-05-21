@@ -1,4 +1,4 @@
-import { Button, Text } from "~/components/common";
+import { Button, Text } from "@mantine/core";
 import { CalendarPlus, Tool, User as UserIcon } from "tabler-icons-react";
 import { Anchor, Avatar, Grid, Group, Paper, Tabs } from "@mantine/core";
 import { formatFormalAddress, User } from "~/types/user";

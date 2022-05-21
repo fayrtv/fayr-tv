@@ -1,4 +1,4 @@
-import { Image } from "~/components/common";
+import { Image } from "@mantine/core";
 import React from "react";
 
 type Props = Omit<React.ComponentProps<typeof Image>, "size" | "alt"> & {
