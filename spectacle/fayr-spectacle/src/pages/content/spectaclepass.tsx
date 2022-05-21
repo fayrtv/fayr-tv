@@ -11,12 +11,13 @@ import { GetServerSideProps } from "next";
 import { getUser } from "~/helpers/authentication";
 import { DataStore } from "@aws-amplify/datastore";
 import { withSSRContext } from "aws-amplify";
-import { serializeModel } from "@aws-amplify/datastore/ssr";
 import { Moment } from "moment";
 import moment from "moment";
+import { SerializedModel, serializeModel } from "~/models/amplify-models";
+import { RedirectProps, redirectServerSide } from "~/helpers/next-server";
 
 type ServerProps = {
-    refractionProtocols: RefractionProtocolEntity[];
+    refractionProtocols: SerializedModel<RefractionProtocolEntity>[];
 };
 const SpectaclePassPage: NextPageWithLayout<ServerProps> = ({ refractionProtocols }) => {
     const sortedProtocols = React.useMemo(() => {
@@ -103,14 +104,16 @@ SpectaclePassPage.layoutProps = {
     Layout: Layout,
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+export const getServerSideProps: GetServerSideProps<ServerProps | RedirectProps> = async ({
+    req,
+    res,
+}) => {
     const SSR = withSSRContext({ req });
     const store = SSR.DataStore as typeof DataStore;
 
     const user = await getUser(req);
     if (!user) {
-        res.writeHead(301, { Location: "/auth/signin" });
-        res.end();
+        redirectServerSide(res, "/auth/signin");
         return { props: {} };
     }
 

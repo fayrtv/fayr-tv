@@ -1,11 +1,14 @@
 import { createContext, useContext } from "react";
+import { SerializedModel } from "~/models/amplify-models";
+import { Store } from "~/models";
 
-const StoreInfoContext = createContext({
+const StoreInfoContext = createContext<SerializedModel<Store>>({
+    id: "",
     name: "",
     city: "",
     owner: "",
     fullAddress: "",
-    phoneNumber: "",
+    phoneNumber: undefined,
 });
 
 export const useStoreInfo = () => {

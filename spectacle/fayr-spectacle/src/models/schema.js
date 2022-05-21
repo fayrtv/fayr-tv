@@ -296,6 +296,41 @@ export const schema = {
                         "associatedWith": "storeID"
                     }
                 },
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "city": {
+                    "name": "city",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "owner": {
+                    "name": "owner",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "fullAddress": {
+                    "name": "fullAddress",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "phoneNumber": {
+                    "name": "phoneNumber",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -341,5 +376,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "42172bc3aaa95844aeb29bededf9fdf6"
+    "version": "e242b76a704a1d91c39f4f70a3564a88"
 };

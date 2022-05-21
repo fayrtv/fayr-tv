@@ -22,5 +22,10 @@ type Appointment @model @auth(rules: [{allow: public}]) {
 type Store @model @auth(rules: [{allow: public}]) {
   id: ID!
   AdminUsers: [Customer] @hasMany(indexName: "byStore", fields: ["id"])
+  name: String!
+  city: String!
+  owner: String!
+  fullAddress: String!
+  phoneNumber: String
 }
  
