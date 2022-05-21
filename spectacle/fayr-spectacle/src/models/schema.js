@@ -92,8 +92,8 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "shopID": {
-                    "name": "shopID",
+                "storeID": {
+                    "name": "storeID",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": true,
@@ -140,9 +140,9 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
-                        "name": "byShop",
+                        "name": "byStore",
                         "fields": [
-                            "shopID"
+                            "storeID"
                         ]
                     }
                 },
@@ -199,7 +199,7 @@ export const schema = {
                     "name": "Location",
                     "isArray": false,
                     "type": {
-                        "model": "Shop"
+                        "model": "StoreOwner"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -265,74 +265,8 @@ export const schema = {
                 }
             ]
         },
-        "Shop": {
-            "name": "Shop",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "AdminUsers": {
-                    "name": "AdminUsers",
-                    "isArray": true,
-                    "type": {
-                        "model": "User"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "shopID"
-                    }
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "Shops",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "ShopOwner": {
-            "name": "ShopOwner",
+        "StoreOwner": {
+            "name": "StoreOwner",
             "fields": {
                 "id": {
                     "name": "id",
@@ -373,7 +307,73 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "ShopOwners",
+            "pluralName": "StoreOwners",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "Store": {
+            "name": "Store",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "AdminUsers": {
+                    "name": "AdminUsers",
+                    "isArray": true,
+                    "type": {
+                        "model": "User"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "storeID"
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Stores",
             "attributes": [
                 {
                     "type": "model",
@@ -400,5 +400,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "b0132c7c4d8a7701fc96d8db9922a940"
+    "version": "413b846816a61db638f575fb08389828"
 };

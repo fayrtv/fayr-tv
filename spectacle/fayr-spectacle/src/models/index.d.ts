@@ -16,11 +16,11 @@ type AppointmentMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
-type ShopMetaData = {
+type StoreOwnerMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
-type ShopOwnerMetaData = {
+type StoreMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
@@ -37,7 +37,7 @@ export declare class RefractionProtocol {
 
 export declare class User {
   readonly id: string;
-  readonly shopID: string;
+  readonly storeID: string;
   readonly ProtocolHistory?: (RefractionProtocol | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
@@ -49,7 +49,7 @@ export declare class Appointment {
   readonly id: string;
   readonly User?: User | null;
   readonly date: string;
-  readonly Location?: Shop | null;
+  readonly Location?: StoreOwner | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly appointmentUserId?: string | null;
@@ -58,21 +58,21 @@ export declare class Appointment {
   static copyOf(source: Appointment, mutator: (draft: MutableModel<Appointment, AppointmentMetaData>) => MutableModel<Appointment, AppointmentMetaData> | void): Appointment;
 }
 
-export declare class Shop {
-  readonly id: string;
-  readonly AdminUsers?: (User | null)[] | null;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-  constructor(init: ModelInit<Shop, ShopMetaData>);
-  static copyOf(source: Shop, mutator: (draft: MutableModel<Shop, ShopMetaData>) => MutableModel<Shop, ShopMetaData> | void): Shop;
-}
-
-export declare class ShopOwner {
+export declare class StoreOwner {
   readonly id: string;
   readonly firstName?: string | null;
   readonly lastName?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  constructor(init: ModelInit<ShopOwner, ShopOwnerMetaData>);
-  static copyOf(source: ShopOwner, mutator: (draft: MutableModel<ShopOwner, ShopOwnerMetaData>) => MutableModel<ShopOwner, ShopOwnerMetaData> | void): ShopOwner;
+  constructor(init: ModelInit<StoreOwner, StoreOwnerMetaData>);
+  static copyOf(source: StoreOwner, mutator: (draft: MutableModel<StoreOwner, StoreOwnerMetaData>) => MutableModel<StoreOwner, StoreOwnerMetaData> | void): StoreOwner;
+}
+
+export declare class Store {
+  readonly id: string;
+  readonly AdminUsers?: (User | null)[] | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+  constructor(init: ModelInit<Store, StoreMetaData>);
+  static copyOf(source: Store, mutator: (draft: MutableModel<Store, StoreMetaData>) => MutableModel<Store, StoreMetaData> | void): Store;
 }

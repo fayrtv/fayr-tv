@@ -7,7 +7,7 @@ type RefractionProtocol @model @auth(rules: [{allow: public}]) {
 
 type User @model @auth(rules: [{allow: public}]) {
   id: ID!
-  shopID: ID! @index(name: "byShop")
+  storeID: ID! @index(name: "byStore")
   ProtocolHistory: [RefractionProtocol] @hasMany(indexName: "byUser", fields: ["id"])
 }
 
@@ -15,17 +15,17 @@ type Appointment @model @auth(rules: [{allow: public}]) {
   id: ID!
   User: User @hasOne
   date: AWSDateTime!
-  Location: Shop @hasOne
+  Location: StoreOwner @hasOne
 }
 
-type ShopOwner @model @auth(rules: [{allow: public}]) {
+type StoreOwner @model @auth(rules: [{allow: public}]) {
   id: ID!
   firstName: String
   lastName: String
 }
 
-type Shop @model @auth(rules: [{allow: public}]) {
+type Store @model @auth(rules: [{allow: public}]) {
   id: ID!
-  AdminUsers: [User] @hasMany(indexName: "byShop", fields: ["id"])
+  AdminUsers: [User] @hasMany(indexName: "byStore", fields: ["id"])
 }
  
