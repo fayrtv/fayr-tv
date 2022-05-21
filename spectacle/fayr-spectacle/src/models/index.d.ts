@@ -45,8 +45,9 @@ export declare class Customer {
 export declare class Appointment {
   readonly id: string;
   readonly User?: Customer | null;
-  readonly date: string;
+  readonly beginDate: string;
   readonly AtStore?: Store | null;
+  readonly endDate?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly appointmentUserId?: string | null;

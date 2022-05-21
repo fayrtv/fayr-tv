@@ -195,8 +195,8 @@ export const schema = {
                         "targetName": "appointmentUserId"
                     }
                 },
-                "date": {
-                    "name": "date",
+                "beginDate": {
+                    "name": "beginDate",
                     "isArray": false,
                     "type": "AWSDateTime",
                     "isRequired": true,
@@ -215,6 +215,13 @@ export const schema = {
                         "associatedWith": "id",
                         "targetName": "appointmentAtStoreId"
                     }
+                },
+                "endDate": {
+                    "name": "endDate",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -376,5 +383,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "e242b76a704a1d91c39f4f70a3564a88"
+    "version": "c330851a240212ae55f79eed28a9d9ae"
 };

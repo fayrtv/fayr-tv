@@ -96,11 +96,16 @@ App.getInitialProps = async (ctx: GetServerSidePropsContext) => {
     const SSR = withSSRContext({ req: ctx.req });
     const dataStore = SSR.DataStore as typeof DataStore;
 
-    const result = await dataStore.query(Store, (s) => s.city("eq", "Osnabrück"));
-    const store = result[0];
+    try {
+        const result = await dataStore.query(Store, (s) => s.city("eq", "Osnabrück"));
+        const store = result[0];
 
-    return {
-        colorScheme: getCookie("mantine-color-scheme", ctx) || "light",
-        store: serializeModel(store),
-    } as ServerInitialProps;
+        return {
+            colorScheme: getCookie("mantine-color-scheme", ctx) || "light",
+            store: serializeModel(store),
+        } as ServerInitialProps;
+    } catch (err) {
+        console.error(err);
+        return {};
+    }
 };
