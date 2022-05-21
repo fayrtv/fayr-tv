@@ -13,6 +13,7 @@ type Props = {
     begin: Date;
     end: Date;
     onCancel: () => void;
+    onConfirm: (begin: Date, end: Date) => void;
 };
 
 const ConfirmAppointment = ({ begin, end, onCancel }: Props) => {
