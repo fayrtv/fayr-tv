@@ -58,7 +58,7 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
-                        "name": "byUser",
+                        "name": "byCustomer",
                         "fields": [
                             "userID"
                         ]
@@ -82,8 +82,8 @@ export const schema = {
                 }
             ]
         },
-        "User": {
-            "name": "User",
+        "Customer": {
+            "name": "Customer",
             "fields": {
                 "id": {
                     "name": "id",
@@ -113,6 +113,13 @@ export const schema = {
                         "associatedWith": "userID"
                     }
                 },
+                "userID": {
+                    "name": "userID",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -131,7 +138,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "Users",
+            "pluralName": "Customers",
             "attributes": [
                 {
                     "type": "model",
@@ -178,7 +185,7 @@ export const schema = {
                     "name": "User",
                     "isArray": false,
                     "type": {
-                        "model": "User"
+                        "model": "Customer"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -195,18 +202,18 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "Location": {
-                    "name": "Location",
+                "AtStore": {
+                    "name": "AtStore",
                     "isArray": false,
                     "type": {
-                        "model": "StoreOwner"
+                        "model": "Store"
                     },
                     "isRequired": false,
                     "attributes": [],
                     "association": {
                         "connectionType": "HAS_ONE",
                         "associatedWith": "id",
-                        "targetName": "appointmentLocationId"
+                        "targetName": "appointmentAtStoreId"
                     }
                 },
                 "createdAt": {
@@ -232,8 +239,8 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "appointmentLocationId": {
-                    "name": "appointmentLocationId",
+                "appointmentAtStoreId": {
+                    "name": "appointmentAtStoreId",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": false,
@@ -242,72 +249,6 @@ export const schema = {
             },
             "syncable": true,
             "pluralName": "Appointments",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "StoreOwner": {
-            "name": "StoreOwner",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "firstName": {
-                    "name": "firstName",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "lastName": {
-                    "name": "lastName",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "StoreOwners",
             "attributes": [
                 {
                     "type": "model",
@@ -345,7 +286,7 @@ export const schema = {
                     "name": "AdminUsers",
                     "isArray": true,
                     "type": {
-                        "model": "User"
+                        "model": "Customer"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -400,5 +341,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "413b846816a61db638f575fb08389828"
+    "version": "42172bc3aaa95844aeb29bededf9fdf6"
 };

@@ -4,12 +4,11 @@ import { schema } from './schema';
 
 
 
-const { RefractionProtocol, User, Appointment, StoreOwner, Store } = initSchema(schema);
+const { RefractionProtocol, Customer, Appointment, Store } = initSchema(schema);
 
 export {
   RefractionProtocol,
-  User,
+  Customer,
   Appointment,
-  StoreOwner,
   Store
 };

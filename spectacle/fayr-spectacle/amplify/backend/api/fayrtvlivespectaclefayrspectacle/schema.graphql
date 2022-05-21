@@ -1,31 +1,26 @@
 type RefractionProtocol @model @auth(rules: [{allow: public}]) {
   id: ID!
-  userID: ID! @index(name: "byUser")
+  userID: ID! @index(name: "byCustomer")
   data: AWSJSON!
   recordedAt: AWSDateTime!
 }
 
-type User @model @auth(rules: [{allow: public}]) {
+type Customer @model @auth(rules: [{allow: public}]) {
   id: ID!
   storeID: ID! @index(name: "byStore")
-  ProtocolHistory: [RefractionProtocol] @hasMany(indexName: "byUser", fields: ["id"])
+  ProtocolHistory: [RefractionProtocol] @hasMany(indexName: "byCustomer", fields: ["id"])
+  userID: String
 }
 
 type Appointment @model @auth(rules: [{allow: public}]) {
   id: ID!
-  User: User @hasOne
+  User: Customer @hasOne
   date: AWSDateTime!
-  Location: StoreOwner @hasOne
-}
-
-type StoreOwner @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  firstName: String
-  lastName: String
+  AtStore: Store @hasOne
 }
 
 type Store @model @auth(rules: [{allow: public}]) {
   id: ID!
-  AdminUsers: [User] @hasMany(indexName: "byStore", fields: ["id"])
+  AdminUsers: [Customer] @hasMany(indexName: "byStore", fields: ["id"])
 }
  
