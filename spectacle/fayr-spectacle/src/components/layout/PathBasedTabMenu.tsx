@@ -62,7 +62,7 @@ export const useUrlFragment = (pathFragmentName: string) => {
 export const PathBasedTabMenu = ({ tabs, pathFragmentName, renderOnRootPath }: Props) => {
     const urlFragment = useUrlFragment(pathFragmentName);
     const router = useRouter();
-    const isMobile = useMediaQuery(`(max-width: ${MobileWidthThreshold}px)`, true);
+    const isMobile = useMediaQuery(`(max-width: 900px)`, true);
 
     const activeTabIndex = useMemo(() => {
         if (!urlFragment) {
