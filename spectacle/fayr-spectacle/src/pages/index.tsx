@@ -3,11 +3,11 @@ import { NextPageWithLayout } from "~/types/next-types";
 import React, { ComponentProps, ReactChild } from "react";
 import { SwitchAvailability } from "~/components/layout/SubHeader";
 
-const SitemapPage: NextPageWithLayout = () => {
+const IndexPage: NextPageWithLayout = () => {
     return <div></div>;
 };
 
-SitemapPage.layoutProps = {
+IndexPage.layoutProps = {
     Layout: layoutFactory({
         subHeader: {
             enabled: true,
@@ -19,4 +19,4 @@ SitemapPage.layoutProps = {
     }),
 };
 
-export default SitemapPage;
+export default IndexPage;

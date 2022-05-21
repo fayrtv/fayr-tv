@@ -36,7 +36,7 @@ const ProfileRouter: NextPageWithLayout<ServerProps> = ({ user }: ServerProps) =
                     {
                         title: "Passwort ändern",
                         slug: "password",
-                        render: () => <ChangePassword user={user} />,
+                        render: () => <ChangePassword />,
                     },
                     {
                         title: "Benachrichtigungen",

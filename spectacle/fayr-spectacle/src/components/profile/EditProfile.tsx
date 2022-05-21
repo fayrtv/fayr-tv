@@ -48,7 +48,7 @@ const EditProfile = ({ user }: Props) => {
                 {renderError()}
                 {renderLoadingOverlay()}
                 {/* TODO: No grid with columns on mobile */}
-                <Grid gutter="lg">
+                <Grid gutter="md">
                     <Grid.Col span={6}>
                         <Stack spacing="sm">
                             <Group grow>

@@ -1,16 +1,13 @@
 import React, { useState } from "react";
 import { useProfileForm } from "~/components/profile/hooks/useProfileForm";
-import { Alert, Button, Grid, Group, PasswordInput, Stack } from "~/components/common";
+import { Alert, Group, PasswordInput, Stack } from "~/components/common";
 import { Auth } from "aws-amplify";
-import Router from "next/router";
-import { User } from "~/types/user";
-import { AlertCircle, Check } from "tabler-icons-react";
+import { Check } from "tabler-icons-react";
+import { useInputState } from "@mantine/hooks";
 
-type Props = { user: User };
-
-const ChangePassword = ({ user }: Props) => {
+const ChangePassword = () => {
     const [success, setSuccess] = useState(false);
-    const [oldPassword, setOldPassword] = useState("");
+    const [oldPassword, setOldPassword] = useInputState("");
 
     const {
         onSubmit,
@@ -53,7 +50,7 @@ const ChangePassword = ({ user }: Props) => {
                         label="Aktuelles Passwort"
                         value={oldPassword}
                         sx={{ minWidth: "230px" }}
-                        onChange={(ev) => setOldPassword(ev.target.value)}
+                        onChange={setOldPassword}
                     />
                     <Stack spacing="sm">
                         {renderPasswordInput("Neues Passwort")}
