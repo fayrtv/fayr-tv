@@ -1,13 +1,12 @@
 import type { ButtonStylesParams, MantineProviderProps, MantineThemeOverride } from "@mantine/core";
-import { MantineProvider, Tuple } from "@mantine/core";
-import { ComponentProps } from "react";
+import { Tuple } from "@mantine/core";
 
 // theme colors must be a 10-tuple string of colors from light to dark shade
-type ThemeColor = [string, string, string, string, string, string, string, string, string, string];
+type Shade = [string, string, string, string, string, string, string, string, string, string];
 
-const sameColor = (color: string) => Array(10).fill(color) as ThemeColor;
+const sameColor = (color: string) => Array(10).fill(color) as Shade;
 
-const primary: ThemeColor = [
+const primary: Shade = [
     "#EBF5FB",
     "#EBF5FB",
     "#EBF5FB",
@@ -20,20 +19,19 @@ const primary: ThemeColor = [
     "#4498D8",
 ];
 const secondary = sameColor("#91E9B2");
-const success: ThemeColor = sameColor("#91E9B2");
-const danger: ThemeColor = sameColor("#FF0000");
-const gray: ThemeColor = [
-    "#A8A8A8",
-    "#A8A8A8",
-    "#A8A8A8",
-    "#A8A8A8",
-    "#A8A8A8",
-    // TODO: oh oh, what a crap...
-    "#6C6C6C",
-    "#6C6C6C",
-    "#6C6C6C",
-    "#6C6C6C",
-    "#6C6C6C",
+const success: Shade = sameColor("#91E9B2");
+const danger: Shade = sameColor("#FF0000");
+const gray: Shade = [
+    "#f8f9fa",
+    "#f1f3f5",
+    "#e9ecef",
+    "#dee2e6",
+    "#ced4da",
+    "#adb5bd",
+    "#868e96",
+    "#495057",
+    "#343a40",
+    "#212529",
 ];
 
 type MantineSizeOverride = "xxxs" | "xxs" | "xs" | "sm" | "md" | "lg" | "xl";
@@ -141,9 +139,6 @@ declare module "@mantine/core" {
 }
 
 export const spectacleStyles: MantineProviderProps["styles"] = {
-    // Example:
-    // Button: (theme, params: ButtonStylesParams) => ({
-
     Button: {
         inner: { fontWeight: "lighter" },
     },
