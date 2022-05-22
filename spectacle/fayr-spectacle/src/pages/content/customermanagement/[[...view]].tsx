@@ -24,6 +24,7 @@ import {
     ListUsersCommand,
 } from "@aws-sdk/client-cognito-identity-provider";
 import { getUsersForCurrentStore } from "~/helpers/cognito";
+import { SwitchAvailability } from "~/components/layout/SubHeader";
 
 type ServerSideProps = {
     cred: any;
@@ -127,7 +128,10 @@ const CustomerManagementRouter: NextPageWithLayout<ServerSideProps> = ({
 CustomerManagementRouter.layoutProps = {
     Layout: layoutFactory({
         subHeader: {
-            enabled: false,
+            enabled: true,
+            props: {
+                switchAvailability: SwitchAvailability.OpticianOnly,
+            },
         },
     }),
 };
