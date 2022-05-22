@@ -28,10 +28,13 @@ export const convertCognitoUserToUserDto = (cognitoUser: UserType): UserDto => {
             switch (Name) {
                 case "custom:first_name":
                     userDto.firstName = Value! ?? null;
+                    break;
                 case "custom:family_name":
                     userDto.lastName = Value! ?? null;
+                    break;
                 default:
                     userDto[Name.substring(Name.indexOf(":") + 1)] = Value! ?? null;
+                    break;
             }
         } else {
             userDto[Name!] = Value!;
