@@ -52,19 +52,19 @@ enum Direction {
 const FittingRoomPage: NextPageWithLayout = () => {
     const containerRef = React.useRef<HTMLDivElement>(null);
 
-    const [runningOnDevice, setRunningOnDevice] = React.useState(false);
+    const [isRunningOnDevice, setRunningOnDevice] = React.useState(false);
 
     const [zSliderValue, setZSliderValue] = React.useState(80);
 
     const mindArThree = React.useMemo(() => {
-        if (!runningOnDevice) {
+        if (!isRunningOnDevice) {
             return;
         }
 
         return new window.MINDAR.FACE.MindARThree({
             container: containerRef.current,
         });
-    }, [runningOnDevice]);
+    }, [isRunningOnDevice]);
 
     React.useEffect(() => {
         if (!mindArThree) {
@@ -87,7 +87,11 @@ const FittingRoomPage: NextPageWithLayout = () => {
         };
         start();
 
-        return () => mindArThree.stop();
+        return () => {
+            try {
+                return mindArThree.stop();
+            } catch (err) {}
+        };
     }, [mindArThree]);
 
     const moveCamera = (direction: Direction) => {
