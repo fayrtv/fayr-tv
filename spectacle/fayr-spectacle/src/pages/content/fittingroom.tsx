@@ -1,11 +1,10 @@
-import { Container } from "@mantine/core";
+import { Container, Grid, Group, Slider, ThemeIcon } from "@mantine/core";
 import React from "react";
 import Layout from "~/components/layout/Layout";
 import { NextPageWithLayout } from "~/types/next-types";
 import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
 import styles from "./fittingroom.module.scss";
-import { Button, Grid, Group, Slider, ThemeIcon } from "@mantine/core";
-import { ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from "tabler-icons-react";
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp } from "tabler-icons-react";
 
 declare global {
     // noinspection JSUnusedGlobalSymbols
