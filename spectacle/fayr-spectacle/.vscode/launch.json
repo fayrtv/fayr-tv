@@ -8,12 +8,6 @@
             "command": "yarn dev"
         },
         {
-            "name": "Next.js: debug client-side",
-            "type": "pwa-chrome",
-            "request": "launch",
-            "url": "http://localhost:3000"
-        },
-        {
             "name": "Next.js: debug full stack",
             "type": "node-terminal",
             "request": "launch",

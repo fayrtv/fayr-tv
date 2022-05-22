@@ -9,6 +9,7 @@ import { IncomingMessage } from "http";
 import { getCurrentStore } from "./storeLocator";
 import { Customer as CustomerEntity } from "~/models";
 import { User as UserDto } from "~/types/user";
+import { convertAwsModelToUser } from "./awsModelParser";
 
 export const convertCognitoUserToUserDto = (cognitoUser: UserType): UserDto => {
     if (!cognitoUser.Username) {
@@ -19,28 +20,17 @@ export const convertCognitoUserToUserDto = (cognitoUser: UserType): UserDto => {
 
     const userAttributes = cognitoUser.Attributes!;
 
-    const userDto = {} as UserDto & {
-        [name: string]: string | null;
+    type TransformedAttributes = {
+        [key: string]: any;
     };
 
-    for (const { Name, Value } of userAttributes) {
-        if (Name?.startsWith("custom")) {
-            switch (Name) {
-                case "custom:first_name":
-                    userDto.firstName = Value! ?? null;
-                    break;
-                case "custom:family_name":
-                    userDto.lastName = Value! ?? null;
-                    break;
-                default:
-                    userDto[Name.substring(Name.indexOf(":") + 1)] = Value! ?? null;
-                    break;
-            }
-        } else {
-            userDto[Name!] = Value!;
-        }
-    }
-    return userDto;
+    const attributes: TransformedAttributes = {};
+    userAttributes.forEach(({ Name, Value }) => (attributes[Name!] = Value));
+
+    return convertAwsModelToUser({
+        username: cognitoUser.Username,
+        attributes: attributes,
+    });
 };
 
 export const getUsersForCurrentStore = async (req: IncomingMessage, userPoolId: string) => {
