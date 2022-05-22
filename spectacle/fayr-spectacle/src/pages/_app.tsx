@@ -18,6 +18,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { DataStore } from "@aws-amplify/datastore";
 import { Store } from "~/models";
 import { deserializeModel, SerializedModel, serializeModel } from "~/models/amplify-models";
+import { getCurrentStore } from "~/helpers/storeLocator";
 
 // TODO: https://ordinarycoders.com/blog/article/nextjs-aws-amplify
 // https://www.youtube.com/watch?v=YvoyHgZWSFY&ab_channel=BojidarYovchev
@@ -94,11 +95,7 @@ export default function App({
 }
 
 App.getInitialProps = async (ctx: GetServerSidePropsContext) => {
-    const SSR = withSSRContext({ req: ctx.req });
-    const dataStore = SSR.DataStore as typeof DataStore;
-
-    const result = await dataStore.query(Store, (s) => s.city("eq", "Osnabrück"));
-    const store = result[0];
+    const store = await getCurrentStore(ctx.req);
 
     return {
         colorScheme: getCookie("mantine-color-scheme", ctx) || "light",
