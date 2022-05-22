@@ -2,7 +2,7 @@ import { DataStore, withSSRContext } from "aws-amplify";
 import { IncomingMessage } from "http";
 import { Store } from "~/models";
 
-export const getCurrentStore = async (req: IncomingMessage) => {
+export const getCurrentStore = async (req: IncomingMessage | undefined) => {
     const SSR = withSSRContext({ req });
     const dataStore = SSR.DataStore as typeof DataStore;
 

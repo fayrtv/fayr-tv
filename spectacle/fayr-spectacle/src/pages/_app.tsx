@@ -1,7 +1,7 @@
 // noinspection JSUnusedGlobalSymbols
 import { ColorScheme, ColorSchemeProvider, MantineProvider } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
-import Amplify, { withSSRContext } from "aws-amplify";
+import Amplify from "aws-amplify";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import { Fragment, ReactNode, useState } from "react";
@@ -15,9 +15,8 @@ import spectacleTheme, { spectacleStyles } from "../theming/mantine";
 import StoreInfoProvider from "~/components/StoreInfoProvider";
 import { NextPageContext } from "next";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { DataStore } from "@aws-amplify/datastore";
 import { Store } from "~/models";
-import { deserializeModel, SerializedModel, serializeModel } from "~/models/amplify-models";
+import { SerializedModel, serializeModel } from "~/models/amplify-models";
 import { getCurrentStore } from "~/helpers/storeLocator";
 
 // TODO: https://ordinarycoders.com/blog/article/nextjs-aws-amplify

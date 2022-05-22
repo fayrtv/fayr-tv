@@ -35,9 +35,11 @@ const SubHeader = ({
                             <Button color="secondary" size="xs" component="a">
                                 <Group spacing="sm">
                                     <CalendarPlus color="black" size={15} />
-                                    {!isMobile && (<Text size="sm" color="black">
-                                        Termin vereinbaren
-                                    </Text>)}
+                                    {!isMobile && (
+                                        <Text size="sm" color="black">
+                                            Termin vereinbaren
+                                        </Text>
+                                    )}
                                 </Group>
                             </Button>
                         </Link>
@@ -92,7 +94,7 @@ const SubHeader = ({
                 <Grid.Col span={isMobile ? 7 : 4} sx={{ justifyContent: "right" }}>
                     <Link href="/profile" passHref>
                         <Anchor>
-                            <Group position="right" direction="row">
+                            <Group position="right" direction="row" noWrap>
                                 {!!user && (
                                     <Text weight="bold" size="xs">
                                         Willkommen, {formatFormalAddress(user)}

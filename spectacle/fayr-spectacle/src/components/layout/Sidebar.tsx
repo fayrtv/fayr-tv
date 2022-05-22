@@ -1,27 +1,28 @@
-import { Anchor, Aside, Navbar } from "@mantine/core";
-import { NextLink } from "@mantine/next";
+import { Anchor, Aside, Center, List, Overlay, Text } from "@mantine/core";
 import React, { PropsWithChildren } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import ThemeToggleButton from "~/components/layout/ThemeToggleButton";
+import { useMediaQuery } from "@mantine/hooks";
+import { MobileWidthThreshold } from "~/constants/mediaqueries";
+import { useSession } from "~/hooks/useSession";
 
-const ThemeAdaptiveAnchor = ({
-    href,
-    ...props
-}: PropsWithChildren<Omit<React.ComponentPropsWithoutRef<typeof Anchor>, "sx">> & {
-    href: string;
-}) => {
-    const router = useRouter();
+const MenuItem = ({ href, children }: PropsWithChildren<{ href: string }>) => {
+    const isActive = useRouter().asPath === href;
 
     return (
         <Link href={href} passHref>
             <Anchor
-                {...props}
                 sx={(theme) => ({
-                    color: theme.colorScheme === "dark" ? theme.white : theme.black,
-                    textDecoration: router.route === href ? "underline" : "none",
+                    fontSize: theme.fontSizes.xl,
+                    color: isActive
+                        ? theme.colors.primary[9]
+                        : theme.colorScheme === "light"
+                        ? theme.black
+                        : theme.white,
                 })}
             >
-                {props.children}
+                {children}
             </Anchor>
         </Link>
     );
@@ -32,62 +33,85 @@ type Props = {
 };
 
 export const Sidebar = ({ open }: Props) => {
+    const { isAuthenticated, isAdmin } = useSession();
+    const isMobile = useMediaQuery(`(max-width: ${MobileWidthThreshold}px)`, true);
+    const debug = process.env.NODE_ENV === "development";
+
     return (
         <Aside
-            p="md"
+            p="lg"
             hidden={!open}
             width={{ sm: 200, lg: 300 }}
-            sx={(theme) => ({
-                backgroundColor: `rgb(${
-                    theme.colorScheme === "light" ? "255, 255, 2555" : "0, 0, 0"
-                }, 0.75)`,
-            })}
+            sx={{ backgroundColor: "transparent" }}
             hiddenBreakpoint={50000}
             fixed
         >
-            <Navbar.Section>
-                <h2>Sitemap</h2>
-                <ul>
-                    <li>
-                        <NextLink href={"/content/spectaclepass"}>Brillenpass</NextLink>
-                    </li>
-                    <li>
-                        <ThemeAdaptiveAnchor href={"/auth/signup"}>
-                            Registrieren
-                        </ThemeAdaptiveAnchor>
-                    </li>
-                    <li>
-                        <ThemeAdaptiveAnchor href={"/auth/signin"}>Einloggen</ThemeAdaptiveAnchor>
-                    </li>
-                    <li>
-                        <ThemeAdaptiveAnchor href={"/auth/recover"}>
-                            Passwort vergessen
-                        </ThemeAdaptiveAnchor>
-                    </li>
-                    <li>
-                        <ThemeAdaptiveAnchor href={"/about"}>
-                            Infos zum Brillenpass
-                        </ThemeAdaptiveAnchor>
-                    </li>
-                    <li>
-                        <ThemeAdaptiveAnchor href={"/content/fittingroom"}>
-                            Anprobe
-                        </ThemeAdaptiveAnchor>
-                    </li>
-                    <li>
-                        <ThemeAdaptiveAnchor href={"/appointment"}>
-                            Terminvereinbarung
-                        </ThemeAdaptiveAnchor>
-                    </li>
-                    <li>
-                        <ThemeAdaptiveAnchor
-                            href={"/content/customermanagement/create-refraction-protocol"}
-                        >
-                            Kundenverwaltung
-                        </ThemeAdaptiveAnchor>
-                    </li>
-                </ul>
-            </Navbar.Section>
+            <Overlay blur={11} zIndex={-1} color="transparent" />
+            <Aside.Section grow>
+                <List listStyleType="none" center spacing="md">
+                    {isAdmin && (
+                        <List.Item>
+                            <MenuItem
+                                href={"/content/customermanagement/create-refraction-protocol"}
+                            >
+                                Kundenverwaltung
+                            </MenuItem>
+                        </List.Item>
+                    )}
+                    <List.Item>
+                        <MenuItem href={"/content/spectaclepass"}>Digitaler Brillenpass</MenuItem>
+                    </List.Item>
+
+                    <List.Item>
+                        <MenuItem href={"/appointment"}>Termin vereinbaren</MenuItem>
+                    </List.Item>
+                    <List.Item>
+                        <MenuItem href={"/content/fittingroom"}>Online Anprobe</MenuItem>
+                    </List.Item>
+
+                    {debug && !isMobile && (
+                        <>
+                            <Text size="sm" mt="lg">
+                                Debug pages:
+                            </Text>
+                            <List.Item>
+                                <MenuItem href={"/welcome"}>Willkommen</MenuItem>
+                            </List.Item>
+                            <List.Item>
+                                <MenuItem href={"/auth/signup"}>Registrieren</MenuItem>
+                            </List.Item>
+                            <List.Item>
+                                <MenuItem href={"/auth/signin"}>Einloggen</MenuItem>
+                            </List.Item>
+                            <List.Item>
+                                <MenuItem href={"/auth/recover"}>Passwort vergessen</MenuItem>
+                            </List.Item>
+                            <List.Item>
+                                <MenuItem href={"/about"}>Infos zum Brillenpass</MenuItem>
+                            </List.Item>
+                        </>
+                    )}
+                </List>
+            </Aside.Section>
+            <Aside.Section>
+                <List listStyleType="none" center spacing="md">
+                    {isAuthenticated && (
+                        <>
+                            <List.Item>
+                                <MenuItem href={"/settings"}>Einstellungen</MenuItem>
+                            </List.Item>
+                            <List.Item>
+                                <MenuItem href={"/auth/signout"}>Abmelden</MenuItem>
+                            </List.Item>
+                        </>
+                    )}
+                </List>
+            </Aside.Section>
+            <Aside.Section mt="xl">
+                <Center>
+                    <ThemeToggleButton />
+                </Center>
+            </Aside.Section>
         </Aside>
     );
 };

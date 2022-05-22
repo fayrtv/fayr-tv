@@ -7,5 +7,7 @@ export const useSession = () => {
         const userInfo = await Auth.currentUserInfo();
         return userInfo?.attributes ? convertAwsModelToUser(userInfo) : undefined;
     });
-    return { isLoading, user };
+
+    // TODO(#222): Determine `isAdmin` state
+    return { isLoading, user, isAuthenticated: !!user, isAdmin: true };
 };
