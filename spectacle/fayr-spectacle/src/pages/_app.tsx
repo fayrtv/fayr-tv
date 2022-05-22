@@ -13,7 +13,7 @@ import "../styles/globals.scss";
 
 import spectacleTheme, { spectacleStyles } from "../theming/mantine";
 import StoreInfoProvider from "~/components/StoreInfoProvider";
-import { GetServerSidePropsContext } from "next";
+import { NextPageContext } from "next";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { DataStore } from "@aws-amplify/datastore";
 import { Store } from "~/models";
@@ -94,11 +94,12 @@ export default function App({
     );
 }
 
-App.getInitialProps = async (ctx: GetServerSidePropsContext) => {
+App.getInitialProps = async ({ ctx }: { ctx: NextPageContext }) => {
     const store = await getCurrentStore(ctx.req);
+    const colorSchemeCookieValue = getCookie("mantine-color-scheme", ctx);
 
     return {
-        colorScheme: getCookie("mantine-color-scheme", ctx) || "light",
+        colorScheme: colorSchemeCookieValue || "light",
         store: serializeModel(store),
     } as ServerInitialProps;
 };
