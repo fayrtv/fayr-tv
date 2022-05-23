@@ -48,6 +48,7 @@ export declare class Appointment {
   readonly beginDate: string;
   readonly AtStore?: Store | null;
   readonly endDate?: string | null;
+  readonly message?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly appointmentUserId?: string | null;

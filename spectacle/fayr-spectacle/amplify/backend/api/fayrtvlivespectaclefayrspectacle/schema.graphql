@@ -18,6 +18,7 @@ type Appointment @model @auth(rules: [{allow: public}]) {
   beginDate: AWSDateTime!
   AtStore: Store @hasOne
   endDate: AWSDateTime
+  message: String
 }
 
 type Store @model @auth(rules: [{allow: public}]) {

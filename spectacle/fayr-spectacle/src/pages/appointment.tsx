@@ -5,15 +5,36 @@ import { ChooseAppointment } from "~/components/appointment/ChooseAppointment";
 import { TimeSlot } from "~/components/appointment/types";
 import ConfirmAppointment from "~/components/appointment/ConfirmAppointment";
 import dayjs from "dayjs";
+import { DataStore } from "@aws-amplify/datastore";
+import { Appointment } from "~/models";
+import { useSession } from "~/hooks/useSession";
+import { useStoreInfo } from "~/components/StoreInfoProvider";
 
 const AppointmentPage: NextPageWithLayout = () => {
+    const { user, getOrCreateCustomer } = useSession();
+    const { id: storeId } = useStoreInfo();
     const [date, setDate] = useState<Date | null>(null);
     const [selectedSlot, setSelectedSlot] = useState<TimeSlot | null>(null);
     const [isAppointmentSelected, setAppointmentSelected] = useState(false);
 
-    const onConfirm = useCallback((begin: Date, end: Date) => {
+    const onConfirm = useCallback(
+        async (begin: Date, end: Date, message: string) => {
+            if (!user) {
+                return;
+            }
 
-    }, []);
+            const appointment = new Appointment({
+                User: await getOrCreateCustomer(),
+                appointmentAtStoreId: storeId,
+                appointmentUserId: user.id,
+                beginDate: begin.toISOString(),
+                endDate: end.toISOString(),
+                message: message,
+            });
+            await DataStore.save(appointment);
+        },
+        [getOrCreateCustomer, storeId, user],
+    );
 
     return (
         <>

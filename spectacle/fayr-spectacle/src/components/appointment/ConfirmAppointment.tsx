@@ -1,9 +1,10 @@
-import { Button, Text } from "@mantine/core";
-import { Center, Container, Group, Paper, Space, Stack, Textarea } from "@mantine/core";
+import { Button, Container, Group, Paper, Space, Stack, Text, Textarea } from "@mantine/core";
 import { useStoreInfo } from "~/components/StoreInfoProvider";
 import { InfoBox } from "~/components/appointment/InfoBox";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
+import { useState } from "react";
+import { useInputState } from "@mantine/hooks";
 
 // https://day.js.org/docs/en/plugin/localized-format
 dayjs.extend(localizedFormat);
@@ -13,11 +14,12 @@ type Props = {
     begin: Date;
     end: Date;
     onCancel: () => void;
-    onConfirm: (begin: Date, end: Date) => void;
+    onConfirm: (begin: Date, end: Date, message: string) => Promise<void>;
 };
 
-const ConfirmAppointment = ({ begin, end, onCancel }: Props) => {
+const ConfirmAppointment = ({ begin, end, onCancel, onConfirm }: Props) => {
     const { name, city, fullAddress } = useStoreInfo();
+    const [message, setMessage] = useInputState("");
 
     return (
         <Container size="xs">
@@ -45,8 +47,11 @@ const ConfirmAppointment = ({ begin, end, onCancel }: Props) => {
                     Hinweis: Alle Zeiten werden für Berlin - CEST [GMT+02:00] angezeigt.
                 </Text>
 
-                <form>
+                {/* TODO: Once submission works, use proper form submit */}
+                <form onSubmit={() => void 0}>
                     <Textarea
+                        value={message}
+                        onChange={setMessage}
                         mt="md"
                         placeholder="Ihre Nachricht..."
                         label="Möchten Sie uns noch etwas mitteilen?"
@@ -57,7 +62,10 @@ const ConfirmAppointment = ({ begin, end, onCancel }: Props) => {
                         <Button color="danger" onClick={onCancel}>
                             Zurück
                         </Button>
-                        <Button type="submit" color="success">
+                        <Button
+                            color="success"
+                            onClick={async () => await onConfirm(begin, end, message)}
+                        >
                             Bestätigen
                         </Button>
                     </Group>
