@@ -33,7 +33,6 @@ export declare class RefractionProtocol {
 
 export declare class Customer {
   readonly id: string;
-  readonly storeID: string;
   readonly ProtocolHistory?: (RefractionProtocol | null)[] | null;
   readonly userID?: string | null;
   readonly createdAt?: string | null;
@@ -59,12 +58,12 @@ export declare class Appointment {
 
 export declare class Store {
   readonly id: string;
-  readonly AdminUsers?: (Customer | null)[] | null;
   readonly name: string;
   readonly city: string;
   readonly owner: string;
   readonly fullAddress: string;
   readonly phoneNumber?: string | null;
+  readonly adminUserIDs: string[];
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<Store, StoreMetaData>);

@@ -7,6 +7,11 @@ export const getCurrentStore = async (req: IncomingMessage | undefined) => {
     const dataStore = SSR.DataStore as typeof DataStore;
 
     // TODO: Replace with store from the current domain (Depending on the final scheme we use)
-    const result = await dataStore.query(Store, (s) => s.city("eq", "Osnabrück"));
-    return result[0];
+    try {
+        const result = await dataStore.query(Store, (s) => s.city("eq", "Osnabrück"));
+        return result[0];
+    } catch (err) {
+        console.error({ message: "Unable to load default store. Check the Amplify Data model." });
+        throw err;
+    }
 };

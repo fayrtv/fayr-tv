@@ -48,7 +48,7 @@ const ConfirmAppointment = ({ begin, end, onCancel, onConfirm }: Props) => {
                 </Text>
 
                 {/* TODO: Once submission works, use proper form submit */}
-                <form onSubmit={() => void 0}>
+                <form method="GET" onSubmit={async () => await onConfirm(begin, end, message)}>
                     <Textarea
                         value={message}
                         onChange={setMessage}
@@ -62,12 +62,7 @@ const ConfirmAppointment = ({ begin, end, onCancel, onConfirm }: Props) => {
                         <Button color="danger" onClick={onCancel}>
                             Zurück
                         </Button>
-                        <Button
-                            color="success"
-                            onClick={async () => await onConfirm(begin, end, message)}
-                        >
-                            Bestätigen
-                        </Button>
+                        <Button color="success">Bestätigen</Button>
                     </Group>
                 </form>
             </Stack>

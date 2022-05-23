@@ -92,13 +92,6 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "storeID": {
-                    "name": "storeID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "ProtocolHistory": {
                     "name": "ProtocolHistory",
                     "isArray": true,
@@ -143,15 +136,6 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byStore",
-                        "fields": [
-                            "storeID"
-                        ]
-                    }
                 },
                 {
                     "type": "auth",
@@ -296,20 +280,6 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "AdminUsers": {
-                    "name": "AdminUsers",
-                    "isArray": true,
-                    "type": {
-                        "model": "Customer"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "storeID"
-                    }
-                },
                 "name": {
                     "name": "name",
                     "isArray": false,
@@ -344,6 +314,14 @@ export const schema = {
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
+                },
+                "adminUserIDs": {
+                    "name": "adminUserIDs",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": [],
+                    "isArrayNullable": false
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -390,5 +368,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "503cd375b856f206fcf5e3c0aff58834"
+    "version": "d6e34a0da43cb03816d2d315a9851df0"
 };

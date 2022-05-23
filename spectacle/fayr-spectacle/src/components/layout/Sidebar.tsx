@@ -49,21 +49,41 @@ export const Sidebar = ({ open }: Props) => {
             <Overlay blur={11} zIndex={-1} color="transparent" />
             <Aside.Section grow>
                 <List listStyleType="none" center spacing="md">
-                    {isAdmin && (
-                        <List.Item>
-                            <MenuItem
-                                href={"/content/customermanagement/create-refraction-protocol"}
-                            >
-                                Kundenverwaltung
-                            </MenuItem>
-                        </List.Item>
+                    {isAuthenticated ? (
+                        <>
+                            {isAdmin && (
+                                <List.Item>
+                                    <MenuItem
+                                        href={
+                                            "/content/customermanagement/create-refraction-protocol"
+                                        }
+                                    >
+                                        Kundenverwaltung
+                                    </MenuItem>
+                                </List.Item>
+                            )}
+                            <List.Item>
+                                <MenuItem href={"/content/spectaclepass"}>
+                                    Digitaler Brillenpass
+                                </MenuItem>
+                            </List.Item>
+
+                            <List.Item>
+                                <MenuItem href={"/appointment"}>Termin vereinbaren</MenuItem>
+                            </List.Item>
+                        </>
+                    ) : (
+                        <>
+                            <List.Item>
+                                <MenuItem href={"/auth/signin"}>Einloggen</MenuItem>
+                            </List.Item>
+                            <List.Item>
+                                <MenuItem href={"/auth/signup"}>Registrieren</MenuItem>
+                            </List.Item>
+                        </>
                     )}
                     <List.Item>
-                        <MenuItem href={"/content/spectaclepass"}>Digitaler Brillenpass</MenuItem>
-                    </List.Item>
-
-                    <List.Item>
-                        <MenuItem href={"/appointment"}>Termin vereinbaren</MenuItem>
+                        <MenuItem href={"/about"}>Mehr erfahren</MenuItem>
                     </List.Item>
                     <List.Item>
                         <MenuItem href={"/content/fittingroom"}>Online Anprobe</MenuItem>
@@ -85,9 +105,6 @@ export const Sidebar = ({ open }: Props) => {
                             </List.Item>
                             <List.Item>
                                 <MenuItem href={"/auth/recover"}>Passwort vergessen</MenuItem>
-                            </List.Item>
-                            <List.Item>
-                                <MenuItem href={"/about"}>Infos zum Brillenpass</MenuItem>
                             </List.Item>
                         </>
                     )}

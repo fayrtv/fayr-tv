@@ -7,7 +7,6 @@ type RefractionProtocol @model @auth(rules: [{allow: public}]) {
 
 type Customer @model @auth(rules: [{allow: public}]) {
   id: ID!
-  storeID: ID! @index(name: "byStore")
   ProtocolHistory: [RefractionProtocol] @hasMany(indexName: "byCustomer", fields: ["id"])
   userID: String
 }
@@ -23,11 +22,11 @@ type Appointment @model @auth(rules: [{allow: public}]) {
 
 type Store @model @auth(rules: [{allow: public}]) {
   id: ID!
-  AdminUsers: [Customer] @hasMany(indexName: "byStore", fields: ["id"])
   name: String!
   city: String!
   owner: String!
   fullAddress: String!
   phoneNumber: String
+  adminUserIDs: [String!]!
 }
  
