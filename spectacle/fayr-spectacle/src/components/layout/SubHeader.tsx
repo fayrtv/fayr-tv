@@ -64,6 +64,9 @@ const SubHeader = ({
                                 tabControl: {
                                     padding: isMobile ? "7px !important" : "auto",
                                 },
+                                tabsList: {
+                                    justifyContent: "center",
+                                },
                             })}
                             orientation="horizontal"
                         >
