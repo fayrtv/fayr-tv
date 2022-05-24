@@ -78,7 +78,7 @@ export const useProfileForm = ({
 
     const renderError = useCallback(
         () =>
-            error && (
+            error ? (
                 <Alert
                     mb="md"
                     // variant="filled"
@@ -89,6 +89,8 @@ export const useProfileForm = ({
                 >
                     {error}
                 </Alert>
+            ) : (
+                <></>
             ),
         [error, errorTitle],
     );
@@ -218,23 +220,27 @@ export const useProfileForm = ({
         </Button>
     );
 
+    const ProfileForm = {
+        AddressSelection: renderAddressSelection,
+        LoadingOverlay: renderLoadingOverlay,
+        TitleInput: renderTitleInput,
+        FirstName: renderFirstNameInput,
+        LastName: renderLastNameInput,
+        NewsletterEmail: renderNewsletterEmailInput,
+        ConfirmPassword: renderConfirmPasswordInput,
+        Password: ({ label }: { label?: string }) => renderPasswordInput(label),
+        Error: renderError,
+        Email: renderEmailInput,
+        NewsletterCheckbox: renderNewsletterCheckbox,
+        TermsCheckbox: renderTermsCheckbox,
+        CityInput: renderCityInput,
+        PhoneInput: renderPhoneInput,
+        SubmitButton: ({ caption }: { caption: string }) => renderSubmitButton(caption),
+    };
+
     return {
         isSubmitting,
         onSubmit: onSubmitWrapped,
-        renderError,
-        renderLoadingOverlay,
-        renderAddressSelection,
-        renderTitleInput,
-        renderFirstNameInput,
-        renderLastNameInput,
-        renderEmailInput,
-        renderNewsletterEmailInput,
-        renderPasswordInput,
-        renderConfirmPasswordInput,
-        renderNewsletterCheckbox,
-        renderTermsCheckbox,
-        renderCityInput,
-        renderPhoneInput,
-        renderSubmitButton,
+        ProfileForm,
     };
 };

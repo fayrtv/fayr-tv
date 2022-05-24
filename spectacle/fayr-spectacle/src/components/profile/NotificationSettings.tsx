@@ -1,7 +1,8 @@
 // Framework
 import Auth from "@aws-amplify/auth";
-import { Container, Paper, Stack, Text } from "@mantine/core";
+import { Alert, Container, Paper, Stack, Text } from "@mantine/core";
 import * as React from "react";
+import { Check } from "tabler-icons-react";
 import { User } from "~/types/user";
 import { useProfileForm } from "./hooks/useProfileForm";
 
@@ -12,14 +13,7 @@ type Props = {
 export const NotificationSettings = ({ user }: Props) => {
     const [success, setSuccess] = React.useState(false);
 
-    const {
-        onSubmit,
-        renderError,
-        renderLoadingOverlay,
-        renderNewsletterCheckbox,
-        renderNewsletterEmailInput,
-        renderSubmitButton,
-    } = useProfileForm({
+    const { onSubmit, ProfileForm } = useProfileForm({
         initialValues: user,
         onSubmit: async ({ newsletter, newsletteremail }) => {
             setSuccess(false);
@@ -37,18 +31,29 @@ export const NotificationSettings = ({ user }: Props) => {
     return (
         <Paper p="xl" withBorder>
             <form onSubmit={onSubmit}>
-                {renderError()}
-                {renderLoadingOverlay()}
+                {success && (
+                    <Alert
+                        mb="md"
+                        // variant="filled"
+                        icon={<Check size={16} />}
+                        title="Änderungen gespeichert"
+                        color="success"
+                    >
+                        Ihre Änderungen wurden erfolgreich gespeichert
+                    </Alert>
+                )}
+                <ProfileForm.Error />
+                <ProfileForm.LoadingOverlay />
                 <Stack>
                     <Text color="primary" size="xl" weight="bold">
                         Benachrichtigungen
                     </Text>
                     <Container size={400} px={0} m={0}>
-                        {renderNewsletterEmailInput()}
+                        <ProfileForm.NewsletterEmail />
                     </Container>
-                    {renderNewsletterCheckbox()}
+                    <ProfileForm.NewsletterCheckbox />
                     <Container size={400} px={0} m={0}>
-                        {renderSubmitButton("Speichern")}
+                        <ProfileForm.SubmitButton caption="Speichern" />
                     </Container>
                 </Stack>
             </form>
