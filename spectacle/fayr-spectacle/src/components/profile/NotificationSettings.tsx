@@ -1,9 +1,11 @@
 // Framework
 import Auth from "@aws-amplify/auth";
-import { Container, Paper, Stack, Text } from "@mantine/core";
+import { Alert, Container, Paper, Stack, Text } from "@mantine/core";
 import * as React from "react";
+import { Check } from "tabler-icons-react";
 import { User } from "~/types/user";
 import { useProfileForm } from "./hooks/useProfileForm";
+import useIsMobile from "../../hooks/useIsMobile";
 
 type Props = {
     user: User;
@@ -11,6 +13,8 @@ type Props = {
 
 export const NotificationSettings = ({ user }: Props) => {
     const [success, setSuccess] = React.useState(false);
+
+    const isMobile = useIsMobile();
 
     const {
         onSubmit,
@@ -35,8 +39,19 @@ export const NotificationSettings = ({ user }: Props) => {
     });
 
     return (
-        <Paper p="xl" withBorder>
+        <Paper p={isMobile ? "md" : "xl"} withBorder>
             <form onSubmit={onSubmit}>
+                {success && (
+                    <Alert
+                        mb="md"
+                        // variant="filled"
+                        icon={<Check size={16} />}
+                        title="Änderungen gespeichert"
+                        color="success"
+                    >
+                        Ihre Änderungen wurden erfolgreich gespeichert
+                    </Alert>
+                )}
                 {renderError()}
                 {renderLoadingOverlay()}
                 <Stack>
