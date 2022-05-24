@@ -6,25 +6,15 @@ import { Customer, formatCustomerName } from "~/types/user";
 import { Button, Container, Group, Text } from "@mantine/core";
 import CreateRefractionProtocol from "~/components/customermanagement/CreateRefractionProtocol";
 import { CustomerSelection } from "~/components/customermanagement/CustomerSelection";
-import { DataStore, withSSRContext } from "aws-amplify";
-import { MobileWidthThreshold } from "~/constants/mediaqueries";
-import { useMediaQuery } from "@mantine/hooks";
 import SpectaclePassOverview from "~/components/customermanagement/SpectaclePassOverview";
 import { PathBasedTabMenu, useUrlFragment } from "~/components/layout/PathBasedTabMenu";
 import { Crumb, Crumbs } from "~/components/Crumbs";
 import CustomerOverview from "~/components/customermanagement/CustomerOverview";
 import { CirclePlus } from "tabler-icons-react";
 import { layoutFactory } from "../../../components/layout/Layout";
-import { getCurrentStore } from "../../../helpers/storeLocator";
-import { Customer as CustomerEntity } from "~/models";
-import { Auth, API } from "aws-amplify";
-import {
-    CognitoIdentityProviderClient,
-    GetUserCommand,
-    ListUsersCommand,
-} from "@aws-sdk/client-cognito-identity-provider";
 import { getUsersForCurrentStore } from "~/helpers/cognito";
 import { SwitchAvailability } from "~/components/layout/SubHeader";
+import useIsMobile from "~/hooks/useIsMobile";
 
 type ServerSideProps = {
     cred: any;
@@ -39,7 +29,7 @@ const CustomerManagementRouter: NextPageWithLayout<ServerSideProps> = ({
 }) => {
     const [selectedCustomer, setSelectedCustomer] = React.useState<Customer | undefined>(undefined);
 
-    const isMobile = useMediaQuery(`(max-width: ${MobileWidthThreshold}px)`, true);
+    const isMobile = useIsMobile();
 
     const tabs = [
         {

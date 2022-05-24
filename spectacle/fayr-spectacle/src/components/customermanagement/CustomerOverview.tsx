@@ -1,16 +1,15 @@
-import { Badge, Container, Group, Table, Text } from "@mantine/core";
+import { Group, Table, Text } from "@mantine/core";
 import { Customer } from "../../types/user";
 import React from "react";
-import { useMediaQuery } from "@mantine/hooks";
-import { MobileWidthThreshold } from "~/constants/mediaqueries";
 import { CustomerStatusBadge } from "~/components/customermanagement/CustomerStatusBadge";
+import useIsMobile from "~/hooks/useIsMobile";
 
 type Props = {
     customer: Customer;
 };
 
 const CustomerOverview = ({ customer }: Props) => {
-    const isMobile = useMediaQuery(`(max-width: ${MobileWidthThreshold}px)`, true);
+    const isMobile = useIsMobile();
     return isMobile ? (
         <Group direction="row" grow spacing="xl">
             <Group direction="column">

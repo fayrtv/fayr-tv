@@ -3,9 +3,8 @@ import React, { PropsWithChildren } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import ThemeToggleButton from "~/components/layout/ThemeToggleButton";
-import { useMediaQuery } from "@mantine/hooks";
-import { MobileWidthThreshold } from "~/constants/mediaqueries";
 import { useSession } from "~/hooks/useSession";
+import useIsMobile from "~/hooks/useIsMobile";
 
 const MenuItem = ({ href, children }: PropsWithChildren<{ href: string }>) => {
     const isActive = useRouter().asPath === href;
@@ -34,7 +33,7 @@ type Props = {
 
 export const Sidebar = ({ open }: Props) => {
     const { isAuthenticated, isAdmin } = useSession();
-    const isMobile = useMediaQuery(`(max-width: ${MobileWidthThreshold}px)`, true);
+    const isMobile = useIsMobile();
     const debug = process.env.NODE_ENV === "development";
 
     return (

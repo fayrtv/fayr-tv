@@ -1,6 +1,6 @@
 import { layoutFactory } from "~/components/layout/Layout";
 import { NextPageWithLayout } from "~/types/next-types";
-import React, { useState } from "react";
+import React from "react";
 import { PathBasedTabMenu } from "~/components/layout/PathBasedTabMenu";
 import EditProfile from "~/components/profile/EditProfile";
 import { GetServerSideProps } from "next";
@@ -8,14 +8,13 @@ import { RedirectProps, redirectServerSide } from "~/helpers/next-server";
 import { getUser } from "~/helpers/authentication";
 import { User } from "~/types/user";
 import ChangePassword from "~/components/profile/ChangePassword";
-import { useMediaQuery } from "@mantine/hooks";
-import { MobileWidthThreshold } from "~/constants/mediaqueries";
 import { Container } from "@mantine/core";
+import useIsMobile from "~/hooks/useIsMobile";
 
 type ServerProps = { user: User };
 
 const ProfileRouter: NextPageWithLayout<ServerProps> = ({ user }: ServerProps) => {
-    const isMobile = useMediaQuery(`(max-width: ${MobileWidthThreshold}px)`, true);
+    const isMobile = useIsMobile();
 
     return (
         <Container

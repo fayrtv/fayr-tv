@@ -10,7 +10,7 @@ export default function PassportQRCodeExample() {
     const { user } = useSession();
 
     // TODO: Define
-    const qrCodeContent = "https://example.com";
+    const qrCodeContent = "https://www.zeiss.com/";
 
     return (
         <Box sx={(theme) => ({ backgroundColor: theme.colors.primary[7] })}>

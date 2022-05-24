@@ -1,4 +1,4 @@
-import { Box, Center, Container, Group, Image, Paper, Stack, Text } from "@mantine/core";
+import { Box, Container, Group, Image, Paper, Stack, Sx, Text } from "@mantine/core";
 import React, { PropsWithChildren } from "react";
 import PassportQRCodeExample from "~/components/PassportQRCode";
 import Layout from "~/components/layout/Layout";
@@ -6,6 +6,7 @@ import { NextPageWithLayout } from "~/types/next-types";
 import { useStoreInfo } from "~/components/StoreInfoProvider";
 import Link from "next/link";
 import { Anchor } from "@mantine/core";
+import useIsMobile from "~/hooks/useIsMobile";
 
 const NumberBox = ({ n, title, children }: PropsWithChildren<{ n: number; title: string }>) => {
     return (
@@ -24,21 +25,34 @@ const NumberBox = ({ n, title, children }: PropsWithChildren<{ n: number; title:
 const DigitalSpectaclePassportPage: NextPageWithLayout = () => {
     const storeInfo = useStoreInfo();
 
+    const isMobile = useIsMobile();
+
+    const containerSxProps: Sx = { maxWidth: "unset" };
+
+    if (isMobile) {
+        containerSxProps.padding = 15;
+    }
+
     return (
-        <Container sx={{ maxWidth: "unset" }} p="xl">
-            <Group position="apart" noWrap>
+        <Container sx={containerSxProps}>
+            <Group position="apart" direction={isMobile ? "column" : "row"} noWrap>
                 <Stack spacing="lg">
                     <Paper
                         shadow="xl"
                         // sx={{
                         //     boxShadow: "0px 0px 10px 0px #00000040",
                         // }}
-                        p={70}
+                        p={isMobile ? 15 : 70}
                         radius="xs"
                     >
                         <PassportQRCodeExample />
                     </Paper>
-                    <Box sx={(theme) => ({ backgroundColor: theme.colors.gray[0] })}>
+                    <Box
+                        sx={(theme) => ({
+                            backgroundColor:
+                                theme.colors.gray[theme.colorScheme === "dark" ? 7 : 5],
+                        })}
+                    >
                         <Group px="xl" py="md" noWrap>
                             <Stack>
                                 <Text color="white" size="md" weight="bold">
@@ -53,7 +67,7 @@ const DigitalSpectaclePassportPage: NextPageWithLayout = () => {
                         </Group>
                     </Box>
                 </Stack>
-                <Box ml="xl">
+                <Box ml={isMobile ? "md" : "xl"}>
                     <Text color="primary">
                         <h1>So funktioniert der Digitale Brillenpass</h1>
                     </Text>
@@ -65,7 +79,7 @@ const DigitalSpectaclePassportPage: NextPageWithLayout = () => {
                                 <Anchor>Termin vereinbaren</Anchor>
                             </Link>{" "}
                             einen Termin aussuchen, oder rufen Sie uns an unter{" "}
-                            <span style={{userSelect: "all"}}>{storeInfo.phoneNumber}</span>.
+                            <span style={{ userSelect: "all" }}>{storeInfo.phoneNumber}</span>.
                         </NumberBox>
                         <NumberBox
                             n={2}

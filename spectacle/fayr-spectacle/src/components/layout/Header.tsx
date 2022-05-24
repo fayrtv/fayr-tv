@@ -9,12 +9,11 @@ import {
 } from "@mantine/core";
 import { useElementSize, useMediaQuery } from "@mantine/hooks";
 import { useStoreInfo } from "~/components/StoreInfoProvider";
-import { Stack } from "@mantine/core";
-import { MobileWidthThreshold } from "~/constants/mediaqueries";
 import { ComponentProps } from "react";
 import { useSession } from "~/hooks/useSession";
 import Link from "next/link";
 import SubHeader from "~/components/layout/SubHeader";
+import useIsMobile from "~/hooks/useIsMobile";
 
 type Props = {
     burgerOpen: boolean;
@@ -34,10 +33,7 @@ const Header = ({ burgerOpen, setBurgerOpen, subHeader }: Props) => {
     const storeInfo = useStoreInfo();
     const { user } = useSession();
 
-    const shouldDisplayStoreOwnerHeadline = useMediaQuery(
-        `(min-width: ${MobileWidthThreshold}px)`,
-        true,
-    );
+    const shouldDisplayStoreOwnerHeadline = useIsMobile();
 
     const { ref, height } = useElementSize();
 

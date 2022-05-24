@@ -20,11 +20,11 @@ import { Customer } from "../../types/user";
 import React from "react";
 import { DataStore } from "aws-amplify";
 import { RefractionProtocol as RefractionProtocolEntity } from "~/models";
-import { CirclePlus, DeviceFloppy, Edit, Printer, Trash } from "tabler-icons-react";
-import { useForm, useMediaQuery } from "@mantine/hooks";
-import { MobileWidthThreshold } from "~/constants/mediaqueries";
+import { DeviceFloppy, Edit, Printer, Trash } from "tabler-icons-react";
+import { useForm } from "@mantine/hooks";
 import { UseForm } from "@mantine/hooks/lib/use-form/use-form";
 import { RefractionProtocol } from "~/types/refraction-protocol";
+import useIsMobile from "~/hooks/useIsMobile";
 
 type Props = {
     customer: Customer;
@@ -131,7 +131,7 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
     const themedColor = theme.colorScheme === "light" ? theme.white : theme.black;
     const inverseThemedColor = theme.colorScheme === "dark" ? theme.white : theme.black;
 
-    const isMobile = useMediaQuery(`(max-width: ${MobileWidthThreshold}px)`, true);
+    const isMobile = useIsMobile();
 
     const [saving, setSaving] = React.useState(false);
     const [showSaveFeedback, setShowSaveFeedback] = React.useState(false);

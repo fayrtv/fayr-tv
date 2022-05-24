@@ -1,11 +1,10 @@
 import { Button, Text } from "@mantine/core";
 import { CalendarPlus, Tool, User as UserIcon } from "tabler-icons-react";
 import { Anchor, Avatar, Grid, Group, Paper, Tabs } from "@mantine/core";
-import { formatFormalAddress, User } from "~/types/user";
+import { formatFormalAddress } from "~/types/user";
 import { useSession } from "~/hooks/useSession";
 import Link from "next/link";
-import { useMediaQuery } from "@mantine/hooks";
-import { MobileWidthThreshold } from "~/constants/mediaqueries";
+import useIsMobile from "~/hooks/useIsMobile";
 
 export enum SwitchAvailability {
     Unavailable,
@@ -24,7 +23,7 @@ const SubHeader = ({
     showAppointmentCTA = true,
 }: Props) => {
     const { user } = useSession();
-    const isMobile = useMediaQuery(`(max-width: ${MobileWidthThreshold}px)`, true);
+    const isMobile = useIsMobile();
 
     return (
         <Paper px="md" py="sm" shadow="sm" sx={(theme) => ({ fontSize: theme.fontSizes.sm })}>
