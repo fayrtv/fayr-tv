@@ -1,14 +1,33 @@
-import { Box, Container, Grid, Group, Stack, Text } from "@mantine/core";
+import {
+    Alert,
+    Anchor,
+    Box,
+    Button,
+    Checkbox,
+    Container,
+    Grid,
+    Group,
+    LoadingOverlay,
+    PasswordInput,
+    Select,
+    Stack,
+    Text,
+    TextInput,
+} from "@mantine/core";
+import { useForm } from "@mantine/hooks";
 import { Auth } from "aws-amplify";
 import Router from "next/router";
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, useState } from "react";
 import ZeissLogo from "~/components/ZeissLogo";
-import { layoutFactory } from "~/components/layout/Layout";
+import Layout, { layoutFactory } from "~/components/layout/Layout";
 import { NextPageWithLayout } from "~/types/next-types";
 import { useMantineColorScheme } from "@mantine/core";
+import { AlertCircle } from "tabler-icons-react";
+import Link from "next/link";
 import { useProfileForm } from "~/components/profile/hooks/useProfileForm";
 
 const BodyShell = ({ children }: PropsWithChildren<{}>) => {
+    const { colorScheme } = useMantineColorScheme();
     return (
         <Container size="sm" mt="lg">
             <Group sx={{ alignItems: "flex-start" }}>
@@ -33,7 +52,21 @@ const BodyShell = ({ children }: PropsWithChildren<{}>) => {
 };
 
 const SignUpPage: NextPageWithLayout = () => {
-    const { onSubmit, ProfileForm } = useProfileForm({
+    const {
+        onSubmit,
+        renderError,
+        renderLoadingOverlay,
+        renderAddressSelection,
+        renderTitleInput,
+        renderFirstNameInput,
+        renderLastNameInput,
+        renderEmailInput,
+        renderPasswordInput,
+        renderConfirmPasswordInput,
+        renderNewsletterCheckbox,
+        renderTermsCheckbox,
+        renderSubmitButton,
+    } = useProfileForm({
         onSubmit: async ({ address, firstName, title, lastName, password, email, newsletter }) => {
             await Auth.signUp({
                 username: email,
@@ -55,35 +88,35 @@ const SignUpPage: NextPageWithLayout = () => {
     return (
         <BodyShell>
             <form onSubmit={onSubmit}>
-                <ProfileForm.Error />
-                <ProfileForm.LoadingOverlay />
+                {renderError()}
+                {renderLoadingOverlay()}
                 {/* TODO: No grid with columns on mobile */}
                 <Grid gutter="lg">
                     <Grid.Col span={6}>
                         <Stack spacing="sm">
                             <Group grow>
-                                <ProfileForm.AddressSelection />
-                                <ProfileForm.TitleInput />
+                                {renderAddressSelection()}
+                                {renderTitleInput()}
                             </Group>
-                            <ProfileForm.FirstName />
-                            <ProfileForm.LastName />
+                            {renderFirstNameInput()}
+                            {renderLastNameInput()}
                         </Stack>
                     </Grid.Col>
 
                     <Grid.Col span={6}>
                         <Stack spacing="sm">
-                            <ProfileForm.Email />
-                            <ProfileForm.Password />
-                            <ProfileForm.ConfirmPassword />
+                            {renderEmailInput()}
+                            {renderPasswordInput()}
+                            {renderConfirmPasswordInput()}
 
-                            <ProfileForm.NewsletterCheckbox />
-                            <ProfileForm.TermsCheckbox />
+                            {renderNewsletterCheckbox()}
+                            {renderTermsCheckbox()}
                         </Stack>
                     </Grid.Col>
                 </Grid>
 
                 <Group position="right" mt="md">
-                    <ProfileForm.SubmitButton caption="Benutzerkonto anlegen" />
+                    {renderSubmitButton("Benutzerkonto anlegen")}
                 </Group>
             </form>
         </BodyShell>

@@ -10,7 +10,19 @@ type Props = { user: User };
 const EditProfile = ({ user }: Props) => {
     const [isEditable, setEditable] = useState(false);
 
-    const { onSubmit, ProfileForm } = useProfileForm({
+    const {
+        onSubmit,
+        renderError,
+        renderLoadingOverlay,
+        renderAddressSelection,
+        renderTitleInput,
+        renderFirstNameInput,
+        renderLastNameInput,
+        renderEmailInput,
+        renderCityInput,
+        renderPhoneInput,
+        renderSubmitButton,
+    } = useProfileForm({
         isEditable: isEditable,
         initialValues: user,
         onSubmit: async ({ address, firstName, title, lastName, newsletter, city, phone }) => {
@@ -33,26 +45,26 @@ const EditProfile = ({ user }: Props) => {
     return (
         <>
             <form onSubmit={onSubmit}>
-                <ProfileForm.Error />
-                <ProfileForm.LoadingOverlay />
+                {renderError()}
+                {renderLoadingOverlay()}
                 {/* TODO: No grid with columns on mobile */}
                 <Grid gutter="md">
                     <Grid.Col span={6}>
                         <Stack spacing="sm">
                             <Group grow>
-                                <ProfileForm.AddressSelection />
-                                <ProfileForm.TitleInput />
+                                {renderAddressSelection()}
+                                {renderTitleInput()}
                             </Group>
-                            <ProfileForm.FirstName />
-                            <ProfileForm.LastName />
+                            {renderFirstNameInput()}
+                            {renderLastNameInput()}
                         </Stack>
                     </Grid.Col>
 
                     <Grid.Col span={6}>
                         <Stack spacing="sm">
-                            <ProfileForm.Email />
-                            <ProfileForm.CityInput />
-                            <ProfileForm.PhoneInput />
+                            {renderEmailInput()}
+                            {renderCityInput()}
+                            {renderPhoneInput()}
                         </Stack>
                     </Grid.Col>
                 </Grid>
@@ -60,7 +72,7 @@ const EditProfile = ({ user }: Props) => {
                 <Group position="right" mt="md">
                     {/* Do not combine into a ternary statement as the button will be treated as
                     submit button when switched */}
-                    {isEditable && <ProfileForm.SubmitButton caption="Speichern" />}
+                    {isEditable && renderSubmitButton("Speichern")}
                     {!isEditable && <Button onClick={() => setEditable(true)}>Bearbeiten</Button>}
                 </Group>
             </form>
