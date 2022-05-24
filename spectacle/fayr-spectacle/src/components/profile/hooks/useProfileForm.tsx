@@ -1,6 +1,6 @@
 import { User } from "~/types/user";
 import React, { useCallback, useMemo, useState } from "react";
-import { useForm } from "@mantine/hooks";
+import { useForm, FormRules } from "@mantine/form";
 import {
     Alert,
     Anchor,
@@ -26,6 +26,7 @@ type UseProfileForm = {
     errorTitle: string;
     errorToString?: (error: any) => string;
     isEditable?: boolean;
+    validate?: FormRules<ProfileFormData>;
 };
 
 export const useProfileForm = ({
@@ -33,6 +34,7 @@ export const useProfileForm = ({
     onSubmit,
     errorToString,
     errorTitle,
+    validate = {},
     isEditable = true,
 }: UseProfileForm) => {
     const [isSubmitting, setSubmitting] = useState(false);
@@ -62,6 +64,7 @@ export const useProfileForm = ({
             phone: "",
             ...initialValues,
         } as ProfileFormData,
+        validate,
     });
 
     const onSubmitWrapped = form.onSubmit(async (userProfile) => {

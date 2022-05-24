@@ -18,6 +18,12 @@ const ChangePassword = () => {
         },
         errorTitle: "Fehler beim Ändern des Passworts",
         errorToString: (error) => String(error).replace(/^.*Exception: /, ""),
+        validate: {
+            confirmPassword: (passwordValue, profileFormData) =>
+                passwordValue !== profileFormData.password
+                    ? "Passwörter stimmen nicht überein"
+                    : null,
+        },
     });
 
     return (
