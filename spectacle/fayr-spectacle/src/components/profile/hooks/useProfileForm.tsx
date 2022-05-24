@@ -56,6 +56,7 @@ export const useProfileForm = ({
             password: "",
             confirmPassword: "",
             newsletter: false,
+            newsletteremail: "",
             termsAndConditions: false,
             city: "",
             phone: "",
@@ -108,10 +109,8 @@ export const useProfileForm = ({
         />
     );
 
-    const [x, setX] = useState<string | null>(null);
-
     const renderTitleInput = () => (
-        <TextInput  label="Titel" {...disabledProps} {...form.getInputProps("title")} />
+        <TextInput label="Titel" {...disabledProps} {...form.getInputProps("title")} />
     );
 
     const renderFirstNameInput = () => (
@@ -136,6 +135,14 @@ export const useProfileForm = ({
         <TextInput required {...disabledProps} label="E-Mail" {...form.getInputProps("email")} />
     );
 
+    const renderNewsletterEmailInput = () => (
+        <TextInput
+            {...disabledProps}
+            label="E-Mail-Addresse für Benachrichtigungen"
+            {...form.getInputProps("newsletteremail")}
+        />
+    );
+
     const renderPasswordInput = (label?: string) => (
         <PasswordInput
             required
@@ -156,14 +163,18 @@ export const useProfileForm = ({
         />
     );
 
-    const renderNewsletterCheckbox = () => (
-        <Checkbox
-            mt="sm"
-            {...disabledProps}
-            label="Bitte informieren Sie mich regelmäßig über Angebote und Neuigkeiten per E-Mail."
-            {...form.getInputProps("newsletter")}
-        />
-    );
+    const renderNewsletterCheckbox = () => {
+        const checkState: boolean = form.getInputProps("newsletter").value;
+        return (
+            <Checkbox
+                mt="sm"
+                {...disabledProps}
+                label="Bitte informieren Sie mich regelmäßig über Angebote und Neuigkeiten per E-Mail."
+                checked={checkState}
+                {...form.getInputProps("newsletter")}
+            />
+        );
+    };
 
     const renderTermsCheckbox = useCallback(
         () => (
@@ -217,6 +228,7 @@ export const useProfileForm = ({
         renderFirstNameInput,
         renderLastNameInput,
         renderEmailInput,
+        renderNewsletterEmailInput,
         renderPasswordInput,
         renderConfirmPasswordInput,
         renderNewsletterCheckbox,

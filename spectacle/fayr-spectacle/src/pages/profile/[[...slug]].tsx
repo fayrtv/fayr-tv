@@ -10,6 +10,7 @@ import { User } from "~/types/user";
 import ChangePassword from "~/components/profile/ChangePassword";
 import { Container } from "@mantine/core";
 import useIsMobile from "~/hooks/useIsMobile";
+import NotificationSettings from "~/components/profile/NotificationSettings";
 
 type ServerProps = { user: User };
 
@@ -40,7 +41,7 @@ const ProfileRouter: NextPageWithLayout<ServerProps> = ({ user }: ServerProps) =
                     {
                         title: "Benachrichtigungen",
                         slug: "notifications",
-                        render: () => <b>Hello A</b>,
+                        render: () => <NotificationSettings user={user} />,
                     },
                 ]}
                 pathFragmentName="slug"

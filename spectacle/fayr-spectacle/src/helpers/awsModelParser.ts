@@ -23,8 +23,12 @@ export const convertAwsModelToUser = (response: AwsUserResponse) => {
         // Custom
         address: userAttributes["custom:address"] ?? null,
         title: userAttributes["custom:title"] ?? null,
+        newsletteremail: userAttributes["custom:newsletteremail"] ?? userAttributes.email,
         firstName: userAttributes["custom:first_name"] ?? null,
-        newsletter: userAttributes["custom:newsletter"] ?? null,
+        newsletter:
+            userAttributes["custom:newsletter"] !== undefined
+                ? !!userAttributes["custom:newsletter"]
+                : false,
         city: userAttributes["custom:city"] ?? null,
         phone: userAttributes["custom:phone"] ?? null,
     };

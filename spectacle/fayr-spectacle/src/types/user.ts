@@ -7,6 +7,7 @@ export type User = {
     firstName: string;
     lastName: string;
     newsletter: boolean;
+    newsletteremail: string;
     city: string;
     phone: string;
 };
