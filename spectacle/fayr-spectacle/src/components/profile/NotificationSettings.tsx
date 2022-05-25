@@ -16,14 +16,7 @@ export const NotificationSettings = ({ user }: Props) => {
 
     const isMobile = useIsMobile();
 
-    const {
-        onSubmit,
-        renderError,
-        renderLoadingOverlay,
-        renderNewsletterCheckbox,
-        renderNewsletterEmailInput,
-        renderSubmitButton,
-    } = useProfileForm({
+    const { onSubmit, profileComponents } = useProfileForm({
         initialValues: user,
         onSubmit: async ({ newsletter, newsletteremail }) => {
             setSuccess(false);
@@ -52,18 +45,18 @@ export const NotificationSettings = ({ user }: Props) => {
                         Ihre Änderungen wurden erfolgreich gespeichert
                     </Alert>
                 )}
-                {renderError()}
-                {renderLoadingOverlay()}
+                {profileComponents.renderError()}
+                {profileComponents.renderLoadingOverlay()}
                 <Stack>
                     <Text color="primary" size="xl" weight="bold">
                         Benachrichtigungen
                     </Text>
                     <Container size={400} px={0} m={0}>
-                        {renderNewsletterEmailInput()}
+                        {profileComponents.renderNewsletterEmailInput()}
                     </Container>
-                    {renderNewsletterCheckbox()}
+                    {profileComponents.renderNewsletterCheckbox()}
                     <Container size={400} px={0} m={0}>
-                        {renderSubmitButton("Speichern")}
+                        {profileComponents.renderSubmitButton("Speichern")}
                     </Container>
                 </Stack>
             </form>

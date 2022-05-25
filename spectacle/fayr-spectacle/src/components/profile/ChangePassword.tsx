@@ -9,14 +9,7 @@ const ChangePassword = () => {
     const [success, setSuccess] = useState(false);
     const [oldPassword, setOldPassword] = useInputState("");
 
-    const {
-        onSubmit,
-        renderError,
-        renderLoadingOverlay,
-        renderPasswordInput,
-        renderConfirmPasswordInput,
-        renderSubmitButton,
-    } = useProfileForm({
+    const { onSubmit, profileComponents } = useProfileForm({
         onSubmit: async ({ password }) => {
             setSuccess(false);
             const currentUser = await Auth.currentAuthenticatedUser();
@@ -47,8 +40,8 @@ const ChangePassword = () => {
                         Ihr neues Passwort wurde erfolgreich festgelegt.
                     </Alert>
                 )}
-                {renderError()}
-                {renderLoadingOverlay()}
+                {profileComponents.renderError()}
+                {profileComponents.renderLoadingOverlay()}
 
                 <Stack spacing="lg">
                     <PasswordInput
@@ -59,13 +52,13 @@ const ChangePassword = () => {
                         onChange={setOldPassword}
                     />
                     <Stack spacing="sm">
-                        {renderPasswordInput("Neues Passwort")}
-                        {renderConfirmPasswordInput()}
+                        {profileComponents.renderPasswordInput("Neues Passwort")}
+                        {profileComponents.renderConfirmPasswordInput()}
                     </Stack>
                 </Stack>
 
                 <Group position="right" mt="md">
-                    {renderSubmitButton("Speichern")}
+                    {profileComponents.renderSubmitButton("Speichern")}
                 </Group>
             </form>
         </>

@@ -1,33 +1,14 @@
-import {
-    Alert,
-    Anchor,
-    Box,
-    Button,
-    Checkbox,
-    Container,
-    Grid,
-    Group,
-    LoadingOverlay,
-    PasswordInput,
-    Select,
-    Stack,
-    Text,
-    TextInput,
-} from "@mantine/core";
-import { useForm } from "@mantine/hooks";
+import { Box, Container, Grid, Group, Stack, Text } from "@mantine/core";
 import { Auth } from "aws-amplify";
 import Router from "next/router";
-import React, { PropsWithChildren, useState } from "react";
+import React, { PropsWithChildren } from "react";
 import ZeissLogo from "~/components/ZeissLogo";
-import Layout, { layoutFactory } from "~/components/layout/Layout";
+import { layoutFactory } from "~/components/layout/Layout";
 import { NextPageWithLayout } from "~/types/next-types";
 import { useMantineColorScheme } from "@mantine/core";
-import { AlertCircle } from "tabler-icons-react";
-import Link from "next/link";
 import { useProfileForm } from "~/components/profile/hooks/useProfileForm";
 
 const BodyShell = ({ children }: PropsWithChildren<{}>) => {
-    const { colorScheme } = useMantineColorScheme();
     return (
         <Container size="sm" mt="lg">
             <Group sx={{ alignItems: "flex-start" }}>
@@ -52,21 +33,7 @@ const BodyShell = ({ children }: PropsWithChildren<{}>) => {
 };
 
 const SignUpPage: NextPageWithLayout = () => {
-    const {
-        onSubmit,
-        renderError,
-        renderLoadingOverlay,
-        renderAddressSelection,
-        renderTitleInput,
-        renderFirstNameInput,
-        renderLastNameInput,
-        renderEmailInput,
-        renderPasswordInput,
-        renderConfirmPasswordInput,
-        renderNewsletterCheckbox,
-        renderTermsCheckbox,
-        renderSubmitButton,
-    } = useProfileForm({
+    const { onSubmit, profileComponents } = useProfileForm({
         onSubmit: async ({ address, firstName, title, lastName, password, email, newsletter }) => {
             await Auth.signUp({
                 username: email,
@@ -88,35 +55,35 @@ const SignUpPage: NextPageWithLayout = () => {
     return (
         <BodyShell>
             <form onSubmit={onSubmit}>
-                {renderError()}
-                {renderLoadingOverlay()}
+                {profileComponents.renderError()}
+                {profileComponents.renderLoadingOverlay()}
                 {/* TODO: No grid with columns on mobile */}
                 <Grid gutter="lg">
                     <Grid.Col span={6}>
                         <Stack spacing="sm">
                             <Group grow>
-                                {renderAddressSelection()}
-                                {renderTitleInput()}
+                                {profileComponents.renderAddressSelection()}
+                                {profileComponents.renderTitleInput()}
                             </Group>
-                            {renderFirstNameInput()}
-                            {renderLastNameInput()}
+                            {profileComponents.renderFirstNameInput()}
+                            {profileComponents.renderLastNameInput()}
                         </Stack>
                     </Grid.Col>
 
                     <Grid.Col span={6}>
                         <Stack spacing="sm">
-                            {renderEmailInput()}
-                            {renderPasswordInput()}
-                            {renderConfirmPasswordInput()}
+                            {profileComponents.renderEmailInput()}
+                            {profileComponents.renderPasswordInput()}
+                            {profileComponents.renderConfirmPasswordInput()}
 
-                            {renderNewsletterCheckbox()}
-                            {renderTermsCheckbox()}
+                            {profileComponents.renderNewsletterCheckbox()}
+                            {profileComponents.renderTermsCheckbox()}
                         </Stack>
                     </Grid.Col>
                 </Grid>
 
                 <Group position="right" mt="md">
-                    {renderSubmitButton("Benutzerkonto anlegen")}
+                    {profileComponents.renderSubmitButton("Benutzerkonto anlegen")}
                 </Group>
             </form>
         </BodyShell>

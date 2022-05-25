@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useProfileForm } from "~/components/profile/hooks/useProfileForm";
 import { Button, Grid, Group, Stack } from "@mantine/core";
 import { Auth } from "aws-amplify";
-import Router from "next/router";
 import { User } from "~/types/user";
 
 type Props = { user: User };
@@ -10,19 +9,7 @@ type Props = { user: User };
 const EditProfile = ({ user }: Props) => {
     const [isEditable, setEditable] = useState(false);
 
-    const {
-        onSubmit,
-        renderError,
-        renderLoadingOverlay,
-        renderAddressSelection,
-        renderTitleInput,
-        renderFirstNameInput,
-        renderLastNameInput,
-        renderEmailInput,
-        renderCityInput,
-        renderPhoneInput,
-        renderSubmitButton,
-    } = useProfileForm({
+    const { onSubmit, profileComponents } = useProfileForm({
         isEditable: isEditable,
         initialValues: user,
         onSubmit: async ({ address, firstName, title, lastName, newsletter, city, phone }) => {
@@ -45,26 +32,26 @@ const EditProfile = ({ user }: Props) => {
     return (
         <>
             <form onSubmit={onSubmit}>
-                {renderError()}
-                {renderLoadingOverlay()}
+                {profileComponents.renderError()}
+                {profileComponents.renderLoadingOverlay()}
                 {/* TODO: No grid with columns on mobile */}
                 <Grid gutter="md">
                     <Grid.Col span={6}>
                         <Stack spacing="sm">
                             <Group grow>
-                                {renderAddressSelection()}
-                                {renderTitleInput()}
+                                {profileComponents.renderAddressSelection()}
+                                {profileComponents.renderTitleInput()}
                             </Group>
-                            {renderFirstNameInput()}
-                            {renderLastNameInput()}
+                            {profileComponents.renderFirstNameInput()}
+                            {profileComponents.renderLastNameInput()}
                         </Stack>
                     </Grid.Col>
 
                     <Grid.Col span={6}>
                         <Stack spacing="sm">
-                            {renderEmailInput()}
-                            {renderCityInput()}
-                            {renderPhoneInput()}
+                            {profileComponents.renderEmailInput()}
+                            {profileComponents.renderCityInput()}
+                            {profileComponents.renderPhoneInput()}
                         </Stack>
                     </Grid.Col>
                 </Grid>
@@ -72,7 +59,7 @@ const EditProfile = ({ user }: Props) => {
                 <Group position="right" mt="md">
                     {/* Do not combine into a ternary statement as the button will be treated as
                     submit button when switched */}
-                    {isEditable && renderSubmitButton("Speichern")}
+                    {isEditable && profileComponents.renderSubmitButton("Speichern")}
                     {!isEditable && <Button onClick={() => setEditable(true)}>Bearbeiten</Button>}
                 </Group>
             </form>

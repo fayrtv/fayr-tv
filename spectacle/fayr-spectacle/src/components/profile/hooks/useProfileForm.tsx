@@ -221,9 +221,7 @@ export const useProfileForm = ({
         </Button>
     );
 
-    return {
-        isSubmitting,
-        onSubmit: onSubmitWrapped,
+    const profileComponents = {
         renderError,
         renderLoadingOverlay,
         renderAddressSelection,
@@ -239,5 +237,10 @@ export const useProfileForm = ({
         renderCityInput,
         renderPhoneInput,
         renderSubmitButton,
+    };
+    return {
+        isSubmitting,
+        onSubmit: onSubmitWrapped,
+        profileComponents,
     };
 };
