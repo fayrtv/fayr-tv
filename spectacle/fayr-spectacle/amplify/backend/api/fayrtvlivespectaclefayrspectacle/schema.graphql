@@ -28,5 +28,6 @@ type Store @model @auth(rules: [{allow: public}]) {
   fullAddress: String!
   phoneNumber: String
   adminUserIDs: [String!]!
+  publicKey: String
 }
  

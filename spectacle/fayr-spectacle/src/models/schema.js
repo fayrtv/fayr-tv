@@ -323,6 +323,13 @@ export const schema = {
                     "attributes": [],
                     "isArrayNullable": false
                 },
+                "publicKey": {
+                    "name": "publicKey",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -368,5 +375,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "d6e34a0da43cb03816d2d315a9851df0"
+    "version": "34d9f7fc2a42c582e75cec57d72863c3"
 };

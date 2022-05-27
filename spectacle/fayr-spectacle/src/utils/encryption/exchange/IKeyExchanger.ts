@@ -1,0 +1,13 @@
+import { Store } from "~/models";
+import { User } from "~/types/user";
+
+export default interface IKeyExchanger {
+    storeEncryptedSecret(
+        encryptedSecret: string,
+        userId: User["id"],
+        storeId: Store["id"],
+    ): Promise<void>;
+
+    storeStorePublicKey(publicKey: CryptoKey, storeId: Store["id"]): Promise<void>;
+    getStorePublicKey(storeId: Store["id"]): Promise<CryptoKey>;
+}

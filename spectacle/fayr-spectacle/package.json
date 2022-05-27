@@ -24,6 +24,7 @@
         "aws-amplify": "^4.3.21",
         "cookies-next": "^2.0.4",
         "dayjs": "^1.11.2",
+        "idb-keyval": "^6.1.0",
         "mind-ar": "^1.0.0",
         "moment": "^2.29.3",
         "next": "12.1.5",

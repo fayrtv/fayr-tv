@@ -64,6 +64,7 @@ export declare class Store {
   readonly fullAddress: string;
   readonly phoneNumber?: string | null;
   readonly adminUserIDs: string[];
+  readonly publicKey?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<Store, StoreMetaData>);
