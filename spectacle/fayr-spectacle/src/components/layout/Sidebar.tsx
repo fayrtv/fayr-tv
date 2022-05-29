@@ -53,18 +53,14 @@ export const Sidebar = ({ open }: Props) => {
                             {isAdmin && (
                                 <List.Item>
                                     <MenuItem
-                                        href={
-                                            "/content/customermanagement/create-refraction-protocol"
-                                        }
+                                        href={"/customermanagement/create-refraction-protocol"}
                                     >
                                         Kundenverwaltung
                                     </MenuItem>
                                 </List.Item>
                             )}
                             <List.Item>
-                                <MenuItem href={"/content/spectaclepass"}>
-                                    Digitaler Brillenpass
-                                </MenuItem>
+                                <MenuItem href={"/spectaclepass"}>Digitaler Brillenpass</MenuItem>
                             </List.Item>
 
                             <List.Item>
@@ -85,7 +81,7 @@ export const Sidebar = ({ open }: Props) => {
                         <MenuItem href={"/about"}>Mehr erfahren</MenuItem>
                     </List.Item>
                     <List.Item>
-                        <MenuItem href={"/content/fittingroom"}>Online Anprobe</MenuItem>
+                        <MenuItem href={"/fittingroom"}>Online Anprobe</MenuItem>
                     </List.Item>
 
                     {debug && !isMobile && (
@@ -104,6 +100,11 @@ export const Sidebar = ({ open }: Props) => {
                             </List.Item>
                             <List.Item>
                                 <MenuItem href={"/auth/recover"}>Passwort vergessen</MenuItem>
+                            </List.Item>
+                            <List.Item>
+                                <MenuItem href={"/customermanagement/create-refraction-protocol"}>
+                                    Kundenverwaltung
+                                </MenuItem>
                             </List.Item>
                         </>
                     )}

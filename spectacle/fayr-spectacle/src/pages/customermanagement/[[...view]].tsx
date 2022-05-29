@@ -11,7 +11,7 @@ import { PathBasedTabMenu, useUrlFragment } from "~/components/layout/PathBasedT
 import { Crumb, Crumbs } from "~/components/Crumbs";
 import CustomerOverview from "~/components/customermanagement/CustomerOverview";
 import { CirclePlus } from "tabler-icons-react";
-import { layoutFactory } from "../../../components/layout/Layout";
+import { layoutFactory } from "src/components/layout/Layout";
 import { getUsersForCurrentStore } from "~/helpers/cognito";
 import { SwitchAvailability } from "~/components/layout/SubHeader";
 import useIsMobile from "~/hooks/useIsMobile";
@@ -64,21 +64,19 @@ const CustomerManagementRouter: NextPageWithLayout<ServerSideProps> = ({
     }, [currentTab]);
 
     const items = useMemo(() => {
-        const result: Crumb[] = [
-            { title: "Kundenverwaltung", href: "/content/customermanagement" },
-        ];
+        const result: Crumb[] = [{ title: "Kundenverwaltung", href: "/customermanagement" }];
 
         if (selectedCustomer) {
             result.push({
                 title: formatCustomerName(selectedCustomer),
-                href: "/content/customermanagement/overview",
+                href: "/customermanagement/overview",
             });
         }
 
         if (currentTab && currentTab.slug !== "overview") {
             result.push({
                 title: currentTab.title,
-                href: "/content/customermanagement/overview",
+                href: "/customermanagement/overview",
             });
         }
 

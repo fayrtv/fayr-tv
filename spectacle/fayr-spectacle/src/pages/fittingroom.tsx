@@ -3,7 +3,7 @@ import React from "react";
 import Layout from "~/components/layout/Layout";
 import { NextPageWithLayout } from "~/types/next-types";
 import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
-import styles from "./fittingroom.module.scss";
+import styles from "src/pages/fittingroom.module.scss";
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp } from "tabler-icons-react";
 
 declare global {
