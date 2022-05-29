@@ -3,7 +3,7 @@ import IKeyExchanger from "./exchange/IKeyExchanger";
 import { Store } from "~/models";
 import { User } from "~/types/user";
 
-export default interface IEncryptionManager {
+export interface IEncryptionManager {
     encrypt(data: string, userId: User["id"], storeId: Store["id"]): Promise<string>;
     decrypt(encryptedData: string, userId: User["id"], storeId: Store["id"]): Promise<string>;
     setupDeviceSecretIfNotExists(userId: User["id"], storeId: Store["id"]): Promise<void>;
