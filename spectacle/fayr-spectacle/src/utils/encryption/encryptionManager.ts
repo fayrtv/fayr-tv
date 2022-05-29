@@ -84,7 +84,7 @@ export class EncryptionManager implements IEncryptionManager {
         // Get the public key of the store and encrypt it
         const storePublicKey = await this._keyExchanger.getStorePublicKey(storeId);
 
-        const encryptedKey: string = await subtle.encrypt(
+        const encryptedKey: BufferSource = await subtle.encrypt(
             {
                 name: "RSA-OAEP",
             },
@@ -92,7 +92,9 @@ export class EncryptionManager implements IEncryptionManager {
             exportedKeyStringified,
         );
 
-        await this._keyExchanger.persistEncryptedSecret(encryptedKey, userId);
+        const encryptedKeyStringified = this._decoder.decode(encryptedKey);
+
+        await this._keyExchanger.persistEncryptedSecret(encryptedKeyStringified, userId);
     }
 
     public async encrypt(data: string, userId: User["id"], storeId: Store["id"]): Promise<string> {

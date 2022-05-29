@@ -3,9 +3,12 @@ import useEncryption from "~/hooks/useEncryption";
 import { NextPageWithLayout } from "~/types/next-types";
 import { Button, Stack } from "@mantine/core";
 import Layout from "~/components/layout/Layout";
+import { useSession } from "../hooks/useSession";
 
 const Debug: NextPageWithLayout = () => {
     const storeInfo = useStoreInfo();
+
+    const { customer } = useSession();
 
     const encryption = useEncryption();
 
@@ -17,7 +20,7 @@ const Debug: NextPageWithLayout = () => {
             <Button
                 onClick={() =>
                     encryption.setupDeviceSecretIfNotExists(
-                        "b32cb828-6ba4-4421-8099-7e5b6ec1a45b",
+                        "ce77a060-73b4-40e9-a2da-d43214ea0133",
                         storeInfo.id,
                     )
                 }
