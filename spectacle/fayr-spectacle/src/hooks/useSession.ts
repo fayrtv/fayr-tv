@@ -20,7 +20,7 @@ export const useSession = () => {
         }
 
         const customerResult = await DataStore.query(Customer, (c) =>
-            c.userID("eq", user.id).storeID("eq", storeID),
+            c.userID("eq", user.id).customerOfStoreId("eq", storeID),
         );
 
         if (customerResult.length === 0) {

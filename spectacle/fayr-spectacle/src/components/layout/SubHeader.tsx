@@ -57,8 +57,8 @@ const SubHeader = ({
                                     padding: theme.spacing.xs,
                                     fontSize: theme.fontSizes.xs,
                                 },
-                                // Account for border of other button
                                 tabInner: {
+                                    // Account for border of other button
                                     margin: "1px",
                                 },
                                 tabControl: {

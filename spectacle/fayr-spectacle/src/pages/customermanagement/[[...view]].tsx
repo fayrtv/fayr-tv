@@ -10,7 +10,7 @@ import SpectaclePassOverview from "~/components/customermanagement/SpectaclePass
 import { PathBasedTabMenu, useUrlFragment } from "~/components/layout/PathBasedTabMenu";
 import { Crumb, Crumbs } from "~/components/Crumbs";
 import CustomerOverview from "~/components/customermanagement/CustomerOverview";
-import { CirclePlus } from "tabler-icons-react";
+import { CirclePlus, Link } from "tabler-icons-react";
 import { layoutFactory } from "src/components/layout/Layout";
 import { getUsersForCurrentStore } from "~/helpers/cognito";
 import { SwitchAvailability } from "~/components/layout/SubHeader";
@@ -100,6 +100,9 @@ const CustomerManagementRouter: NextPageWithLayout<ServerSideProps> = ({
                     <Group position="right" grow={false}>
                         <Button size="xs" leftIcon={<CirclePlus />}>
                             {!isMobile && <Text size="sm">Neues Kundenkonto</Text>}
+                        </Button>
+                        <Button size="xs" leftIcon={<Link />}>
+                            {!isMobile && <Text size="sm">Kundenkonto verknüpfen</Text>}
                         </Button>
                     </Group>
 

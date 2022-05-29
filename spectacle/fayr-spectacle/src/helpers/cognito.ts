@@ -47,7 +47,7 @@ export const getUsersForCurrentStore = async (req: IncomingMessage, userPoolId: 
     const cognitoClient = await getCognitoClient(req);
 
     const [storeCustomers, listUsersResponse] = await Promise.all([
-        store.query(CustomerEntity, (x) => x.storeID("eq", storeId)),
+        store.query(CustomerEntity, (x) => x.customerOfStoreId("eq", storeId)),
         cognitoClient.send(listUsersCommand),
     ]);
 
