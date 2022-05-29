@@ -2,6 +2,7 @@ import { Store } from "~/models";
 import { User } from "~/types/user";
 
 export default interface IKeyExchanger {
+    // TODO: Name is misleading because "store" is ambiguous
     storeEncryptedSecret(
         encryptedSecret: string,
         userId: User["id"],

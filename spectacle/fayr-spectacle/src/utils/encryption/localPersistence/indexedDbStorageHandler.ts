@@ -4,7 +4,7 @@ import { User } from "~/types/user";
 import ILocalEncryptionStorageHandler from "./ILocalEncryptionStorageHandler";
 
 export default class IndexedDbStorageHandler implements ILocalEncryptionStorageHandler {
-    public async storeSecret(rawSecret: CryptoKey, userId: User["id"], storeId: Store["id"]) {
+    public async setSecret(rawSecret: CryptoKey, userId: User["id"], storeId: Store["id"]) {
         const idbKey = IndexedDbStorageHandler.createKey(userId, storeId);
         const exportedKey = await window.crypto.subtle.exportKey("jwk", rawSecret);
         await set(idbKey, JSON.stringify(exportedKey));

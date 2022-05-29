@@ -152,7 +152,7 @@ export class EncryptionManager implements IEncryptionManager {
             ["encrypt", "decrypt"],
         );
 
-        await this._localEncryptionStorageHandler.storeSecret(aesSymmetricKey, userId, storeId);
+        await this._localEncryptionStorageHandler.setSecret(aesSymmetricKey, userId, storeId);
 
         return aesSymmetricKey;
     };
