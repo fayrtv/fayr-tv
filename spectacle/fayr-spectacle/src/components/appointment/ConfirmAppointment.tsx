@@ -28,7 +28,7 @@ const ConfirmAppointment = ({ begin, end, onCancel, onConfirm }: Props) => {
                     Ihr Termin im Überblick
                 </Text>
                 <Paper shadow="xs" px="md" py="sm" mt="sm" mb="sm">
-                    <Text color="gray" sx={{ userSelect: "all" }}>
+                    <Text sx={(theme) => ({ userSelect: "all", color: theme.colors.gray[5] })}>
                         {name} {city}
                     </Text>
                     <Text color="gray" sx={{ userSelect: "all" }}>

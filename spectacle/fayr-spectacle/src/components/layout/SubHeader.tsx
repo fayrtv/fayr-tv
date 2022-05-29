@@ -30,7 +30,7 @@ const SubHeader = ({
             <Grid columns={12}>
                 <Grid.Col span={isMobile ? 2 : 4}>
                     {showAppointmentCTA && (
-                        <Link href="/appointment">
+                        <Link href="/appointment" passHref>
                             <Button color="secondary" size="xs" component="a">
                                 <Group spacing="sm">
                                     <CalendarPlus color="black" size={15} />

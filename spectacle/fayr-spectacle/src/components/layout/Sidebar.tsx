@@ -106,6 +106,9 @@ export const Sidebar = ({ open }: Props) => {
                                     Kundenverwaltung
                                 </MenuItem>
                             </List.Item>
+                            <List.Item>
+                                <MenuItem href={"/appointment"}>Termin vereinbaren</MenuItem>
+                            </List.Item>
                         </>
                     )}
                 </List>

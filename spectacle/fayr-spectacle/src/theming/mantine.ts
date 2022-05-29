@@ -32,7 +32,7 @@ const gray: Shade = [
     "#e9ecef",
     "#dee2e6",
     "#ced4da",
-    "#adb5bd",
+    "#A8A8A8",
     "#868e96",
     "#495057",
     "#343a40",
