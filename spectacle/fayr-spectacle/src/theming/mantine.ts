@@ -1,4 +1,9 @@
-import type { ButtonStylesParams, MantineProviderProps, MantineThemeOverride } from "@mantine/core";
+import type {
+    ButtonStylesParams,
+    DefaultMantineColor,
+    MantineProviderProps,
+    MantineThemeOverride,
+} from "@mantine/core";
 import { Tuple } from "@mantine/core";
 
 // theme colors must be a 10-tuple string of colors from light to dark shade
@@ -19,8 +24,8 @@ const primary: Shade = [
     "#4498D8",
 ];
 const secondary = sameColor("#91E9B2");
-const success: Shade = sameColor("#91E9B2");
-const danger: Shade = sameColor("#FF0000");
+const success = sameColor("#91E9B2");
+const danger = sameColor("#FF0000");
 const gray: Shade = [
     "#f8f9fa",
     "#f1f3f5",
@@ -46,8 +51,8 @@ type CustomColors =
     | "success"
     | "danger"
     | "gray"
-    | /*builtin, used for dark mode*/ "dark";
-// | DefaultMantineColor;
+    // | /*builtin, used for dark mode*/ "dark"
+    | DefaultMantineColor;
 const spectacleTheme: MantineThemeOverride = {
     dir: "ltr",
     focusRing: "auto",
@@ -65,6 +70,8 @@ const spectacleTheme: MantineThemeOverride = {
         success,
         danger,
         gray,
+        white: sameColor("#ffffff"),
+        black: sameColor("#000000"),
     },
     lineHeight: 1.55,
     fontFamily:

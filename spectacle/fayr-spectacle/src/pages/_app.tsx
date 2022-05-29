@@ -18,6 +18,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { Store } from "~/models";
 import { SerializedModel, serializeModel } from "~/models/amplify-models";
 import { getCurrentStore } from "~/helpers/storeLocator";
+import { redirectServerSide } from "~/helpers/next-server";
 
 // TODO: https://ordinarycoders.com/blog/article/nextjs-aws-amplify
 // https://www.youtube.com/watch?v=YvoyHgZWSFY&ab_channel=BojidarYovchev
@@ -94,8 +95,14 @@ export default function App({
 }
 
 App.getInitialProps = async ({ ctx }: { ctx: NextPageContext }) => {
-    const store = await getCurrentStore(ctx.req);
+    const { req, res } = ctx;
+
+    const store = await getCurrentStore(req);
     const colorSchemeCookieValue = getCookie("mantine-color-scheme", ctx);
+
+    if (res && req?.url === "/") {
+        return redirectServerSide(res, "/about");
+    }
 
     return {
         colorScheme: colorSchemeCookieValue || "light",

@@ -3,6 +3,9 @@ import { NextPageWithLayout } from "~/types/next-types";
 import React, { ComponentProps, ReactChild } from "react";
 import { SwitchAvailability } from "~/components/layout/SubHeader";
 
+/**
+ * Note that App.tsx redirects the user to a different page.
+ */
 const IndexPage: NextPageWithLayout = () => {
     return <div></div>;
 };
