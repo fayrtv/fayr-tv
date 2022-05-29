@@ -10,7 +10,10 @@ const Debug: NextPageWithLayout = () => {
     const encryption = useEncryption();
 
     const onClick = async () => {
-        await encryption.setupDeviceSecretIfNotExists(storeInfo.id);
+        await encryption.setupDeviceSecretIfNotExists(
+            "b32cb828-6ba4-4421-8099-7e5b6ec1a45b",
+            storeInfo.id,
+        );
         debugger;
         await encryption.createStoreKeyPair(storeInfo.id);
     };

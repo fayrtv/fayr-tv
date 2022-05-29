@@ -10,6 +10,9 @@ export default class AmplifyStoreKeyExchanger implements IKeyExchanger {
 
         const stores = await DataStore.query(Store, (s) => s.id("eq", storeId));
 
+        const storeSet = await DataStore.query(Store);
+
+        debugger;
         const store = stores[0];
 
         await DataStore.save(

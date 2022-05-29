@@ -29,7 +29,9 @@ export default class IndexedDbStorageHandler implements ILocalEncryptionStorageH
     }
 
     public async hasSecret(userId: User["id"], storeId: Store["id"]): Promise<boolean> {
-        return (await this.getSecret(userId, storeId)) !== undefined;
+        const idbKey = this.createKey(userId, storeId);
+        const rawKey = await get<string>(idbKey);
+        return rawKey !== undefined;
     }
 
     private createKey(userId: User["id"], storeId: Store["id"]): string {
