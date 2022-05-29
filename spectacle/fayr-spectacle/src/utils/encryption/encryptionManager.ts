@@ -11,15 +11,11 @@ export default interface IEncryptionManager {
 }
 
 export class EncryptionManager implements IEncryptionManager {
-    private _localEncryptionStorageHandler: ILocalEncryptionStorageHandler;
-
-    private _keyExchanger: IKeyExchanger;
-
-    private _encoder: TextEncoder;
-
-    private _decoder: TextDecoder;
-
-    private _iv: Uint8Array;
+    private readonly _localEncryptionStorageHandler: ILocalEncryptionStorageHandler;
+    private readonly _keyExchanger: IKeyExchanger;
+    private readonly _encoder: TextEncoder;
+    private readonly _decoder: TextDecoder;
+    private readonly _iv: Uint8Array;
 
     public constructor(
         localEncryptionStorageHandler: ILocalEncryptionStorageHandler,
