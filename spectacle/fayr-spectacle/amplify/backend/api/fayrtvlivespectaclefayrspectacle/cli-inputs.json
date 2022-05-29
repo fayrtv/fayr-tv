@@ -3,7 +3,7 @@
   "serviceConfiguration": {
     "apiName": "fayrtvlivespectaclefayrspectacle",
     "serviceName": "AppSync",
-    "gqlSchemaPath": "/tmp/amplify-4acc65bf-5f33-4be2-892c-b64cf4a83eb4/amplify/backend/api/fayrtvlivespectaclefayrspectacle/schema.graphql",
+    "gqlSchemaPath": "/tmp/amplify-7f4a9fe4-4cec-4a1e-86af-c38adba3beb2/amplify/backend/api/fayrtvlivespectaclefayrspectacle/schema.graphql",
     "defaultAuthType": {
       "mode": "API_KEY",
       "keyDescription": "api key description",

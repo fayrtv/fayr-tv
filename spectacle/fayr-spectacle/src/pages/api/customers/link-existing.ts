@@ -5,30 +5,24 @@ import {
     NotFoundException,
     Post,
     Req,
-    UnauthorizedException,
     ValidationPipe,
 } from "@storyofams/next-api-decorators";
 import { convertCognitoUserToUserDto, getCognitoClient } from "~/helpers/cognito";
 import { NextApiRequest } from "next";
 import { ListUsersCommand } from "@aws-sdk/client-cognito-identity-provider";
-import { Customer, Store } from "~/models";
+import { Customer } from "~/models";
 import { getUser } from "~/helpers/authentication";
 import { getCurrentStore } from "~/helpers/storeLocator";
 import { DataStore, withSSRContext } from "aws-amplify";
 import { SerializedModel, serializeModel } from "~/models/amplify-models";
-import { User } from "~/types/user";
+import { AdminGuard, ensureIsAdminOfStore } from "~/helpers/adminGuard";
 
 export type LinkExistingCustomerRequest = { userEmail: string };
 export type LinkExistingCustomerResponse = { customer: SerializedModel<Customer> };
 
-function ensureIsAdminOfStore(store?: Store, user?: User | null) {
-    if (!user?.id || !store?.adminUserIDs.includes(user.id)) {
-        throw new UnauthorizedException("You must be an admin of this store to use this endpoint.");
-    }
-}
-
 class LinkExistingCustomer {
     @Post()
+    @AdminGuard()
     public async post(
         @Body(ValidationPipe) body: LinkExistingCustomerRequest,
         @Req() req: NextApiRequest,
@@ -36,9 +30,7 @@ class LinkExistingCustomer {
         const SSR = withSSRContext({ req });
         const dataStore = SSR.DataStore as typeof DataStore;
 
-        const admin = await getUser(req);
         const store = await getCurrentStore(req);
-        ensureIsAdminOfStore(store, admin);
 
         const cognitoClient = await getCognitoClient(req);
 
