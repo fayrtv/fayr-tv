@@ -11,7 +11,7 @@ const Debug: NextPageWithLayout = () => {
 
     const onClick = async () => {
         debugger;
-        await encryption.createStoreKeyPair(storeInfo.id);
+        //await encryption.createStoreKeyPair(storeInfo.id);
         debugger;
         await encryption.setupDeviceSecretIfNotExists(
             "b32cb828-6ba4-4421-8099-7e5b6ec1a45b",
