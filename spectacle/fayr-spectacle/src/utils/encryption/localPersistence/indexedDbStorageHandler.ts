@@ -5,7 +5,7 @@ import ILocalEncryptionStorageHandler from "./ILocalEncryptionStorageHandler";
 
 export default class IndexedDbStorageHandler implements ILocalEncryptionStorageHandler {
     public async storeSecret(rawSecret: CryptoKey, userId: User["id"], storeId: Store["id"]) {
-        const idbKey = this.createKey(userId, storeId);
+        const idbKey = IndexedDbStorageHandler.createKey(userId, storeId);
         const exportedKey = await window.crypto.subtle.exportKey("jwk", rawSecret);
         await set(idbKey, JSON.stringify(exportedKey));
     }
@@ -14,7 +14,7 @@ export default class IndexedDbStorageHandler implements ILocalEncryptionStorageH
         userId: User["id"],
         storeId: Store["id"],
     ): Promise<CryptoKey | undefined> {
-        const idbKey = this.createKey(userId, storeId);
+        const idbKey = IndexedDbStorageHandler.createKey(userId, storeId);
         const rawKey = await get<string>(idbKey);
 
         const importedKey = await window.crypto.subtle.importKey(
@@ -29,12 +29,12 @@ export default class IndexedDbStorageHandler implements ILocalEncryptionStorageH
     }
 
     public async hasSecret(userId: User["id"], storeId: Store["id"]): Promise<boolean> {
-        const idbKey = this.createKey(userId, storeId);
+        const idbKey = IndexedDbStorageHandler.createKey(userId, storeId);
         const rawKey = await get<string>(idbKey);
         return rawKey !== undefined;
     }
 
-    private createKey(userId: User["id"], storeId: Store["id"]): string {
+    private static createKey(userId: User["id"], storeId: Store["id"]): string {
         return `${userId}_${storeId}`;
     }
 }

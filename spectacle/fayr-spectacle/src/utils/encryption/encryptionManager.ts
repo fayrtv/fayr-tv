@@ -61,7 +61,7 @@ export class EncryptionManager implements IEncryptionManager {
     }
 
     /**
-     * Sets up local symmetric encryption key if it does not yet exists.
+     * Sets up local symmetric encryption key if it does not yet exist.
      * In addition, this takes over the whole process of exchanging the key
      */
     public async setupDeviceSecretIfNotExists(
