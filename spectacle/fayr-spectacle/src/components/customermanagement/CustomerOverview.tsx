@@ -71,8 +71,9 @@ const CustomerOverview = ({ customer }: Props) => {
                         <Text size="sm" sx={{ maxWidth: 300 }}>
                             <b>Sind Sie sicher?</b>
                             <br />
-                            Der Nutzer wird seinen Account weiterhin verwenden können, aber kein
-                            Kunde von {storeInfo.name} {storeInfo.city} mehr sein.
+                            Der Nutzer wird seinen Account weiterhin verwenden können und Zugriff
+                            auf seine Refraktionsprotokolle haben, aber kein Kunde von{" "}
+                            {storeInfo.name} {storeInfo.city} mehr sein.
                         </Text>
                         <Group>
                             <Button color="gray" onClick={() => setConfirmDeletionOpen(false)}>
