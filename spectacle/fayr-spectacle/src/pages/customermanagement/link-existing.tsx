@@ -8,10 +8,15 @@ import { DataStore } from "aws-amplify";
 import { Customer } from "~/models";
 import ContentBody from "~/components/layout/ContentBody";
 import { LinkExistingCustomerRequest } from "~/pages/api/customers/link-existing";
+import { useState } from "react";
+import { useError } from "~/hooks/useError";
+import { useRouter } from "next/router";
 
 const LinkExistingCustomerPage: NextPageWithLayout = () => {
-    const storeInfo = useStoreInfo();
-
+    const { push } = useRouter();
+    const { error, setError, renderError } = useError({
+        title: "Konnte diesen Nutzer nicht hinzufügen.",
+    });
     const form = useForm({
         initialValues: {
             userEmail: "",
@@ -24,8 +29,10 @@ const LinkExistingCustomerPage: NextPageWithLayout = () => {
                 <Text size="xl" color="primary" weight="bold">
                     Bestehenden Nutzer als Kunden hinzufügen
                 </Text>
+                {renderError()}
                 <form
                     onSubmit={form.onSubmit(async ({ userEmail }) => {
+                        setError(null);
                         const payload: LinkExistingCustomerRequest = { userEmail };
                         const response = await fetch("/api/customers/link-existing", {
                             body: JSON.stringify(payload),
@@ -34,7 +41,17 @@ const LinkExistingCustomerPage: NextPageWithLayout = () => {
                                 "Content-Type": "application/json",
                             },
                         });
-                        console.log(response);
+                        if (!response.ok) {
+                            setError(
+                                response.status === 409
+                                    ? "Dieser Nutzer ist bereits ein Kunde Ihrer Filiale."
+                                    : response.status === 404
+                                    ? "Es existiert kein Nutzer mit dieser E-Mail Adresse."
+                                    : response.statusText,
+                            );
+                            return;
+                        }
+                        await push("../");
                     })}
                 >
                     <Stack spacing="sm">

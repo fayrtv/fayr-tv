@@ -63,7 +63,11 @@ const DigitalSpectaclePassportPage: NextPageWithLayout = () => {
                                     verschiedenen Gestelle aus unserem Sortiment aus.
                                 </Text>
                             </Stack>
-                            <Image src="/assets/undraw_selfie_re_h9um.svg" width={84} />
+                            <Image
+                                src="/assets/undraw_selfie_re_h9um.svg"
+                                alt="Person mit Brille"
+                                width={84}
+                            />
                         </Group>
                     </Box>
                 </Stack>

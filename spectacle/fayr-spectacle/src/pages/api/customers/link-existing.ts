@@ -1,30 +1,31 @@
-import { PlatformConfig } from "@fayr/api-contracts";
 import {
     Body,
     ConflictException,
     createHandler,
-    Get,
     NotFoundException,
-    Param,
-    Patch,
     Post,
-    Query,
     Req,
     UnauthorizedException,
     ValidationPipe,
 } from "@storyofams/next-api-decorators";
-import { convertCognitoUserToUserDto, getCognitoClient, getUsersForStore } from "~/helpers/cognito";
+import { convertCognitoUserToUserDto, getCognitoClient } from "~/helpers/cognito";
 import { NextApiRequest } from "next";
 import { ListUsersCommand } from "@aws-sdk/client-cognito-identity-provider";
-import { Customer, Customer as CustomerEntity } from "~/models";
-import { convertAwsModelToUser } from "~/helpers/awsModelParser";
+import { Customer, Store } from "~/models";
 import { getUser } from "~/helpers/authentication";
 import { getCurrentStore } from "~/helpers/storeLocator";
 import { DataStore, withSSRContext } from "aws-amplify";
 import { SerializedModel, serializeModel } from "~/models/amplify-models";
+import { User } from "~/types/user";
 
 export type LinkExistingCustomerRequest = { userEmail: string };
 export type LinkExistingCustomerResponse = { customer: SerializedModel<Customer> };
+
+function ensureIsAdminOfStore(store?: Store, user?: User | null) {
+    if (!user?.id || !store?.adminUserIDs.includes(user.id)) {
+        throw new UnauthorizedException("You must be an admin of this store to use this endpoint.");
+    }
+}
 
 class LinkExistingCustomer {
     @Post()
@@ -37,11 +38,8 @@ class LinkExistingCustomer {
 
         const admin = await getUser(req);
         const store = await getCurrentStore(req);
-        if (!admin?.id || !store?.adminUserIDs.includes(admin.id)) {
-            throw new UnauthorizedException(
-                "You must be an admin of this store to use this endpoint.",
-            );
-        }
+        ensureIsAdminOfStore(store, admin);
+
         const cognitoClient = await getCognitoClient(req);
 
         const userEmail = body.userEmail.toLowerCase().trim();

@@ -1,8 +1,7 @@
 import { User } from "~/types/user";
 import React, { useCallback, useMemo, useState } from "react";
-import { useForm, FormRules } from "@mantine/form";
+import { FormRules, useForm } from "@mantine/form";
 import {
-    Alert,
     Anchor,
     Button,
     Checkbox,
@@ -11,8 +10,8 @@ import {
     Select,
     TextInput,
 } from "@mantine/core";
-import { AlertCircle } from "tabler-icons-react";
 import Link from "next/link";
+import { useError } from "~/hooks/useError";
 
 type ProfileFormData = User & {
     password: string;
@@ -38,7 +37,7 @@ export const useProfileForm = ({
     isEditable = true,
 }: UseProfileForm) => {
     const [isSubmitting, setSubmitting] = useState(false);
-    const [error, setError] = useState<string | undefined>();
+    const { error, setError, renderError } = useError({ title: errorTitle });
 
     const disabledProps = useMemo(
         () => ({
@@ -78,23 +77,6 @@ export const useProfileForm = ({
             setSubmitting(false);
         }
     });
-
-    const renderError = useCallback(
-        () =>
-            error && (
-                <Alert
-                    mb="md"
-                    // variant="filled"
-                    icon={<AlertCircle size={16} />}
-                    title={errorTitle}
-                    color="red"
-                    radius="xs"
-                >
-                    {error}
-                </Alert>
-            ),
-        [error, errorTitle],
-    );
 
     const renderLoadingOverlay = () => <LoadingOverlay visible={isSubmitting} />;
 
