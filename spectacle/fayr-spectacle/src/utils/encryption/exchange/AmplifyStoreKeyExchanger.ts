@@ -3,16 +3,13 @@ import { Store } from "~/models";
 import IKeyExchanger from "./IKeyExchanger";
 
 export default class AmplifyStoreKeyExchanger implements IKeyExchanger {
-    public async storeStorePublicKey(publicKey: CryptoKey, storeId: string): Promise<void> {
+    public async setStorePublicKey(publicKey: CryptoKey, storeId: string): Promise<void> {
         const subtle = window.crypto.subtle;
 
         const exportedPublicKey = await subtle.exportKey("jwk", publicKey);
 
         const stores = await DataStore.query(Store, (s) => s.id("eq", storeId));
 
-        const storeSet = await DataStore.query(Store);
-
-        debugger;
         const store = stores[0];
 
         await DataStore.save(

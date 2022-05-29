@@ -55,7 +55,7 @@ export class EncryptionManager implements IEncryptionManager {
             ["encrypt", "decrypt"],
         );
 
-        await this._keyExchanger.storeStorePublicKey(publicKey!, storeId);
+        await this._keyExchanger.setStorePublicKey(publicKey!, storeId);
 
         return privateKey!;
     }
