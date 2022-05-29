@@ -20,6 +20,7 @@
         "@mantine/hooks": "^4.1.4",
         "@mantine/next": "^4.1.4",
         "@mantine/notifications": "^4.1.5",
+        "@storyofams/next-api-decorators": "^1.7.2",
         "aframe": "^1.2.0",
         "aws-amplify": "^4.3.21",
         "cookies-next": "^2.0.4",

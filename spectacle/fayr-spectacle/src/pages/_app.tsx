@@ -98,6 +98,7 @@ App.getInitialProps = async ({ ctx }: { ctx: NextPageContext }) => {
     const { req, res } = ctx;
 
     const store = await getCurrentStore(req);
+
     const colorSchemeCookieValue = getCookie("mantine-color-scheme", ctx);
 
     if (res && req?.url === "/") {

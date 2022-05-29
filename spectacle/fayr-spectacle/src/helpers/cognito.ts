@@ -7,7 +7,7 @@ import {
 import { DataStore, withSSRContext } from "aws-amplify";
 import { IncomingMessage } from "http";
 import { getCurrentStore } from "./storeLocator";
-import { Customer as CustomerEntity } from "~/models";
+import { Customer as CustomerEntity, Store } from "~/models";
 import { User as UserDto } from "~/types/user";
 import { convertAwsModelToUser } from "./awsModelParser";
 
@@ -33,12 +33,11 @@ export const convertCognitoUserToUserDto = (cognitoUser: UserType): UserDto => {
     });
 };
 
-export const getUsersForCurrentStore = async (req: IncomingMessage, userPoolId: string) => {
+export const getUsersForStore = async (req: IncomingMessage, store: Store, userPoolId: string) => {
     const SSR = withSSRContext({ req });
-    const store = SSR.DataStore as typeof DataStore;
+    const dataStore = SSR.DataStore as typeof DataStore;
 
-    const zeissStore = await getCurrentStore(req);
-    const storeId = zeissStore.id;
+    const storeId = store.id;
 
     const listUsersCommand = new ListUsersCommand({
         UserPoolId: userPoolId,
@@ -47,7 +46,7 @@ export const getUsersForCurrentStore = async (req: IncomingMessage, userPoolId: 
     const cognitoClient = await getCognitoClient(req);
 
     const [storeCustomers, listUsersResponse] = await Promise.all([
-        store.query(CustomerEntity, (x) => x.customerOfStoreId("eq", storeId)),
+        dataStore.query(CustomerEntity, (x) => x.customerOfStoreId("eq", storeId)),
         cognitoClient.send(listUsersCommand),
     ]);
 

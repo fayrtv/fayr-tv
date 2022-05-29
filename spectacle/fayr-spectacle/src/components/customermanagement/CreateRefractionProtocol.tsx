@@ -136,7 +136,7 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
     const [saving, setSaving] = React.useState(false);
     const [showSaveFeedback, setShowSaveFeedback] = React.useState(false);
 
-    const protocolform = useForm<PlainProtocol>({
+    const protocolForm = useForm<PlainProtocol>({
         initialValues: { ...defaultProtocol },
     });
 
@@ -179,13 +179,13 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
                 opened={showSaveFeedback}
                 onClose={() => {
                     setShowSaveFeedback(false);
-                    protocolform.reset();
+                    protocolForm.reset();
                 }}
             >
                 <Text>Protokoll erfolgreich gespeichert</Text>
             </Modal>
             <Paper>
-                <form onSubmit={protocolform.onSubmit(onSubmit)}>
+                <form onSubmit={protocolForm.onSubmit(onSubmit)}>
                     <Grid columns={6} gutter="lg">
                         <Grid.Col span={6}>
                             <div
@@ -248,8 +248,8 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
                                         <Text size="xs">PD</Text>
                                     </Stack>
                                 </DataGridCell>
-                                <RefractionProtocolRow form={protocolform} side={Side.Left} />
-                                <RefractionProtocolRow form={protocolform} side={Side.Right} />
+                                <RefractionProtocolRow form={protocolForm} side={Side.Left} />
+                                <RefractionProtocolRow form={protocolForm} side={Side.Right} />
                             </div>
                         </Grid.Col>
                         <Grid.Col span={1} sx={(_) => ({ paddingLeft: 0, paddingRight: 0 })}>
@@ -259,7 +259,7 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
                                     boxShadow: "0px 0px 3px 0px #000000",
                                     width: "100%",
                                 }}
-                                onClick={protocolform.reset}
+                                onClick={protocolForm.reset}
                                 leftIcon={!isMobile ? <Trash /> : null}
                                 color="red"
                             >

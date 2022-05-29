@@ -10,11 +10,14 @@ import SpectaclePassOverview from "~/components/customermanagement/SpectaclePass
 import { PathBasedTabMenu, useUrlFragment } from "~/components/layout/PathBasedTabMenu";
 import { Crumb, Crumbs } from "~/components/Crumbs";
 import CustomerOverview from "~/components/customermanagement/CustomerOverview";
-import { CirclePlus, Link } from "tabler-icons-react";
+import { CirclePlus, Link as LinkIcon } from "tabler-icons-react";
 import { layoutFactory } from "src/components/layout/Layout";
-import { getUsersForCurrentStore } from "~/helpers/cognito";
+import { getUsersForStore } from "~/helpers/cognito";
 import { SwitchAvailability } from "~/components/layout/SubHeader";
 import useIsMobile from "~/hooks/useIsMobile";
+import Link from "next/link";
+import ContentBody from "~/components/layout/ContentBody";
+import { getCurrentStore } from "~/helpers/storeLocator";
 
 type ServerSideProps = {
     cred: any;
@@ -22,11 +25,7 @@ type ServerSideProps = {
     customersOfStore: Array<Customer>;
 };
 
-const CustomerManagementRouter: NextPageWithLayout<ServerSideProps> = ({
-    customersOfStore,
-    cred,
-    customers,
-}) => {
+const CustomerManagementRouter: NextPageWithLayout<ServerSideProps> = ({ customersOfStore }) => {
     const [selectedCustomer, setSelectedCustomer] = React.useState<Customer | undefined>(undefined);
 
     const isMobile = useIsMobile();
@@ -84,26 +83,23 @@ const CustomerManagementRouter: NextPageWithLayout<ServerSideProps> = ({
     }, [currentTab, selectedCustomer]);
 
     return (
-        <Container
-            size="lg"
-            sx={{
-                padding: isMobile ? "10px" : "50px",
-                maxWidth: "100%",
-                width: "100%",
-            }}
-        >
+        <ContentBody>
             <Crumbs items={items} />
             {!!selectedCustomer ? (
                 <PathBasedTabMenu tabs={tabs} pathFragmentName="view" renderTitles={false} />
             ) : (
                 <>
                     <Group position="right" grow={false}>
+                        ( maybe
                         <Button size="xs" leftIcon={<CirclePlus />}>
                             {!isMobile && <Text size="sm">Neues Kundenkonto</Text>}
                         </Button>
-                        <Button size="xs" leftIcon={<Link />}>
-                            {!isMobile && <Text size="sm">Kundenkonto verknüpfen</Text>}
-                        </Button>
+                        )
+                        <Link href="link-existing" passHref>
+                            <Button size="xs" leftIcon={<LinkIcon />}>
+                                {!isMobile && <Text size="sm">Kundenkonto verknüpfen</Text>}
+                            </Button>
+                        </Link>
                     </Group>
 
                     <CustomerSelection
@@ -112,7 +108,7 @@ const CustomerManagementRouter: NextPageWithLayout<ServerSideProps> = ({
                     />
                 </>
             )}
-        </Container>
+        </ContentBody>
     );
 };
 
@@ -128,7 +124,8 @@ CustomerManagementRouter.layoutProps = {
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-    const currentStoreUsers = await getUsersForCurrentStore(req, "eu-central-1_yf1nAYpsJ");
+    const store = await getCurrentStore(req);
+    const currentStoreUsers = await getUsersForStore(req, store, "eu-central-1_yf1nAYpsJ");
 
     return {
         props: {

@@ -9,6 +9,7 @@ const StoreInfoContext = createContext<SerializedModel<Store>>({
     owner: "",
     fullAddress: "",
     phoneNumber: undefined,
+    adminUserIDs: [],
 });
 
 export const useStoreInfo = () => {
