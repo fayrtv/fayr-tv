@@ -51,13 +51,14 @@ const LinkExistingCustomerPage: NextPageWithLayout = () => {
                             );
                             return;
                         }
-                        await push("../");
+                        await push("/customermanagement");
                     })}
                 >
-                    <Stack spacing="sm">
+                    <Stack spacing="sm" align="flex-start">
                         <TextInput
                             {...form.getInputProps("userEmail")}
                             label="E-Mail Adresse des Nutzers"
+                            sx={{ minWidth: 300 }}
                         />
                         <Button type="submit">Verlinken</Button>
                     </Stack>
