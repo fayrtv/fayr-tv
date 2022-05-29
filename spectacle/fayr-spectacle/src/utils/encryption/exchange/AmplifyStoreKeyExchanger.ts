@@ -1,5 +1,5 @@
 import { DataStore } from "aws-amplify";
-import { Store } from "~/models";
+import { Customer, Store } from "~/models";
 import IKeyExchanger from "./IKeyExchanger";
 
 export default class AmplifyStoreKeyExchanger implements IKeyExchanger {
@@ -27,13 +27,28 @@ export default class AmplifyStoreKeyExchanger implements IKeyExchanger {
 
         const parsedPublicKey = JSON.parse(rawPublicKey);
 
-        return await window.crypto.subtle.importKey("jwk", parsedPublicKey, "RSA-OAEP", true, [
-            "encrypt",
-            "decrypt",
-        ]);
+        return await window.crypto.subtle.importKey(
+            "jwk",
+            parsedPublicKey,
+            {
+                name: "RSA-OAEP",
+                hash: "SHA-256",
+            },
+            true,
+            // Operations permitted only include encryption here since we work with the public key
+            ["encrypt"],
+        );
     }
 
-    storeEncryptedSecret(encryptedSecret: string, userId: string, storeId: string): Promise<void> {
-        throw new Error("Method not implemented.");
+    public async persistEncryptedSecret(encryptedSecret: string, userId: string): Promise<void> {
+        // TODO: This might have to happen on the backend, otherwise any user can overwrite secrets of someone else
+        const customers = await DataStore.query(Customer, (s) => s.id("eq", userId));
+        const customer = customers[0];
+
+        await DataStore.save(
+            Customer.copyOf(customer, (updated) => {
+                updated.encryptedSecret = encryptedSecret;
+            }),
+        );
     }
 }

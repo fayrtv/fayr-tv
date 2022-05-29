@@ -72,17 +72,18 @@ export class EncryptionManager implements IEncryptionManager {
         if (await this._localEncryptionStorageHandler.hasSecret(userId, storeId)) {
             return;
         }
-
         const subtle = window.crypto.subtle;
 
         const key = await this.generateLocalSecret(userId, storeId);
 
         // This is the exported key we can now sign with the stores public key
         const exportedKey = await subtle.exportKey("jwk", key);
+
         const exportedKeyStringified = this._encoder.encode(JSON.stringify(exportedKey));
 
         // Get the public key of the store and encrypt it
         const storePublicKey = await this._keyExchanger.getStorePublicKey(storeId);
+
         const encryptedKey: string = await subtle.encrypt(
             {
                 name: "RSA-OAEP",
@@ -91,7 +92,7 @@ export class EncryptionManager implements IEncryptionManager {
             exportedKeyStringified,
         );
 
-        await this._keyExchanger.storeEncryptedSecret(encryptedKey, userId, storeId);
+        await this._keyExchanger.persistEncryptedSecret(encryptedKey, userId);
     }
 
     public async encrypt(data: string, userId: User["id"], storeId: Store["id"]): Promise<string> {

@@ -12,11 +12,11 @@ type CustomerMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
-type AppointmentMetaData = {
+type StoreMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
-type StoreMetaData = {
+type AppointmentMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
@@ -35,25 +35,13 @@ export declare class Customer {
   readonly id: string;
   readonly ProtocolHistory?: (RefractionProtocol | null)[] | null;
   readonly userID?: string | null;
+  readonly OfStore?: Store | null;
+  readonly encryptedSecret?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly customerOfStoreId?: string | null;
   constructor(init: ModelInit<Customer, CustomerMetaData>);
   static copyOf(source: Customer, mutator: (draft: MutableModel<Customer, CustomerMetaData>) => MutableModel<Customer, CustomerMetaData> | void): Customer;
-}
-
-export declare class Appointment {
-  readonly id: string;
-  readonly User?: Customer | null;
-  readonly beginDate: string;
-  readonly AtStore?: Store | null;
-  readonly endDate?: string | null;
-  readonly message?: string | null;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-  readonly appointmentUserId?: string | null;
-  readonly appointmentAtStoreId?: string | null;
-  constructor(init: ModelInit<Appointment, AppointmentMetaData>);
-  static copyOf(source: Appointment, mutator: (draft: MutableModel<Appointment, AppointmentMetaData>) => MutableModel<Appointment, AppointmentMetaData> | void): Appointment;
 }
 
 export declare class Store {
@@ -69,4 +57,19 @@ export declare class Store {
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<Store, StoreMetaData>);
   static copyOf(source: Store, mutator: (draft: MutableModel<Store, StoreMetaData>) => MutableModel<Store, StoreMetaData> | void): Store;
+}
+
+export declare class Appointment {
+  readonly id: string;
+  readonly User?: Customer | null;
+  readonly beginDate: string;
+  readonly AtStore?: Store | null;
+  readonly endDate?: string | null;
+  readonly message?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+  readonly appointmentUserId?: string | null;
+  readonly appointmentAtStoreId?: string | null;
+  constructor(init: ModelInit<Appointment, AppointmentMetaData>);
+  static copyOf(source: Appointment, mutator: (draft: MutableModel<Appointment, AppointmentMetaData>) => MutableModel<Appointment, AppointmentMetaData> | void): Appointment;
 }

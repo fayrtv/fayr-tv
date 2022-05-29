@@ -9,6 +9,8 @@ type Customer @model @auth(rules: [{allow: public}]) {
   id: ID!
   ProtocolHistory: [RefractionProtocol] @hasMany(indexName: "byCustomer", fields: ["id"])
   userID: String
+  OfStore: Store @hasOne
+  encryptedSecret: String
 }
 
 type Appointment @model @auth(rules: [{allow: public}]) {
@@ -29,4 +31,5 @@ type Store @model @auth(rules: [{allow: public}]) {
   phoneNumber: String
   adminUserIDs: [String!]!
   publicKey: String
-} 
+}
+ 
