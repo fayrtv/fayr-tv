@@ -101,8 +101,7 @@ export class EncryptionManager implements IEncryptionManager {
         const secret = await this._localEncryptionStorageHandler.getSecret(userId, storeId);
 
         const encodedData = this._encoder.encode(data);
-
-        const encryptedData: BufferSource = await window.crypto.subtle.encrypt(
+        const encryptedData: ArrayBuffer = await window.crypto.subtle.encrypt(
             {
                 name: "AES-GCM",
                 iv: this._iv,
@@ -112,9 +111,13 @@ export class EncryptionManager implements IEncryptionManager {
             encodedData,
         );
 
-        const encryptedDataStringified = this._decoder.decode(encryptedData);
+        const resultView = Array.from(new Uint8Array(encryptedData));
+        const encryptedDataStringified = resultView
+            .map((byte) => String.fromCharCode(byte))
+            .join("");
 
-        return encryptedDataStringified;
+        const base64EncodedResult = window.btoa(encryptedDataStringified);
+        return base64EncodedResult;
     }
 
     public async decrypt(
@@ -124,9 +127,13 @@ export class EncryptionManager implements IEncryptionManager {
     ): Promise<string> {
         const secret = await this._localEncryptionStorageHandler.getSecret(userId, storeId);
 
-        const encodedEncryptedData = this._encoder.encode(encryptedData);
+        const base64DecodedData = window.atob(encryptedData);
+        const encodedEncryptedData = new Uint8Array(new ArrayBuffer(base64DecodedData.length));
+        for (let i = 0; i < base64DecodedData.length; i++) {
+            encodedEncryptedData[i] = base64DecodedData.charCodeAt(i);
+        }
 
-        const decryptedData: BufferSource = await window.crypto.subtle.decrypt(
+        const decryptedData: ArrayBuffer = await window.crypto.subtle.decrypt(
             {
                 name: "AES-GCM",
                 iv: this._iv,
@@ -135,8 +142,6 @@ export class EncryptionManager implements IEncryptionManager {
             secret!,
             encodedEncryptedData,
         );
-        console.log(decryptedData);
-
         const decodedData = this._decoder.decode(decryptedData);
 
         return decodedData;
