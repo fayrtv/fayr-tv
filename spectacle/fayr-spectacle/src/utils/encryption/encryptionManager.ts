@@ -94,7 +94,7 @@ export class EncryptionManager implements IEncryptionManager {
 
         const encryptedKeyStringified = this._decoder.decode(encryptedKey);
 
-        await this._keyExchanger.persistEncryptedSecret(encryptedKeyStringified, userId);
+        await this._keyExchanger.persistEncryptedSecret(encryptedKeyStringified, userId, storeId);
     }
 
     public async encrypt(data: string, userId: User["id"], storeId: Store["id"]): Promise<string> {
@@ -128,13 +128,14 @@ export class EncryptionManager implements IEncryptionManager {
 
         const decryptedData: BufferSource = await window.crypto.subtle.decrypt(
             {
-                name: "AES-CTR",
+                name: "AES-GCM",
                 iv: this._iv,
                 length: 64,
             },
             secret!,
             encodedEncryptedData,
         );
+        console.log(decryptedData);
 
         const decodedData = this._decoder.decode(decryptedData);
 

@@ -11,6 +11,8 @@ import { RefractionProtocol } from "~/types/refraction-protocol";
 import { RefractionProtocolRow } from "~/components/customermanagement/DataGrid/RefractionProtocolRow";
 import { DataGridCell } from "~/components/customermanagement/DataGrid/DataGridCell";
 import ResponsiveIconButton from "~/components/ResponsiveIconButton";
+import useEncryption from "../../hooks/useEncryption";
+import { useStoreInfo } from "../StoreInfoProvider";
 
 type Props = {
     customer: Customer;
@@ -106,6 +108,10 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
         initialValues: { ...defaultProtocol },
     });
 
+    const encryption = useEncryption();
+
+    const store = useStoreInfo();
+
     const onSubmit = async (protocol: PlainProtocol) => {
         try {
             setSaving(true);
@@ -126,10 +132,20 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
                 },
             };
 
+            const stringifiedModel = JSON.stringify(jsonProtocolModel);
+
+            const encryptedModel = await encryption.encrypt(
+                stringifiedModel,
+                customer.id,
+                store.id,
+            );
+
             await DataStore.save(
                 new RefractionProtocolEntity({
                     recordedAt: new Date().toISOString(),
-                    data: JSON.stringify(jsonProtocolModel),
+                    data: JSON.stringify({
+                        model: encryptedModel,
+                    }),
                     userID: customer.email,
                 }),
             );
