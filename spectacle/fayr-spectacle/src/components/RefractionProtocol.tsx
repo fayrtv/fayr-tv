@@ -144,15 +144,11 @@ export const RefractionProtocol = ({
             let data = entity.data as any;
 
             if (data.model) {
-                if (!!user) {
-                    try {
-                        data = await encryption.decrypt(data.model, user!.id, store.id);
-                    } catch (e) {
-                        console.log(e);
-                    }
+                if (!user) {
+                    setRefractionProtocol(null);
+                    return;
                 }
-                setRefractionProtocol(null);
-                return;
+                data = JSON.parse(await encryption.decrypt(data.model, user!.id, store.id));
             }
 
             setRefractionProtocol(data);
