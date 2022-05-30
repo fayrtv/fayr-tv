@@ -90,11 +90,6 @@ const CustomerManagementRouter: NextPageWithLayout<ServerSideProps> = ({ custome
             ) : (
                 <>
                     <Group position="right" grow={false}>
-                        ( maybe
-                        <Button size="xs" leftIcon={<CirclePlus />}>
-                            {!isMobile && <Text size="sm">Neues Kundenkonto</Text>}
-                        </Button>
-                        )
                         <Link href="link-existing" passHref>
                             <Button size="xs" leftIcon={<LinkIcon />}>
                                 {!isMobile && <Text size="sm">Kundenkonto verknüpfen</Text>}
