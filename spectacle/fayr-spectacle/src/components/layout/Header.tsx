@@ -6,8 +6,9 @@ import {
     Group,
     Text,
     Header as MantineHeader,
+    MediaQuery,
 } from "@mantine/core";
-import { useElementSize, useMediaQuery } from "@mantine/hooks";
+import { useElementSize } from "@mantine/hooks";
 import { useStoreInfo } from "~/components/StoreInfoProvider";
 import { ComponentProps } from "react";
 import { useSession } from "~/hooks/useSession";
@@ -32,8 +33,6 @@ type Props = {
 const Header = ({ burgerOpen, setBurgerOpen, subHeader }: Props) => {
     const storeInfo = useStoreInfo();
     const { user } = useSession();
-
-    const shouldDisplayStoreOwnerHeadline = useIsMobile();
 
     const { ref, height } = useElementSize();
 
@@ -68,9 +67,9 @@ const Header = ({ burgerOpen, setBurgerOpen, subHeader }: Props) => {
                                     <Text size="sm" style={{ display: "inline" }}>
                                         {" "}
                                         {storeInfo.city}
-                                        {shouldDisplayStoreOwnerHeadline && (
-                                            <> | Inhaber: {storeInfo.owner}</>
-                                        )}
+                                        <MediaQuery smallerThan="xs" styles={{ display: "none" }}>
+                                            <span> | Inhaber: {storeInfo.owner}</span>
+                                        </MediaQuery>
                                     </Text>{" "}
                                 </Anchor>
                             </Link>

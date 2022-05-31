@@ -1,10 +1,11 @@
-import { Button, Text } from "@mantine/core";
+import { ActionIcon, Box, Button, Center, createStyles, MediaQuery, Text } from "@mantine/core";
 import { CalendarPlus, Tool, User as UserIcon } from "tabler-icons-react";
 import { Anchor, Avatar, Grid, Group, Paper, Tabs } from "@mantine/core";
 import { formatFormalAddress } from "~/types/user";
 import { useSession } from "~/hooks/useSession";
 import Link from "next/link";
 import useIsMobile from "~/hooks/useIsMobile";
+import { useMediaQuery } from "@mantine/hooks";
 
 export enum SwitchAvailability {
     Unavailable,
@@ -23,91 +24,102 @@ const SubHeader = ({
     showAppointmentCTA = true,
 }: Props) => {
     const { user } = useSession();
-    const isMobile = useIsMobile();
 
     return (
         <Paper px="md" py="sm" shadow="sm" sx={(theme) => ({ fontSize: theme.fontSizes.sm })}>
-            <Grid columns={12}>
-                <Grid.Col span={isMobile ? 2 : 4}>
+            <Group sx={{ width: "100%" }} spacing={0}>
+                <Box>
                     {showAppointmentCTA && (
                         <Link href="/appointment" passHref>
-                            <Button color="secondary" size="xs" component="a">
-                                <Group spacing="sm">
-                                    <CalendarPlus color="black" size={15} />
-                                    {!isMobile && (
-                                        <Text size="sm" color="black">
-                                            Termin vereinbaren
-                                        </Text>
-                                    )}
-                                </Group>
+                            <Button
+                                leftIcon={
+                                    <MediaQuery smallerThan="xs" styles={{ marginRight: -9 }}>
+                                        <CalendarPlus />
+                                    </MediaQuery>
+                                }
+                                color="secondary"
+                                styles={(theme) => ({ root: { color: theme.colors.gray[9] } })}
+                                size="sm"
+                                component="a"
+                            >
+                                <MediaQuery smallerThan="xs" styles={{ display: "none" }}>
+                                    <span>Termin vereinbaren</span>
+                                </MediaQuery>
                             </Button>
                         </Link>
                     )}
-                </Grid.Col>
-                <Grid.Col span={isMobile ? 3 : 4}>
+                </Box>
+                <Box sx={{ flexGrow: 1 }}>
                     {switchAvailability !== SwitchAvailability.Unavailable && (
-                        <Tabs
-                            variant="pills"
-                            styles={(theme) => ({
-                                tabActive: {
-                                    backgroundColor: `${theme.colors.primary[7]} !important`,
-                                    color: `${theme.white} !important`,
-                                },
-                                tabLabel: {
-                                    padding: theme.spacing.xs,
-                                    fontSize: theme.fontSizes.xs,
-                                },
-                                tabInner: {
-                                    // Account for border of other button
-                                    margin: "1px",
-                                },
-                                tabControl: {
-                                    padding: isMobile ? "7px !important" : "auto",
-                                },
-                                tabsList: {
-                                    justifyContent: "center",
-                                },
-                            })}
-                            orientation="horizontal"
-                        >
-                            <Tabs.Tab
-                                disabled={
-                                    !(
-                                        switchAvailability === SwitchAvailability.Both ||
-                                        switchAvailability === SwitchAvailability.CustomerOnly
-                                    )
-                                }
-                                label={isMobile ? "" : "Für Kunden"}
-                                icon={<UserIcon size={14} />}
-                            />
-                            <Tabs.Tab
-                                disabled={
-                                    !(
-                                        switchAvailability === SwitchAvailability.Both ||
-                                        switchAvailability === SwitchAvailability.OpticianOnly
-                                    )
-                                }
-                                label={isMobile ? "" : "Für Optiker"}
-                                icon={<Tool size={14} />}
-                            />
-                        </Tabs>
+                        <Center>
+                            <Tabs
+                                variant="default"
+                                styles={(theme) => ({
+                                    tabActive: {
+                                        backgroundColor: `${theme.colors.primary[7]} !important`,
+                                        color: `${theme.white} !important`,
+                                    },
+                                    tabLabel: {
+                                        padding: theme.spacing.xs,
+                                        fontSize: theme.fontSizes.xs,
+                                    },
+                                    tabsList: {
+                                        justifyContent: "center",
+                                    },
+                                })}
+                                orientation="horizontal"
+                            >
+                                <Tabs.Tab
+                                    disabled={
+                                        !(
+                                            switchAvailability === SwitchAvailability.Both ||
+                                            switchAvailability === SwitchAvailability.CustomerOnly
+                                        )
+                                    }
+                                    label={
+                                        <MediaQuery smallerThan="xs" styles={{ display: "none" }}>
+                                            <span>Für Kunden</span>
+                                        </MediaQuery>
+                                    }
+                                    icon={<UserIcon size={14} />}
+                                />
+                                <Tabs.Tab
+                                    disabled={
+                                        !(
+                                            switchAvailability === SwitchAvailability.Both ||
+                                            switchAvailability === SwitchAvailability.OpticianOnly
+                                        )
+                                    }
+                                    label={
+                                        <MediaQuery smallerThan="xs" styles={{ display: "none" }}>
+                                            <span>Für Optiker</span>
+                                        </MediaQuery>
+                                    }
+                                    icon={<Tool size={14} />}
+                                />
+                            </Tabs>
+                        </Center>
                     )}
-                </Grid.Col>
-                <Grid.Col span={isMobile ? 7 : 4} sx={{ justifyContent: "right" }}>
+                </Box>
+                <Box>
                     <Link href="/profile" passHref>
                         <Anchor>
                             <Group position="right" direction="row" noWrap>
                                 {!!user && (
-                                    <Text weight="bold" size="xs">
-                                        Willkommen, {formatFormalAddress(user)}
-                                    </Text>
+                                    <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
+                                        <Text weight="bold" size="sm">
+                                            Willkommen, {formatFormalAddress(user)}
+                                        </Text>
+                                    </MediaQuery>
                                 )}
-                                <Avatar size="sm" />
+                                <ActionIcon variant="outline" color="primary">
+                                    <Avatar color="primary" size="sm" />
+                                </ActionIcon>
                             </Group>
                         </Anchor>
                     </Link>
-                </Grid.Col>
-            </Grid>
+                </Box>
+            </Group>
         </Paper>
     );
 };
