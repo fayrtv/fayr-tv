@@ -24,17 +24,17 @@ const primary: Shade = [
     "#4498D8",
 ];
 const secondary = sameColor("#91E9B2");
-const success = [
-    "#E3F9EB",
-    "#C5F3D7",
-    "#AAEEC4",
+const success: Shade = [
+    "#E6F6EC",
+    "#CBEED8",
+    "#AEEAC5",
     "#91E9B2",
-    "#78E4A0",
-    "#61DF90",
-    "#4BDB81",
-    "#38D773",
-    "#2AD068",
-    "#26BF60",
+    "#7EDDA2",
+    "#6FD194",
+    "#62C487",
+    "#58B77B",
+    "#51A872",
+    "#4F966A",
 ];
 const danger = sameColor("#FF3333");
 const gray: Shade = [
