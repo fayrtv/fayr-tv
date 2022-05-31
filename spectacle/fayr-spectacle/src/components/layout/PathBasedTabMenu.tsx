@@ -126,8 +126,8 @@ export const PathBasedTabMenu = ({
                     </Grid.Col>
                 )}
                 <Grid.Col span={isMobile ? 5 : 4}>
-                    <Paper withBorder={withBorder} p={isMobile ? "md" : "lg"}>
-                        <Group direction="row">
+                    <Paper withBorder={withBorder} p={isMobile ? "sm" : "lg"}>
+                        <Group direction="row" mb={isMobile ? "sm" : "md"}>
                             {isMobile && (
                                 <Burger
                                     opened={isMobileNavigationOpen}
@@ -136,7 +136,7 @@ export const PathBasedTabMenu = ({
                                 ></Burger>
                             )}
                             {renderTitles && activeTab.title && (
-                                <Text size="xl" color="primary" mb={isMobile ? 0 : "sm"}>
+                                <Text size="xl" color="primary">
                                     {activeTab.title}
                                 </Text>
                             )}
