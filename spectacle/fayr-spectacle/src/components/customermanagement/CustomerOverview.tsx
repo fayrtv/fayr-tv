@@ -60,7 +60,11 @@ const CustomerOverview = ({ customer }: Props) => {
                     opened={confirmDeletionOpen}
                     onClose={() => setConfirmDeletionOpen(false)}
                     target={
-                        <Button color="danger" onClick={() => setConfirmDeletionOpen(true)}>
+                        <Button
+                            color="danger"
+                            size="xs"
+                            onClick={() => setConfirmDeletionOpen(true)}
+                        >
                             Als Kunden entfernen
                         </Button>
                     }

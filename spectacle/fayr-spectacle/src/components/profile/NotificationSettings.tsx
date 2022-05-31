@@ -14,8 +14,6 @@ type Props = {
 export const NotificationSettings = ({ user }: Props) => {
     const [success, setSuccess] = React.useState(false);
 
-    const isMobile = useIsMobile();
-
     const { onSubmit, profileComponents } = useProfileForm({
         initialValues: user,
         onSubmit: async ({ newsletter, newsletteremail }) => {
@@ -32,35 +30,30 @@ export const NotificationSettings = ({ user }: Props) => {
     });
 
     return (
-        <Paper p={isMobile ? "md" : "xl"} withBorder>
-            <form onSubmit={onSubmit}>
-                {success && (
-                    <Alert
-                        mb="md"
-                        // variant="filled"
-                        icon={<Check size={16} />}
-                        title="Änderungen gespeichert"
-                        color="success"
-                    >
-                        Ihre Änderungen wurden erfolgreich gespeichert
-                    </Alert>
-                )}
-                {profileComponents.renderError()}
-                {profileComponents.renderLoadingOverlay()}
-                <Stack>
-                    <Text color="primary" size="xl" weight="bold">
-                        Benachrichtigungen
-                    </Text>
-                    <Container size={400} px={0} m={0}>
-                        {profileComponents.renderNewsletterEmailInput()}
-                    </Container>
-                    {profileComponents.renderNewsletterCheckbox()}
-                    <Container size={400} px={0} m={0}>
-                        {profileComponents.renderSubmitButton("Speichern")}
-                    </Container>
-                </Stack>
-            </form>
-        </Paper>
+        <form onSubmit={onSubmit}>
+            {success && (
+                <Alert
+                    mb="md"
+                    // variant="filled"
+                    icon={<Check size={16} />}
+                    title="Änderungen gespeichert"
+                    color="success"
+                >
+                    Ihre Änderungen wurden erfolgreich gespeichert
+                </Alert>
+            )}
+            {profileComponents.renderError()}
+            {profileComponents.renderLoadingOverlay()}
+            <Stack>
+                <Container size={400} px={0} m={0}>
+                    {profileComponents.renderNewsletterEmailInput()}
+                </Container>
+                {profileComponents.renderNewsletterCheckbox()}
+                <Container size={400} px={0} m={0}>
+                    {profileComponents.renderSubmitButton("Speichern")}
+                </Container>
+            </Stack>
+        </form>
     );
 };
 

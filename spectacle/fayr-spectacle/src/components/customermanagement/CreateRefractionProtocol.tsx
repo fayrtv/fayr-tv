@@ -128,7 +128,6 @@ const RefractionProtocolRow = ({ form, side }: RowProps) => {
 
 const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props) => {
     const theme = useMantineTheme();
-    const themedColor = theme.colorScheme === "light" ? theme.white : theme.black;
     const inverseThemedColor = theme.colorScheme === "dark" ? theme.white : theme.black;
 
     const isMobile = useIsMobile();
@@ -255,13 +254,9 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
                         <Grid.Col span={1} sx={(_) => ({ paddingLeft: 0, paddingRight: 0 })}>
                             <Button
                                 size="xs"
-                                sx={{
-                                    boxShadow: "0px 0px 3px 0px #000000",
-                                    width: "100%",
-                                }}
                                 onClick={protocolForm.reset}
                                 leftIcon={!isMobile ? <Trash /> : null}
-                                color="red"
+                                color="danger"
                             >
                                 {!isMobile ? <Text size="xs">Löschen</Text> : <Trash />}
                             </Button>
@@ -274,10 +269,9 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
                             <Button
                                 size="xs"
                                 sx={{
-                                    backgroundColor: themedColor,
                                     width: "100%",
-                                    boxShadow: "0px 0px 3px 0px #000000",
                                 }}
+                                variant="default"
                                 leftIcon={!isMobile ? <Printer color={inverseThemedColor} /> : null}
                                 onClick={() => window.print()}
                             >
@@ -297,10 +291,9 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
                             <Button
                                 size="xs"
                                 sx={{
-                                    backgroundColor: themedColor,
                                     width: "100%",
-                                    boxShadow: "0px 0px 3px 0px #000000",
                                 }}
+                                variant="default"
                                 leftIcon={!isMobile ? <Edit color={inverseThemedColor} /> : null}
                             >
                                 {!isMobile ? (
@@ -320,13 +313,12 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
                                 leftIcon={!isMobile ? <DeviceFloppy /> : null}
                                 size="xs"
                                 sx={{
-                                    boxShadow: "0px 0px 3px 0px #000000",
                                     width: "100%",
                                 }}
                                 type="submit"
                                 loading={saving}
                             >
-                                {!isMobile ? <Text size="xs">Speichern</Text> : <DeviceFloppy />}
+                                {!isMobile ? "Speichern" : <DeviceFloppy />}
                             </Button>
                         </Grid.Col>
                     </Grid>

@@ -26,6 +26,7 @@ type Props = {
     pathFragmentName: string;
     renderOnRootPath?: () => JSX.Element;
     renderTitles?: boolean;
+    withBorder?: boolean;
 };
 
 type TabStackProps = {
@@ -64,6 +65,7 @@ export const PathBasedTabMenu = ({
     pathFragmentName,
     renderOnRootPath,
     renderTitles,
+    withBorder = true,
 }: Props) => {
     const urlFragment = useUrlFragment(pathFragmentName);
     const router = useRouter();
@@ -124,7 +126,7 @@ export const PathBasedTabMenu = ({
                     </Grid.Col>
                 )}
                 <Grid.Col span={isMobile ? 5 : 4}>
-                    <Paper>
+                    <Paper withBorder={withBorder} p={isMobile ? "md" : "lg"}>
                         <Group direction="row">
                             {isMobile && (
                                 <Burger

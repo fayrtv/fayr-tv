@@ -25,7 +25,7 @@ const primary: Shade = [
 ];
 const secondary = sameColor("#91E9B2");
 const success = sameColor("#91E9B2");
-const danger = sameColor("#FF0000");
+const danger = sameColor("#FF3333");
 const gray: Shade = [
     "#f8f9fa",
     "#f1f3f5",

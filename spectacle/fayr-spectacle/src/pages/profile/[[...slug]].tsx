@@ -45,6 +45,7 @@ const ProfileRouter: NextPageWithLayout<ServerProps> = ({ user }: ServerProps) =
                     },
                 ]}
                 pathFragmentName="slug"
+                renderTitles={true}
             />
         </Container>
     );
