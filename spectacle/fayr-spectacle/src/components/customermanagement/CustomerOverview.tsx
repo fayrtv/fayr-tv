@@ -5,20 +5,27 @@ import { CustomerStatusBadge } from "~/components/customermanagement/CustomerSta
 import useIsMobile from "~/hooks/useIsMobile";
 import { useBooleanToggle } from "@mantine/hooks";
 import { useStoreInfo } from "~/components/StoreInfoProvider";
+import { useRouter } from "next/router";
 
 type Props = {
     customer: Customer;
 };
 
 const CustomerOverview = ({ customer }: Props) => {
+    const { push } = useRouter();
     const storeInfo = useStoreInfo();
     const [confirmDeletionOpen, setConfirmDeletionOpen] = useBooleanToggle(false);
     const isMobile = useIsMobile();
 
-    const deleteCustomer = useCallback(async () => {
-        // TODO
-        console.log("TODO");
-    }, []);
+    const removeCustomer = useCallback(async () => {
+        const response = await fetch(`/api/customers/remove?id=${customer.customerID}`, {
+            credentials: "include",
+            method: "DELETE",
+        });
+        if (response.ok) {
+            await push("/customermanagement");
+        }
+    }, [customer.customerID, push]);
 
     return (
         <Stack>
@@ -83,7 +90,7 @@ const CustomerOverview = ({ customer }: Props) => {
                             <Button color="gray" onClick={() => setConfirmDeletionOpen(false)}>
                                 Abbrechen
                             </Button>
-                            <Button color="danger" onClick={deleteCustomer}>
+                            <Button color="danger" onClick={removeCustomer}>
                                 Ja, Kunden entfernen
                             </Button>
                         </Group>

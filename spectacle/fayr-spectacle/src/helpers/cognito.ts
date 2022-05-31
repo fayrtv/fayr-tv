@@ -8,7 +8,7 @@ import { DataStore, withSSRContext } from "aws-amplify";
 import { IncomingMessage } from "http";
 import { getCurrentStore } from "./storeLocator";
 import { Customer as CustomerEntity, Store } from "~/models";
-import { User as UserDto } from "~/types/user";
+import { Customer, User as UserDto } from "~/types/user";
 import { convertAwsModelToUser } from "./awsModelParser";
 
 export const convertCognitoUserToUserDto = (cognitoUser: UserType): UserDto => {
@@ -33,7 +33,11 @@ export const convertCognitoUserToUserDto = (cognitoUser: UserType): UserDto => {
     });
 };
 
-export const getUsersForStore = async (req: IncomingMessage, store: Store, userPoolId: string) => {
+export const getStoreCustomers = async (
+    req: IncomingMessage,
+    store: Store,
+    userPoolId: string,
+): Promise<Customer[]> => {
     const SSR = withSSRContext({ req });
     const dataStore = SSR.DataStore as typeof DataStore;
 
@@ -46,17 +50,33 @@ export const getUsersForStore = async (req: IncomingMessage, store: Store, userP
     const cognitoClient = await getCognitoClient(req);
 
     const [storeCustomers, listUsersResponse] = await Promise.all([
-        dataStore.query(CustomerEntity, (x) => x.customerOfStoreId("eq", storeId)),
+        dataStore.query(CustomerEntity, (x) => x.customerOfStoreID("eq", storeId)),
         cognitoClient.send(listUsersCommand),
     ]);
 
-    const storeCustomerIds = storeCustomers.map((x) => x.userID);
+    const storeCustomerIDs = storeCustomers.map((x) => ({ userID: x.userID!, customerID: x.id }));
 
-    const eligibleUsers = listUsersResponse.Users?.filter((x) =>
-        storeCustomerIds.some((y) => y === x.Username),
-    );
+    if (!listUsersResponse.Users) {
+        throw Error("Could not find any users.");
+    }
 
-    return eligibleUsers?.map(convertCognitoUserToUserDto);
+    const result = [];
+
+    for (const { customerID, userID } of storeCustomerIDs) {
+        const correspondingUser = listUsersResponse.Users.find((x) => x.Username === userID);
+        if (!correspondingUser) {
+            console.warn(`Unable to find user for customer ID ${customerID}`);
+            continue;
+        }
+
+        const customer: Customer = {
+            ...convertCognitoUserToUserDto(correspondingUser),
+            customerID,
+        };
+        result.push(customer);
+    }
+
+    return result;
 };
 
 export const getCognitoClient = async (

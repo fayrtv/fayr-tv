@@ -52,7 +52,7 @@ class LinkExistingCustomer {
         }
 
         const existingCustomer = await dataStore.query(Customer, (c) =>
-            c.userID("eq", foundUser.id).customerOfStoreId("eq", store.id),
+            c.userID("eq", foundUser.id).customerOfStoreID("eq", store.id),
         );
 
         if (existingCustomer.length > 0) {
@@ -63,7 +63,7 @@ class LinkExistingCustomer {
 
         const customer = new Customer({
             userID: foundUser.id,
-            customerOfStoreId: store.id,
+            customerOfStoreID: store.id,
         });
 
         await SSR.DataStore.save(customer);

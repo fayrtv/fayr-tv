@@ -12,7 +12,10 @@ export type User = {
     phone: string;
 };
 
-export type Customer = Pick<User, "firstName" | "lastName" | "emailVerified" | "email">;
+export type Customer = { customerID: string } & Pick<
+    User,
+    "firstName" | "lastName" | "emailVerified" | "email"
+>;
 
 export const formatFormalAddress = (user: User) => {
     const parts = [user.address === "m" ? "Herr" : "Frau"];

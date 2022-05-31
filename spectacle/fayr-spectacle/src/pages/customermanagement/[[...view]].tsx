@@ -12,7 +12,7 @@ import { Crumb, Crumbs } from "~/components/Crumbs";
 import CustomerOverview from "~/components/customermanagement/CustomerOverview";
 import { CirclePlus, Link as LinkIcon } from "tabler-icons-react";
 import { layoutFactory } from "src/components/layout/Layout";
-import { getUsersForStore } from "~/helpers/cognito";
+import { getStoreCustomers } from "~/helpers/cognito";
 import { SwitchAvailability } from "~/components/layout/SubHeader";
 import useIsMobile from "~/hooks/useIsMobile";
 import Link from "next/link";
@@ -120,11 +120,11 @@ CustomerManagementRouter.layoutProps = {
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     const store = await getCurrentStore(req);
-    const currentStoreUsers = await getUsersForStore(req, store, "eu-central-1_yf1nAYpsJ");
+    const currentStoreUsers = await getStoreCustomers(req, store, "eu-central-1_yf1nAYpsJ");
 
     return {
         props: {
-            customersOfStore: currentStoreUsers,
+            customersOfStore: currentStoreUsers as Customer[],
         },
     };
 };
