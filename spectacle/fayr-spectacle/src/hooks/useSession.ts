@@ -6,7 +6,7 @@ import { useStoreInfo } from "~/components/StoreInfoProvider";
 import { useCallback } from "react";
 
 export const useSession = () => {
-    const { id: storeID } = useStoreInfo();
+    const { id: storeID, adminUserIDs } = useStoreInfo();
 
     const { isLoading, data } = useQuery("get-user", async () => {
         const userInfo = await Auth.currentUserInfo();
@@ -48,13 +48,14 @@ export const useSession = () => {
         return newCustomer;
     }, [customer, storeID, user]);
 
-    // TODO(#222): Determine `isAdmin` state - Probably can only be done server-side to make it secure
+    const isAdmin = user?.id && adminUserIDs.includes(user.id);
+
     return {
         isLoading,
         user,
         customer,
         isAuthenticated: !!user,
-        isAdmin: true,
+        isAdmin,
         getOrCreateCustomer,
     };
 };
