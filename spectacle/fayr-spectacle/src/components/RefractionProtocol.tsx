@@ -27,6 +27,7 @@ import useBreakpoints from "~/hooks/useBreakpoints";
 import useEncryption from "~/hooks/useEncryption";
 import { useSession } from "../hooks/useSession";
 import { useStoreInfo } from "./StoreInfoProvider";
+import { SerializedAesEncryptionPackage } from "../utils/encryption/encryptionTypes";
 
 const GridText = (
     props: PropsWithChildren<
@@ -141,14 +142,14 @@ export const RefractionProtocol = ({
 
     React.useEffect(() => {
         const initializeData = async () => {
-            let data = entity.data as any;
+            let data = entity.data as any | SerializedAesEncryptionPackage;
 
-            if (data.model) {
+            if (data.model && data.iv) {
                 if (!user) {
                     setRefractionProtocol(null);
                     return;
                 }
-                data = JSON.parse(await encryption.decrypt(data.model, user!.id, store.id));
+                data = JSON.parse(await encryption.decrypt(data, user!.id, store.id));
             }
 
             setRefractionProtocol(data);
