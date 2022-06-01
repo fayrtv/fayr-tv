@@ -101,9 +101,9 @@ const spectacleTheme: MantineThemeOverride = {
     fontSizes: {
         xxxs: 8.5,
         xxs: 10,
-        xs: 12,
+        xs: 13,
         sm: 14,
-        md: 16,
+        md: 15,
         lg: 18,
         xl: 20,
     } as Record<MantineSizeOverride, number>,

@@ -1,10 +1,13 @@
-import { PropsWithChildren } from "react";
+import { ComponentProps, PropsWithChildren } from "react";
 import useIsMobile from "~/hooks/useIsMobile";
 import { Box, Container } from "@mantine/core";
+import { Crumbs } from "~/components/Crumbs";
 
-type Props = PropsWithChildren<{}>;
+type Props = PropsWithChildren<{
+    crumbs?: ComponentProps<typeof Crumbs>["items"];
+}>;
 
-export default function ContentBody({ children }: Props) {
+export default function MainContainer({ children, crumbs }: Props) {
     const isMobile = useIsMobile();
 
     return (
@@ -15,6 +18,7 @@ export default function ContentBody({ children }: Props) {
                 width: "100%",
             }}
         >
+            {crumbs && <Crumbs items={crumbs} />}
             {children}
         </Box>
     );

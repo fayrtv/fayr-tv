@@ -6,7 +6,7 @@ import Layout from "~/components/layout/Layout";
 import { useForm } from "@mantine/form";
 import { DataStore } from "aws-amplify";
 import { Customer } from "~/models";
-import ContentBody from "~/components/layout/ContentBody";
+import MainContainer from "~/components/layout/MainContainer";
 import { LinkExistingCustomerRequest } from "~/pages/api/customers/link-existing";
 import { useState } from "react";
 import { useError } from "~/hooks/useError";
@@ -14,7 +14,7 @@ import { useRouter } from "next/router";
 
 const LinkExistingCustomerPage: NextPageWithLayout = () => {
     const { push } = useRouter();
-    const { error, setError, renderError } = useError({
+    const { setError, renderError } = useError({
         title: "Konnte diesen Nutzer nicht hinzufügen.",
     });
     const form = useForm({
@@ -24,7 +24,12 @@ const LinkExistingCustomerPage: NextPageWithLayout = () => {
     });
 
     return (
-        <ContentBody>
+        <MainContainer
+            crumbs={[
+                { title: "Kundenverwaltung", href: "/customermanagement" },
+                { title: "Konto verknüpfen" },
+            ]}
+        >
             <Stack>
                 <Text size="xl" color="primary" weight="bold">
                     Bestehenden Nutzer als Kunden hinzufügen
@@ -64,7 +69,7 @@ const LinkExistingCustomerPage: NextPageWithLayout = () => {
                     </Stack>
                 </form>
             </Stack>
-        </ContentBody>
+        </MainContainer>
     );
 };
 

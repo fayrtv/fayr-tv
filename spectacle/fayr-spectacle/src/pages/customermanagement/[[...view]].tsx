@@ -16,7 +16,7 @@ import { getStoreCustomers } from "~/helpers/cognito";
 import { SwitchAvailability } from "~/components/layout/SubHeader";
 import useIsMobile from "~/hooks/useIsMobile";
 import Link from "next/link";
-import ContentBody from "~/components/layout/ContentBody";
+import MainContainer from "~/components/layout/MainContainer";
 import { getCurrentStore } from "~/helpers/storeLocator";
 
 type ServerSideProps = {
@@ -83,8 +83,7 @@ const CustomerManagementRouter: NextPageWithLayout<ServerSideProps> = ({ custome
     }, [currentTab, selectedCustomer]);
 
     return (
-        <ContentBody>
-            <Crumbs items={items} />
+        <MainContainer crumbs={items}>
             {!!selectedCustomer ? (
                 <PathBasedTabMenu tabs={tabs} pathFragmentName="view" renderTitles={false} />
             ) : (
@@ -103,7 +102,7 @@ const CustomerManagementRouter: NextPageWithLayout<ServerSideProps> = ({ custome
                     />
                 </>
             )}
-        </ContentBody>
+        </MainContainer>
     );
 };
 
