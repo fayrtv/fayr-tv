@@ -144,7 +144,8 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
                 new RefractionProtocolEntity({
                     recordedAt: new Date().toISOString(),
                     data: JSON.stringify({
-                        model: encryptedModel,
+                        model: encryptedModel.encryptedPayload,
+                        iv: encryptedModel.encodedInitializationVector,
                     }),
                     userID: customer.email,
                 }),
