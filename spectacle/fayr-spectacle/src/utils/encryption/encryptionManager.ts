@@ -2,20 +2,24 @@ import ILocalEncryptionStorageHandler from "./localPersistence/ILocalEncryptionS
 import IKeyExchanger from "./exchange/IKeyExchanger";
 import { Store } from "~/models";
 import { User } from "~/types/user";
+import { SerializedAesEncryptionPackage } from './encryptionTypes';
+import { base64EncodeBuffer, base64DecodeToBuffer } from './encodingUtils';
 
 export interface IEncryptionManager {
-    encrypt(data: string, userId: User["id"], storeId: Store["id"]): Promise<string>;
-    decrypt(encryptedData: string, userId: User["id"], storeId: Store["id"]): Promise<string>;
+    encrypt(data: string, userId: User["id"], storeId: Store["id"]): Promise<SerializedAesEncryptionPackage>;
+    decrypt(encryptedData: SerializedAesEncryptionPackage, userId: User["id"], storeId: Store["id"]): Promise<string>;
     setupDeviceSecretIfNotExists(userId: User["id"], storeId: Store["id"]): Promise<void>;
     createStoreKeyPair(storeId: Store["id"]): Promise<CryptoKey>;
 }
+
+// Recommended IV length is 96 https://developer.mozilla.org/en-US/docs/Web/API/AesGcmParams#properties
+const defaultInitializationVectorLength = 96;
 
 export class EncryptionManager implements IEncryptionManager {
     private readonly _localEncryptionStorageHandler: ILocalEncryptionStorageHandler;
     private readonly _keyExchanger: IKeyExchanger;
     private readonly _encoder: TextEncoder;
     private readonly _decoder: TextDecoder;
-    private readonly _iv: Uint8Array;
 
     public constructor(
         localEncryptionStorageHandler: ILocalEncryptionStorageHandler,
@@ -26,11 +30,6 @@ export class EncryptionManager implements IEncryptionManager {
 
         this._encoder = new TextEncoder();
         this._decoder = new TextDecoder();
-
-        // TODO: Is this secure? Needs to be the same for encode & decode, but not sure how impactful it is not to regenerate?
-        this._iv = new Uint8Array([
-            47, 207, 210, 108, 112, 13, 31, 44, 90, 137, 252, 209, 159, 227, 206, 124,
-        ]);
     }
 
     /**
@@ -97,50 +96,52 @@ export class EncryptionManager implements IEncryptionManager {
         await this._keyExchanger.persistEncryptedSecret(encryptedKeyStringified, userId, storeId);
     }
 
-    public async encrypt(data: string, userId: User["id"], storeId: Store["id"]): Promise<string> {
+    public async encrypt(data: string, userId: User["id"], storeId: Store["id"]): Promise<SerializedAesEncryptionPackage> {
         const secret = await this._localEncryptionStorageHandler.getSecret(userId, storeId);
+
+        const operationScopedIv = this.createRandomInitializationVector();
 
         const encodedData = this._encoder.encode(data);
         const encryptedData: ArrayBuffer = await window.crypto.subtle.encrypt(
             {
                 name: "AES-GCM",
-                iv: this._iv,
+                iv: operationScopedIv,
                 length: 64,
             },
             secret!,
             encodedData,
         );
 
-        const resultView = Array.from(new Uint8Array(encryptedData));
-        const encryptedDataStringified = resultView
-            .map((byte) => String.fromCharCode(byte))
-            .join("");
+        const [base64EncodedResult, encodedInitializationVector] = [
+            base64EncodeBuffer(new Uint8Array(encryptedData)),
+            base64EncodeBuffer(operationScopedIv)];
 
-        const base64EncodedResult = window.btoa(encryptedDataStringified);
-        return base64EncodedResult;
+        return {
+            encryptedPayload: base64EncodedResult,
+            encodedInitializationVector,
+        };
     }
 
     public async decrypt(
-        encryptedData: string,
+        encryptedData: SerializedAesEncryptionPackage,
         userId: User["id"],
         storeId: Store["id"],
     ): Promise<string> {
         const secret = await this._localEncryptionStorageHandler.getSecret(userId, storeId);
 
-        const base64DecodedData = window.atob(encryptedData);
-        const encodedEncryptedData = new Uint8Array(new ArrayBuffer(base64DecodedData.length));
-        for (let i = 0; i < base64DecodedData.length; i++) {
-            encodedEncryptedData[i] = base64DecodedData.charCodeAt(i);
-        }
+        const [encryptedDataBuffer, initializationVectorBuffer] = [
+            base64DecodeToBuffer(encryptedData.encryptedPayload),
+            base64DecodeToBuffer(encryptedData.encodedInitializationVector),
+        ]
 
         const decryptedData: ArrayBuffer = await window.crypto.subtle.decrypt(
             {
                 name: "AES-GCM",
-                iv: this._iv,
+                iv: initializationVectorBuffer,
                 length: 64,
             },
             secret!,
-            encodedEncryptedData,
+            encryptedDataBuffer,
         );
         const decodedData = this._decoder.decode(decryptedData);
 
@@ -165,4 +166,9 @@ export class EncryptionManager implements IEncryptionManager {
 
         return aesSymmetricKey;
     };
+
+    private createRandomInitializationVector = (length: number = defaultInitializationVectorLength) => {
+        const buffer = new Uint8Array(length);
+        return window.crypto.getRandomValues(buffer);
+    }
 }
