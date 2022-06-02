@@ -8,6 +8,13 @@ const nextConfig = {
         register: true,
         skipWaiting: true,
     },
+    webpack: (config, _options) => {
+        config.resolve.fallback = {
+            // https://github.com/papnkukn/qrcode-svg/issues/11#issuecomment-655907892
+            fs: false,
+        };
+        return config;
+    },
 };
 
 module.exports = withPWA(nextConfig);
