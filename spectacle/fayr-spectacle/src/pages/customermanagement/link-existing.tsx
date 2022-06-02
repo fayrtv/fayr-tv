@@ -1,14 +1,9 @@
-import { useStoreInfo } from "~/components/StoreInfoProvider";
-import useEncryption from "~/hooks/useEncryption";
 import { NextPageWithLayout } from "~/types/next-types";
-import { Button, Container, Stack, Text, TextInput } from "@mantine/core";
+import { Button, Stack, Text, TextInput } from "@mantine/core";
 import Layout from "~/components/layout/Layout";
 import { useForm } from "@mantine/form";
-import { DataStore } from "aws-amplify";
-import { Customer } from "~/models";
 import MainContainer from "~/components/layout/MainContainer";
 import { LinkExistingCustomerRequest } from "~/pages/api/customers/link-existing";
-import { useState } from "react";
 import { useError } from "~/hooks/useError";
 import { useRouter } from "next/router";
 

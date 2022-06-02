@@ -1,21 +1,20 @@
 import {
     Badge,
-    Button,
     ColorSwatch,
     Container,
     Grid,
     Group,
+    Modal,
     Space,
     Stack,
     Text,
-    Modal,
+    useMantineTheme,
 } from "@mantine/core";
 import moment from "moment";
 import React, { PropsWithChildren, useState } from "react";
 import { Eye, Printer, Qrcode } from "tabler-icons-react";
 import { RefractionProtocol as RefractionProtocolEntity } from "~/models";
 import { RefractionProtocol as RefractionProtocolModel } from "~/types/refraction-protocol";
-import { useMantineTheme } from "@mantine/core";
 import { RefractionProtocolQRCode } from "~/components/QRCode";
 
 const GridText = (
@@ -107,22 +106,19 @@ export const RefractionProtocol = ({
         );
     };
 
-    const actionItemStyleProps = React.useMemo(
-        () => ({
-            size: 30,
-            style: {
-                backgroundColor: !areActionsAllowed
-                    ? theme.colors.gray[6]
-                    : isDarkMode
-                    ? theme.black
-                    : theme.white,
-                color: theme.colors.primary[7],
-                borderRadius: "5px",
-                padding: "2px",
-            },
-        }),
-        [theme],
-    );
+    const actionItemStyleProps = {
+        size: 30,
+        style: {
+            backgroundColor: !areActionsAllowed
+                ? theme.colors.gray[6]
+                : isDarkMode
+                ? theme.black
+                : theme.white,
+            color: theme.colors.primary[7],
+            borderRadius: "5px",
+            padding: "2px",
+        },
+    };
 
     return (
         <Stack

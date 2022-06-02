@@ -45,7 +45,7 @@ const SpectaclePassPage: NextPageWithLayout<ServerProps> = ({ refractionProtocol
                 }
             })
             .map((x) => x.protocol);
-    }, []);
+    }, [refractionProtocols]);
 
     const currentProtocol = sortedProtocols[0];
     const protocolHistory = sortedProtocols.slice(1);

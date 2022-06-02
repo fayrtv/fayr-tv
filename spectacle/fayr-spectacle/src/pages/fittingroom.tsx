@@ -92,6 +92,7 @@ const FittingRoomPage: NextPageWithLayout = () => {
                 return mindArThree.stop();
             } catch (err) {}
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mindArThree]);
 
     const moveCamera = (direction: Direction) => {

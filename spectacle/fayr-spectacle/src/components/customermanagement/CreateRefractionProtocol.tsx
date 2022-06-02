@@ -1,22 +1,19 @@
-import { NextPageWithLayout } from "../../types/next-types";
+import { NextPageWithLayout } from "~/types/next-types";
 import Layout from "../layout/Layout";
 import {
     Button,
-    Container,
-    ColorSwatch,
     Center,
+    ColorSwatch,
+    Container,
     Grid,
-    Table,
-    Text,
-    Badge,
-    Stack,
-    TextInput,
-    useMantineTheme,
     Modal,
     Paper,
-    Group,
+    Stack,
+    Text,
+    TextInput,
+    useMantineTheme,
 } from "@mantine/core";
-import { Customer } from "../../types/user";
+import { Customer } from "~/types/user";
 import React from "react";
 import { DataStore } from "aws-amplify";
 import { RefractionProtocol as RefractionProtocolEntity } from "~/models";
