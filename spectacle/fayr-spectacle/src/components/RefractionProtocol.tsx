@@ -149,7 +149,16 @@ export const RefractionProtocol = ({
                     setRefractionProtocol(null);
                     return;
                 }
-                data = JSON.parse(await encryption.decrypt(data, user!.id, store.id));
+                data = JSON.parse(
+                    await encryption.decrypt(
+                        {
+                            encodedInitializationVector: data.iv,
+                            encryptedPayload: data.model,
+                        },
+                        user!.id,
+                        store.id,
+                    ),
+                );
             }
 
             setRefractionProtocol(data);
