@@ -13,7 +13,7 @@ export default function PassportQRCodeExample() {
     const qrCodeContent = "https://www.zeiss.com/";
 
     return (
-        <Box sx={(theme) => ({ backgroundColor: theme.colors.primary[7] })}>
+        <Box sx={(theme) => ({ backgroundColor: theme.colors.primary[6] })}>
             <Stack spacing="md" px="md" py="sm">
                 <Group position="apart">
                     <Stack spacing={0}>

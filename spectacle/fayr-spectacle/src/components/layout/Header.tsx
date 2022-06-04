@@ -86,6 +86,7 @@ const Header = ({ burgerOpen, setBurgerOpen, subHeader }: Props) => {
                                         </Text>
                                     </Anchor>
                                 </Link>
+
                                 <Burger
                                     color="white"
                                     opened={burgerOpen}

@@ -76,7 +76,6 @@ export default function App({
                     theme={{
                         ...spectacleTheme,
                         colorScheme: currentColorScheme,
-                        // you can change primaryColor w.r.t colorScheme here
                     }}
                 >
                     <QueryClientProvider client={queryClient}>

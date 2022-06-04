@@ -35,7 +35,27 @@ const BodyShell = ({ children }: PropsWithChildren<{}>) => {
             }}
         >
             {colorScheme === "dark" && <Overlay opacity={0.6} color="black" zIndex={1} blur={2} />}
-            <Paper sx={{ zIndex: 1, position: "relative" }} px="xl" py="lg">
+            <Paper
+                sx={(theme) => ({
+                    zIndex: 1,
+                    background: "transparent",
+                    position: "relative",
+                    "&:before": {
+                        content: '""',
+                        backgroundColor:
+                            colorScheme === "light" ? theme.white : theme.colors.dark[7],
+                        position: "absolute",
+                        zIndex: -1,
+                        top: 0,
+                        left: 0,
+                        bottom: 0,
+                        right: 0,
+                        opacity: 0.96,
+                    },
+                })}
+                px="xl"
+                py="lg"
+            >
                 <Center>
                     <ZeissLogo />
                 </Center>

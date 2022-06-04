@@ -79,7 +79,7 @@ const RefractionProtocolRow = ({ form, side }: RowProps) => {
             <DataGridCell area={`${Side[side]}Symbol`}>
                 <Center sx={(_) => ({ height: "100%" })}>
                     <ColorSwatch color={themedColor} radius={0}>
-                        <Text color={theme.colors.primary[7]} size="md" weight="800">
+                        <Text color={theme.colors.primary[6]} size="md" weight="800">
                             {side === Side.Left ? "L" : "R"}
                         </Text>
                     </ColorSwatch>

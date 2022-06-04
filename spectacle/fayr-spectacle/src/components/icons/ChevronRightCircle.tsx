@@ -8,7 +8,7 @@ export default function ChevronRightCircle({ size = 25 }: { size?: number }) {
             sx={(theme) => ({
                 borderRadius: "100%",
                 background: theme.white,
-                color: theme.colors.primary[7],
+                color: theme.colors.primary[6],
                 width: size,
                 height: size,
             })}

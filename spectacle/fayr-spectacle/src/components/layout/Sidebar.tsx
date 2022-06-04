@@ -7,27 +7,6 @@ import { useSession } from "~/hooks/useSession";
 import useIsMobile from "~/hooks/useIsMobile";
 import { useClickOutside } from "@mantine/hooks";
 
-const MenuItem = ({ href, children }: PropsWithChildren<{ href: string }>) => {
-    const isActive = useRouter().asPath === href;
-
-    return (
-        <Link href={href} passHref>
-            <Anchor
-                sx={(theme) => ({
-                    fontSize: theme.fontSizes.xl,
-                    color: isActive
-                        ? theme.colors.primary[9]
-                        : theme.colorScheme === "light"
-                        ? theme.black
-                        : theme.white,
-                })}
-            >
-                {children}
-            </Anchor>
-        </Link>
-    );
-};
-
 type Props = {
     open: boolean;
     onClickOutside: () => void;
@@ -38,17 +17,21 @@ export const Sidebar = ({ open, onClickOutside }: Props) => {
     const isMobile = useIsMobile();
     const debug = process.env.NODE_ENV === "development";
 
-    const ref = useClickOutside<HTMLDivElement>(onClickOutside);
+    const sidebarRef = useClickOutside<HTMLDivElement>(onClickOutside);
 
     return (
         <Aside
             p="lg"
             hidden={!open}
             width={{ sm: 280 }}
-            sx={{ backgroundColor: "transparent" }}
+            sx={(theme) => ({
+                backgroundColor:
+                    theme.colorScheme === "light" ? theme.colors.gray[0] : theme.colors.dark[0],
+                opacity: 0.2,
+            })}
             hiddenBreakpoint={50000}
             fixed
-            ref={ref}
+            ref={sidebarRef}
         >
             <Overlay blur={11} zIndex={-1} color="transparent" />
             <Aside.Section grow>
@@ -134,5 +117,26 @@ export const Sidebar = ({ open, onClickOutside }: Props) => {
                 </Center>
             </Aside.Section>
         </Aside>
+    );
+};
+
+const MenuItem = ({ href, children }: PropsWithChildren<{ href: string }>) => {
+    const isActive = useRouter().asPath === href;
+
+    return (
+        <Link href={href} passHref>
+            <Anchor
+                sx={(theme) => ({
+                    fontSize: theme.fontSizes.xl,
+                    color: isActive
+                        ? theme.colors.primary[6]
+                        : theme.colorScheme === "light"
+                        ? theme.black
+                        : theme.white,
+                })}
+            >
+                {children}
+            </Anchor>
+        </Link>
     );
 };

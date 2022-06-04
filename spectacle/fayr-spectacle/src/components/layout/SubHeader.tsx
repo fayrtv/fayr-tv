@@ -56,7 +56,7 @@ const SubHeader = ({
                                 variant="default"
                                 styles={(theme) => ({
                                     tabActive: {
-                                        backgroundColor: `${theme.colors.primary[7]} !important`,
+                                        backgroundColor: `${theme.colors.primary[6]} !important`,
                                         color: `${theme.white} !important`,
                                     },
                                     tabLabel: {

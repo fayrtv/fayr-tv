@@ -82,7 +82,7 @@ export const RefractionProtocol = ({
             <>
                 <Grid.Col span={1}>
                     <ColorSwatch color={themedColor} radius={5}>
-                        <Text color={theme.colors.primary[7]} size="md" weight="800">
+                        <Text color={theme.colors.primary[6]} size="md" weight="800">
                             {side}
                         </Text>
                     </ColorSwatch>
@@ -114,7 +114,7 @@ export const RefractionProtocol = ({
                 : isDarkMode
                 ? theme.black
                 : theme.white,
-            color: theme.colors.primary[7],
+            color: theme.colors.primary[6],
             borderRadius: "5px",
             padding: "2px",
         },
@@ -125,7 +125,7 @@ export const RefractionProtocol = ({
             spacing="xs"
             onClick={onClick}
             sx={(_) => ({
-                background: isArchived ? BackgroundGrey : theme.colors.primary[7],
+                background: isArchived ? BackgroundGrey : theme.colors.primary[6],
             })}
         >
             <Container mt="xs" sx={(_) => ({ padding: 0 })}>
@@ -134,7 +134,7 @@ export const RefractionProtocol = ({
                         size={40}
                         style={{
                             backgroundColor: themedColor,
-                            color: theme.colors.primary[7],
+                            color: theme.colors.primary[6],
                             borderRadius: "10px",
                         }}
                     />

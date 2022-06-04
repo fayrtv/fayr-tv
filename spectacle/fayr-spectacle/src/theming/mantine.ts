@@ -5,6 +5,8 @@ import type {
     MantineThemeOverride,
 } from "@mantine/core";
 import { Tuple } from "@mantine/core";
+import { MantineTheme } from "@mantine/styles/lib/theme/types";
+import { CSSObject } from "@mantine/styles/lib/tss";
 
 // theme colors must be a 10-tuple string of colors from light to dark shade
 type Shade = [string, string, string, string, string, string, string, string, string, string];
@@ -12,16 +14,16 @@ type Shade = [string, string, string, string, string, string, string, string, st
 const sameColor = (color: string) => Array(10).fill(color) as Shade;
 
 const primary: Shade = [
-    "#EBF5FB",
-    "#EBF5FB",
-    "#EBF5FB",
-    "#EBF5FB",
-    "#EBF5FB",
+    "#CFE4F4",
+    "#B4D5EE",
+    "#9AC6E8",
+    "#83B9E3",
+    "#6CADDF",
+    "#57A2DB",
     "#4498D8",
-    "#4498D8",
-    "#4498D8",
-    "#4498D8",
-    "#4498D8",
+    "#328ED3",
+    "#2B83C5",
+    "#2878B5",
 ];
 const secondary = sameColor("#91E9B2");
 const success: Shade = [
@@ -160,6 +162,16 @@ export const spectacleStyles: MantineProviderProps["styles"] = {
     Button: {
         inner: { fontWeight: "lighter" },
     },
+    Anchor: (theme) => ({
+        root: {
+            color:
+                theme.colorScheme === "light" ? theme.colors.primary[6] : theme.colors.primary[4],
+            ":hover": {
+                textDecoration: "underline",
+                textDecorationColor: theme.colors.primary[6],
+            },
+        },
+    }),
 };
 
 export default spectacleTheme;
