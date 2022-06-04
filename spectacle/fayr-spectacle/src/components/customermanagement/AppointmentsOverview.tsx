@@ -8,12 +8,12 @@ type Props = {
     customer: Customer;
 };
 
-const SpectaclePassOverview: NextPageWithLayout<Props> = ({ customer }: Props) => {
+const AppointmentsOverview: NextPageWithLayout<Props> = ({ customer }: Props) => {
     return <Container></Container>;
 };
 
-SpectaclePassOverview.layoutProps = {
+AppointmentsOverview.layoutProps = {
     Layout: Layout,
 };
 
-export default SpectaclePassOverview;
+export default AppointmentsOverview;

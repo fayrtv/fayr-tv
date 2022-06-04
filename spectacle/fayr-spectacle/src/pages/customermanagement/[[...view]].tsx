@@ -18,6 +18,7 @@ import useIsMobile from "~/hooks/useIsMobile";
 import Link from "next/link";
 import MainContainer from "~/components/layout/MainContainer";
 import { getCurrentStore } from "~/helpers/storeLocator";
+import AppointmentsOverview from "~/components/customermanagement/AppointmentsOverview";
 
 type ServerSideProps = {
     cred: any;
@@ -49,7 +50,7 @@ const CustomerManagementRouter: NextPageWithLayout<ServerSideProps> = ({ custome
         {
             title: "Termine anzeigen",
             slug: "show-appointments",
-            render: () => <b>TODO</b>,
+            render: () => <AppointmentsOverview customer={selectedCustomer!} />,
         },
     ];
 

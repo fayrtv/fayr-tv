@@ -24,10 +24,6 @@ export const Sidebar = ({ open, onClickOutside }: Props) => {
             p="lg"
             hidden={!open}
             width={{ sm: 280 }}
-            // sx={(theme) => ({
-            //     backgroundColor:
-            //         theme.colorScheme === "light" ? theme.colors.gray[0] : theme.colors.dark[0],
-            // })}
             sx={(theme) => ({
                 zIndex: 1,
                 background: "transparent",
@@ -104,7 +100,7 @@ export const Sidebar = ({ open, onClickOutside }: Props) => {
                                 <MenuItem href={"/auth/recover"}>Passwort vergessen</MenuItem>
                             </List.Item>
                             <List.Item>
-                                <MenuItem href={"/customermanagement/create-refraction-protocol"}>
+                                <MenuItem href={"/customermanagement"}>
                                     Kundenverwaltung
                                 </MenuItem>
                             </List.Item>
