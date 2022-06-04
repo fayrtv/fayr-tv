@@ -12,4 +12,6 @@ type SideConfiguration = {
     axis: number;
     addition?: number;
     pd: number;
+    prisma?: number;
+    basis?: number;
 };

@@ -15,11 +15,14 @@ import { Moment } from "moment";
 import moment from "moment";
 import { SerializedModel, serializeModel } from "~/models/amplify-models";
 import { RedirectProps, redirectServerSide } from "~/helpers/next-server";
+import { useSession } from "../hooks/useSession";
 
 type ServerProps = {
     refractionProtocols: SerializedModel<RefractionProtocolEntity>[];
 };
 const SpectaclePassPage: NextPageWithLayout<ServerProps> = ({ refractionProtocols }) => {
+    const { user } = useSession();
+
     const sortedProtocols = React.useMemo(() => {
         type SortCompatibleProtocol = {
             protocol: RefractionProtocolEntity;
@@ -52,6 +55,8 @@ const SpectaclePassPage: NextPageWithLayout<ServerProps> = ({ refractionProtocol
 
     const [selectedProtocol, setSelectedProtocol] = React.useState(0);
 
+    const userName = `${user?.firstName} ${user?.lastName}`;
+
     return (
         <Container
             fluid
@@ -64,14 +69,15 @@ const SpectaclePassPage: NextPageWithLayout<ServerProps> = ({ refractionProtocol
                 <Group direction="row" position="right">
                     <CircleX size={30} />
                 </Group>
-                <Container size="xl">
+                <Container fluid size="xl" sx={(_) => ({ marginLeft: "10%", marginRight: "10%" })}>
                     <Group direction="column" position="center" spacing="xs">
                         <Text weight="bold">Digitaler Brillenpass</Text>
-                        <Text weight="normal">Max Mustermann</Text>
+                        <Text weight="normal">{userName}</Text>
                     </Group>
                     <ScrollArea
                         style={{
                             height: "65vh",
+                            overflowX: "hidden",
                         }}
                         type="always"
                     >
@@ -81,6 +87,7 @@ const SpectaclePassPage: NextPageWithLayout<ServerProps> = ({ refractionProtocol
                                 entity={currentProtocol}
                                 isSelected={selectedProtocol === 0}
                                 onClick={() => setSelectedProtocol(0)}
+                                userName={userName}
                             />
                             {protocolHistory.map((oldEntity, index) => (
                                 <RefractionProtocol
@@ -90,6 +97,7 @@ const SpectaclePassPage: NextPageWithLayout<ServerProps> = ({ refractionProtocol
                                     isArchived={true}
                                     isSelected={index + 1 === selectedProtocol}
                                     onClick={() => setSelectedProtocol(index + 1)}
+                                    userName={userName}
                                 />
                             ))}
                         </Stack>
