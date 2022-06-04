@@ -3,14 +3,14 @@ import { NextPageWithLayout } from "~/types/next-types";
 
 import { GetServerSideProps } from "next";
 import { Customer, formatCustomerName } from "~/types/user";
-import { Button, Container, Group, Text } from "@mantine/core";
+import { Button, Group, Text } from "@mantine/core";
 import CreateRefractionProtocol from "~/components/customermanagement/CreateRefractionProtocol";
 import { CustomerSelection } from "~/components/customermanagement/CustomerSelection";
 import SpectaclePassOverview from "~/components/customermanagement/SpectaclePassOverview";
 import { PathBasedTabMenu, useUrlFragment } from "~/components/layout/PathBasedTabMenu";
-import { Crumb, Crumbs } from "~/components/Crumbs";
+import { Crumb } from "~/components/Crumbs";
 import CustomerOverview from "~/components/customermanagement/CustomerOverview";
-import { CirclePlus, Link as LinkIcon } from "tabler-icons-react";
+import { Link as LinkIcon } from "tabler-icons-react";
 import { layoutFactory } from "src/components/layout/Layout";
 import { getStoreCustomers } from "~/helpers/cognito";
 import { SwitchAvailability } from "~/components/layout/SubHeader";

@@ -14,7 +14,7 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import { Auth } from "aws-amplify";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import React, { PropsWithChildren, useState } from "react";
 import ZeissLogo from "~/components/ZeissLogo";
 import Layout, { layoutFactory } from "~/components/layout/Layout";
@@ -25,6 +25,8 @@ import Link from "next/link";
 
 const BodyShell = ({ children }: PropsWithChildren<{}>) => {
     const { colorScheme } = useMantineColorScheme();
+    const { query } = useRouter();
+    const isLogout = (query["logout"] as string | undefined)?.toLowerCase() === "true";
 
     return (
         <Center
@@ -59,20 +61,29 @@ const BodyShell = ({ children }: PropsWithChildren<{}>) => {
                 <Center>
                     <ZeissLogo />
                 </Center>
-                <Text transform="uppercase" color="primary" weight="bold" size="lg" mt={60}>
-                    Anmeldung
-                </Text>
-                <Text
-                    color={colorScheme === "light" ? "black" : "white"}
-                    size="lg"
-                    weight="bold"
-                    mt="xs"
-                >
-                    Willkommen bei Ihrem
-                    <br />
-                    ZEISS VISION CENTER Osnabrück
-                </Text>
-                {children}
+                <Box mt={isLogout ? "md" : "xl"}>
+                    {isLogout && (
+                        <Alert color="secondary" mb="lg">
+                            Sie haben sich abgemeldet.
+                        </Alert>
+                    )}
+                    <Text transform="uppercase" color="primary" weight="bold" size="lg">
+                        {isLogout ? "Wieder anmelden" : "Anmeldung"}
+                    </Text>
+                    {!isLogout && (
+                        <Text
+                            color={colorScheme === "light" ? "black" : "white"}
+                            size="lg"
+                            weight="bold"
+                            mt="xs"
+                        >
+                            Willkommen bei Ihrem
+                            <br />
+                            ZEISS VISION CENTER Osnabrück
+                        </Text>
+                    )}
+                    {children}
+                </Box>
             </Paper>
         </Center>
     );

@@ -100,9 +100,7 @@ export const Sidebar = ({ open, onClickOutside }: Props) => {
                                 <MenuItem href={"/auth/recover"}>Passwort vergessen</MenuItem>
                             </List.Item>
                             <List.Item>
-                                <MenuItem href={"/customermanagement"}>
-                                    Kundenverwaltung
-                                </MenuItem>
+                                <MenuItem href={"/customermanagement"}>Kundenverwaltung</MenuItem>
                             </List.Item>
                         </>
                     )}
@@ -116,7 +114,7 @@ export const Sidebar = ({ open, onClickOutside }: Props) => {
                                 <MenuItem href={"/settings"}>Einstellungen</MenuItem>
                             </List.Item>
                             <List.Item>
-                                <MenuItem href={"/auth/signout"}>Abmelden</MenuItem>
+                                <MenuItem href={"/auth/signin?logout=true"}>Abmelden</MenuItem>
                             </List.Item>
                         </>
                     )}
