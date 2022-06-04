@@ -7,7 +7,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getCurrentStore } from "~/helpers/storeLocator";
 import { Store } from "~/models";
 import { User } from "~/types/user";
-import { getUser } from "~/helpers/authentication";
+import { ssrGetUser } from "~/helpers/authentication";
 
 export function ensureIsAdminOfStore(store?: Store, user?: User | null) {
     if (!user?.id || !store?.adminUserIDs.includes(user.id)) {
@@ -17,7 +17,7 @@ export function ensureIsAdminOfStore(store?: Store, user?: User | null) {
 
 export const AdminGuard = createMiddlewareDecorator(
     async (req: NextApiRequest, res: NextApiResponse, next: NextFunction) => {
-        const [admin, store] = await Promise.all([getUser(req), getCurrentStore(req)]);
+        const [admin, store] = await Promise.all([ssrGetUser(req), getCurrentStore(req)]);
         ensureIsAdminOfStore(store, admin);
         next();
     },

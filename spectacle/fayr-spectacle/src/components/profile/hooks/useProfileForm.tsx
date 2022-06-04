@@ -13,7 +13,7 @@ import {
 import Link from "next/link";
 import { useError } from "~/hooks/useError";
 
-type ProfileFormData = User & {
+export type ProfileFormData = User & {
     password: string;
     confirmPassword: string;
     termsAndConditions: boolean;
@@ -21,7 +21,10 @@ type ProfileFormData = User & {
 
 type UseProfileForm = {
     initialValues?: Partial<ProfileFormData>;
-    onSubmit: (userProfile: ProfileFormData) => Promise<void>;
+    onSubmit: (
+        userProfile: ProfileFormData,
+        setError: (errorMessage: string) => void,
+    ) => Promise<void>;
     errorTitle: string;
     errorToString?: (error: any) => string;
     isEditable?: boolean;
@@ -70,7 +73,7 @@ export const useProfileForm = ({
         try {
             setError(undefined);
             setSubmitting(true);
-            await onSubmit(userProfile);
+            await onSubmit(userProfile, setError);
         } catch (error) {
             setError(errorToString ? errorToString(error) : String(error));
         } finally {

@@ -40,7 +40,7 @@ export const Sidebar = ({ open }: Props) => {
         <Aside
             p="lg"
             hidden={!open}
-            width={{ sm: 200, lg: 300 }}
+            width={{ sm: 280 }}
             sx={{ backgroundColor: "transparent" }}
             hiddenBreakpoint={50000}
             fixed

@@ -5,7 +5,7 @@ import { PathBasedTabMenu } from "~/components/layout/PathBasedTabMenu";
 import EditProfile from "~/components/profile/EditProfile";
 import { GetServerSideProps } from "next";
 import { RedirectProps, redirectServerSide } from "~/helpers/next-server";
-import { getUser } from "~/helpers/authentication";
+import { ssrGetUser } from "~/helpers/authentication";
 import { User } from "~/types/user";
 import ChangePassword from "~/components/profile/ChangePassword";
 import { Container } from "@mantine/core";
@@ -55,7 +55,7 @@ export const getServerSideProps: GetServerSideProps<ServerProps | RedirectProps>
     req,
     res,
 }) => {
-    const user = await getUser(req);
+    const user = await ssrGetUser(req);
 
     if (!user) {
         return redirectServerSide(res, "/auth/login");

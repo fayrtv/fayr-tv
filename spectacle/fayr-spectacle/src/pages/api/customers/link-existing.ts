@@ -11,7 +11,7 @@ import { convertCognitoUserToUserDto, getCognitoClient } from "~/helpers/cognito
 import { NextApiRequest } from "next";
 import { ListUsersCommand } from "@aws-sdk/client-cognito-identity-provider";
 import { Customer } from "~/models";
-import { getUser } from "~/helpers/authentication";
+import { ssrGetUser } from "~/helpers/authentication";
 import { getCurrentStore } from "~/helpers/storeLocator";
 import { DataStore, withSSRContext } from "aws-amplify";
 import { SerializedModel, serializeModel } from "~/models/amplify-models";

@@ -3,7 +3,7 @@ import React from "react";
 import Layout from "~/components/layout/Layout";
 import { NextPageWithLayout } from "~/types/next-types";
 import { formatFormalAddress, User } from "~/types/user";
-import { getUser } from "~/helpers/authentication";
+import { ssrGetUser } from "~/helpers/authentication";
 import { useMantineColorScheme } from "@mantine/core";
 
 type Props = {
@@ -23,7 +23,7 @@ WelcomePage.layoutProps = {
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     return {
         props: {
-            user: await getUser(req),
+            user: await ssrGetUser(req),
         },
     };
 };

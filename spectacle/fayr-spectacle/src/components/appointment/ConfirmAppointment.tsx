@@ -1,10 +1,29 @@
-import { Button, Container, Group, Paper, Space, Stack, Text, Textarea } from "@mantine/core";
+import {
+    Alert,
+    Box,
+    Button,
+    Container,
+    Group,
+    LoadingOverlay,
+    Paper,
+    Space,
+    Stack,
+    Text,
+    Textarea,
+} from "@mantine/core";
 import { useStoreInfo } from "~/components/StoreInfoProvider";
 import { InfoBox } from "~/components/appointment/InfoBox";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useInputState } from "@mantine/hooks";
+import { useProfileForm } from "~/components/profile/hooks/useProfileForm";
+import { useSession } from "~/hooks/useSession";
+import { Appointment } from "~/models";
+import { DataStore } from "@aws-amplify/datastore";
+import { CreateAppointment } from "~/pages/api/appointments/[[...params]]";
+import { useError } from "~/hooks/useError";
+import { Check } from "tabler-icons-react";
 
 // https://day.js.org/docs/en/plugin/localized-format
 dayjs.extend(localizedFormat);
@@ -14,11 +33,61 @@ type Props = {
     begin: Date;
     end: Date;
     onCancel: () => void;
-    onConfirm: (begin: Date, end: Date, message: string) => Promise<void>;
 };
 
-const ConfirmAppointment = ({ begin, end, onCancel, onConfirm }: Props) => {
-    const { name, city, fullAddress } = useStoreInfo();
+const ConfirmAppointment = ({ begin, end, onCancel }: Props) => {
+    const { isAuthenticated } = useSession();
+    const [success, setSuccess] = useState(false);
+    const { name, city, fullAddress, id: storeID } = useStoreInfo();
+    const {
+        onSubmit,
+        isSubmitting,
+        profileComponents: {
+            renderAddressSelection,
+            renderFirstNameInput,
+            renderLastNameInput,
+            renderTitleInput,
+            renderPhoneInput,
+            renderEmailInput,
+            renderError,
+        },
+    } = useProfileForm({
+        errorTitle: "Leider konnten wir Ihren Termin nicht bestätigen.",
+        onSubmit: async (userProfile, setError) => {
+            const payload: CreateAppointment = {
+                atStoreID: storeID,
+                beginDate: begin.toISOString(),
+                endDate: end.toISOString(),
+                message: message,
+            };
+
+            if (!isAuthenticated) {
+                payload.anonymousCustomer = {
+                    address: userProfile.address,
+                    firstName: userProfile.firstName,
+                    lastName: userProfile.lastName,
+                    phone: userProfile.phone,
+                    title: userProfile.title,
+                    email: userProfile.email,
+                };
+            }
+
+            const response = await fetch("/api/appointments", {
+                method: "POST",
+                credentials: isAuthenticated ? "include" : "omit",
+                body: JSON.stringify(payload),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (response.ok) {
+                setSuccess(true);
+            } else {
+                setError("Ein unerwarteter Fehler ist aufgetreten");
+            }
+        },
+    });
     const [message, setMessage] = useInputState("");
 
     return (
@@ -28,7 +97,7 @@ const ConfirmAppointment = ({ begin, end, onCancel, onConfirm }: Props) => {
                     Ihr Termin im Überblick
                 </Text>
                 <Paper shadow="xs" px="md" py="sm" mt="sm" mb="sm">
-                    <Text sx={(theme) => ({ userSelect: "all", color: theme.colors.gray[5] })}>
+                    <Text sx={(theme) => ({ userSelect: "all" })} color="gray">
                         {name} {city}
                     </Text>
                     <Text color="gray" sx={{ userSelect: "all" }}>
@@ -47,24 +116,56 @@ const ConfirmAppointment = ({ begin, end, onCancel, onConfirm }: Props) => {
                     Hinweis: Alle Zeiten werden für Berlin - CEST [GMT+02:00] angezeigt.
                 </Text>
 
-                {/* TODO: Once submission works, use proper form submit */}
-                <form method="GET" onSubmit={async () => await onConfirm(begin, end, message)}>
-                    <Textarea
-                        value={message}
-                        onChange={setMessage}
-                        mt="md"
-                        placeholder="Ihre Nachricht..."
-                        label="Möchten Sie uns noch etwas mitteilen?"
-                        autosize
-                    />
-                    <Space h="md" />
-                    <Group spacing="sm" position="apart">
-                        <Button color="danger" onClick={onCancel}>
-                            Zurück
-                        </Button>
-                        <Button color="success">Bestätigen</Button>
-                    </Group>
-                </form>
+                <Box mt="md">
+                    {success ? (
+                        <Alert
+                            // variant="filled"
+                            icon={<Check size={16} />}
+                            title="Termin bestätigt"
+                            color="success"
+                        >
+                            Vielen Dank. Ihr Termin wurde bestätigt.
+                            <br />
+                            Sie erhalten weitere Informationen an Ihre E-Mail Adresse.
+                        </Alert>
+                    ) : (
+                        <form method="POST" onSubmit={onSubmit}>
+                            <LoadingOverlay visible={isSubmitting} />
+                            {!isAuthenticated && (
+                                <>
+                                    <Stack spacing="sm">
+                                        <Group grow>
+                                            {renderAddressSelection()}
+                                            {renderTitleInput()}
+                                        </Group>
+                                        {renderFirstNameInput()}
+                                        {renderLastNameInput()}
+                                        {renderEmailInput()}
+                                        {renderPhoneInput()}
+                                    </Stack>
+                                </>
+                            )}
+                            <Textarea
+                                value={message}
+                                onChange={setMessage}
+                                mt="md"
+                                placeholder="Ihre Nachricht..."
+                                label="Möchten Sie uns noch etwas mitteilen?"
+                                autosize
+                            />
+                            <Space h="md" />
+                            {renderError()}
+                            <Group spacing="sm" position="apart">
+                                <Button color="danger" onClick={onCancel}>
+                                    Zurück
+                                </Button>
+                                <Button type="submit" color="success">
+                                    Bestätigen
+                                </Button>
+                            </Group>
+                        </form>
+                    )}
+                </Box>
             </Stack>
         </Container>
     );

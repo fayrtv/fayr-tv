@@ -15,11 +15,12 @@ type Customer @model @auth(rules: [{allow: public}]) {
 
 type Appointment @model @auth(rules: [{allow: public}]) {
   id: ID!
-  User: Customer @hasOne
   beginDate: AWSDateTime!
   AtStore: Store @hasOne
-  endDate: AWSDateTime
+  endDate: AWSDateTime!
   message: String
+  customerInfo: AWSJSON
+  userID: String
 }
 
 type Store @model @auth(rules: [{allow: public}]) {

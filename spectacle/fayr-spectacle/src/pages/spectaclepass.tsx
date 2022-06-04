@@ -8,7 +8,7 @@ import { NextPageWithLayout } from "~/types/next-types";
 
 import Layout from "~/components/layout/Layout";
 import { GetServerSideProps } from "next";
-import { getUser } from "~/helpers/authentication";
+import { ssrGetUser } from "~/helpers/authentication";
 import { DataStore } from "@aws-amplify/datastore";
 import { withSSRContext } from "aws-amplify";
 import { Moment } from "moment";
@@ -111,7 +111,7 @@ export const getServerSideProps: GetServerSideProps<ServerProps | RedirectProps>
     const SSR = withSSRContext({ req });
     const store = SSR.DataStore as typeof DataStore;
 
-    const user = await getUser(req);
+    const user = await ssrGetUser(req);
     if (!user) {
         redirectServerSide(res, "/auth/signin");
         return { props: {} };

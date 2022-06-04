@@ -179,20 +179,6 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "User": {
-                    "name": "User",
-                    "isArray": false,
-                    "type": {
-                        "model": "Customer"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "HAS_ONE",
-                        "associatedWith": "id",
-                        "targetName": "appointmentUserId"
-                    }
-                },
                 "beginDate": {
                     "name": "beginDate",
                     "isArray": false,
@@ -218,11 +204,25 @@ export const schema = {
                     "name": "endDate",
                     "isArray": false,
                     "type": "AWSDateTime",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "message": {
                     "name": "message",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "customerInfo": {
+                    "name": "customerInfo",
+                    "isArray": false,
+                    "type": "AWSJSON",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "userID": {
+                    "name": "userID",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -243,13 +243,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
-                },
-                "appointmentUserId": {
-                    "name": "appointmentUserId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
                 },
                 "appointmentAtStoreId": {
                     "name": "appointmentAtStoreId",
@@ -389,5 +382,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "95638c46849b7f89fca0f99ec92182ae"
+    "version": "fb9706e275c2abf37543138152f48090"
 };

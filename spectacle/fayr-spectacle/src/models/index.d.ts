@@ -45,14 +45,14 @@ export declare class Customer {
 
 export declare class Appointment {
   readonly id: string;
-  readonly User?: Customer | null;
   readonly beginDate: string;
   readonly AtStore?: Store | null;
-  readonly endDate?: string | null;
+  readonly endDate: string;
   readonly message?: string | null;
+  readonly customerInfo?: string | null;
+  readonly userID?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly appointmentUserId?: string | null;
   readonly appointmentAtStoreId?: string | null;
   constructor(init: ModelInit<Appointment, AppointmentMetaData>);
   static copyOf(source: Appointment, mutator: (draft: MutableModel<Appointment, AppointmentMetaData>) => MutableModel<Appointment, AppointmentMetaData> | void): Appointment;

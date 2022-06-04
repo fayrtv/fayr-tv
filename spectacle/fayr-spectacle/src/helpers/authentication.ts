@@ -2,7 +2,7 @@ import { NextApiRequestCookies } from "next/dist/server/api-utils";
 import { withSSRContext } from "aws-amplify";
 import { convertAwsModelToUser } from "./awsModelParser";
 
-export const getUser = async (req: { cookies: NextApiRequestCookies }) => {
+export const ssrGetUser = async (req: { cookies: NextApiRequestCookies }) => {
     const SSR = withSSRContext({ req });
     const userInfo = await SSR.Auth.currentUserInfo();
 
