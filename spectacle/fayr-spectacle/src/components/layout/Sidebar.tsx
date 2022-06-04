@@ -1,10 +1,11 @@
-import { Anchor, Aside, Center, List, Overlay, Text } from "@mantine/core";
-import React, { PropsWithChildren } from "react";
+import { Anchor, Aside, Box, Center, List, Overlay, Text } from "@mantine/core";
+import React, { MutableRefObject, PropsWithChildren, PropsWithRef } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import ThemeToggleButton from "~/components/layout/ThemeToggleButton";
 import { useSession } from "~/hooks/useSession";
 import useIsMobile from "~/hooks/useIsMobile";
+import { useClickOutside } from "@mantine/hooks";
 
 const MenuItem = ({ href, children }: PropsWithChildren<{ href: string }>) => {
     const isActive = useRouter().asPath === href;
@@ -29,12 +30,15 @@ const MenuItem = ({ href, children }: PropsWithChildren<{ href: string }>) => {
 
 type Props = {
     open: boolean;
+    onClickOutside: () => void;
 };
 
-export const Sidebar = ({ open }: Props) => {
+export const Sidebar = ({ open, onClickOutside }: Props) => {
     const { isAuthenticated, isAdmin } = useSession();
     const isMobile = useIsMobile();
     const debug = process.env.NODE_ENV === "development";
+
+    const ref = useClickOutside<HTMLDivElement>(onClickOutside);
 
     return (
         <Aside
@@ -44,6 +48,7 @@ export const Sidebar = ({ open }: Props) => {
             sx={{ backgroundColor: "transparent" }}
             hiddenBreakpoint={50000}
             fixed
+            ref={ref}
         >
             <Overlay blur={11} zIndex={-1} color="transparent" />
             <Aside.Section grow>

@@ -11,7 +11,11 @@ import useIsMobile from "~/hooks/useIsMobile";
 const NumberBox = ({ n, title, children }: PropsWithChildren<{ n: number; title: string }>) => {
     return (
         <Group noWrap align="flex-start">
-            <Text sx={{ fontSize: 90 }} weight="bold" mt={-9}>
+            <Text
+                sx={(theme) => ({ fontSize: 90, minWidth: 58, userSelect: "none" })}
+                weight="bold"
+                mt={-9}
+            >
                 {n}
             </Text>
             <Paper>

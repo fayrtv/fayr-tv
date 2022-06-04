@@ -1,14 +1,9 @@
-import { AppShell } from "@mantine/core";
-import React, { ComponentProps, PropsWithChildren, ReactChild } from "react";
+import { AppShell, Box } from "@mantine/core";
+import React, { ComponentProps, ReactChild } from "react";
 
 import Header from "~/components/layout/Header";
-import { Anchor, Aside, Navbar } from "@mantine/core";
-import { useRouter } from "next/router";
-import { NextLink } from "@mantine/next";
-import Link from "next/link";
 import { Sidebar } from "~/components/layout/Sidebar";
-
-
+import { useClickOutside } from "@mantine/hooks";
 
 type Props = {
     children: ReactChild;
@@ -17,6 +12,7 @@ type Props = {
 
 const Layout = ({ children, subHeader = { enabled: true } }: Props) => {
     const [burgerOpen, setBurgerOpen] = React.useState(false);
+
     return (
         <AppShell
             header={
@@ -31,9 +27,7 @@ const Layout = ({ children, subHeader = { enabled: true } }: Props) => {
                 main: { padding: 0 },
                 body: { flexGrow: 1 },
             }}
-            aside={
-                <Sidebar open={burgerOpen} />
-            }
+            aside={<Sidebar open={burgerOpen} onClickOutside={() => setBurgerOpen(false)} />}
         >
             {children}
         </AppShell>
