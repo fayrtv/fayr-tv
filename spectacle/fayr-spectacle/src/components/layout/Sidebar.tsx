@@ -67,10 +67,6 @@ export const Sidebar = ({ open, onClickOutside }: Props) => {
                             <List.Item>
                                 <MenuItem href={"/spectaclepass"}>Digitaler Brillenpass</MenuItem>
                             </List.Item>
-
-                            <List.Item>
-                                <MenuItem href={"/appointment"}>Termin vereinbaren</MenuItem>
-                            </List.Item>
                         </>
                     ) : (
                         <>
@@ -84,6 +80,9 @@ export const Sidebar = ({ open, onClickOutside }: Props) => {
                     )}
                     <List.Item>
                         <MenuItem href={"/about"}>Mehr erfahren</MenuItem>
+                    </List.Item>
+                    <List.Item>
+                        <MenuItem href={"/appointment"}>Termin vereinbaren</MenuItem>
                     </List.Item>
                     <List.Item>
                         <MenuItem href={"/fittingroom"}>Online Anprobe</MenuItem>
@@ -110,9 +109,6 @@ export const Sidebar = ({ open, onClickOutside }: Props) => {
                                 <MenuItem href={"/customermanagement/create-refraction-protocol"}>
                                     Kundenverwaltung
                                 </MenuItem>
-                            </List.Item>
-                            <List.Item>
-                                <MenuItem href={"/appointment"}>Termin vereinbaren</MenuItem>
                             </List.Item>
                         </>
                     )}
