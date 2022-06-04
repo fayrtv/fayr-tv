@@ -24,10 +24,25 @@ export const Sidebar = ({ open, onClickOutside }: Props) => {
             p="lg"
             hidden={!open}
             width={{ sm: 280 }}
+            // sx={(theme) => ({
+            //     backgroundColor:
+            //         theme.colorScheme === "light" ? theme.colors.gray[0] : theme.colors.dark[0],
+            // })}
             sx={(theme) => ({
-                backgroundColor:
-                    theme.colorScheme === "light" ? theme.colors.gray[0] : theme.colors.dark[0],
-                opacity: 0.2,
+                zIndex: 1,
+                background: "transparent",
+                "&:before": {
+                    content: '""',
+                    backgroundColor:
+                        theme.colorScheme === "light" ? theme.colors.gray[1] : theme.colors.dark[8],
+                    position: "absolute",
+                    zIndex: -1,
+                    top: 0,
+                    left: 0,
+                    bottom: 0,
+                    right: 0,
+                    opacity: 0.7,
+                },
             })}
             hiddenBreakpoint={50000}
             fixed
