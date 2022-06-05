@@ -136,16 +136,16 @@ const spectacleTheme: MantineThemeOverride = {
         xs: 4,
         sm: 10,
         md: 20,
-        lg: 45,
+        lg: 40,
         xl: 75,
     },
 
     breakpoints: {
-        xs: 576,
-        sm: 768,
-        md: 992,
-        lg: 1200,
-        xl: 1400,
+        xs: 320,
+        sm: 481,
+        md: 769,
+        lg: 1025,
+        xl: 1201,
     },
 
     other: {},

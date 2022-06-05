@@ -36,7 +36,7 @@ const EditProfile = ({ user }: Props) => {
                 {profileComponents.renderLoadingOverlay()}
                 {/* TODO: No grid with columns on mobile */}
                 <Grid gutter="md">
-                    <Grid.Col span={6}>
+                    <Grid.Col sm={6}>
                         <Stack spacing="sm">
                             <Group grow>
                                 {profileComponents.renderAddressSelection()}
@@ -47,7 +47,7 @@ const EditProfile = ({ user }: Props) => {
                         </Stack>
                     </Grid.Col>
 
-                    <Grid.Col span={6}>
+                    <Grid.Col sm={6}>
                         <Stack spacing="sm">
                             {profileComponents.renderEmailInput()}
                             {profileComponents.renderCityInput()}

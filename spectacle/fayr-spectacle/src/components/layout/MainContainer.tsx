@@ -1,23 +1,31 @@
 import { ComponentProps, PropsWithChildren } from "react";
 import useIsMobile from "~/hooks/useIsMobile";
-import { Box, Container } from "@mantine/core";
+import { Box, Container, createStyles } from "@mantine/core";
 import { Crumbs } from "~/components/Crumbs";
 
 type Props = PropsWithChildren<{
     crumbs?: ComponentProps<typeof Crumbs>["items"];
 }>;
 
+const useStyles = createStyles((theme) => ({
+    root: {
+        padding: theme.spacing.sm,
+        [`@media (min-width: ${theme.breakpoints.sm}px)`]: {
+            padding: theme.spacing.md,
+        },
+        [`@media (min-width: ${theme.breakpoints.md}px)`]: {
+            padding: theme.spacing.lg,
+        },
+        maxWidth: "100%",
+        width: "100%",
+    },
+}));
+
 export default function MainContainer({ children, crumbs }: Props) {
-    const isMobile = useIsMobile();
+    const { classes } = useStyles();
 
     return (
-        <Box
-            sx={{
-                padding: isMobile ? "10px" : "50px",
-                maxWidth: "100%",
-                width: "100%",
-            }}
-        >
+        <Box className={classes.root} sx={{}}>
             {crumbs && <Crumbs items={crumbs} />}
             {children}
         </Box>

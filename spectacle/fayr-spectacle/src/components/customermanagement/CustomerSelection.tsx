@@ -18,20 +18,14 @@ const CustomerRow = ({
 }) => {
     return (
         <>
-            <Grid.Col span={1}>
-                <Text>{customer.lastName}</Text>
-            </Grid.Col>
-            <Grid.Col span={1}>
-                <Text>{customer.firstName}</Text>
-            </Grid.Col>
+            <Grid.Col span={1}>{customer.lastName}</Grid.Col>
+            <Grid.Col span={1}>{customer.firstName}</Grid.Col>
             <Grid.Col span={1}>
                 <CustomerStatusBadge customer={customer} />
             </Grid.Col>
-            <Grid.Col span={1}>
-                <Text>{customer.email}</Text>
-            </Grid.Col>
-            <Grid.Col span={1}>
-                <Button onClick={pickCustomer} size="sm">
+            <Grid.Col span={1}>{customer.email}</Grid.Col>
+            <Grid.Col span={1} sx={{ textAlign: "right" }}>
+                <Button onClick={pickCustomer} size="sm" compact>
                     Auswählen
                 </Button>
             </Grid.Col>
@@ -74,7 +68,7 @@ export const CustomerSelection = ({ customers = [], setCustomerSelection }: Prop
                     </Grid.Col>
                 </Grid>
                 <Divider my="sm" />
-                <Grid columns={5}>
+                <Grid columns={5} align="center">
                     {filteredCustomers.map((x) => (
                         <CustomerRow
                             customer={x}

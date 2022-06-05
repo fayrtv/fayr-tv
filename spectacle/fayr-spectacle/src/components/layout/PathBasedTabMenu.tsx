@@ -1,8 +1,9 @@
 import {
     Burger,
     Center,
-    Grid,
+    createStyles,
     Group,
+    MediaQuery,
     Overlay,
     Paper,
     Stack,
@@ -12,7 +13,6 @@ import {
 } from "@mantine/core";
 import React, { useEffect, useMemo } from "react";
 import { NextRouter, useRouter } from "next/router";
-import { useMediaQuery } from "@mantine/hooks";
 import { X } from "tabler-icons-react";
 
 export type Tab = {
@@ -35,6 +35,24 @@ type TabStackProps = {
     tabs: Tab[];
     onRoutePushed?(): void;
 };
+
+const useStyles = createStyles((theme) => ({
+    tabContent: {
+        padding: theme.spacing.sm,
+        [`@media (min-width: ${theme.breakpoints.sm}px)`]: {
+            padding: theme.spacing.md,
+        },
+        [`@media (min-width: ${theme.breakpoints.md}px)`]: {
+            padding: theme.spacing.lg,
+        },
+    },
+    headline: {
+        gap: theme.spacing.sm,
+        [`@media (min-width: ${theme.breakpoints.sm}px)`]: {
+            gap: theme.spacing.md,
+        },
+    },
+}));
 
 const TabStack = ({ activeTabIndex, router, onRoutePushed, tabs }: TabStackProps) => {
     return (
@@ -69,7 +87,7 @@ export const PathBasedTabMenu = ({
 }: Props) => {
     const urlFragment = useUrlFragment(pathFragmentName);
     const router = useRouter();
-    const isMobile = useMediaQuery(`(max-width: 970px)`, true);
+    const { classes } = useStyles();
 
     const activeTabIndex = useMemo(() => {
         if (!urlFragment) {
@@ -95,7 +113,7 @@ export const PathBasedTabMenu = ({
         renderOnRootPath?.() ?? null
     ) : (
         <>
-            {isMobile && isMobileNavigationOpen && (
+            {isMobileNavigationOpen && (
                 <Overlay opacity={0.85}>
                     <Center style={{ height: "100%", width: "100%" }}>
                         <Stack>
@@ -118,25 +136,24 @@ export const PathBasedTabMenu = ({
                 </Overlay>
             )}
             <Group noWrap sx={{ alignItems: "stretch" }}>
-                {!isMobile && (
+                <MediaQuery styles={{ display: "none" }} smallerThan="md">
                     <Paper>
                         <TabStack activeTabIndex={activeTabIndex} router={router} tabs={tabs} />
                     </Paper>
-                )}
+                </MediaQuery>
                 <Paper
+                    className={classes.tabContent}
                     withBorder={withBorder}
                     shadow={withBorder ? "md" : "none"}
-                    p={isMobile ? "sm" : "lg"}
-                    sx={{ minWidth: 400 }}
                 >
-                    <Group direction="row" mb={isMobile ? "sm" : "md"}>
-                        {isMobile && (
+                    <Group direction="row" mb="md" className={classes.headline}>
+                        <MediaQuery styles={{ display: "none" }} largerThan="md">
                             <Burger
                                 opened={isMobileNavigationOpen}
                                 onClick={() => setIsMobileNavigationOpen((curr) => !curr)}
                                 size="sm"
                             ></Burger>
-                        )}
+                        </MediaQuery>
                         {renderTitles && activeTab.title && (
                             <Text size="xl" color="primary">
                                 {activeTab.title}
