@@ -1,5 +1,5 @@
-import { Anchor, Aside, Box, Center, List, Overlay, Text } from "@mantine/core";
-import React, { MutableRefObject, PropsWithChildren, PropsWithRef } from "react";
+import { Anchor, Aside, Center, List, Overlay, Text } from "@mantine/core";
+import React, { PropsWithChildren } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import ThemeToggleButton from "~/components/layout/ThemeToggleButton";
@@ -9,15 +9,20 @@ import { useClickOutside } from "@mantine/hooks";
 
 type Props = {
     open: boolean;
+    burgerRef: HTMLElement | null;
     onClickOutside: () => void;
 };
 
-export const Sidebar = ({ open, onClickOutside }: Props) => {
+export const Sidebar = ({ open, burgerRef, onClickOutside }: Props) => {
     const { isAuthenticated, isAdmin } = useSession();
     const isMobile = useIsMobile();
     const debug = process.env.NODE_ENV === "development";
 
-    const sidebarRef = useClickOutside<HTMLDivElement>(onClickOutside);
+    const sidebarRef = useClickOutside<HTMLDivElement>(
+        onClickOutside,
+        null,
+        !!burgerRef ? [burgerRef] : [],
+    );
 
     return (
         <Aside

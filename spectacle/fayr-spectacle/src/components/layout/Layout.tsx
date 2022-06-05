@@ -3,7 +3,6 @@ import React, { ComponentProps, ReactChild } from "react";
 
 import Header from "~/components/layout/Header";
 import { Sidebar } from "~/components/layout/Sidebar";
-import { useClickOutside } from "@mantine/hooks";
 
 type Props = {
     children: ReactChild;
@@ -11,6 +10,7 @@ type Props = {
 };
 
 const Layout = ({ children, subHeader = { enabled: true } }: Props) => {
+    const [burgerRef, setBurgerRef] = React.useState<HTMLElement | null>(null);
     const [burgerOpen, setBurgerOpen] = React.useState(false);
 
     return (
@@ -19,6 +19,7 @@ const Layout = ({ children, subHeader = { enabled: true } }: Props) => {
                 <Header
                     burgerOpen={burgerOpen}
                     setBurgerOpen={setBurgerOpen}
+                    setBurgerRef={setBurgerRef}
                     subHeader={subHeader}
                 />
             }
@@ -27,7 +28,13 @@ const Layout = ({ children, subHeader = { enabled: true } }: Props) => {
                 main: { padding: 0 },
                 body: { flexGrow: 1 },
             }}
-            aside={<Sidebar open={burgerOpen} onClickOutside={() => setBurgerOpen(false)} />}
+            aside={
+                <Sidebar
+                    open={burgerOpen}
+                    onClickOutside={() => setBurgerOpen(false)}
+                    burgerRef={burgerRef}
+                />
+            }
         >
             {children}
         </AppShell>
