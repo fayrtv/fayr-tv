@@ -184,7 +184,7 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
     };
 
     return (
-        <Container fluid>
+        <Container>
             <Modal
                 opened={showSaveFeedback}
                 onClose={() => {

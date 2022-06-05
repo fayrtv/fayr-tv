@@ -69,7 +69,7 @@ export const PathBasedTabMenu = ({
 }: Props) => {
     const urlFragment = useUrlFragment(pathFragmentName);
     const router = useRouter();
-    const isMobile = useMediaQuery(`(max-width: 900px)`, true);
+    const isMobile = useMediaQuery(`(max-width: 970px)`, true);
 
     const activeTabIndex = useMemo(() => {
         if (!urlFragment) {
@@ -117,38 +117,34 @@ export const PathBasedTabMenu = ({
                     </Center>
                 </Overlay>
             )}
-            <Grid columns={5}>
+            <Group noWrap sx={{ alignItems: "stretch" }}>
                 {!isMobile && (
-                    <Grid.Col span={1}>
-                        <Paper>
-                            <TabStack activeTabIndex={activeTabIndex} router={router} tabs={tabs} />
-                        </Paper>
-                    </Grid.Col>
-                )}
-                <Grid.Col span={isMobile ? 5 : 4}>
-                    <Paper
-                        withBorder={withBorder}
-                        shadow={withBorder ? "md" : "none"}
-                        p={isMobile ? "sm" : "lg"}
-                    >
-                        <Group direction="row" mb={isMobile ? "sm" : "md"}>
-                            {isMobile && (
-                                <Burger
-                                    opened={isMobileNavigationOpen}
-                                    onClick={() => setIsMobileNavigationOpen((curr) => !curr)}
-                                    size="sm"
-                                ></Burger>
-                            )}
-                            {renderTitles && activeTab.title && (
-                                <Text size="xl" color="primary">
-                                    {activeTab.title}
-                                </Text>
-                            )}
-                        </Group>
-                        {activeTab.render()}
+                    <Paper>
+                        <TabStack activeTabIndex={activeTabIndex} router={router} tabs={tabs} />
                     </Paper>
-                </Grid.Col>
-            </Grid>
+                )}
+                <Paper
+                    withBorder={withBorder}
+                    shadow={withBorder ? "md" : "none"}
+                    p={isMobile ? "sm" : "lg"}
+                >
+                    <Group direction="row" mb={isMobile ? "sm" : "md"}>
+                        {isMobile && (
+                            <Burger
+                                opened={isMobileNavigationOpen}
+                                onClick={() => setIsMobileNavigationOpen((curr) => !curr)}
+                                size="sm"
+                            ></Burger>
+                        )}
+                        {renderTitles && activeTab.title && (
+                            <Text size="xl" color="primary">
+                                {activeTab.title}
+                            </Text>
+                        )}
+                    </Group>
+                    {activeTab.render()}
+                </Paper>
+            </Group>
         </>
     );
 };
