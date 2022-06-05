@@ -9,20 +9,15 @@ import { useClickOutside } from "@mantine/hooks";
 
 type Props = {
     open: boolean;
-    burgerRef: HTMLElement | null;
     onClickOutside: () => void;
 };
 
-export const Sidebar = ({ open, burgerRef, onClickOutside }: Props) => {
+export const Sidebar = ({ open, onClickOutside }: Props) => {
     const { isAuthenticated, isAdmin } = useSession();
     const isMobile = useIsMobile();
     const debug = process.env.NODE_ENV === "development";
 
-    const sidebarRef = useClickOutside<HTMLDivElement>(
-        onClickOutside,
-        null,
-        !!burgerRef ? [burgerRef] : [],
-    );
+    const sidebarRef = useClickOutside<HTMLDivElement>(onClickOutside, ["click"]);
 
     return (
         <Aside

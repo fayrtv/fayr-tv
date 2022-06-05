@@ -18,7 +18,6 @@ import SubHeader from "~/components/layout/SubHeader";
 type Props = {
     burgerOpen: boolean;
     setBurgerOpen: (open: boolean) => void;
-    setBurgerRef: (item: HTMLElement | null) => void;
     subHeader:
         | {
               enabled: false;
@@ -30,7 +29,7 @@ type Props = {
           };
 };
 
-const Header = ({ burgerOpen, setBurgerOpen, setBurgerRef, subHeader }: Props) => {
+const Header = ({ burgerOpen, setBurgerOpen, subHeader }: Props) => {
     const storeInfo = useStoreInfo();
     const { user } = useSession();
 
@@ -90,8 +89,11 @@ const Header = ({ burgerOpen, setBurgerOpen, setBurgerRef, subHeader }: Props) =
                                 <Burger
                                     color="white"
                                     opened={burgerOpen}
-                                    onClick={() => setBurgerOpen(!burgerOpen)}
-                                    ref={setBurgerRef}
+                                    onClick={(event) => {
+                                        event.preventDefault();
+                                        event.stopPropagation();
+                                        setBurgerOpen(!burgerOpen);
+                                    }}
                                 />
                             </Group>
                         </Group>
