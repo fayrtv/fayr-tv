@@ -127,6 +127,7 @@ export const PathBasedTabMenu = ({
                     withBorder={withBorder}
                     shadow={withBorder ? "md" : "none"}
                     p={isMobile ? "sm" : "lg"}
+                    sx={{ minWidth: 400 }}
                 >
                     <Group direction="row" mb={isMobile ? "sm" : "md"}>
                         {isMobile && (
