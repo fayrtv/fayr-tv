@@ -119,6 +119,20 @@ const RefractionProtocolRow = ({ form, side }: RowProps) => {
                     {...form.getInputProps(`${sideIdentifier}Pd` as keyof PlainProtocol)}
                 />
             </DataGridCell>
+            <DataGridCell area={`${Side[side]}Prisma`}>
+                <TextInput
+                    placeholder={`Prisma ${sideCaption}`}
+                    required
+                    {...form.getInputProps(`${sideIdentifier}Prisma` as keyof PlainProtocol)}
+                />
+            </DataGridCell>
+            <DataGridCell area={`${Side[side]}Basis`}>
+                <TextInput
+                    placeholder={`Basis ${sideCaption}`}
+                    required
+                    {...form.getInputProps(`${sideIdentifier}Basis` as keyof PlainProtocol)}
+                />
+            </DataGridCell>
         </>
     );
 };
@@ -182,8 +196,8 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
             </Modal>
             <Paper>
                 <form onSubmit={protocolForm.onSubmit(onSubmit)}>
-                    <Grid columns={6} gutter="lg">
-                        <Grid.Col span={6}>
+                    <Grid columns={8} gutter="lg">
+                        <Grid.Col span={8}>
                             <div
                                 style={
                                     isMobile
@@ -195,20 +209,22 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
 										'CylinderHeader RightCylinder LeftCylinder'
 										'AxisHeader RightAxis LeftAxis' 
 										'AdditionHeader RightAddition LeftAddition'
-										'Pdheader RightPd LeftPd'
+										'PdHeader RightPd LeftPd'
+										'PrismaHeader RightPrisma LeftPrisma'
+										'BasisHeader RightBasis LeftBasis'
 									`,
-                                              gridTemplateRows: "repeat(6, 16.66%)",
+                                              gridTemplateRows: "repeat(8, calc(100% / 8))",
                                               gridTemplateColumns: "40% 30% 30%",
                                               gap: "5px",
                                           }
                                         : {
                                               display: "grid",
                                               gridTemplateAreas: `
-										'. SphereHeader CylinderHeader AxisHeader AdditionHeader Pdheader' 
-										'RightSymbol RightSphere RightCylinder RightAxis RightAddition RightPd'
-										'LeftSymbol LeftSphere LeftCylinder LeftAxis LeftAddition LeftPd'
+										'. SphereHeader CylinderHeader AxisHeader AdditionHeader PdHeader PrismaHeader BasisHeader'
+										'RightSymbol RightSphere RightCylinder RightAxis RightAddition RightPd RightPrisma RightBasis'
+										'LeftSymbol LeftSphere LeftCylinder LeftAxis LeftAddition LeftPd LeftPrisma LeftBasis'
 									`,
-                                              gridTemplateColumns: "repeat(6, 16.66%)",
+                                              gridTemplateColumns: "repeat(8, calc(100% / 8))",
                                               gridTemplateRows: "40% 30% 30%",
                                               gap: "5px",
                                           }
@@ -238,10 +254,22 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
                                         <Text size="xs">ADD</Text>
                                     </Stack>
                                 </DataGridCell>
-                                <DataGridCell area="Pdheader">
+                                <DataGridCell area="PdHeader">
                                     <Stack align="center" spacing="xs">
                                         <Text>PD</Text>
                                         <Text size="xs">PD</Text>
+                                    </Stack>
+                                </DataGridCell>
+                                <DataGridCell area="PrismaHeader">
+                                    <Stack align="center" spacing="xs">
+                                        <Text>Prisma</Text>
+                                        <Text size="xs">PR</Text>
+                                    </Stack>
+                                </DataGridCell>
+                                <DataGridCell area="BasisHeader">
+                                    <Stack align="center" spacing="xs">
+                                        <Text>Basis</Text>
+                                        <Text size="xs">BA</Text>
                                     </Stack>
                                 </DataGridCell>
                                 <RefractionProtocolRow form={protocolForm} side={Side.Left} />
@@ -259,18 +287,21 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
                             </Button>
                         </Grid.Col>
                         <Grid.Col
-                            offset={2}
+                            offset={4}
                             span={1}
                             sx={(_) => ({ paddingLeft: "5px", paddingRight: "5px" })}
                         >
                             <Button
                                 size="xs"
-                                sx={{
-                                    width: "100%",
-                                }}
                                 variant="default"
                                 leftIcon={!isMobile ? <Printer color={inverseThemedColor} /> : null}
                                 onClick={() => window.print()}
+                                fullWidth
+                                styles={(_) => ({
+                                    root: {
+                                        padding: 0,
+                                    },
+                                })}
                             >
                                 {!isMobile ? (
                                     <Text color={inverseThemedColor} size="xs">
@@ -287,11 +318,14 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
                         >
                             <Button
                                 size="xs"
-                                sx={{
-                                    width: "100%",
-                                }}
                                 variant="default"
+                                fullWidth
                                 leftIcon={!isMobile ? <Edit color={inverseThemedColor} /> : null}
+                                styles={(_) => ({
+                                    root: {
+                                        padding: 0,
+                                    },
+                                })}
                             >
                                 {!isMobile ? (
                                     <Text color={inverseThemedColor} size="xs">
@@ -309,11 +343,14 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
                             <Button
                                 leftIcon={!isMobile ? <DeviceFloppy /> : null}
                                 size="xs"
-                                sx={{
-                                    width: "100%",
-                                }}
+                                fullWidth
                                 type="submit"
                                 loading={saving}
+                                styles={(_) => ({
+                                    root: {
+                                        padding: 0,
+                                    },
+                                })}
                             >
                                 {!isMobile ? "Speichern" : <DeviceFloppy />}
                             </Button>
