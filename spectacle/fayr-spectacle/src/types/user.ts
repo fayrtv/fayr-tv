@@ -17,7 +17,7 @@ export type Customer = { customerID: string } & Pick<
     "firstName" | "lastName" | "emailVerified" | "email"
 >;
 
-export const formatFormalAddress = (user: User) => {
+export const formatFormalAddress = (user: Pick<User, "address" | "title" | "lastName">) => {
     const parts = [user.address === "m" ? "Herr" : "Frau"];
 
     if (user.title) {

@@ -126,7 +126,11 @@ export const PathBasedTabMenu = ({
                     </Grid.Col>
                 )}
                 <Grid.Col span={isMobile ? 5 : 4}>
-                    <Paper withBorder={withBorder} p={isMobile ? "sm" : "lg"}>
+                    <Paper
+                        withBorder={withBorder}
+                        shadow={withBorder ? "md" : "none"}
+                        p={isMobile ? "sm" : "lg"}
+                    >
                         <Group direction="row" mb={isMobile ? "sm" : "md"}>
                             {isMobile && (
                                 <Burger

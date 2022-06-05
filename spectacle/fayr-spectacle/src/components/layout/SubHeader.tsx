@@ -1,11 +1,8 @@
-import { ActionIcon, Box, Button, Center, createStyles, MediaQuery, Text } from "@mantine/core";
+import { Box, Button, Center, Group, MediaQuery, Paper, Tabs } from "@mantine/core";
 import { CalendarPlus, Tool, User as UserIcon } from "tabler-icons-react";
-import { Anchor, Avatar, Grid, Group, Paper, Tabs } from "@mantine/core";
-import { formatFormalAddress } from "~/types/user";
 import { useSession } from "~/hooks/useSession";
 import Link from "next/link";
-import useIsMobile from "~/hooks/useIsMobile";
-import { useMediaQuery } from "@mantine/hooks";
+import { ShowProfile } from "~/components/layout/ShowProfile";
 
 export enum SwitchAvailability {
     Unavailable,
@@ -102,22 +99,7 @@ const SubHeader = ({
                     )}
                 </Box>
                 <Box>
-                    <Link href="/profile" passHref>
-                        <Anchor>
-                            <Group position="right" direction="row" noWrap>
-                                {!!user && (
-                                    <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
-                                        <Text weight="bold" size="sm">
-                                            Willkommen, {formatFormalAddress(user)}
-                                        </Text>
-                                    </MediaQuery>
-                                )}
-                                <ActionIcon variant="outline" color="primary">
-                                    <Avatar color="primary" size="sm" />
-                                </ActionIcon>
-                            </Group>
-                        </Anchor>
-                    </Link>
+                    <ShowProfile user={user} />
                 </Box>
             </Group>
         </Paper>

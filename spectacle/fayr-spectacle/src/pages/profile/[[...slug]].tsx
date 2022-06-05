@@ -8,9 +8,11 @@ import { RedirectProps, redirectServerSide } from "~/helpers/next-server";
 import { ssrGetUser } from "~/helpers/authentication";
 import { User } from "~/types/user";
 import ChangePassword from "~/components/profile/ChangePassword";
-import { Container } from "@mantine/core";
+import { AspectRatio, Container, Paper, Stack } from "@mantine/core";
 import useIsMobile from "~/hooks/useIsMobile";
 import NotificationSettings from "~/components/profile/NotificationSettings";
+import { QRCode } from "~/components/QRCode";
+import MainContainer from "~/components/layout/MainContainer";
 
 type ServerProps = { user: User };
 
@@ -18,36 +20,34 @@ const ProfileRouter: NextPageWithLayout<ServerProps> = ({ user }: ServerProps) =
     const isMobile = useIsMobile();
 
     return (
-        <Container
-            size="lg"
-            sx={{
-                padding: isMobile ? "10px" : "50px",
-                maxWidth: "100%",
-                width: "100%",
-            }}
-        >
-            <PathBasedTabMenu
-                tabs={[
-                    {
-                        title: "Profil bearbeiten",
-                        slug: "edit",
-                        render: () => <EditProfile user={user} />,
-                    },
-                    {
-                        title: "Passwort ändern",
-                        slug: "password",
-                        render: () => <ChangePassword />,
-                    },
-                    {
-                        title: "Benachrichtigungen",
-                        slug: "notifications",
-                        render: () => <NotificationSettings user={user} />,
-                    },
-                ]}
-                pathFragmentName="slug"
-                renderTitles={true}
-            />
-        </Container>
+        <MainContainer>
+            <Stack>
+                <PathBasedTabMenu
+                    tabs={[
+                        {
+                            title: "Profil bearbeiten",
+                            slug: "edit",
+                            render: () => <EditProfile user={user} />,
+                        },
+                        {
+                            title: "Passwort ändern",
+                            slug: "password",
+                            render: () => <ChangePassword />,
+                        },
+                        {
+                            title: "Benachrichtigungen",
+                            slug: "notifications",
+                            render: () => <NotificationSettings user={user} />,
+                        },
+                    ]}
+                    pathFragmentName="slug"
+                    renderTitles={true}
+                />
+                <Paper shadow="md" withBorder>
+                    <QRCode content={user.email} width={120} height={120} />
+                </Paper>
+            </Stack>
+        </MainContainer>
     );
 };
 

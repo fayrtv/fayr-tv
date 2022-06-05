@@ -1,11 +1,13 @@
 import { NextPageWithLayout } from "~/types/next-types";
-import { Button, Stack, Text, TextInput } from "@mantine/core";
+import { Box, Button, Divider, List, Paper, Stack, Text, TextInput } from "@mantine/core";
 import Layout from "~/components/layout/Layout";
 import { useForm } from "@mantine/form";
 import MainContainer from "~/components/layout/MainContainer";
 import { LinkExistingCustomerRequest } from "~/pages/api/customers/link-existing";
 import { useError } from "~/hooks/useError";
 import { useRouter } from "next/router";
+import { Qrcode } from "tabler-icons-react";
+import { ShowProfile } from "~/components/layout/ShowProfile";
 
 const LinkExistingCustomerPage: NextPageWithLayout = () => {
     const { push } = useRouter();
@@ -25,44 +27,69 @@ const LinkExistingCustomerPage: NextPageWithLayout = () => {
                 { title: "Konto verknüpfen" },
             ]}
         >
-            <Stack>
+            <Stack align="flex-start" sx={{ width: "fit-content" }}>
                 <Text size="xl" color="primary" weight="bold">
                     Bestehenden Nutzer als Kunden hinzufügen
                 </Text>
-                {renderError()}
-                <form
-                    onSubmit={form.onSubmit(async ({ userEmail }) => {
-                        setError(null);
-                        const payload: LinkExistingCustomerRequest = { userEmail };
-                        const response = await fetch("/api/customers/link-existing", {
-                            body: JSON.stringify(payload),
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                        });
-                        if (!response.ok) {
-                            setError(
-                                response.status === 409
-                                    ? "Dieser Nutzer ist bereits ein Kunde Ihrer Filiale."
-                                    : response.status === 404
-                                    ? "Es existiert kein Nutzer mit dieser E-Mail Adresse."
-                                    : response.statusText,
-                            );
-                            return;
-                        }
-                        await push("/customermanagement");
-                    })}
-                >
+                <Paper shadow="xs" p="md">
+                    {renderError()}
+                    <form
+                        onSubmit={form.onSubmit(async ({ userEmail }) => {
+                            setError(null);
+                            const payload: LinkExistingCustomerRequest = { userEmail };
+                            const response = await fetch("/api/customers/link-existing", {
+                                body: JSON.stringify(payload),
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                            });
+                            if (!response.ok) {
+                                setError(
+                                    response.status === 409
+                                        ? "Dieser Nutzer ist bereits ein Kunde Ihrer Filiale."
+                                        : response.status === 404
+                                        ? "Es existiert kein Nutzer mit dieser E-Mail Adresse."
+                                        : response.statusText,
+                                );
+                                return;
+                            }
+                            await push("/customermanagement");
+                        })}
+                    >
+                        <Stack spacing="sm" align="flex-start">
+                            <TextInput
+                                {...form.getInputProps("userEmail")}
+                                label="E-Mail Adresse des Nutzers"
+                                sx={{ minWidth: 300 }}
+                            />
+
+                            <Button type="submit">Verlinken</Button>
+                        </Stack>
+                    </form>
+                </Paper>
+                <Divider
+                    my="sm"
+                    label="oder"
+                    variant="dashed"
+                    labelPosition="center"
+                    sx={{ alignSelf: "stretch" }}
+                />
+                <Paper shadow="xs" p="md">
                     <Stack spacing="sm" align="flex-start">
-                        <TextInput
-                            {...form.getInputProps("userEmail")}
-                            label="E-Mail Adresse des Nutzers"
-                            sx={{ minWidth: 300 }}
+                        <Button leftIcon={<Qrcode />} mb="sm">
+                            Via QR Code hinzufügen
+                        </Button>
+                        Bitten Sie den Kunden, sich einzuloggen und anschließend zur Profilansicht
+                        zu navigieren:
+                        <ShowProfile
+                            shouldLink={false}
+                            user={{ title: undefined, lastName: "Mustermann", address: "m" }}
                         />
-                        <Button type="submit">Verlinken</Button>
+                        Dort wird der QR Code angezeigt, welchen Sie im nächsten Schritt abscannen
+                        können.
                     </Stack>
-                </form>
+                </Paper>
             </Stack>
         </MainContainer>
     );
