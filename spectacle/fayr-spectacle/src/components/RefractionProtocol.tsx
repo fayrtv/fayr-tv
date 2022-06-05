@@ -22,6 +22,8 @@ import { RefractionProtocol as RefractionProtocolEntity } from "~/models";
 import { RefractionProtocol as RefractionProtocolModel } from "~/types/refraction-protocol";
 import { RefractionProtocolQRCode } from "~/components/QRCode";
 import useIsMobile from "../hooks/useIsMobile";
+import { SideConfiguration } from "../types/refraction-protocol";
+import { CSSProperties } from "react";
 
 const GridText = (
     props: PropsWithChildren<
@@ -85,15 +87,40 @@ export const RefractionProtocol = ({
         </Group>
     );
 
-    const createRefractionProtocolSide = (side: "L" | "R", isSlimView: boolean) => {
+    const createRefractionProtocolSideMobile = (
+        property: keyof SideConfiguration,
+        heading: string,
+        shortDescription: string,
+        addBackgroundDecoration: boolean = false,
+    ) => {
+        const backgroundSx: Sx = (_) => ({
+            backgroundColor: addBackgroundDecoration ? "rgb(217, 217, 217, 0.25)" : "auto",
+        });
+
+        return (
+            <>
+                <Grid.Col span={1} sx={backgroundSx}>
+                    {createGridHeading(heading, shortDescription)}
+                </Grid.Col>
+                <Grid.Col span={1} sx={backgroundSx}>
+                    <GridText isDarkMode={isDarkMode}>
+                        {refractionProtocol.left[property] ?? "-"}
+                    </GridText>
+                </Grid.Col>
+                <Grid.Col span={1} sx={backgroundSx}>
+                    <GridText isDarkMode={isDarkMode}>
+                        {refractionProtocol.right[property] ?? "-"}
+                    </GridText>
+                </Grid.Col>
+            </>
+        );
+    };
+
+    const createRefractionProtocolSide = (side: "L" | "R") => {
         const sideConfiguration = side === "L" ? refractionProtocol.left : refractionProtocol.right;
 
         const backgroundSx: Sx = (_) => ({
-            backgroundColor: isSlimView
-                ? "auto"
-                : side === "L"
-                ? "rgb(217, 217, 217, 0.25)"
-                : "auto",
+            backgroundColor: side === "L" ? "rgb(217, 217, 217, 0.25)" : "auto",
         });
 
         return (
@@ -136,8 +163,12 @@ export const RefractionProtocol = ({
             color: theme.colors.primary[6],
             borderRadius: "5px",
             padding: "2px",
-        },
+        } as CSSProperties,
     };
+
+    if (isMobile) {
+        actionItemStyleProps.style.backgroundColor = themedColor;
+    }
 
     if (!isSelected) {
         return (
@@ -158,13 +189,17 @@ export const RefractionProtocol = ({
                                 borderRadius: "10px",
                             }}
                         />
-                        <Text color={themedColor} size="xs" transform="uppercase">
+                        <Text
+                            color={themedColor}
+                            size={isMobile ? "xxs" : "xs"}
+                            transform="uppercase"
+                        >
                             Refraktionsprotokoll
                         </Text>
                     </Group>
                     <Group direction="column" align="end" spacing="xs">
                         <Badge
-                            size="md"
+                            size="xs"
                             color="transparent"
                             radius="xs"
                             style={{ backgroundColor: themedColor }}
@@ -193,39 +228,91 @@ export const RefractionProtocol = ({
             })}
         >
             <Group direction="row">
-                <Stack
-                    spacing="xs"
-                    sx={(theme) => ({
-                        flexGrow: 2,
-                        borderRight: `2px solid ${themedColor}`,
-                    })}
-                >
-                    <Text color={themedColor} weight={700} size="xs" transform="uppercase">
-                        Refraktionsprotokoll
-                    </Text>
-                    <Text color={themedColor} size="xs">
-                        {userName}
-                    </Text>
-                    <Center>{renderQrCode()}</Center>
-                </Stack>
+                {!isMobile && (
+                    <Stack
+                        spacing="xs"
+                        sx={(_) => ({
+                            flexGrow: 2,
+                            borderRight: `2px solid ${themedColor}`,
+                        })}
+                    >
+                        <Text color={themedColor} weight={700} size="xs" transform="uppercase">
+                            Refraktionsprotokoll
+                        </Text>
+                        <Text color={themedColor} size="xs">
+                            {userName}
+                        </Text>
+                        <Center>{renderQrCode()}</Center>
+                    </Stack>
+                )}
                 <Stack spacing="xs" onClick={onClick} sx={(_) => ({ flexGrow: 3 })}>
-                    <Grid columns={15} sx={(_) => ({ margin: "auto 5px" })}>
-                        <Grid.Col span={2} offset={1}>
-                            {createGridHeading("Sphäre", "S / SPH")}
-                        </Grid.Col>
-                        <Grid.Col span={2}>{createGridHeading("Zylinder", "ZYL / CYL")}</Grid.Col>
-                        <Grid.Col span={2}>{createGridHeading("Achse", "A / ACH")}</Grid.Col>
-                        <Grid.Col span={2}>{createGridHeading("Addition", "ADD")}</Grid.Col>
-                        <Grid.Col span={2}>{createGridHeading("PD", "PD")}</Grid.Col>
-                        <Grid.Col span={2}>{createGridHeading("Prisma", "PR")}</Grid.Col>
-                        <Grid.Col span={2}>{createGridHeading("Basis", "BA")}</Grid.Col>
+                    {isMobile ? (
+                        <Grid columns={3} sx={(_) => ({ margin: "auto 5px" })}>
+                            <Grid.Col span={1} offset={1}>
+                                <Grid.Col span={1}>
+                                    <ColorSwatch color={themedColor} radius={5}>
+                                        <Text
+                                            color={theme.colors.primary[6]}
+                                            size="md"
+                                            weight="800"
+                                        >
+                                            L
+                                        </Text>
+                                    </ColorSwatch>
+                                </Grid.Col>
+                            </Grid.Col>
+                            <Grid.Col span={1}>
+                                <Grid.Col span={1}>
+                                    <ColorSwatch color={themedColor} radius={5}>
+                                        <Text
+                                            color={theme.colors.primary[6]}
+                                            size="md"
+                                            weight="800"
+                                        >
+                                            R
+                                        </Text>
+                                    </ColorSwatch>
+                                </Grid.Col>
+                            </Grid.Col>
+                            {createRefractionProtocolSideMobile("sphere", "Sphäre", "S / SPH")}
+                            {createRefractionProtocolSideMobile(
+                                "cylinder",
+                                "Zylinder",
+                                "ZYL / CYL",
+                                true,
+                            )}
+                            {createRefractionProtocolSideMobile("axis", "Achse", "A / ACH")}
+                            {createRefractionProtocolSideMobile(
+                                "addition",
+                                "Addition",
+                                "ADD",
+                                true,
+                            )}
+                            {createRefractionProtocolSideMobile("pd", "PD", "PD")}
+                            {createRefractionProtocolSideMobile("prisma", "Prisma", "PR", true)}
+                            {createRefractionProtocolSideMobile("basis", "Basis", "BA")}
+                        </Grid>
+                    ) : (
+                        <Grid columns={15} sx={(_) => ({ margin: "auto 5px" })}>
+                            <Grid.Col span={2} offset={1}>
+                                {createGridHeading("Sphäre", "S / SPH")}
+                            </Grid.Col>
+                            <Grid.Col span={2}>
+                                {createGridHeading("Zylinder", "ZYL / CYL")}
+                            </Grid.Col>
+                            <Grid.Col span={2}>{createGridHeading("Achse", "A / ACH")}</Grid.Col>
+                            <Grid.Col span={2}>{createGridHeading("Addition", "ADD")}</Grid.Col>
+                            <Grid.Col span={2}>{createGridHeading("PD", "PD")}</Grid.Col>
+                            <Grid.Col span={2}>{createGridHeading("Prisma", "PR")}</Grid.Col>
+                            <Grid.Col span={2}>{createGridHeading("Basis", "BA")}</Grid.Col>
 
-                        {createRefractionProtocolSide("L", isMobile)}
-                        {createRefractionProtocolSide("R", isMobile)}
-                    </Grid>
+                            {createRefractionProtocolSide("L")}
+                            {createRefractionProtocolSide("R")}
+                        </Grid>
+                    )}
                     {isMobile ? (
                         <Container fluid sx={(_) => ({ margin: "auto 0", width: "100%" })}>
-                            <Group direction="row" position="left">
+                            <Group direction="row" position="center">
                                 <Printer
                                     {...actionItemStyleProps}
                                     onClick={() => areActionsAllowed && window.print()}

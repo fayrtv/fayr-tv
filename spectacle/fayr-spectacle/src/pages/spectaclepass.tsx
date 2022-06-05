@@ -16,12 +16,15 @@ import moment from "moment";
 import { SerializedModel, serializeModel } from "~/models/amplify-models";
 import { RedirectProps, redirectServerSide } from "~/helpers/next-server";
 import { useSession } from "../hooks/useSession";
+import useIsMobile from "../hooks/useIsMobile";
 
 type ServerProps = {
     refractionProtocols: SerializedModel<RefractionProtocolEntity>[];
 };
 const SpectaclePassPage: NextPageWithLayout<ServerProps> = ({ refractionProtocols }) => {
     const { user } = useSession();
+
+    const isMobile = useIsMobile();
 
     const sortedProtocols = React.useMemo(() => {
         type SortCompatibleProtocol = {
@@ -69,7 +72,11 @@ const SpectaclePassPage: NextPageWithLayout<ServerProps> = ({ refractionProtocol
                 <Group direction="row" position="right">
                     <CircleX size={30} />
                 </Group>
-                <Container fluid size="xl" sx={(_) => ({ marginLeft: "10%", marginRight: "10%" })}>
+                <Container
+                    fluid
+                    size="xl"
+                    sx={(_) => (isMobile ? {} : { marginLeft: "10%", marginRight: "10%" })}
+                >
                     <Group direction="column" position="center" spacing="xs">
                         <Text weight="bold">Digitaler Brillenpass</Text>
                         <Text weight="normal">{userName}</Text>

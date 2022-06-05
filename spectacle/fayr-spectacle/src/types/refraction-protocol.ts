@@ -6,7 +6,7 @@ export type RefractionProtocol = {
     right: SideConfiguration;
 };
 
-type SideConfiguration = {
+export type SideConfiguration = {
     sphere: number;
     cylinder: number;
     axis: number;
@@ -14,4 +14,6 @@ type SideConfiguration = {
     pd: number;
     prisma?: number;
     basis?: number;
+
+    [key: string]: any;
 };
