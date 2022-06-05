@@ -7,7 +7,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getCurrentStore } from "~/helpers/storeLocator";
 import { Store } from "~/models";
 import { User } from "~/types/user";
-import { ssrGetUser } from "~/helpers/authentication";
 
 export function ensureIsAdminOfStore(store?: Store, user?: User | null) {
     if (!user?.id || !store?.adminUserIDs.includes(user.id)) {

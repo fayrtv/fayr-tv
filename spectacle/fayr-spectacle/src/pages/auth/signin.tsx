@@ -13,7 +13,6 @@ import {
     Alert,
 } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
-import { Auth } from "aws-amplify";
 import Router, { useRouter } from "next/router";
 import React, { PropsWithChildren, useState } from "react";
 import ZeissLogo from "~/components/ZeissLogo";
@@ -22,6 +21,7 @@ import { NextPageWithLayout } from "~/types/next-types";
 import { useMantineColorScheme } from "@mantine/core";
 import { AlertCircle } from "tabler-icons-react";
 import Link from "next/link";
+import { supabase } from "~/supabase";
 
 const BodyShell = ({ children }: PropsWithChildren<{}>) => {
     const { colorScheme } = useMantineColorScheme();
@@ -107,7 +107,7 @@ const SignInPage: NextPageWithLayout = () => {
                 onSubmit={form.onSubmit(async ({ email, password }) => {
                     try {
                         setSubmitting(true);
-                        await Auth.signIn(email, password);
+                        await supabase.auth.signIn({ email, password });
                         await Router.push("/welcome");
                     } catch (error) {
                         setSubmitting(false);

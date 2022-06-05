@@ -1,6 +1,8 @@
 // noinspection JSUnusedGlobalSymbols
 import { ColorScheme, ColorSchemeProvider, MantineProvider } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
+import { UserProvider } from "@supabase/supabase-auth-helpers/react";
+
 import Amplify from "aws-amplify";
 import { AppProps } from "next/app";
 import Head from "next/head";
@@ -19,6 +21,7 @@ import { Store } from "~/models";
 import { SerializedModel, serializeModel } from "~/models/amplify-models";
 import { getCurrentStore } from "~/helpers/storeLocator";
 import { redirectServerSide } from "~/helpers/next-server";
+import { supabaseClient } from "@supabase/supabase-auth-helpers/nextjs";
 
 // TODO: https://ordinarycoders.com/blog/article/nextjs-aws-amplify
 // https://www.youtube.com/watch?v=YvoyHgZWSFY&ab_channel=BojidarYovchev
@@ -65,30 +68,32 @@ export default function App({
                 />
             </Head>
 
-            <ColorSchemeProvider
-                colorScheme={currentColorScheme}
-                toggleColorScheme={toggleColorScheme}
-            >
-                <MantineProvider
-                    withGlobalStyles
-                    withNormalizeCSS
-                    styles={spectacleStyles}
-                    theme={{
-                        ...spectacleTheme,
-                        colorScheme: currentColorScheme,
-                    }}
+            <UserProvider supabaseClient={supabaseClient}>
+                <ColorSchemeProvider
+                    colorScheme={currentColorScheme}
+                    toggleColorScheme={toggleColorScheme}
                 >
-                    <QueryClientProvider client={queryClient}>
-                        <NotificationsProvider>
-                            <StoreInfoProvider value={store}>
-                                <Layout>
-                                    <Component {...pageProps} />
-                                </Layout>
-                            </StoreInfoProvider>
-                        </NotificationsProvider>
-                    </QueryClientProvider>
-                </MantineProvider>
-            </ColorSchemeProvider>
+                    <MantineProvider
+                        withGlobalStyles
+                        withNormalizeCSS
+                        styles={spectacleStyles}
+                        theme={{
+                            ...spectacleTheme,
+                            colorScheme: currentColorScheme,
+                        }}
+                    >
+                        <QueryClientProvider client={queryClient}>
+                            <NotificationsProvider>
+                                <StoreInfoProvider value={store}>
+                                    <Layout>
+                                        <Component {...pageProps} />
+                                    </Layout>
+                                </StoreInfoProvider>
+                            </NotificationsProvider>
+                        </QueryClientProvider>
+                    </MantineProvider>
+                </ColorSchemeProvider>
+            </UserProvider>
         </>
     );
 }

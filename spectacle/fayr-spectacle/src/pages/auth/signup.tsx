@@ -1,12 +1,11 @@
 import { Box, Container, Grid, Group, Stack, Text } from "@mantine/core";
-import { Auth } from "aws-amplify";
 import Router from "next/router";
 import React, { PropsWithChildren } from "react";
 import ZeissLogo from "~/components/ZeissLogo";
 import { layoutFactory } from "~/components/layout/Layout";
 import { NextPageWithLayout } from "~/types/next-types";
-import { useMantineColorScheme } from "@mantine/core";
 import { useProfileForm } from "~/components/profile/hooks/useProfileForm";
+import { supabase } from "~/supabase";
 
 const BodyShell = ({ children }: PropsWithChildren<{}>) => {
     return (
@@ -35,17 +34,21 @@ const BodyShell = ({ children }: PropsWithChildren<{}>) => {
 const SignUpPage: NextPageWithLayout = () => {
     const { onSubmit, profileComponents } = useProfileForm({
         onSubmit: async ({ address, firstName, title, lastName, password, email, newsletter }) => {
-            await Auth.signUp({
-                username: email,
-                password,
-                attributes: {
-                    family_name: lastName,
-                    "custom:address": address,
-                    "custom:first_name": firstName,
-                    "custom:title": title ?? "",
-                    "custom:newsletter": String(newsletter),
+            await supabase.auth.signUp(
+                {
+                    email,
+                    password,
                 },
-            });
+                {
+                    data: {
+                        address,
+                        firstName,
+                        title: title ?? "",
+                        lastName,
+                        newsletter,
+                    },
+                },
+            );
             await Router.push("/auth/confirm");
         },
         errorTitle: "Fehler beim Einloggen",

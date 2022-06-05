@@ -1,14 +1,26 @@
 import { NextApiRequestCookies } from "next/dist/server/api-utils";
-import { withSSRContext } from "aws-amplify";
-import { convertAwsModelToUser } from "./awsModelParser";
+import { supabase } from "~/supabase";
+import { User } from "~/types/user";
+import { supabaseServerClient } from "@supabase/supabase-auth-helpers/nextjs";
 
 export const ssrGetUser = async (req: { cookies: NextApiRequestCookies }) => {
-    const SSR = withSSRContext({ req });
-    const userInfo = await SSR.Auth.currentUserInfo();
+    const userInfo = await supabaseServerClient({ req });
 
-    if (!userInfo?.attributes) {
-        return null;
-    }
+    const { data, error } = await supabase
+        .from("profiles")
+        .select("id, first_name, last_name, address, user_email, newsletter, title")
+        .eq("id", userInfo?.id)
+        .single();
 
-    return convertAwsModelToUser(userInfo);
+    const user: User = {
+        id: data.id,
+        firstName: data.first_name,
+        lastName: data.last_name,
+        address: data.address,
+        email: data.user_email,
+        newsletter: data.newsletter,
+        title: data.title,
+    };
+
+    return user;
 };
