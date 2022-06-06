@@ -1,38 +1,27 @@
 import { NextPageWithLayout } from "~/types/next-types";
 import Layout from "../layout/Layout";
-import {
-    Button,
-    Center,
-    ColorSwatch,
-    Container,
-    Grid,
-    Modal,
-    Paper,
-    Stack,
-    Text,
-    TextInput,
-    useMantineTheme,
-} from "@mantine/core";
+import { Box, Button, createStyles, Group, Modal, Paper, Stack, Text } from "@mantine/core";
 import { Customer } from "~/types/user";
 import React from "react";
 import { DataStore } from "aws-amplify";
 import { RefractionProtocol as RefractionProtocolEntity } from "~/models";
 import { DeviceFloppy, Edit, Printer, Trash } from "tabler-icons-react";
 import { useForm } from "@mantine/hooks";
-import { UseForm } from "@mantine/hooks/lib/use-form/use-form";
 import { RefractionProtocol } from "~/types/refraction-protocol";
-import useIsMobile from "~/hooks/useIsMobile";
+import { RefractionProtocolRow } from "~/components/customermanagement/DataGrid/RefractionProtocolRow";
+import { DataGridCell } from "~/components/customermanagement/DataGrid/DataGridCell";
+import ResponsiveIconButton from "~/components/ResponsiveIconButton";
 
 type Props = {
     customer: Customer;
 };
 
-enum Side {
+export enum Side {
     Left,
     Right,
 }
 
-type PlainProtocol = {
+export type PlainProtocol = {
     leftAxis?: number;
     leftCylinder?: number;
     leftPd?: number;
@@ -58,90 +47,36 @@ const defaultProtocol = {
     rightAddition: undefined,
 };
 
-type RowProps = {
-    form: UseForm<PlainProtocol>;
-    side: Side;
-};
-
-const DataGridCell = ({ children, area }: { children: React.ReactNode; area: string }) => (
-    <div style={{ height: "100%", width: "100%", gridArea: area }}>{children}</div>
-);
-
-const RefractionProtocolRow = ({ form, side }: RowProps) => {
-    const theme = useMantineTheme();
-    const themedColor = theme.colorScheme === "light" ? theme.white : theme.black;
-
-    const sideIdentifier = Side[side].toLowerCase();
-    const sideCaption = side === Side.Left ? "links" : "rechts";
-
-    return (
-        <>
-            <DataGridCell area={`${Side[side]}Symbol`}>
-                <Center sx={(_) => ({ height: "100%" })}>
-                    <ColorSwatch color={themedColor} radius={0}>
-                        <Text color={theme.colors.primary[6]} size="md" weight="800">
-                            {side === Side.Left ? "L" : "R"}
-                        </Text>
-                    </ColorSwatch>
-                </Center>
-            </DataGridCell>
-            <DataGridCell area={`${Side[side]}Sphere`}>
-                <TextInput
-                    placeholder={`Sphäre ${sideCaption}`}
-                    required
-                    {...form.getInputProps(`${sideIdentifier}Sphere` as keyof PlainProtocol)}
-                />
-            </DataGridCell>
-            <DataGridCell area={`${Side[side]}Cylinder`}>
-                <TextInput
-                    placeholder={`Zylinder ${sideCaption}`}
-                    required
-                    {...form.getInputProps(`${sideIdentifier}Cylinder` as keyof PlainProtocol)}
-                />
-            </DataGridCell>
-            <DataGridCell area={`${Side[side]}Axis`}>
-                <TextInput
-                    placeholder={`Achse ${sideCaption}`}
-                    required
-                    {...form.getInputProps(`${sideIdentifier}Axis` as keyof PlainProtocol)}
-                />
-            </DataGridCell>
-            <DataGridCell area={`${Side[side]}Addition`}>
-                <TextInput
-                    placeholder={`Addition ${sideCaption}`}
-                    {...form.getInputProps(`${sideIdentifier}Addition` as keyof PlainProtocol)}
-                />
-            </DataGridCell>
-            <DataGridCell area={`${Side[side]}Pd`}>
-                <TextInput
-                    placeholder={`PD ${sideCaption}`}
-                    required
-                    {...form.getInputProps(`${sideIdentifier}Pd` as keyof PlainProtocol)}
-                />
-            </DataGridCell>
-            <DataGridCell area={`${Side[side]}Prisma`}>
-                <TextInput
-                    placeholder={`Prisma ${sideCaption}`}
-                    required
-                    {...form.getInputProps(`${sideIdentifier}Prisma` as keyof PlainProtocol)}
-                />
-            </DataGridCell>
-            <DataGridCell area={`${Side[side]}Basis`}>
-                <TextInput
-                    placeholder={`Basis ${sideCaption}`}
-                    required
-                    {...form.getInputProps(`${sideIdentifier}Basis` as keyof PlainProtocol)}
-                />
-            </DataGridCell>
-        </>
-    );
-};
+const useStyles = createStyles((theme) => ({
+    dataGrid: {
+        display: "grid",
+        gridTemplateRows: "auto repeat(7, calc(100% / 7))",
+        gridTemplateColumns: "40% 30% 30%",
+        gap: "5px",
+        gridTemplateAreas: `
+            '. LeftSymbol RightSymbol' 
+            'SphereHeader LeftSphere RightSphere'
+            'CylinderHeader LeftCylinder RightCylinder'
+            'AxisHeader LeftAxis RightAxis' 
+            'AdditionHeader LeftAddition RightAddition'
+            'PdHeader LeftPd RightPd'
+            'PrismaHeader LeftPrisma RightPrisma'
+            'BasisHeader LeftBasis RightBasis'
+        `,
+        [`@media(min-width: ${theme.breakpoints.xl}px)`]: {
+            gridTemplateColumns: "auto repeat(7, calc(100% / 7))",
+            gridTemplateRows: "40% 30% 30%",
+            gridTemplateAreas: `
+            '. SphereHeader CylinderHeader AxisHeader AdditionHeader PdHeader PrismaHeader BasisHeader'
+            'LeftSymbol LeftSphere LeftCylinder LeftAxis LeftAddition LeftPd LeftPrisma LeftBasis'
+            'RightSymbol RightSphere RightCylinder RightAxis RightAddition RightPd RightPrisma RightBasis'
+        `,
+        },
+    },
+}));
 
 const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props) => {
-    const theme = useMantineTheme();
-    const inverseThemedColor = theme.colorScheme === "dark" ? theme.white : theme.black;
-
-    const isMobile = useIsMobile();
+    const { classes } = useStyles();
 
     const [saving, setSaving] = React.useState(false);
     const [showSaveFeedback, setShowSaveFeedback] = React.useState(false);
@@ -184,7 +119,7 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
     };
 
     return (
-        <Container>
+        <Box>
             <Modal
                 opened={showSaveFeedback}
                 onClose={() => {
@@ -196,169 +131,98 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
             </Modal>
             <Paper>
                 <form onSubmit={protocolForm.onSubmit(onSubmit)}>
-                    <Grid columns={8} gutter="lg">
-                        <Grid.Col span={8}>
-                            <div
-                                style={
-                                    isMobile
-                                        ? {
-                                              display: "grid",
-                                              gridTemplateAreas: `
-										'. RightSymbol LeftSymbol' 
-										'SphereHeader RightSphere LeftSphere'
-										'CylinderHeader RightCylinder LeftCylinder'
-										'AxisHeader RightAxis LeftAxis' 
-										'AdditionHeader RightAddition LeftAddition'
-										'PdHeader RightPd LeftPd'
-										'PrismaHeader RightPrisma LeftPrisma'
-										'BasisHeader RightBasis LeftBasis'
-									`,
-                                              gridTemplateRows: "repeat(8, calc(100% / 8))",
-                                              gridTemplateColumns: "40% 30% 30%",
-                                              gap: "5px",
-                                          }
-                                        : {
-                                              display: "grid",
-                                              gridTemplateAreas: `
-										'. SphereHeader CylinderHeader AxisHeader AdditionHeader PdHeader PrismaHeader BasisHeader'
-										'RightSymbol RightSphere RightCylinder RightAxis RightAddition RightPd RightPrisma RightBasis'
-										'LeftSymbol LeftSphere LeftCylinder LeftAxis LeftAddition LeftPd LeftPrisma LeftBasis'
-									`,
-                                              gridTemplateColumns: "repeat(8, calc(100% / 8))",
-                                              gridTemplateRows: "40% 30% 30%",
-                                              gap: "5px",
-                                          }
-                                }
-                            >
-                                <DataGridCell area="SphereHeader">
-                                    <Stack align="center" spacing="xs">
-                                        <Text>Sphäre</Text>
-                                        <Text size="xs">S / SPH</Text>
-                                    </Stack>
-                                </DataGridCell>
-                                <DataGridCell area="CylinderHeader">
-                                    <Stack align="center" spacing="xs">
-                                        <Text>Zylinder</Text>
-                                        <Text size="xs">ZYL / CYL</Text>
-                                    </Stack>
-                                </DataGridCell>
-                                <DataGridCell area="AxisHeader">
-                                    <Stack align="center" spacing="xs">
-                                        <Text>Achse</Text>
-                                        <Text size="xs">A / ACH</Text>
-                                    </Stack>
-                                </DataGridCell>
-                                <DataGridCell area="AdditionHeader">
-                                    <Stack align="center" spacing="xs">
-                                        <Text>Addition</Text>
-                                        <Text size="xs">ADD</Text>
-                                    </Stack>
-                                </DataGridCell>
-                                <DataGridCell area="PdHeader">
-                                    <Stack align="center" spacing="xs">
-                                        <Text>PD</Text>
-                                        <Text size="xs">PD</Text>
-                                    </Stack>
-                                </DataGridCell>
-                                <DataGridCell area="PrismaHeader">
-                                    <Stack align="center" spacing="xs">
-                                        <Text>Prisma</Text>
-                                        <Text size="xs">PR</Text>
-                                    </Stack>
-                                </DataGridCell>
-                                <DataGridCell area="BasisHeader">
-                                    <Stack align="center" spacing="xs">
-                                        <Text>Basis</Text>
-                                        <Text size="xs">BA</Text>
-                                    </Stack>
-                                </DataGridCell>
-                                <RefractionProtocolRow form={protocolForm} side={Side.Left} />
-                                <RefractionProtocolRow form={protocolForm} side={Side.Right} />
-                            </div>
-                        </Grid.Col>
-                        <Grid.Col span={1} sx={(_) => ({ paddingLeft: 0, paddingRight: 0 })}>
-                            <Button
-                                size="xs"
-                                onClick={protocolForm.reset}
-                                leftIcon={!isMobile ? <Trash /> : null}
-                                color="danger"
-                            >
-                                {!isMobile ? <Text size="xs">Löschen</Text> : <Trash />}
-                            </Button>
-                        </Grid.Col>
-                        <Grid.Col
-                            offset={4}
-                            span={1}
-                            sx={(_) => ({ paddingLeft: "5px", paddingRight: "5px" })}
-                        >
-                            <Button
-                                size="xs"
-                                variant="default"
-                                leftIcon={!isMobile ? <Printer color={inverseThemedColor} /> : null}
-                                onClick={() => window.print()}
-                                fullWidth
-                                styles={(_) => ({
-                                    root: {
-                                        padding: 0,
-                                    },
-                                })}
-                            >
-                                {!isMobile ? (
-                                    <Text color={inverseThemedColor} size="xs">
-                                        Drucken
-                                    </Text>
-                                ) : (
-                                    <Printer color={inverseThemedColor} />
-                                )}
-                            </Button>
-                        </Grid.Col>
-                        <Grid.Col
-                            span={1}
-                            sx={(_) => ({ paddingLeft: "5px", paddingRight: "5px" })}
-                        >
-                            <Button
-                                size="xs"
-                                variant="default"
-                                fullWidth
-                                leftIcon={!isMobile ? <Edit color={inverseThemedColor} /> : null}
-                                styles={(_) => ({
-                                    root: {
-                                        padding: 0,
-                                    },
-                                })}
-                            >
-                                {!isMobile ? (
-                                    <Text color={inverseThemedColor} size="xs">
-                                        Bearbeiten
-                                    </Text>
-                                ) : (
-                                    <Edit color={inverseThemedColor} />
-                                )}
-                            </Button>
-                        </Grid.Col>
-                        <Grid.Col
-                            span={1}
-                            sx={(_) => ({ paddingLeft: "5px", paddingRight: "5px" })}
-                        >
-                            <Button
-                                leftIcon={!isMobile ? <DeviceFloppy /> : null}
-                                size="xs"
-                                fullWidth
-                                type="submit"
-                                loading={saving}
-                                styles={(_) => ({
-                                    root: {
-                                        padding: 0,
-                                    },
-                                })}
-                            >
-                                {!isMobile ? "Speichern" : <DeviceFloppy />}
-                            </Button>
-                        </Grid.Col>
-                    </Grid>
+                    <Stack spacing="lg">
+                        <div className={classes.dataGrid}>
+                            <DataGridCell area="SphereHeader">
+                                <Stack align="center" spacing="xs">
+                                    <Text>Sphäre</Text>
+                                    <Text size="xs">S / SPH</Text>
+                                </Stack>
+                            </DataGridCell>
+                            <DataGridCell area="CylinderHeader">
+                                <Stack align="center" spacing="xs">
+                                    <Text>Zylinder</Text>
+                                    <Text size="xs">ZYL / CYL</Text>
+                                </Stack>
+                            </DataGridCell>
+                            <DataGridCell area="AxisHeader">
+                                <Stack align="center" spacing="xs">
+                                    <Text>Achse</Text>
+                                    <Text size="xs">A / ACH</Text>
+                                </Stack>
+                            </DataGridCell>
+                            <DataGridCell area="AdditionHeader">
+                                <Stack align="center" spacing="xs">
+                                    <Text>Addition</Text>
+                                    <Text size="xs">ADD</Text>
+                                </Stack>
+                            </DataGridCell>
+                            <DataGridCell area="PdHeader">
+                                <Stack align="center" spacing="xs">
+                                    <Text>PD</Text>
+                                    <Text size="xs">PD</Text>
+                                </Stack>
+                            </DataGridCell>
+                            <DataGridCell area="PrismaHeader">
+                                <Stack align="center" spacing="xs">
+                                    <Text>Prisma</Text>
+                                    <Text size="xs">PR</Text>
+                                </Stack>
+                            </DataGridCell>
+                            <DataGridCell area="BasisHeader">
+                                <Stack align="center" spacing="xs">
+                                    <Text>Basis</Text>
+                                    <Text size="xs">BA</Text>
+                                </Stack>
+                            </DataGridCell>
+                            <RefractionProtocolRow form={protocolForm} side={Side.Left} />
+                            <RefractionProtocolRow form={protocolForm} side={Side.Right} />
+                        </div>
+                        <Group grow>
+                            <Group>
+                                <ResponsiveIconButton
+                                    size="xs"
+                                    color="danger"
+                                    onClick={protocolForm.reset}
+                                    leftIcon={<Trash />}
+                                >
+                                    Löschen
+                                </ResponsiveIconButton>
+                            </Group>
+                            <Group noWrap spacing="sm" sx={{ justifyContent: "right" }}>
+                                <ResponsiveIconButton
+                                    size="xs"
+                                    variant="light"
+                                    color="gray"
+                                    onClick={() => window.print()}
+                                    leftIcon={<Printer />}
+                                >
+                                    Drucken
+                                </ResponsiveIconButton>
+                                <ResponsiveIconButton
+                                    size="xs"
+                                    variant="light"
+                                    color="gray"
+                                    leftIcon={<Edit />}
+                                >
+                                    Bearbeiten
+                                </ResponsiveIconButton>
+
+                                <ResponsiveIconButton
+                                    size="xs"
+                                    variant="filled"
+                                    color="primary"
+                                    leftIcon={<DeviceFloppy />}
+                                    loading={saving}
+                                >
+                                    Speichern
+                                </ResponsiveIconButton>
+                            </Group>
+                        </Group>
+                    </Stack>
                 </form>
             </Paper>
-        </Container>
+        </Box>
     );
 };
 
