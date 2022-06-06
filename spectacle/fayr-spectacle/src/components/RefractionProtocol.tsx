@@ -27,7 +27,6 @@ import useBreakpoints from "~/hooks/useBreakpoints";
 import useEncryption from "~/hooks/useEncryption";
 import { useSession } from "../hooks/useSession";
 import { useStoreInfo } from "./StoreInfoProvider";
-import { SerializedAesEncryptionPackage } from "../utils/encryption/encryptionTypes";
 import { useAsyncState } from "../hooks/useAsyncState";
 
 const GridText = (
