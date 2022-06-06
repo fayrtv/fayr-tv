@@ -14,7 +14,7 @@ export function ShowProfile({
             <Group position="right" direction="row" noWrap>
                 {!!user && (
                     <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
-                        <Text weight="bold" size="sm">
+                        <Text weight="bold" size="xs">
                             Willkommen, {formatFormalAddress(user)}
                         </Text>
                     </MediaQuery>

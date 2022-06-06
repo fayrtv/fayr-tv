@@ -18,7 +18,6 @@ import Link from "next/link";
 import MainContainer from "~/components/layout/MainContainer";
 import { getCurrentStore } from "~/helpers/storeLocator";
 import AppointmentsOverview from "~/components/customermanagement/AppointmentsOverview";
-import ResponsiveIconButton from "~/components/ResponsiveIconButton";
 
 type ServerSideProps = {
     cred: any;
