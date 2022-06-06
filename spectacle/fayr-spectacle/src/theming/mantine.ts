@@ -101,9 +101,9 @@ const spectacleTheme: MantineThemeOverride = {
     },
 
     fontSizes: {
-        xxxs: 8.5,
+        xxxs: 7,
         xxs: 10,
-        xs: 13,
+        xs: 12,
         sm: 14,
         md: 15,
         lg: 18,
@@ -133,7 +133,7 @@ const spectacleTheme: MantineThemeOverride = {
     },
 
     spacing: {
-        xs: 4,
+        xs: 3,
         sm: 10,
         md: 20,
         lg: 40,

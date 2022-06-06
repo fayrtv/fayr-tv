@@ -1,4 +1,15 @@
-import { Box, Container, Group, Image, Paper, Stack, Sx, Text } from "@mantine/core";
+import {
+    Box,
+    Container,
+    createStyles,
+    Group,
+    Image,
+    MediaQuery,
+    Paper,
+    Stack,
+    Sx,
+    Text,
+} from "@mantine/core";
 import React, { PropsWithChildren } from "react";
 import PassportQRCodeExample from "~/components/PassportQRCode";
 import Layout from "~/components/layout/Layout";
@@ -6,7 +17,6 @@ import { NextPageWithLayout } from "~/types/next-types";
 import { useStoreInfo } from "~/components/StoreInfoProvider";
 import Link from "next/link";
 import { Anchor } from "@mantine/core";
-import useIsMobile from "~/hooks/useIsMobile";
 
 const NumberBox = ({ n, title, children }: PropsWithChildren<{ n: number; title: string }>) => {
     return (
@@ -26,31 +36,47 @@ const NumberBox = ({ n, title, children }: PropsWithChildren<{ n: number; title:
     );
 };
 
+const useStyles = createStyles((theme) => ({
+    container: {
+        maxWidth: "unset",
+        [`@media(max-width: ${theme.breakpoints.md}px)`]: {
+            padding: 15,
+        },
+    },
+    group: {
+        flexDirection: "row",
+        [`@media(max-width: ${theme.breakpoints.lg}px)`]: {
+            flexDirection: "column",
+        },
+    },
+    howItWorksBox: {
+        marginLeft: theme.spacing.xl,
+        [`@media(max-width: ${theme.breakpoints.md}px)`]: {
+            marginLeft: theme.spacing.md,
+        },
+    },
+}));
+
 const DigitalSpectaclePassportPage: NextPageWithLayout = () => {
     const storeInfo = useStoreInfo();
-
-    const isMobile = useIsMobile();
-
-    const containerSxProps: Sx = { maxWidth: "unset" };
-
-    if (isMobile) {
-        containerSxProps.padding = 15;
-    }
+    const { classes } = useStyles();
 
     return (
-        <Container sx={containerSxProps}>
-            <Group position="apart" direction={isMobile ? "column" : "row"} noWrap>
+        <Container className={classes.container}>
+            <Group position="apart" className={classes.group} noWrap>
                 <Stack spacing="lg">
-                    <Paper
-                        shadow="xl"
-                        // sx={{
-                        //     boxShadow: "0px 0px 10px 0px #00000040",
-                        // }}
-                        p={isMobile ? 15 : 70}
-                        radius="xs"
-                    >
-                        <PassportQRCodeExample />
-                    </Paper>
+                    <MediaQuery styles={{ padding: 15 }} smallerThan="sm">
+                        <Paper
+                            shadow="xl"
+                            // sx={{
+                            //     boxShadow: "0px 0px 10px 0px #00000040",
+                            // }}
+                            p={70}
+                            radius="xs"
+                        >
+                            <PassportQRCodeExample />
+                        </Paper>
+                    </MediaQuery>
                     <Box
                         sx={(theme) => ({
                             backgroundColor:
@@ -75,7 +101,7 @@ const DigitalSpectaclePassportPage: NextPageWithLayout = () => {
                         </Group>
                     </Box>
                 </Stack>
-                <Box ml={isMobile ? "md" : "xl"}>
+                <Box className={classes.howItWorksBox}>
                     <Text color="primary">
                         <h1>So funktioniert der Digitale Brillenpass</h1>
                     </Text>

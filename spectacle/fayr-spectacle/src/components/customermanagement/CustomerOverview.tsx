@@ -1,8 +1,7 @@
-import { Button, Group, Popover, Stack, Table, Text } from "@mantine/core";
-import { Customer } from "../../types/user";
+import { Button, Group, MediaQuery, Popover, Stack, Table, Text } from "@mantine/core";
+import { Customer } from "~/types/user";
 import React, { useCallback } from "react";
 import { CustomerStatusBadge } from "~/components/customermanagement/CustomerStatusBadge";
-import useIsMobile from "~/hooks/useIsMobile";
 import { useBooleanToggle } from "@mantine/hooks";
 import { useStoreInfo } from "~/components/StoreInfoProvider";
 import { useRouter } from "next/router";
@@ -15,7 +14,6 @@ const CustomerOverview = ({ customer }: Props) => {
     const { push } = useRouter();
     const storeInfo = useStoreInfo();
     const [confirmDeletionOpen, setConfirmDeletionOpen] = useBooleanToggle(false);
-    const isMobile = useIsMobile();
 
     const removeCustomer = useCallback(async () => {
         const response = await fetch(`/api/customers/remove?id=${customer.customerID}`, {
@@ -29,18 +27,18 @@ const CustomerOverview = ({ customer }: Props) => {
 
     return (
         <Stack>
-            {isMobile ? (
-                <Group direction="row" grow spacing="xl">
-                    <Group direction="column">
-                        <Text>
-                            {customer.lastName}, {customer.firstName}
-                        </Text>
-                        <Text>{customer.email}</Text>
-                    </Group>
+            <MediaQuery styles={{ display: "none" }} largerThan="sm">
+                <Stack spacing="sm">
+                    <Text>
+                        {customer.lastName}, {customer.firstName}
+                    </Text>
+                    <Text>{customer.email}</Text>
                     <CustomerStatusBadge customer={customer} />
-                </Group>
-            ) : (
-                <Table>
+                </Stack>
+            </MediaQuery>
+            {/* Would be nice if mantine had a `smallerThanOrEqual` property on the media query component here */}
+            <MediaQuery styles={{ display: "none" }} smallerThan="sm">
+                <Table sx={{ minWidth: 600 }}>
                     <thead>
                         <tr>
                             <th>Nachname, Vorname</th>
@@ -60,7 +58,7 @@ const CustomerOverview = ({ customer }: Props) => {
                         </tr>
                     </tbody>
                 </Table>
-            )}
+            </MediaQuery>
 
             <Group>
                 <Popover

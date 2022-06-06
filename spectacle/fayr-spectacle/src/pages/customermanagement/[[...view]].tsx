@@ -14,11 +14,11 @@ import { Link as LinkIcon } from "tabler-icons-react";
 import { layoutFactory } from "src/components/layout/Layout";
 import { getStoreCustomers } from "~/helpers/cognito";
 import { SwitchAvailability } from "~/components/layout/SubHeader";
-import useIsMobile from "~/hooks/useIsMobile";
 import Link from "next/link";
 import MainContainer from "~/components/layout/MainContainer";
 import { getCurrentStore } from "~/helpers/storeLocator";
 import AppointmentsOverview from "~/components/customermanagement/AppointmentsOverview";
+import ResponsiveIconButton from "~/components/ResponsiveIconButton";
 
 type ServerSideProps = {
     cred: any;
@@ -28,8 +28,6 @@ type ServerSideProps = {
 
 const CustomerManagementRouter: NextPageWithLayout<ServerSideProps> = ({ customersOfStore }) => {
     const [selectedCustomer, setSelectedCustomer] = React.useState<Customer | undefined>(undefined);
-
-    const isMobile = useIsMobile();
 
     const tabs = [
         {
@@ -92,7 +90,7 @@ const CustomerManagementRouter: NextPageWithLayout<ServerSideProps> = ({ custome
                     <Group position="right" grow={false}>
                         <Link href="link-existing" passHref>
                             <Button size="xs" leftIcon={<LinkIcon />}>
-                                {!isMobile && <Text size="sm">Kundenkonto verknüpfen</Text>}
+                                Kundenkonto verknüpfen
                             </Button>
                         </Link>
                     </Group>

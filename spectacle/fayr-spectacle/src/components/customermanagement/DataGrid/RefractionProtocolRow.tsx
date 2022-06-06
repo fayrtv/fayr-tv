@@ -1,8 +1,9 @@
-import { Center, ColorSwatch, Text, TextInput, useMantineTheme } from "@mantine/core";
+import { Center, ColorSwatch, NumberInput, Text, TextInput, useMantineTheme } from "@mantine/core";
 import React from "react";
 import { UseForm } from "@mantine/hooks/lib/use-form/use-form";
 import { PlainProtocol, Side } from "~/components/customermanagement/CreateRefractionProtocol";
 import { DataGridCell } from "~/components/customermanagement/DataGrid/DataGridCell";
+import useIsMobile from "~/hooks/useIsMobile";
 
 type RowProps = {
     form: UseForm<PlainProtocol>;
@@ -11,10 +12,15 @@ type RowProps = {
 
 export const RefractionProtocolRow = ({ form, side }: RowProps) => {
     const theme = useMantineTheme();
+
+    const isMobile = useIsMobile();
     const themedColor = theme.colorScheme === "light" ? theme.white : theme.black;
 
     const sideIdentifier = Side[side].toLowerCase();
     const sideCaption = side === Side.Left ? "links" : "rechts";
+
+    const createCaption = (propertyName: string) =>
+        isMobile ? propertyName : `${propertyName} ${sideCaption}`;
 
     return (
         <>
@@ -28,49 +34,63 @@ export const RefractionProtocolRow = ({ form, side }: RowProps) => {
                 </Center>
             </DataGridCell>
             <DataGridCell area={`${Side[side]}Sphere`}>
-                <TextInput
-                    placeholder={`Sphäre ${sideCaption}`}
+                <NumberInput
+                    precision={2}
+                    step={0.25}
+                    placeholder={createCaption("Sphäre")}
                     required
                     {...form.getInputProps(`${sideIdentifier}Sphere` as keyof PlainProtocol)}
                 />
             </DataGridCell>
             <DataGridCell area={`${Side[side]}Cylinder`}>
-                <TextInput
-                    placeholder={`Zylinder ${sideCaption}`}
+                <NumberInput
+                    precision={2}
+                    step={0.25}
+                    placeholder={createCaption("Zylinder")}
                     required
                     {...form.getInputProps(`${sideIdentifier}Cylinder` as keyof PlainProtocol)}
                 />
             </DataGridCell>
             <DataGridCell area={`${Side[side]}Axis`}>
-                <TextInput
-                    placeholder={`Achse ${sideCaption}`}
+                <NumberInput
+                    precision={2}
+                    step={0.25}
+                    placeholder={createCaption("Achse")}
                     required
                     {...form.getInputProps(`${sideIdentifier}Axis` as keyof PlainProtocol)}
                 />
             </DataGridCell>
             <DataGridCell area={`${Side[side]}Addition`}>
-                <TextInput
-                    placeholder={`Addition ${sideCaption}`}
+                <NumberInput
+                    precision={2}
+                    step={0.25}
+                    placeholder={createCaption("Addition")}
                     {...form.getInputProps(`${sideIdentifier}Addition` as keyof PlainProtocol)}
                 />
             </DataGridCell>
             <DataGridCell area={`${Side[side]}Pd`}>
-                <TextInput
-                    placeholder={`PD ${sideCaption}`}
+                <NumberInput
+                    precision={2}
+                    step={0.25}
+                    placeholder={createCaption("PD")}
                     required
                     {...form.getInputProps(`${sideIdentifier}Pd` as keyof PlainProtocol)}
                 />
             </DataGridCell>
             <DataGridCell area={`${Side[side]}Prisma`}>
-                <TextInput
-                    placeholder={`Prisma ${sideCaption}`}
+                <NumberInput
+                    precision={2}
+                    step={0.25}
+                    placeholder={createCaption("Prisma")}
                     required
                     {...form.getInputProps(`${sideIdentifier}Prisma` as keyof PlainProtocol)}
                 />
             </DataGridCell>
             <DataGridCell area={`${Side[side]}Basis`}>
-                <TextInput
-                    placeholder={`Basis ${sideCaption}`}
+                <NumberInput
+                    precision={2}
+                    step={0.25}
+                    placeholder={createCaption("Basis")}
                     required
                     {...form.getInputProps(`${sideIdentifier}Basis` as keyof PlainProtocol)}
                 />

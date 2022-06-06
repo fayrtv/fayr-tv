@@ -16,15 +16,12 @@ import moment from "moment";
 import { SerializedModel, serializeModel } from "~/models/amplify-models";
 import { RedirectProps, redirectServerSide } from "~/helpers/next-server";
 import { useSession } from "../hooks/useSession";
-import useIsMobile from "../hooks/useIsMobile";
 
 type ServerProps = {
     refractionProtocols: SerializedModel<RefractionProtocolEntity>[];
 };
 const SpectaclePassPage: NextPageWithLayout<ServerProps> = ({ refractionProtocols }) => {
     const { user } = useSession();
-
-    const isMobile = useIsMobile();
 
     const sortedProtocols = React.useMemo(() => {
         type SortCompatibleProtocol = {

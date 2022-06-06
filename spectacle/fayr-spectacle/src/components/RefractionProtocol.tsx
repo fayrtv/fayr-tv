@@ -4,12 +4,11 @@ import {
     Center,
     ColorSwatch,
     Container,
-    Divider,
+    createStyles,
     Grid,
     Group,
     Modal,
     Paper,
-    Space,
     Stack,
     Sx,
     Text,
@@ -19,11 +18,12 @@ import moment from "moment";
 import React, { PropsWithChildren, useState } from "react";
 import { Eye, Printer, Qrcode } from "tabler-icons-react";
 import { RefractionProtocol as RefractionProtocolEntity } from "~/models";
-import { RefractionProtocol as RefractionProtocolModel } from "~/types/refraction-protocol";
+import {
+    RefractionProtocol as RefractionProtocolModel,
+    SideConfiguration,
+} from "~/types/refraction-protocol";
 import { RefractionProtocolQRCode } from "~/components/QRCode";
-import useIsMobile from "../hooks/useIsMobile";
-import { SideConfiguration } from "../types/refraction-protocol";
-import { CSSProperties } from "react";
+import useIsMobile from "~/hooks/useIsMobile";
 
 const GridText = (
     props: PropsWithChildren<
@@ -57,6 +57,20 @@ type Props = {
 
 const BackgroundGrey = "#A8A8A8";
 
+const useStyles = createStyles((theme) => ({
+    actionItem: {
+        size: 30,
+        style: {
+            color: theme.colors.primary[6],
+            borderRadius: "5px",
+            padding: "2px",
+        },
+        [`@media (min-width: ${theme.breakpoints.sm}px)`]: {
+            backgroundColor: theme.colorScheme === "dark" ? theme.black : theme.white,
+        },
+    },
+}));
+
 export const RefractionProtocol = ({
     areActionsAllowed,
     entity,
@@ -66,8 +80,9 @@ export const RefractionProtocol = ({
     onClick,
 }: Props) => {
     const theme = useMantineTheme();
-
     const isMobile = useIsMobile();
+
+    const { classes } = useStyles();
 
     const [qrCodeOpen, setQRCodeOpen] = useState(false);
 
@@ -156,19 +171,6 @@ export const RefractionProtocol = ({
             </>
         );
     };
-
-    const actionItemStyleProps = {
-        size: 30,
-        style: {
-            color: theme.colors.primary[6],
-            borderRadius: "5px",
-            padding: "2px",
-        } as CSSProperties,
-    };
-
-    if (isMobile) {
-        actionItemStyleProps.style.backgroundColor = themedColor;
-    }
 
     if (!isSelected) {
         return (
@@ -314,11 +316,11 @@ export const RefractionProtocol = ({
                         <Container fluid sx={(_) => ({ margin: "auto 0", width: "100%" })}>
                             <Group direction="row" position="center">
                                 <Printer
-                                    {...actionItemStyleProps}
+                                    className={classes.actionItem}
                                     onClick={() => areActionsAllowed && window.print()}
                                 />
                                 <Qrcode
-                                    {...actionItemStyleProps}
+                                    className={classes.actionItem}
                                     onClick={() => areActionsAllowed && setQRCodeOpen(true)}
                                 />
                                 <Modal
@@ -336,7 +338,7 @@ export const RefractionProtocol = ({
                             size="xs"
                             sx={(_) => ({ alignSelf: "end" })}
                             color={isDarkMode ? "black" : "white"}
-                            leftIcon={<Printer {...actionItemStyleProps} />}
+                            leftIcon={<Printer className={classes.actionItem} />}
                             onClick={() => areActionsAllowed && window.print()}
                         >
                             <Text color={theme.colors.primary[7]}>Drucken</Text>

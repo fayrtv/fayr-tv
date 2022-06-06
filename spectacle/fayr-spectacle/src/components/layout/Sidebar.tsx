@@ -1,10 +1,9 @@
-import { Anchor, Aside, Center, List, Overlay, Text } from "@mantine/core";
+import { Anchor, Aside, Center, List, MediaQuery, Overlay, Text } from "@mantine/core";
 import React, { PropsWithChildren } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import ThemeToggleButton from "~/components/layout/ThemeToggleButton";
 import { useSession } from "~/hooks/useSession";
-import useIsMobile from "~/hooks/useIsMobile";
 import { useClickOutside } from "@mantine/hooks";
 
 type Props = {
@@ -14,7 +13,6 @@ type Props = {
 
 export const Sidebar = ({ open, onClickOutside }: Props) => {
     const { isAuthenticated, isAdmin } = useSession();
-    const isMobile = useIsMobile();
     const debug = process.env.NODE_ENV === "development";
 
     const sidebarRef = useClickOutside<HTMLDivElement>(onClickOutside, ["click"]);
@@ -82,27 +80,31 @@ export const Sidebar = ({ open, onClickOutside }: Props) => {
                         <MenuItem href={"/fittingroom"}>Online Anprobe</MenuItem>
                     </List.Item>
 
-                    {debug && !isMobile && (
-                        <>
-                            <Text size="sm" mt="lg">
-                                Debug pages:
-                            </Text>
-                            <List.Item>
-                                <MenuItem href={"/welcome"}>Willkommen</MenuItem>
-                            </List.Item>
-                            <List.Item>
-                                <MenuItem href={"/auth/signup"}>Registrieren</MenuItem>
-                            </List.Item>
-                            <List.Item>
-                                <MenuItem href={"/auth/signin"}>Einloggen</MenuItem>
-                            </List.Item>
-                            <List.Item>
-                                <MenuItem href={"/auth/recover"}>Passwort vergessen</MenuItem>
-                            </List.Item>
-                            <List.Item>
-                                <MenuItem href={"/customermanagement"}>Kundenverwaltung</MenuItem>
-                            </List.Item>
-                        </>
+                    {debug && (
+                        <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
+                            <div>
+                                <Text size="sm" mt="lg">
+                                    Debug pages:
+                                </Text>
+                                <List.Item>
+                                    <MenuItem href={"/welcome"}>Willkommen</MenuItem>
+                                </List.Item>
+                                <List.Item>
+                                    <MenuItem href={"/auth/signup"}>Registrieren</MenuItem>
+                                </List.Item>
+                                <List.Item>
+                                    <MenuItem href={"/auth/signin"}>Einloggen</MenuItem>
+                                </List.Item>
+                                <List.Item>
+                                    <MenuItem href={"/auth/recover"}>Passwort vergessen</MenuItem>
+                                </List.Item>
+                                <List.Item>
+                                    <MenuItem href={"/customermanagement"}>
+                                        Kundenverwaltung
+                                    </MenuItem>
+                                </List.Item>
+                            </div>
+                        </MediaQuery>
                     )}
                 </List>
             </Aside.Section>

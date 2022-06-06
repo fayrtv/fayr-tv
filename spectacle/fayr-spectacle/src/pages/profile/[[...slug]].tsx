@@ -9,7 +9,6 @@ import { ssrGetUser } from "~/helpers/authentication";
 import { User } from "~/types/user";
 import ChangePassword from "~/components/profile/ChangePassword";
 import { AspectRatio, Container, Paper, Stack } from "@mantine/core";
-import useIsMobile from "~/hooks/useIsMobile";
 import NotificationSettings from "~/components/profile/NotificationSettings";
 import { QRCode } from "~/components/QRCode";
 import MainContainer from "~/components/layout/MainContainer";
@@ -17,8 +16,6 @@ import MainContainer from "~/components/layout/MainContainer";
 type ServerProps = { user: User };
 
 const ProfileRouter: NextPageWithLayout<ServerProps> = ({ user }: ServerProps) => {
-    const isMobile = useIsMobile();
-
     return (
         <MainContainer>
             <Stack>

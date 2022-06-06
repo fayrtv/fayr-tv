@@ -1,11 +1,9 @@
-// Framework
 import Auth from "@aws-amplify/auth";
-import { Alert, Container, Paper, Stack, Text } from "@mantine/core";
+import { Alert, Container, Stack } from "@mantine/core";
 import * as React from "react";
 import { Check } from "tabler-icons-react";
 import { User } from "~/types/user";
 import { useProfileForm } from "./hooks/useProfileForm";
-import useIsMobile from "../../hooks/useIsMobile";
 
 type Props = {
     user: User;

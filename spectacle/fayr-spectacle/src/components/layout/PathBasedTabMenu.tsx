@@ -1,4 +1,5 @@
 import {
+    Box,
     Burger,
     Center,
     createStyles,
@@ -37,7 +38,7 @@ type TabStackProps = {
 };
 
 const useStyles = createStyles((theme) => ({
-    tabContent: {
+    tabContentPaper: {
         padding: theme.spacing.sm,
         [`@media (min-width: ${theme.breakpoints.sm}px)`]: {
             padding: theme.spacing.md,
@@ -142,7 +143,7 @@ export const PathBasedTabMenu = ({
                     </Paper>
                 </MediaQuery>
                 <Paper
-                    className={classes.tabContent}
+                    className={classes.tabContentPaper}
                     withBorder={withBorder}
                     shadow={withBorder ? "md" : "none"}
                 >

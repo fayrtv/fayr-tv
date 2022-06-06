@@ -1,6 +1,6 @@
 import { NextPageWithLayout } from "~/types/next-types";
 import Layout from "../layout/Layout";
-import { Box, Button, createStyles, Group, Modal, Paper, Stack, Text } from "@mantine/core";
+import { Box, createStyles, Group, Modal, Paper, Stack, Text } from "@mantine/core";
 import { Customer } from "~/types/user";
 import React from "react";
 import { DataStore } from "aws-amplify";
@@ -50,10 +50,11 @@ const defaultProtocol = {
 const useStyles = createStyles((theme) => ({
     dataGrid: {
         display: "grid",
-        gridTemplateRows: "auto repeat(7, calc(100% / 7))",
-        gridTemplateColumns: "40% 30% 30%",
         gap: "5px",
-        gridTemplateAreas: `
+        [`@media(max-width: ${theme.breakpoints.xl}px)`]: {
+            gridTemplateRows: "1fr repeat(7, calc(100% / 8))",
+            gridTemplateColumns: "1fr 30% 30%",
+            gridTemplateAreas: `
             '. LeftSymbol RightSymbol' 
             'SphereHeader LeftSphere RightSphere'
             'CylinderHeader LeftCylinder RightCylinder'
@@ -63,9 +64,10 @@ const useStyles = createStyles((theme) => ({
             'PrismaHeader LeftPrisma RightPrisma'
             'BasisHeader LeftBasis RightBasis'
         `,
+        },
         [`@media(min-width: ${theme.breakpoints.xl}px)`]: {
-            gridTemplateColumns: "auto repeat(7, calc(100% / 7))",
-            gridTemplateRows: "40% 30% 30%",
+            gridTemplateColumns: "1fr repeat(7, calc(100% / 8))",
+            gridTemplateRows: "1fr 30% 30%",
             gridTemplateAreas: `
             '. SphereHeader CylinderHeader AxisHeader AdditionHeader PdHeader PrismaHeader BasisHeader'
             'LeftSymbol LeftSphere LeftCylinder LeftAxis LeftAddition LeftPd LeftPrisma LeftBasis'
@@ -74,6 +76,25 @@ const useStyles = createStyles((theme) => ({
         },
     },
 }));
+
+const HeaderCell = ({
+    area,
+    title,
+    subtitle,
+}: {
+    area: string;
+    title: string;
+    subtitle: string;
+}) => {
+    return (
+        <DataGridCell area={area}>
+            <Stack align="center" spacing="xs">
+                <Text>{title}</Text>
+                <Text size="xxs">{subtitle}</Text>
+            </Stack>
+        </DataGridCell>
+    );
+};
 
 const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props) => {
     const { classes } = useStyles();
@@ -133,48 +154,18 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
                 <form onSubmit={protocolForm.onSubmit(onSubmit)}>
                     <Stack spacing="lg">
                         <div className={classes.dataGrid}>
-                            <DataGridCell area="SphereHeader">
-                                <Stack align="center" spacing="xs">
-                                    <Text>Sphäre</Text>
-                                    <Text size="xs">S / SPH</Text>
-                                </Stack>
-                            </DataGridCell>
-                            <DataGridCell area="CylinderHeader">
-                                <Stack align="center" spacing="xs">
-                                    <Text>Zylinder</Text>
-                                    <Text size="xs">ZYL / CYL</Text>
-                                </Stack>
-                            </DataGridCell>
-                            <DataGridCell area="AxisHeader">
-                                <Stack align="center" spacing="xs">
-                                    <Text>Achse</Text>
-                                    <Text size="xs">A / ACH</Text>
-                                </Stack>
-                            </DataGridCell>
-                            <DataGridCell area="AdditionHeader">
-                                <Stack align="center" spacing="xs">
-                                    <Text>Addition</Text>
-                                    <Text size="xs">ADD</Text>
-                                </Stack>
-                            </DataGridCell>
-                            <DataGridCell area="PdHeader">
-                                <Stack align="center" spacing="xs">
-                                    <Text>PD</Text>
-                                    <Text size="xs">PD</Text>
-                                </Stack>
-                            </DataGridCell>
-                            <DataGridCell area="PrismaHeader">
-                                <Stack align="center" spacing="xs">
-                                    <Text>Prisma</Text>
-                                    <Text size="xs">PR</Text>
-                                </Stack>
-                            </DataGridCell>
-                            <DataGridCell area="BasisHeader">
-                                <Stack align="center" spacing="xs">
-                                    <Text>Basis</Text>
-                                    <Text size="xs">BA</Text>
-                                </Stack>
-                            </DataGridCell>
+                            <HeaderCell area="SphereHeader" title="Sphäre" subtitle="S / SPH" />
+                            <HeaderCell
+                                area="CylinderHeader"
+                                title="Zylinder"
+                                subtitle="ZYL / CYL"
+                            />
+                            <HeaderCell area="AxisHeader" title="Achse" subtitle="A / ACH" />
+                            <HeaderCell area="AdditionHeader" title="Addition" subtitle="ADD" />
+                            <HeaderCell area="PdHeader" title="PD" subtitle="PD" />
+                            <HeaderCell area="PrismaHeader" title="Prisma" subtitle="PR" />
+                            <HeaderCell area="BasisHeader" title="Basis" subtitle="BA" />
+
                             <RefractionProtocolRow form={protocolForm} side={Side.Left} />
                             <RefractionProtocolRow form={protocolForm} side={Side.Right} />
                         </div>

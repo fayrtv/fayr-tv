@@ -1,6 +1,5 @@
 import { ComponentProps, PropsWithChildren } from "react";
-import useIsMobile from "~/hooks/useIsMobile";
-import { Box, Container, createStyles } from "@mantine/core";
+import { Box, createStyles } from "@mantine/core";
 import { Crumbs } from "~/components/Crumbs";
 
 type Props = PropsWithChildren<{
