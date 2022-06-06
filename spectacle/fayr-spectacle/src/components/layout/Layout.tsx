@@ -1,4 +1,4 @@
-import { AppShell, Box } from "@mantine/core";
+import { AppShell } from "@mantine/core";
 import React, { ComponentProps, ReactChild } from "react";
 
 import Header from "~/components/layout/Header";
@@ -19,7 +19,7 @@ const Layout = ({ children, subHeader = { enabled: true } }: Props) => {
                 <Header
                     burgerOpen={burgerOpen}
                     setBurgerOpen={setBurgerOpen}
-                    setBurgerRef={setBurgerRef}
+                    // setBurgerRef={setBurgerRef}
                     subHeader={subHeader}
                 />
             }
@@ -32,7 +32,7 @@ const Layout = ({ children, subHeader = { enabled: true } }: Props) => {
                 <Sidebar
                     open={burgerOpen}
                     onClickOutside={() => setBurgerOpen(false)}
-                    burgerRef={burgerRef}
+                    // burgerRef={burgerRef}
                 />
             }
         >
