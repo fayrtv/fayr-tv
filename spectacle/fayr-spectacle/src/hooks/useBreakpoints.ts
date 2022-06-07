@@ -1,7 +1,7 @@
 import { useMediaQuery as useMantineMediaQuery } from "@mantine/hooks";
 import { useMantineTheme } from "@mantine/core";
 
-export default function useMediaQuery() {
+export default function useBreakpoints() {
     const theme = useMantineTheme();
     return {
         isMobile: useMantineMediaQuery(`(max-width: ${theme.breakpoints.sm}px)`, true),

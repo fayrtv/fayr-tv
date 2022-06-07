@@ -23,7 +23,7 @@ import {
     SideConfiguration,
 } from "~/types/refraction-protocol";
 import { RefractionProtocolQRCode } from "~/components/QRCode";
-import useMediaQuery from "~/hooks/useMediaQuery";
+import useBreakpoints from "~/hooks/useBreakpoints";
 
 const GridText = (
     props: PropsWithChildren<
@@ -80,7 +80,7 @@ export const RefractionProtocol = ({
     onClick,
 }: Props) => {
     const theme = useMantineTheme();
-    const { isTablet } = useMediaQuery();
+    const { isTablet } = useBreakpoints();
 
     const { classes } = useStyles();
 

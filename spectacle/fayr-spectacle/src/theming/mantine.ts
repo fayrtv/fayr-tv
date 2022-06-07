@@ -86,7 +86,7 @@ const spectacleTheme: MantineThemeOverride = {
         white: sameColor("#ffffff"),
         black: sameColor("#000000"),
     },
-    lineHeight: 1.55,
+    lineHeight: 1.5,
     fontFamily:
         "SFPro, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif",
     fontFamilyMonospace: "Courier New, Courier, monospace",
