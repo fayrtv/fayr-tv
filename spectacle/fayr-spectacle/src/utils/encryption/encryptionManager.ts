@@ -109,6 +109,7 @@ export class EncryptionManager implements IEncryptionManager {
         userId: User["id"],
         storeId: Store["id"],
     ): Promise<SerializedAesEncryptionPackage> {
+        // TODO: Get this secret from DB on demand
         const secret = await this._localEncryptionStorageHandler.getSecret(userId, storeId);
 
         const operationScopedIv = this.createRandomInitializationVector();
