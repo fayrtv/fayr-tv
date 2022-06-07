@@ -3,7 +3,7 @@ import React from "react";
 import { UseForm } from "@mantine/hooks/lib/use-form/use-form";
 import { PlainProtocol, Side } from "~/components/customermanagement/CreateRefractionProtocol";
 import { DataGridCell } from "~/components/customermanagement/DataGrid/DataGridCell";
-import useIsMobile from "~/hooks/useIsMobile";
+import useMediaQuery from "~/hooks/useMediaQuery";
 
 type RowProps = {
     form: UseForm<PlainProtocol>;
@@ -13,7 +13,7 @@ type RowProps = {
 export const RefractionProtocolRow = ({ form, side }: RowProps) => {
     const theme = useMantineTheme();
 
-    const isMobile = useIsMobile();
+    const { isMobile } = useMediaQuery();
     const themedColor = theme.colorScheme === "light" ? theme.white : theme.black;
 
     const sideIdentifier = Side[side].toLowerCase();

@@ -23,7 +23,7 @@ import {
     SideConfiguration,
 } from "~/types/refraction-protocol";
 import { RefractionProtocolQRCode } from "~/components/QRCode";
-import useIsMobile from "~/hooks/useIsMobile";
+import useMediaQuery from "~/hooks/useMediaQuery";
 
 const GridText = (
     props: PropsWithChildren<
@@ -80,7 +80,7 @@ export const RefractionProtocol = ({
     onClick,
 }: Props) => {
     const theme = useMantineTheme();
-    const isMobile = useIsMobile();
+    const { isTablet } = useMediaQuery();
 
     const { classes } = useStyles();
 
@@ -193,7 +193,7 @@ export const RefractionProtocol = ({
                         />
                         <Text
                             color={themedColor}
-                            size={isMobile ? "xxs" : "xs"}
+                            size={isTablet ? "xxs" : "xs"}
                             transform="uppercase"
                         >
                             Refraktionsprotokoll
@@ -229,13 +229,14 @@ export const RefractionProtocol = ({
                 background: isArchived ? BackgroundGrey : theme.colors.primary[7],
             })}
         >
-            <Group direction="row">
-                {!isMobile && (
+            <Group direction="row" noWrap>
+                {!isTablet && (
                     <Stack
                         spacing="xs"
-                        sx={(_) => ({
+                        sx={(theme) => ({
                             flexGrow: 2,
                             borderRight: `2px solid ${themedColor}`,
+                            paddingRight: theme.spacing.xl,
                         })}
                     >
                         <Text color={themedColor} weight={700} size="xs" transform="uppercase">
@@ -248,7 +249,7 @@ export const RefractionProtocol = ({
                     </Stack>
                 )}
                 <Stack spacing="xs" onClick={onClick} sx={(_) => ({ flexGrow: 3 })}>
-                    {isMobile ? (
+                    {isTablet ? (
                         <Grid columns={3} sx={(_) => ({ margin: "auto 5px" })}>
                             <Grid.Col span={1} offset={1}>
                                 <Grid.Col span={1}>
@@ -312,7 +313,7 @@ export const RefractionProtocol = ({
                             {createRefractionProtocolSide("R")}
                         </Grid>
                     )}
-                    {isMobile ? (
+                    {isTablet ? (
                         <Container fluid sx={(_) => ({ margin: "auto 0", width: "100%" })}>
                             <Group direction="row" position="center">
                                 <Printer
