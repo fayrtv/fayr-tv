@@ -96,7 +96,9 @@ export const Sidebar = ({ open, onClickOutside }: Props) => {
                                     <MenuItem href={"/auth/signin"}>Einloggen</MenuItem>
                                 </List.Item>
                                 <List.Item>
-                                    <MenuItem href={"/auth/recover"}>Passwort vergessen</MenuItem>
+                                    <MenuItem href={"/auth/requestpasswordreset"}>
+                                        Passwort vergessen
+                                    </MenuItem>
                                 </List.Item>
                                 <List.Item>
                                     <MenuItem href={"/customermanagement"}>

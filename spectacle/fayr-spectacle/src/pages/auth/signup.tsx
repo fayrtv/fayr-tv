@@ -5,7 +5,6 @@ import React, { PropsWithChildren } from "react";
 import ZeissLogo from "~/components/ZeissLogo";
 import { layoutFactory } from "~/components/layout/Layout";
 import { NextPageWithLayout } from "~/types/next-types";
-import { useMantineColorScheme } from "@mantine/core";
 import { useProfileForm } from "~/components/profile/hooks/useProfileForm";
 
 const BodyShell = ({ children }: PropsWithChildren<{}>) => {

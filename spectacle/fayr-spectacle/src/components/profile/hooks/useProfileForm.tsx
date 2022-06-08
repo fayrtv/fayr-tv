@@ -17,6 +17,7 @@ export type ProfileFormData = User & {
     password: string;
     confirmPassword: string;
     termsAndConditions: boolean;
+    confirmationCode: string;
 };
 
 type UseProfileForm = {
@@ -64,6 +65,7 @@ export const useProfileForm = ({
             termsAndConditions: false,
             city: "",
             phone: "",
+            confirmationCode: "",
             ...initialValues,
         } as ProfileFormData,
         validate,
@@ -116,6 +118,16 @@ export const useProfileForm = ({
             {...disabledProps}
             label="Nachname"
             {...form.getInputProps("lastName")}
+        />
+    );
+
+    const renderConfirmationCodeInput = () => (
+        <TextInput
+            required
+            {...disabledProps}
+            label="Code"
+            placeholder="Code"
+            {...form.getInputProps("confirmationCode")}
         />
     );
 
@@ -210,6 +222,7 @@ export const useProfileForm = ({
         renderError,
         renderLoadingOverlay,
         renderAddressSelection,
+        renderConfirmationCodeInput,
         renderTitleInput,
         renderFirstNameInput,
         renderLastNameInput,
