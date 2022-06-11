@@ -117,6 +117,9 @@ export const RefractionProtocol = ({
         shortDescription: string,
         addBackgroundDecoration: boolean = false,
     ) => {
+        if (!refractionProtocol) {
+            return <>Kein Refraktionsprotokoll vorhanden</>;
+        }
         const backgroundSx: Sx = (_) => ({
             backgroundColor: addBackgroundDecoration ? "rgb(217, 217, 217, 0.25)" : "auto",
         });
@@ -165,6 +168,7 @@ export const RefractionProtocol = ({
         };
 
         initializeData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [entity, user]);
 
     const createRefractionProtocolSide = (side: "L" | "R") => {
@@ -211,11 +215,11 @@ export const RefractionProtocol = ({
 
     if (!isSelected) {
         if (!refractionProtocol) {
-        return <>Loading</>;
-    }
+            return <>Loading</>;
+        }
 
-    return (
-        <Paper
+        return (
+            <Paper
                 onClick={onClick}
                 p="sm"
                 sx={(_) => ({

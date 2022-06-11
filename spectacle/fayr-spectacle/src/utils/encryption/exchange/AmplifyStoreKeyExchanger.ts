@@ -48,7 +48,7 @@ export default class AmplifyStoreKeyExchanger implements IKeyExchanger {
     ): Promise<void> {
         // TODO: This might have to happen on the backend, otherwise any user can overwrite secrets of someone else
         const customers = await DataStore.query(Customer, (s) =>
-            s.userID("eq", userId).customerOfStoreId("eq", storeId),
+            s.userID("eq", userId).customerOfStoreID("eq", storeId),
         );
         const customer = customers[0];
 

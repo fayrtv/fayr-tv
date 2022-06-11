@@ -16,14 +16,14 @@ const CustomerOverview = ({ customer }: Props) => {
     const [confirmDeletionOpen, setConfirmDeletionOpen] = useBooleanToggle(false);
 
     const removeCustomer = useCallback(async () => {
-        const response = await fetch(`/api/customers/remove?id=${customer.customerID}`, {
+        const response = await fetch(`/api/customers/remove?id=${customer.id}`, {
             credentials: "include",
             method: "DELETE",
         });
         if (response.ok) {
             await push("/customermanagement");
         }
-    }, [customer.customerID, push]);
+    }, [customer.id, push]);
 
     return (
         <Stack>

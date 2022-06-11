@@ -1,12 +1,10 @@
 import {
     CognitoIdentityProviderClient,
     ListUsersCommand,
-    ListUsersCommandOutput,
     UserType,
 } from "@aws-sdk/client-cognito-identity-provider";
 import { DataStore, withSSRContext } from "aws-amplify";
 import { IncomingMessage } from "http";
-import { getCurrentStore } from "./storeLocator";
 import { Customer as CustomerEntity, Store } from "~/models";
 import { Customer, User as UserDto } from "~/types/user";
 import { convertAwsModelToUser } from "./awsModelParser";
@@ -71,7 +69,7 @@ export const getStoreCustomers = async (
 
         const customer: Customer = {
             ...convertCognitoUserToUserDto(correspondingUser),
-            customerID,
+            id: customerID,
         };
         result.push(customer);
     }
