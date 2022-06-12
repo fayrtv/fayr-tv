@@ -2,11 +2,13 @@ import AmplifyStoreKeyExchanger from "~/utils/encryption/exchange/AmplifyStoreKe
 import IndexedDbStorageHandler from "~/utils/encryption/localPersistence/indexedDbStorageHandler";
 import { EncryptionManager } from "~/utils/encryption/encryptionManager";
 
+const localEncryptionManager = new IndexedDbStorageHandler();
+
 const encryptionManager = new EncryptionManager(
-    new IndexedDbStorageHandler(),
+    localEncryptionManager,
     new AmplifyStoreKeyExchanger(),
 );
 
 export default function useEncryption() {
-    return encryptionManager;
+    return { encryptionManager, localEncryptionManager };
 }

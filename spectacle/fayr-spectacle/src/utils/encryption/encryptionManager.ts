@@ -2,12 +2,20 @@ import ILocalEncryptionStorageHandler from "./localPersistence/ILocalEncryptionS
 import IKeyExchanger from "./exchange/IKeyExchanger";
 import { Store } from "~/models";
 import { User } from "~/types/user";
-import { SerializedAesEncryptionPackage } from './encryptionTypes';
-import { base64EncodeBuffer, base64DecodeToBuffer } from './encodingUtils';
+import { SerializedAesEncryptionPackage } from "./encryptionTypes";
+import { base64EncodeBuffer, base64DecodeToBuffer } from "./encodingUtils";
 
 export interface IEncryptionManager {
-    encrypt(data: string, userId: User["id"], storeId: Store["id"]): Promise<SerializedAesEncryptionPackage>;
-    decrypt(encryptedData: SerializedAesEncryptionPackage, userId: User["id"], storeId: Store["id"]): Promise<string>;
+    encrypt(
+        data: string,
+        userId: User["id"],
+        storeId: Store["id"],
+    ): Promise<SerializedAesEncryptionPackage>;
+    decrypt(
+        encryptedData: SerializedAesEncryptionPackage,
+        userId: User["id"],
+        storeId: Store["id"],
+    ): Promise<string>;
     setupDeviceSecretIfNotExists(userId: User["id"], storeId: Store["id"]): Promise<void>;
     createStoreKeyPair(storeId: Store["id"]): Promise<CryptoKey>;
 }
@@ -96,7 +104,11 @@ export class EncryptionManager implements IEncryptionManager {
         await this._keyExchanger.persistEncryptedSecret(encryptedKeyStringified, userId, storeId);
     }
 
-    public async encrypt(data: string, userId: User["id"], storeId: Store["id"]): Promise<SerializedAesEncryptionPackage> {
+    public async encrypt(
+        data: string,
+        userId: User["id"],
+        storeId: Store["id"],
+    ): Promise<SerializedAesEncryptionPackage> {
         const secret = await this._localEncryptionStorageHandler.getSecret(userId, storeId);
 
         const operationScopedIv = this.createRandomInitializationVector();
@@ -114,7 +126,8 @@ export class EncryptionManager implements IEncryptionManager {
 
         const [base64EncodedResult, encodedInitializationVector] = [
             base64EncodeBuffer(new Uint8Array(encryptedData)),
-            base64EncodeBuffer(operationScopedIv)];
+            base64EncodeBuffer(operationScopedIv),
+        ];
 
         return {
             encryptedPayload: base64EncodedResult,
@@ -132,7 +145,7 @@ export class EncryptionManager implements IEncryptionManager {
         const [encryptedDataBuffer, initializationVectorBuffer] = [
             base64DecodeToBuffer(encryptedData.encryptedPayload),
             base64DecodeToBuffer(encryptedData.encodedInitializationVector),
-        ]
+        ];
 
         const decryptedData: ArrayBuffer = await window.crypto.subtle.decrypt(
             {
@@ -167,8 +180,10 @@ export class EncryptionManager implements IEncryptionManager {
         return aesSymmetricKey;
     };
 
-    private createRandomInitializationVector = (length: number = defaultInitializationVectorLength) => {
+    private createRandomInitializationVector = (
+        length: number = defaultInitializationVectorLength,
+    ) => {
         const buffer = new Uint8Array(length);
         return window.crypto.getRandomValues(buffer);
-    }
+    };
 }

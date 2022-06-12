@@ -87,7 +87,7 @@ export const RefractionProtocol = ({
     const { isTablet } = useBreakpoints();
 
     const { classes } = useStyles();
-    const encryption = useEncryption();
+    const { encryptionManager: encryption } = useEncryption();
 
     const [qrCodeOpen, setQRCodeOpen] = useState(false);
 

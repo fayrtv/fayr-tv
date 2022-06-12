@@ -108,7 +108,7 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
         initialValues: { ...defaultProtocol },
     });
 
-    const encryption = useEncryption();
+    const { encryptionManager: encryption } = useEncryption();
 
     const store = useStoreInfo();
 
