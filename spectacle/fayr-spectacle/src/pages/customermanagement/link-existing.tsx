@@ -39,10 +39,9 @@ const LinkExistingCustomerPage: NextPageWithLayout = () => {
                 title="QR-Code scannen"
             >
                 <QRCodeReader
-                    onResult={(result, error) => {
-                        if (!!result) {
-                            setQRScannerData(result?.getText());
-                        }
+                    onError={console.error}
+                    onScan={(data) => {
+                        console.log(data);
                     }}
                 />
             </Modal>
