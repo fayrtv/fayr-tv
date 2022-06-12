@@ -15,7 +15,7 @@ const LinkExistingCustomerPage: NextPageWithLayout = () => {
     const { push } = useRouter();
 
     const [qrCodeScannerOpen, setQRCodeScannerOpen] = useState(false);
-    const [qrScannerData, setQRScannerData] = useState("No result");
+    const [qrScannerData, setQRScannerData] = useState<string | undefined>(undefined);
 
     const { setError, renderError } = useError({
         title: "Konnte diesen Nutzer nicht hinzufügen.",
