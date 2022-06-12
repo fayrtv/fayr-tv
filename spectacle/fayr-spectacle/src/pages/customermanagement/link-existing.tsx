@@ -1,5 +1,5 @@
 import { NextPageWithLayout } from "~/types/next-types";
-import { Box, Button, Divider, List, Paper, Stack, Text, TextInput } from "@mantine/core";
+import { Button, Divider, Modal, Paper, Stack, Text, TextInput } from "@mantine/core";
 import Layout from "~/components/layout/Layout";
 import { useForm } from "@mantine/form";
 import MainContainer from "~/components/layout/MainContainer";
@@ -8,9 +8,15 @@ import { useError } from "~/hooks/useError";
 import { useRouter } from "next/router";
 import { Qrcode } from "tabler-icons-react";
 import { ShowProfile } from "~/components/layout/ShowProfile";
+import { useState } from "react";
+import { QRCodeReader } from "~/components/QRCodeReader";
 
 const LinkExistingCustomerPage: NextPageWithLayout = () => {
     const { push } = useRouter();
+
+    const [qrCodeScannerOpen, setQRCodeScannerOpen] = useState(false);
+    const [qrScannerData, setQRScannerData] = useState("No result");
+
     const { setError, renderError } = useError({
         title: "Konnte diesen Nutzer nicht hinzufügen.",
     });
@@ -27,6 +33,19 @@ const LinkExistingCustomerPage: NextPageWithLayout = () => {
                 { title: "Konto verknüpfen" },
             ]}
         >
+            <Modal
+                opened={qrCodeScannerOpen}
+                onClose={() => setQRCodeScannerOpen(false)}
+                title="QR-Code scannen"
+            >
+                <QRCodeReader
+                    onResult={(result, error) => {
+                        if (!!result) {
+                            setQRScannerData(result?.getText());
+                        }
+                    }}
+                />
+            </Modal>
             <Stack align="flex-start" sx={{ width: "fit-content" }}>
                 <Text size="xl" color="primary" weight="bold">
                     Bestehenden Nutzer als Kunden hinzufügen
@@ -77,7 +96,11 @@ const LinkExistingCustomerPage: NextPageWithLayout = () => {
                 />
                 <Paper shadow="xs" p="md">
                     <Stack spacing="sm" align="flex-start">
-                        <Button leftIcon={<Qrcode />} mb="sm">
+                        <Button
+                            leftIcon={<Qrcode />}
+                            onClick={() => setQRCodeScannerOpen(true)}
+                            mb="sm"
+                        >
                             Via QR Code hinzufügen
                         </Button>
                         Bitten Sie den Kunden, sich einzuloggen und anschließend zur Profilansicht
