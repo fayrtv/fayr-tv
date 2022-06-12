@@ -16,7 +16,6 @@ export const RefractionProtocolArchive = ({ protocolHistory }: Props) => {
     return (
         <Container size="lg" sx={(_) => ({ padding: "0" })} fluid>
             <Group
-                direction="row"
                 position="center"
                 noWrap
                 sx={(_) => ({ backgroundColor: BackgroundGrey, padding: "15px" })}
@@ -29,8 +28,8 @@ export const RefractionProtocolArchive = ({ protocolHistory }: Props) => {
                         borderRadius: "10px",
                     }}
                 />
-                <Text color={theme.white} size="xxs">
-                    REFRAKTIONSPROTOKOLL
+                <Text color={theme.white} size="xxs" transform="uppercase">
+                    Refraktionsprotokoll
                 </Text>
                 <Group direction="column" align="end" spacing="xs">
                     {protocolHistory.length && (

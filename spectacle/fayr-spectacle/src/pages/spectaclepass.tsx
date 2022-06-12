@@ -62,10 +62,9 @@ const SpectaclePassPage: NextPageWithLayout<ServerProps> = ({ refractionProtocol
     return (
         <Container
             fluid
-            sx={(theme) => ({
-                backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[3] : theme.white,
+            sx={{
                 height: "100%",
-            })}
+            }}
         >
             <Stack>
                 <Group direction="row" position="right">
@@ -76,38 +75,39 @@ const SpectaclePassPage: NextPageWithLayout<ServerProps> = ({ refractionProtocol
                     size="xl"
                     sx={(_) => (isMobile ? {} : { marginLeft: "10%", marginRight: "10%" })}
                 >
-                    <Group direction="column" position="center" spacing="xs">
+                    <Stack align="center" spacing="xs">
                         <Text weight="bold">Digitaler Brillenpass</Text>
                         <Text weight="normal">{userName}</Text>
-                    </Group>
-                    <ScrollArea
-                        style={{
-                            height: "65vh",
-                            overflowX: "hidden",
-                        }}
-                        type="always"
-                    >
-                        <Stack>
-                            <RefractionProtocol
-                                areActionsAllowed={true}
-                                entity={currentProtocol}
-                                isSelected={selectedProtocol === 0}
-                                onClick={() => setSelectedProtocol(0)}
-                                userName={userName}
-                            />
-                            {protocolHistory.map((oldEntity, index) => (
+
+                        <ScrollArea
+                            style={{
+                                height: "65vh",
+                                overflowX: "hidden",
+                            }}
+                            type="always"
+                        >
+                            <Stack>
                                 <RefractionProtocol
-                                    areActionsAllowed={false}
-                                    entity={oldEntity}
-                                    key={oldEntity.id}
-                                    isArchived={true}
-                                    isSelected={index + 1 === selectedProtocol}
-                                    onClick={() => setSelectedProtocol(index + 1)}
+                                    areActionsAllowed={true}
+                                    entity={currentProtocol}
+                                    isSelected={selectedProtocol === 0}
+                                    onClick={() => setSelectedProtocol(0)}
                                     userName={userName}
                                 />
-                            ))}
-                        </Stack>
-                    </ScrollArea>
+                                {protocolHistory.map((oldEntity, index) => (
+                                    <RefractionProtocol
+                                        areActionsAllowed={false}
+                                        entity={oldEntity}
+                                        key={oldEntity.id}
+                                        isArchived={true}
+                                        isSelected={index + 1 === selectedProtocol}
+                                        onClick={() => setSelectedProtocol(index + 1)}
+                                        userName={userName}
+                                    />
+                                ))}
+                            </Stack>
+                        </ScrollArea>
+                    </Stack>
                 </Container>
             </Stack>
         </Container>
