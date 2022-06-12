@@ -1,5 +1,5 @@
 import { useMantineColorScheme, Center, Overlay, Paper, Box, Text, Anchor } from "@mantine/core";
-import { PropsWithChildren } from "react";
+import React, { PropsWithChildren } from "react";
 import ZeissLogo from "~/components/ZeissLogo";
 import Link from "next/link";
 
@@ -10,7 +10,7 @@ type Props = {
     largeTextBox?: boolean;
 };
 
-export const BodyShell = ({
+export const AuthBodyShell = ({
     children,
     notification,
     header,
@@ -73,13 +73,13 @@ export const BodyShell = ({
                     <Box sx={{ textAlign: "center", maxWidth: 250 }} mx="auto" mt="lg">
                         <Text size="sm">
                             Noch kein Benutzerkonto?{" "}
-                            <Link href="signup" passHref>
+                            <Link href="~/pages/auth/signup" passHref>
                                 <Anchor href="signup" size="sm">
                                     Hier kostenlos registrieren{" "}
                                 </Anchor>
                             </Link>
                             für den{" "}
-                            <Link href="/about" passHref>
+                            <Link href="/src/pages/about" passHref>
                                 <Anchor
                                     sx={(theme) => ({
                                         color: colorScheme === "dark" ? theme.white : theme.black,

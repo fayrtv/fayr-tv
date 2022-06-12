@@ -15,7 +15,7 @@ import { layoutFactory } from "~/components/layout/Layout";
 import { NextPageWithLayout } from "~/types/next-types";
 import { AlertCircle } from "tabler-icons-react";
 import Link from "next/link";
-import { BodyShell } from "./sharedSignInBodyShell";
+import { AuthBodyShell } from "~/components/auth/AuthBodyShell";
 import { useStoreInfo } from "~/components/StoreInfoProvider";
 
 const SignInPage: NextPageWithLayout = () => {
@@ -34,7 +34,7 @@ const SignInPage: NextPageWithLayout = () => {
     });
 
     return (
-        <BodyShell
+        <AuthBodyShell
             header={isLogout ? "Wieder anmelden" : "Anmeldung"}
             subHeader={
                 !isLogout ? (
@@ -107,7 +107,7 @@ const SignInPage: NextPageWithLayout = () => {
                     <Button type="submit">Anmelden</Button>
                 </Group>
             </form>
-        </BodyShell>
+        </AuthBodyShell>
     );
 };
 

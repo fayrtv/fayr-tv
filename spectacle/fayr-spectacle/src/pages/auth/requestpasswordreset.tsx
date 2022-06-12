@@ -5,7 +5,7 @@ import { Check } from "tabler-icons-react";
 import { layoutFactory } from "~/components/layout/Layout";
 import { ProfileFormData, useProfileForm } from "~/components/profile/hooks/useProfileForm";
 import { NextPageWithLayout } from "~/types/next-types";
-import { BodyShell } from "./sharedSignInBodyShell";
+import { AuthBodyShell } from "~/components/auth/AuthBodyShell";
 import Router from "next/router";
 
 enum ResetPasswordStep {
@@ -20,7 +20,7 @@ type SubmitCallback = (
     setError: (errorMessage: string) => void,
 ) => Promise<void>;
 
-type StepMetaData = Pick<React.ComponentProps<typeof BodyShell>, "header" | "subHeader">;
+type StepMetaData = Pick<React.ComponentProps<typeof AuthBodyShell>, "header" | "subHeader">;
 
 const stepMetaDataMap = new Map<ResetPasswordStep, StepMetaData>([
     [
@@ -131,7 +131,7 @@ const RequestPasswordReset: NextPageWithLayout = () => {
     });
 
     return (
-        <BodyShell {...stepMetaDataMap.get(viewStep)!}>
+        <AuthBodyShell {...stepMetaDataMap.get(viewStep)!}>
             {viewStep === ResetPasswordStep.RequestReset ? (
                 <form onSubmit={onSubmit}>
                     {profileComponents.renderError()}
@@ -176,7 +176,7 @@ const RequestPasswordReset: NextPageWithLayout = () => {
                     </Button>
                 </Group>
             )}
-        </BodyShell>
+        </AuthBodyShell>
     );
 };
 

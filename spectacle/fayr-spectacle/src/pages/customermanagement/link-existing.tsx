@@ -101,7 +101,7 @@ const LinkExistingCustomerPage: NextPageWithLayout = () => {
                             onClick={() => setQRCodeScannerOpen(true)}
                             mb="sm"
                         >
-                            Via QR Code hinzufügen
+                            Via QR-Code hinzufügen
                         </Button>
                         Bitten Sie den Kunden, sich einzuloggen und anschließend zur Profilansicht
                         zu navigieren:
