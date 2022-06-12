@@ -28,6 +28,7 @@ import useEncryption from "~/hooks/useEncryption";
 import { useSession } from "../hooks/useSession";
 import { useStoreInfo } from "./StoreInfoProvider";
 import { SerializedAesEncryptionPackage } from "../utils/encryption/encryptionTypes";
+import { useAsyncState } from "../hooks/useAsyncState";
 
 const GridText = (
     props: PropsWithChildren<
@@ -91,14 +92,28 @@ export const RefractionProtocol = ({
 
     const [qrCodeOpen, setQRCodeOpen] = useState(false);
 
-    const [refractionProtocol, setRefractionProtocol] =
-        React.useState<RefractionProtocolModel | null>(null);
-
     const isDarkMode = theme.colorScheme === "dark";
     const themedColor = isDarkMode ? theme.black : theme.white;
 
     const { user } = useSession();
     const store = useStoreInfo();
+
+    const [refractionProtocol, _, isRefractionProtocolReady] =
+        useAsyncState<RefractionProtocolModel>(async () => {
+            let data = entity.data as any;
+
+            if (data.model) {
+                if (!user) {
+                    return null;
+                }
+                try {
+                    data = JSON.parse(await encryption.decrypt(data.model, user!.id, store.id));
+                } catch (_) {
+                    // TODO: Properly handle encryption failures
+                }
+            }
+            return data;
+        }, [entity, user]);
 
     const createGridHeading = (heading: string, shortDescription: string): React.ReactNode => (
         <Group align="center" direction="column" sx={(_) => ({ gap: 0 })}>
@@ -142,34 +157,6 @@ export const RefractionProtocol = ({
             </>
         );
     };
-
-    React.useEffect(() => {
-        const initializeData = async () => {
-            let data = entity.data as any | SerializedAesEncryptionPackage;
-
-            if (data.model && data.iv) {
-                if (!user) {
-                    setRefractionProtocol(null);
-                    return;
-                }
-                data = JSON.parse(
-                    await encryption.decrypt(
-                        {
-                            encodedInitializationVector: data.iv,
-                            encryptedPayload: data.model,
-                        },
-                        user!.id,
-                        store.id,
-                    ),
-                );
-            }
-
-            setRefractionProtocol(data);
-        };
-
-        initializeData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [entity, user]);
 
     const createRefractionProtocolSide = (side: "L" | "R") => {
         const sideConfiguration =
