@@ -1,12 +1,12 @@
 import { NextPageWithLayout } from "~/types/next-types";
-import { Button, Divider, Indicator, Modal, Paper, Stack, Text, TextInput } from "@mantine/core";
+import { Button, Divider, Modal, Paper, Stack, Text, TextInput } from "@mantine/core";
 import Layout from "~/components/layout/Layout";
 import { useForm } from "@mantine/form";
 import MainContainer from "~/components/layout/MainContainer";
 import { LinkExistingCustomerRequest } from "~/pages/api/customers/link-existing";
 import { useError } from "~/hooks/useError";
 import { useRouter } from "next/router";
-import { ExclamationMark, Qrcode, UserExclamation } from "tabler-icons-react";
+import { Qrcode } from "tabler-icons-react";
 import { ShowProfile } from "~/components/layout/ShowProfile";
 import { useState } from "react";
 import { QRCodeReader } from "~/components/QRCodeReader";
