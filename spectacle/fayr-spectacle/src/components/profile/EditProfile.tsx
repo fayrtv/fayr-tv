@@ -1,15 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useProfileForm } from "~/components/profile/hooks/useProfileForm";
-import { Box, Button, Center, Divider, Grid, Group, Paper, Stack } from "@mantine/core";
+import { Box, Button, Center, Divider, Grid, Group, Modal, Paper, Stack } from "@mantine/core";
 import { Auth } from "aws-amplify";
 import { User } from "~/types/user";
 import { QRCode } from "~/components/QRCode";
 import { Ruler } from "tabler-icons-react";
+import { useElementSize } from "@mantine/hooks";
+import { useHydrate } from "react-query";
 
 type Props = { user: User };
 
 const EditProfile = ({ user }: Props) => {
     const [isEditable, setEditable] = useState(false);
+    const [showQRFullscreen, setShowQRFullscreen] = useState(false);
 
     const { onSubmit, profileComponents } = useProfileForm({
         isEditable: isEditable,
@@ -66,9 +69,16 @@ const EditProfile = ({ user }: Props) => {
                 </Group>
 
                 <Divider my="lg" />
+                <Modal opened={showQRFullscreen} onClose={() => setShowQRFullscreen(false)}>
+                    <Center>
+                        <QRCode content={user.email} width={300} height={300} />
+                    </Center>
+                </Modal>
                 <Stack align="center" spacing="xs" sx={{ textAlign: "center" }}>
                     Mit diesem QR-Code kann Ihr Optiker Ihnen einen Brillenpass ausstellen:
-                    <QRCode content={user.email} width={140} height={140} />
+                    <Box onClick={() => setShowQRFullscreen(true)}>
+                        <QRCode content={user.email} width={140} height={140} />
+                    </Box>
                 </Stack>
             </form>
         </>
