@@ -13,7 +13,9 @@ export const QRCodeReader = ({ onError, onScan }: Props) => {
         if (!videoRef.current) {
             return;
         }
-        const qrScanner = new QrScanner(videoRef.current, onScan);
+        const qrScanner = new QrScanner(videoRef.current, (scanResult) => onScan(scanResult.data), {
+            highlightScanRegion: true,
+        });
         const promise = qrScanner.start();
         return () => {
             try {
@@ -23,5 +25,5 @@ export const QRCodeReader = ({ onError, onScan }: Props) => {
         };
     }, [onScan]);
 
-    return <video ref={videoRef}></video>;
+    return <video ref={videoRef} style={{ width: "100%" }}></video>;
 };

@@ -1,21 +1,22 @@
 import { NextPageWithLayout } from "~/types/next-types";
-import { Button, Divider, Modal, Paper, Stack, Text, TextInput } from "@mantine/core";
+import { Button, Divider, Indicator, Modal, Paper, Stack, Text, TextInput } from "@mantine/core";
 import Layout from "~/components/layout/Layout";
 import { useForm } from "@mantine/form";
 import MainContainer from "~/components/layout/MainContainer";
 import { LinkExistingCustomerRequest } from "~/pages/api/customers/link-existing";
 import { useError } from "~/hooks/useError";
 import { useRouter } from "next/router";
-import { Qrcode } from "tabler-icons-react";
+import { ExclamationMark, Qrcode, UserExclamation } from "tabler-icons-react";
 import { ShowProfile } from "~/components/layout/ShowProfile";
 import { useState } from "react";
 import { QRCodeReader } from "~/components/QRCodeReader";
+import { validateEmail } from "~/pages/auth/signup";
 
 const LinkExistingCustomerPage: NextPageWithLayout = () => {
     const { push } = useRouter();
 
-    const [qrCodeScannerOpen, setQRCodeScannerOpen] = useState(false);
-    const [qrScannerData, setQRScannerData] = useState<string | undefined>(undefined);
+    const [isQRCodeReaderOpen, setQRCodeReaderOpen] = useState(false);
+    const [qrCodeData, setQRCodeData] = useState<string | undefined>(undefined);
 
     const { setError, renderError } = useError({
         title: "Konnte diesen Nutzer nicht hinzufügen.",
@@ -24,7 +25,33 @@ const LinkExistingCustomerPage: NextPageWithLayout = () => {
         initialValues: {
             userEmail: "",
         },
+        validate: {
+            userEmail: (value) => (validateEmail(value) ? null : "Ungültige E-Mail Adresse"),
+        },
     });
+
+    const onSubmit = async ({ userEmail }: { userEmail: string }) => {
+        setError(null);
+        const payload: LinkExistingCustomerRequest = { userEmail };
+        const response = await fetch("/api/customers/link-existing", {
+            body: JSON.stringify(payload),
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        if (!response.ok) {
+            setError(
+                response.status === 409
+                    ? "Dieser Nutzer ist bereits ein Kunde Ihrer Filiale."
+                    : response.status === 404
+                    ? "Es existiert kein Nutzer mit dieser E-Mail Adresse."
+                    : response.statusText,
+            );
+            return;
+        }
+        await push("/customermanagement");
+    };
 
     return (
         <MainContainer
@@ -34,16 +61,37 @@ const LinkExistingCustomerPage: NextPageWithLayout = () => {
             ]}
         >
             <Modal
-                opened={qrCodeScannerOpen}
-                onClose={() => setQRCodeScannerOpen(false)}
+                opened={isQRCodeReaderOpen}
+                onClose={() => {
+                    setQRCodeReaderOpen(false);
+                    setQRCodeData(undefined);
+                }}
                 title="QR-Code scannen"
             >
-                <QRCodeReader
-                    onError={console.error}
-                    onScan={(data) => {
-                        console.log(data);
-                    }}
-                />
+                {qrCodeData ? (
+                    <>
+                        {renderError()}
+                        <form onSubmit={form.onSubmit(onSubmit)}>
+                            <Stack spacing="sm" align="flex-start">
+                                <TextInput
+                                    {...form.getInputProps("userEmail")}
+                                    label="E-Mail Adresse des Nutzers"
+                                    sx={{ minWidth: 300 }}
+                                />
+
+                                <Button type="submit">Verlinken</Button>
+                            </Stack>
+                        </form>
+                    </>
+                ) : (
+                    <QRCodeReader
+                        onError={console.error}
+                        onScan={async (data) => {
+                            setQRCodeData(data);
+                            form.setValues((state) => ({ ...state, userEmail: data }));
+                        }}
+                    />
+                )}
             </Modal>
             <Stack align="flex-start" sx={{ width: "fit-content" }}>
                 <Text size="xl" color="primary" weight="bold">
@@ -51,30 +99,7 @@ const LinkExistingCustomerPage: NextPageWithLayout = () => {
                 </Text>
                 <Paper shadow="xs" p="md">
                     {renderError()}
-                    <form
-                        onSubmit={form.onSubmit(async ({ userEmail }) => {
-                            setError(null);
-                            const payload: LinkExistingCustomerRequest = { userEmail };
-                            const response = await fetch("/api/customers/link-existing", {
-                                body: JSON.stringify(payload),
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                },
-                            });
-                            if (!response.ok) {
-                                setError(
-                                    response.status === 409
-                                        ? "Dieser Nutzer ist bereits ein Kunde Ihrer Filiale."
-                                        : response.status === 404
-                                        ? "Es existiert kein Nutzer mit dieser E-Mail Adresse."
-                                        : response.statusText,
-                                );
-                                return;
-                            }
-                            await push("/customermanagement");
-                        })}
-                    >
+                    <form onSubmit={form.onSubmit(onSubmit)}>
                         <Stack spacing="sm" align="flex-start">
                             <TextInput
                                 {...form.getInputProps("userEmail")}
@@ -97,7 +122,7 @@ const LinkExistingCustomerPage: NextPageWithLayout = () => {
                     <Stack spacing="sm" align="flex-start">
                         <Button
                             leftIcon={<Qrcode />}
-                            onClick={() => setQRCodeScannerOpen(true)}
+                            onClick={() => setQRCodeReaderOpen(true)}
                             mb="sm"
                         >
                             Via QR-Code hinzufügen

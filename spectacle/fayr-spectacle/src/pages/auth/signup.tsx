@@ -97,7 +97,7 @@ SignUpPage.layoutProps = {
     }),
 };
 
-const validateEmail = (email: string) =>
+export const validateEmail = (email: string) =>
     String(email)
         .toLowerCase()
         .match(
