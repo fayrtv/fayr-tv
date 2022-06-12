@@ -74,7 +74,7 @@ const EditProfile = ({ user }: Props) => {
                         <QRCode content={user.email} width={300} height={300} />
                     </Center>
                 </Modal>
-                <Stack align="center" spacing="xs" sx={{ textAlign: "center" }}>
+                <Stack align="center" spacing="sm" sx={{ textAlign: "center" }}>
                     Mit diesem QR-Code kann Ihr Optiker Ihnen einen Brillenpass ausstellen:
                     <Box onClick={() => setShowQRFullscreen(true)}>
                         <QRCode content={user.email} width={140} height={140} />

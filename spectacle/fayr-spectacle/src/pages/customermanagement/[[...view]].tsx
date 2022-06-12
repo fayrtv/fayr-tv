@@ -13,7 +13,6 @@ import CustomerOverview from "~/components/customermanagement/CustomerOverview";
 import { Link as LinkIcon } from "tabler-icons-react";
 import { layoutFactory } from "src/components/layout/Layout";
 import { getStoreCustomers } from "~/helpers/cognito";
-import { SwitchAvailability } from "~/components/layout/SubHeader";
 import Link from "next/link";
 import MainContainer from "~/components/layout/MainContainer";
 import { getCurrentStore } from "~/helpers/storeLocator";
@@ -108,9 +107,6 @@ CustomerManagementRouter.layoutProps = {
     Layout: layoutFactory({
         subHeader: {
             enabled: true,
-            props: {
-                switchAvailability: SwitchAvailability.OpticianOnly,
-            },
         },
     }),
 };
