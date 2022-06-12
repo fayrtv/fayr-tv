@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useProfileForm } from "~/components/profile/hooks/useProfileForm";
-import { Button, Grid, Group, Stack } from "@mantine/core";
+import { Box, Button, Center, Divider, Grid, Group, Paper, Stack } from "@mantine/core";
 import { Auth } from "aws-amplify";
 import { User } from "~/types/user";
+import { QRCode } from "~/components/QRCode";
+import { Ruler } from "tabler-icons-react";
 
 type Props = { user: User };
 
@@ -62,6 +64,12 @@ const EditProfile = ({ user }: Props) => {
                     {isEditable && profileComponents.renderSubmitButton("Speichern")}
                     {!isEditable && <Button onClick={() => setEditable(true)}>Bearbeiten</Button>}
                 </Group>
+
+                <Divider my="lg" />
+                <Stack align="center" spacing="xs" sx={{ textAlign: "center" }}>
+                    Mit diesem QR-Code kann Ihr Optiker Ihnen einen Brillenpass ausstellen:
+                    <QRCode content={user.email} width={140} height={140} />
+                </Stack>
             </form>
         </>
     );

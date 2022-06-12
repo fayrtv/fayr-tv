@@ -40,9 +40,6 @@ const ProfileRouter: NextPageWithLayout<ServerProps> = ({ user }: ServerProps) =
                     pathFragmentName="slug"
                     renderTitles={true}
                 />
-                <Paper shadow="md" withBorder>
-                    <QRCode content={user.email} width={120} height={120} />
-                </Paper>
             </Stack>
         </MainContainer>
     );
