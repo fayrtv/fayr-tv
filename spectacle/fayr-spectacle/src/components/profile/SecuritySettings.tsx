@@ -26,7 +26,7 @@ import ILocalEncryptionStorageHandler from "~/utils/encryption/localPersistence/
 import { useStoreInfo } from "../StoreInfoProvider";
 import { SerializedModel } from "~/models/amplify-models";
 import { Store } from "~/models";
-import useAsyncState from "~/hooks/useAsyncState";
+import { useAsyncState } from "~/hooks/useAsyncState";
 import { QRCode } from "../QRCode";
 import { useClipboard } from "@mantine/hooks";
 
@@ -154,17 +154,15 @@ const ExportMenu = ({ user, store, localEncryptionManager }: ModalProps) => {
 
     const [copied, setCopied] = React.useState(false);
 
-    const keyState = useAsyncState<string>(async () => {
+    const [key, _, keyAvailable] = useAsyncState<string>(async () => {
         const rawSecret = (await localEncryptionManager.getSecret(user.id, store.id))!;
         const exportedKey = await window.crypto.subtle.exportKey("jwk", rawSecret);
         return window.btoa(JSON.stringify(exportedKey));
     });
 
-    if (keyState.loading) {
+    if (!keyAvailable) {
         return <p>Lade Schlüssel</p>;
     }
-
-    const key = keyState.state;
 
     return (
         <Stack align="center">
@@ -182,7 +180,7 @@ const ExportMenu = ({ user, store, localEncryptionManager }: ModalProps) => {
             <Group spacing="xs" grow direction="row" align="start">
                 <Stack sx={() => ({ flexGrow: 2 })} align="center">
                     <Text underline>Per QR Code</Text>
-                    <QRCode content={key} />
+                    <QRCode content={key!} />
                 </Stack>
                 <Stack sx={() => ({ flexGrow: 2 })} align="center">
                     <Text underline>Manuell</Text>

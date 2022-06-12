@@ -1,21 +1,17 @@
 import React from "react";
 
-export default function useAsyncState<T>(initializer: () => Promise<T>): {
-    loading: boolean;
-    state: T;
-} {
-    const [state, setState] = React.useState<T | undefined>();
+export const useAsyncState = <T>(
+    initializer: () => Promise<T>,
+    dependencies: React.DependencyList = [],
+): [T | null, React.Dispatch<T | null>, boolean] => {
+    const [value, setValue] = React.useState<T | null>(null);
 
     React.useEffect(() => {
-        const init = async () => {
-            setState(await initializer());
+        const lazyInitializer = async () => {
+            setValue(await initializer());
         };
+        lazyInitializer();
+    }, [dependencies]);
 
-        init();
-    }, []);
-
-    return {
-        loading: state === undefined,
-        state: state!,
-    };
-}
+    return [value, setValue, value !== null];
+};
