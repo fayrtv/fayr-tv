@@ -10,7 +10,7 @@ const Debug: NextPageWithLayout = () => {
 
     const { customer } = useSession();
 
-    const encryption = useEncryption();
+    const { encryptionManager: encryption } = useEncryption();
 
     return (
         <Stack>

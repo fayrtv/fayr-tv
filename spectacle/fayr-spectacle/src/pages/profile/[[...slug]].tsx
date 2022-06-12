@@ -12,6 +12,7 @@ import { AspectRatio, Container, Paper, Stack } from "@mantine/core";
 import NotificationSettings from "~/components/profile/NotificationSettings";
 import { QRCode } from "~/components/QRCode";
 import MainContainer from "~/components/layout/MainContainer";
+import SecuritySettings from "~/components/profile/SecuritySettings";
 
 type ServerProps = { user: User };
 
@@ -35,6 +36,11 @@ const ProfileRouter: NextPageWithLayout<ServerProps> = ({ user }: ServerProps) =
                             title: "Benachrichtigungen",
                             slug: "notifications",
                             render: () => <NotificationSettings user={user} />,
+                        },
+                        {
+                            title: "Sicherheit",
+                            slug: "security",
+                            render: () => <SecuritySettings user={user} />,
                         },
                     ]}
                     pathFragmentName="slug"
