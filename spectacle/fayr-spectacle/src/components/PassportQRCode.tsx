@@ -1,16 +1,19 @@
-import { Box, Center, Group, Stack, Text } from "@mantine/core";
+import { Anchor, Box, Center, Group, Stack, Text, useMantineTheme } from "@mantine/core";
 import ChevronRightCircle from "~/components/icons/ChevronRightCircle";
-import { useMantineTheme } from "@mantine/core";
-import { QRCode } from "~/components/QRCode";
+import { QRCode, RefractionProtocolQRCode } from "~/components/QRCode";
 import { useSession } from "~/hooks/useSession";
 import { formatFormalAddress } from "~/types/user";
+import Link from "next/link";
+import { RefractionProtocol } from "~/models";
+import { MAIN_URL } from "~/constants";
 
-export default function PassportQRCodeExample() {
+type Props = {
+    refractionProtocol?: RefractionProtocol;
+};
+
+export default function PassportQRCodeExample({ refractionProtocol }: Props) {
     const theme = useMantineTheme();
     const { user } = useSession();
-
-    // TODO: Define
-    const qrCodeContent = "https://www.zeiss.com/";
 
     return (
         <Box sx={(theme) => ({ backgroundColor: theme.colors.primary[6] })}>
@@ -24,16 +27,26 @@ export default function PassportQRCodeExample() {
                             {user ? formatFormalAddress(user) : "Max Mustermann"}
                         </Text>
                     </Stack>
-                    <ChevronRightCircle />
+                    {refractionProtocol && (
+                        <Link href="/spectaclepass" passHref>
+                            <Anchor>
+                                <ChevronRightCircle />
+                            </Anchor>
+                        </Link>
+                    )}
                 </Group>
                 <Center px={20} pb={5}>
-                    <QRCode
-                        content={qrCodeContent}
-                        background={theme.white}
-                        padding={2}
-                        width={170}
-                        height={170}
-                    />
+                    {refractionProtocol ? (
+                        <RefractionProtocolQRCode refractionProtocol={refractionProtocol} />
+                    ) : (
+                        <QRCode
+                            content={`${MAIN_URL.toString()}about`}
+                            background={theme.white}
+                            padding={2}
+                            width={170}
+                            height={170}
+                        />
+                    )}
                 </Center>
             </Stack>
         </Box>

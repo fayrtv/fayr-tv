@@ -21,6 +21,7 @@ import useBreakpoints from "~/hooks/useBreakpoints";
 type ServerProps = {
     refractionProtocols: SerializedModel<RefractionProtocolEntity>[];
 };
+
 const SpectaclePassPage: NextPageWithLayout<ServerProps> = ({ refractionProtocols }) => {
     const { isMobile } = useBreakpoints();
     const { user } = useSession();

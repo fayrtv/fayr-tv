@@ -10,7 +10,7 @@ import {
 import { useForm } from "@mantine/hooks";
 import { Auth } from "aws-amplify";
 import Router, { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { layoutFactory } from "~/components/layout/Layout";
 import { NextPageWithLayout } from "~/types/next-types";
 import { AlertCircle } from "tabler-icons-react";
@@ -25,6 +25,13 @@ const SignInPage: NextPageWithLayout = () => {
     const storeInfo = useStoreInfo();
     const { query } = useRouter();
     const isLogout = (query["logout"] as string | undefined)?.toLowerCase() === "true";
+
+    useEffect(() => {
+        if (!isLogout) {
+            return;
+        }
+        Auth.signOut();
+    }, [isLogout]);
 
     const form = useForm({
         initialValues: {
@@ -60,7 +67,7 @@ const SignInPage: NextPageWithLayout = () => {
                     try {
                         setSubmitting(true);
                         await Auth.signIn(email, password);
-                        await Router.push("/welcome");
+                        await Router.push("/spectaclepass");
                     } catch (error) {
                         setSubmitting(false);
                         setLoginError(String(error).replace(/^.*Exception: /, ""));

@@ -87,9 +87,6 @@ export const Sidebar = ({ open, onClickOutside }: Props) => {
                                     Debug pages:
                                 </Text>
                                 <List.Item>
-                                    <MenuItem href={"/welcome"}>Willkommen</MenuItem>
-                                </List.Item>
-                                <List.Item>
                                     <MenuItem href={"/auth/signup"}>Registrieren</MenuItem>
                                 </List.Item>
                                 <List.Item>

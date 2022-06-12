@@ -79,7 +79,7 @@ export const AuthBodyShell = ({
                                 </Anchor>
                             </Link>
                             für den{" "}
-                            <Link href="/src/pages/about" passHref>
+                            <Link href="/src/pages/AboutDigitalSpectaclePassportPage" passHref>
                                 <Anchor
                                     sx={(theme) => ({
                                         color: colorScheme === "dark" ? theme.white : theme.black,

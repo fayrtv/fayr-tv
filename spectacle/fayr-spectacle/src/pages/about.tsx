@@ -17,6 +17,15 @@ import { NextPageWithLayout } from "~/types/next-types";
 import { useStoreInfo } from "~/components/StoreInfoProvider";
 import Link from "next/link";
 import { Anchor } from "@mantine/core";
+import { SerializedModel, serializeModel } from "~/models/amplify-models";
+import { RefractionProtocol as RefractionProtocolEntity } from "~/models";
+import { GetServerSideProps } from "next";
+import { RedirectProps, redirectServerSide } from "~/helpers/next-server";
+import { withSSRContext } from "aws-amplify";
+import { DataStore } from "@aws-amplify/datastore";
+import { ssrGetUser } from "~/helpers/authentication";
+import { RefractionProtocol as RefractionProtocolModel } from "~/types/refraction-protocol";
+import SpectaclePassPage from "~/pages/spectaclepass";
 
 const NumberBox = ({ n, title, children }: PropsWithChildren<{ n: number; title: string }>) => {
     return (
@@ -57,7 +66,13 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-const DigitalSpectaclePassportPage: NextPageWithLayout = () => {
+type ServerProps = {
+    latestRefractionProtocol?: SerializedModel<RefractionProtocolEntity>;
+};
+
+const AboutDigitalSpectaclePassportPage: NextPageWithLayout = ({
+    latestRefractionProtocol,
+}: ServerProps) => {
     const storeInfo = useStoreInfo();
     const { classes } = useStyles();
 
@@ -74,7 +89,7 @@ const DigitalSpectaclePassportPage: NextPageWithLayout = () => {
                             p={70}
                             radius="xs"
                         >
-                            <PassportQRCodeExample />
+                            <PassportQRCodeExample refractionProtocol={latestRefractionProtocol} />
                         </Paper>
                     </MediaQuery>
                     <Box
@@ -135,8 +150,33 @@ const DigitalSpectaclePassportPage: NextPageWithLayout = () => {
     );
 };
 
-DigitalSpectaclePassportPage.layoutProps = {
+AboutDigitalSpectaclePassportPage.layoutProps = {
     Layout,
 };
 
-export default DigitalSpectaclePassportPage;
+export const getServerSideProps: GetServerSideProps<ServerProps> = async ({ req, res }) => {
+    const SSR = withSSRContext({ req });
+    const store = SSR.DataStore as typeof DataStore;
+
+    const user = await ssrGetUser(req);
+
+    if (!user?.email) {
+        return {
+            props: {},
+        };
+    }
+
+    const userProtocols = await store.query(RefractionProtocolEntity, (x) =>
+        x.userID("eq", user.email),
+    );
+
+    return {
+        props: {
+            latestRefractionProtocol: userProtocols.length
+                ? serializeModel(userProtocols[0])
+                : undefined,
+        },
+    };
+};
+
+export default AboutDigitalSpectaclePassportPage;
