@@ -6,6 +6,7 @@ import ZeissLogo from "~/components/ZeissLogo";
 import { layoutFactory } from "~/components/layout/Layout";
 import { NextPageWithLayout } from "~/types/next-types";
 import { useProfileForm } from "~/components/profile/hooks/useProfileForm";
+import useBreakpoints from "~/hooks/useBreakpoints";
 
 const BodyShell = ({ children }: PropsWithChildren<{}>) => {
     return (
@@ -51,35 +52,33 @@ const SignUpPage: NextPageWithLayout = () => {
         errorToString: (error) => String(error).replace(/^.*Exception: /, ""),
     });
 
+    const { isMobile } = useBreakpoints();
+
     return (
         <BodyShell>
             <form onSubmit={onSubmit}>
                 {profileComponents.renderError()}
                 {profileComponents.renderLoadingOverlay()}
-                {/* TODO: No grid with columns on mobile */}
-                <Grid gutter="lg">
-                    <Grid.Col span={6}>
-                        <Stack spacing="sm">
-                            <Group grow>
-                                {profileComponents.renderAddressSelection()}
-                                {profileComponents.renderTitleInput()}
-                            </Group>
-                            {profileComponents.renderFirstNameInput()}
-                            {profileComponents.renderLastNameInput()}
-                        </Stack>
-                    </Grid.Col>
+                <Group noWrap={!isMobile} align="top" spacing={isMobile ? "sm" : "lg"}>
+                    {/* No clue why, but the 2x width: 100% works... */}
+                    <Stack spacing="sm" sx={{ width: "100%" }}>
+                        <Group grow>
+                            {profileComponents.renderAddressSelection()}
+                            {profileComponents.renderTitleInput()}
+                        </Group>
+                        {profileComponents.renderFirstNameInput()}
+                        {profileComponents.renderLastNameInput()}
+                    </Stack>
 
-                    <Grid.Col span={6}>
-                        <Stack spacing="sm">
-                            {profileComponents.renderEmailInput()}
-                            {profileComponents.renderPasswordInput()}
-                            {profileComponents.renderConfirmPasswordInput()}
+                    <Stack spacing="sm" sx={{ width: "100%" }}>
+                        {profileComponents.renderEmailInput()}
+                        {profileComponents.renderPasswordInput()}
+                        {profileComponents.renderConfirmPasswordInput()}
 
-                            {profileComponents.renderNewsletterCheckbox()}
-                            {profileComponents.renderTermsCheckbox()}
-                        </Stack>
-                    </Grid.Col>
-                </Grid>
+                        {profileComponents.renderNewsletterCheckbox()}
+                        {profileComponents.renderTermsCheckbox()}
+                    </Stack>
+                </Group>
 
                 <Group position="right" mt="md">
                     {profileComponents.renderSubmitButton("Benutzerkonto anlegen")}
