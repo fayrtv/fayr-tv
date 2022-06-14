@@ -11,4 +11,8 @@ export default interface ILocalEncryptionStorageHandler {
     setSecret(rawSecret: CryptoKey, userId: User["id"], storeId: StoreId): Promise<void>;
     getSecret(userId: User["id"], storeId: StoreId): Promise<CryptoKey | undefined>;
     hasSecret(userId: User["id"], storeId: StoreId): Promise<boolean>;
+
+    setStorePrivateKey(rawSecret: CryptoKey, storeId: StoreId): Promise<void>;
+    getStorePrivateKey(storeId: StoreId): Promise<CryptoKey | undefined>;
+    hasStorePrivateKey(storeId: StoreId): Promise<boolean>;
 }

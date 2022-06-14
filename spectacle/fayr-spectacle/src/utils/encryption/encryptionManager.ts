@@ -63,6 +63,7 @@ export class EncryptionManager implements IEncryptionManager {
         );
 
         await this._keyExchanger.setStorePublicKey(publicKey!, storeId);
+        await this._localEncryptionStorageHandler.setStorePrivateKey(privateKey!, storeId);
 
         return privateKey!;
     }
