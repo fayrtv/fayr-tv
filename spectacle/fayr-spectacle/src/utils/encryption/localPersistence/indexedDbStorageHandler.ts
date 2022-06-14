@@ -34,7 +34,41 @@ export default class IndexedDbStorageHandler implements ILocalEncryptionStorageH
         return rawKey !== undefined;
     }
 
+    public async setStorePrivateKey(rawSecret: CryptoKey, storeId: string): Promise<void> {
+        const idbKey = IndexedDbStorageHandler.createStoreKey(storeId);
+        const exportedKey = await window.crypto.subtle.exportKey("jwk", rawSecret);
+        await set(idbKey, JSON.stringify(exportedKey));
+    }
+
+    public async getStorePrivateKey(storeId: string): Promise<CryptoKey | undefined> {
+        const idbKey = IndexedDbStorageHandler.createStoreKey(storeId);
+        const rawKey = await get<string>(idbKey);
+
+        const importedKey = await window.crypto.subtle.importKey(
+            "jwk",
+            JSON.parse(rawKey!),
+            {
+                name: "RSA-OAEP",
+                hash: "SHA-256",
+            },
+            true,
+            ["encrypt", "decrypt"],
+        );
+
+        return importedKey;
+    }
+
+    public async hasStorePrivateKey(storeId: string): Promise<boolean> {
+        const idbKey = IndexedDbStorageHandler.createStoreKey(storeId);
+        const rawKey = await get<string>(idbKey);
+        return rawKey !== undefined;
+    }
+
     private static createKey(userId: User["id"], storeId: Store["id"]): string {
-        return `${userId}_${storeId}`;
+        return `zs_${userId}_${storeId}`;
+    }
+
+    private static createStoreKey(storeId: Store["id"]): string {
+        return `zsk_${storeId}`;
     }
 }

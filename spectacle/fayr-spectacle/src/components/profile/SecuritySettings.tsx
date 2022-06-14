@@ -3,6 +3,7 @@ import {
     Button,
     Divider,
     Group,
+    Loader,
     Modal,
     Popover,
     Stack,
@@ -19,6 +20,7 @@ import {
     Check,
     Copy,
     FileImport,
+    Rotate,
 } from "tabler-icons-react";
 import { User } from "~/types/user";
 import useEncryption from "~/hooks/useEncryption";
@@ -29,24 +31,28 @@ import { Store } from "~/models";
 import { useAsyncState } from "~/hooks/useAsyncState";
 import { QRCode } from "../QRCode";
 import { useClipboard } from "@mantine/hooks";
+import { useSession } from "../../hooks/useSession";
+import { IEncryptionManager } from "../../utils/encryption/encryptionManager";
 
 type Props = {
     user: User;
 };
 
 enum ModalOperation {
-    Import,
-    Export,
+    ImportSecret,
+    ExportSecret,
+    GenerateStorePair,
+    ImportStoreKey,
+    ExportStoreKey,
 }
 
-type ModalProps = {
-    store: SerializedModel<Store>;
-    user: User;
-    localEncryptionManager: ILocalEncryptionStorageHandler;
+type ImportModalProps = {
+    keyAvailabilityChecker: () => Promise<boolean>;
+    keySetter: (keyAsJson: any) => Promise<void>;
     closeModal(): void;
 };
 
-const ImportMenu = ({ user, store, localEncryptionManager, closeModal }: ModalProps) => {
+const ImportMenu = ({ keyAvailabilityChecker, keySetter, closeModal }: ImportModalProps) => {
     enum View {
         ConfirmRisk,
         Import,
@@ -58,7 +64,7 @@ const ImportMenu = ({ user, store, localEncryptionManager, closeModal }: ModalPr
 
     React.useEffect(() => {
         const init = async () => {
-            const hasExistingKey = await localEncryptionManager.hasSecret(user.id, store.id);
+            const hasExistingKey = await keyAvailabilityChecker();
             if (hasExistingKey) {
                 setView(View.ConfirmRisk);
             }
@@ -120,18 +126,7 @@ const ImportMenu = ({ user, store, localEncryptionManager, closeModal }: ModalPr
                             onClick={async () => {
                                 try {
                                     const jsonKey = JSON.parse(window.atob(manuallyEnteredKey));
-                                    const exportedKey = await window.crypto.subtle.importKey(
-                                        "jwk",
-                                        jsonKey,
-                                        "AES-GCM",
-                                        true,
-                                        ["encrypt", "decrypt"],
-                                    );
-                                    await localEncryptionManager.setSecret(
-                                        exportedKey,
-                                        user.id,
-                                        store.id,
-                                    );
+                                    await keySetter(jsonKey);
                                     closeModal();
                                 } catch (error) {
                                     setImportError(true);
@@ -149,13 +144,17 @@ const ImportMenu = ({ user, store, localEncryptionManager, closeModal }: ModalPr
     );
 };
 
-const ExportMenu = ({ user, store, localEncryptionManager }: ModalProps) => {
+type ExportModalProps = {
+    keyRetriever: () => Promise<CryptoKey>;
+};
+
+const ExportMenu = ({ keyRetriever }: ExportModalProps) => {
     const clipboard = useClipboard();
 
     const [copied, setCopied] = React.useState(false);
 
     const [key, _, keyAvailable] = useAsyncState<string>(async () => {
-        const rawSecret = (await localEncryptionManager.getSecret(user.id, store.id))!;
+        const rawSecret = await keyRetriever();
         const exportedKey = await window.crypto.subtle.exportKey("jwk", rawSecret);
         return window.btoa(JSON.stringify(exportedKey));
     });
@@ -210,53 +209,220 @@ const ExportMenu = ({ user, store, localEncryptionManager }: ModalProps) => {
     );
 };
 
-export const SecuritySettings = ({ user }: Props) => {
-    const [modalOperation, setModalOperation] = React.useState<ModalOperation | undefined>();
+type GenerateModalProps = {
+    store: SerializedModel<Store>;
+    localEncryptionStorageHandler: ILocalEncryptionStorageHandler;
+    encryptionManager: IEncryptionManager;
+    closeModal(): void;
+};
 
-    const { localEncryptionManager } = useEncryption();
+const GenerateStorePair = ({
+    store,
+    localEncryptionStorageHandler,
+    encryptionManager,
+    closeModal,
+}: GenerateModalProps) => {
+    const [loading, setLoading] = React.useState(false);
 
-    const storeInfo = useStoreInfo();
+    const [keyAvailable, _, keyAvailabilityLoading] = useAsyncState<boolean>(
+        async () => await localEncryptionStorageHandler.hasStorePrivateKey(store.id),
+    );
+
+    if (!keyAvailabilityLoading) {
+        return <p>Lade...</p>;
+    }
+
+    const onClick = async () => {
+        try {
+            setLoading(true);
+            await encryptionManager.createStoreKeyPair(store.id);
+            closeModal();
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <Stack>
-            <Text>Verwalten sie hier ihre Sicherheitseinstellungen.</Text>
+            <Text>
+                Hier können sie einen Schlüssel für ihr ZEISS VISION CENTER generieren. Um die
+                Sicherheit ihrer Daten zu gewähren, ist der Schlüssel nur für das Erstellen von
+                Refraktionsprotokollen auf diesem Gerät gültig, kann aber auf anderen Geräten
+                importiert werden.
+            </Text>
+            {keyAvailable && (
+                <Group direction="row" noWrap>
+                    <ThemeIcon color="yellow" size="xl">
+                        <AlertTriangle />
+                    </ThemeIcon>
+                    <span>
+                        Für dieses ZEISS VISION CENTER ist bereits ein Schlüsselpaar eingerichtet.
+                        Wenn ein neues Paar generiert wird, werden bestehende Informationen
+                        überschrieben. Sind sie sich sicher, dass sie ein neues Geheimnis generieren
+                        wollen?
+                    </span>
+                </Group>
+            )}
+            {loading ? (
+                <Loader />
+            ) : (
+                <Button leftIcon={<Rotate />} onClick={onClick}>
+                    Generieren
+                </Button>
+            )}
+        </Stack>
+    );
+};
+
+export const SecuritySettings = ({ user }: Props) => {
+    const [modalOperation, setModalOperation] = React.useState<ModalOperation | undefined>(
+        undefined,
+    );
+
+    const { isAdmin } = useSession();
+
+    const { encryptionManager, localEncryptionManager } = useEncryption();
+
+    const storeInfo = useStoreInfo();
+    const closeModal = () => setModalOperation(undefined);
+
+    const modalContent = React.useMemo(() => {
+        let content: React.ReactNode | null = null;
+
+        switch (modalOperation) {
+            case ModalOperation.ExportSecret:
+                content = (
+                    <ExportMenu
+                        keyRetriever={async () =>
+                            (await localEncryptionManager.getSecret(user.id, storeInfo.id))!
+                        }
+                    />
+                );
+                break;
+            case ModalOperation.ImportSecret:
+                content = (
+                    <ImportMenu
+                        closeModal={closeModal}
+                        keyAvailabilityChecker={async () =>
+                            await localEncryptionManager.hasSecret(user.id, storeInfo.id)
+                        }
+                        keySetter={async (keyAsJson: any) => {
+                            const exportedKey = await window.crypto.subtle.importKey(
+                                "jwk",
+                                keyAsJson,
+                                "AES-GCM",
+                                true,
+                                ["encrypt", "decrypt"],
+                            );
+                            await localEncryptionManager.setSecret(
+                                exportedKey,
+                                user.id,
+                                storeInfo.id,
+                            );
+                        }}
+                    />
+                );
+                break;
+            case ModalOperation.GenerateStorePair:
+                content = (
+                    <GenerateStorePair
+                        encryptionManager={encryptionManager}
+                        localEncryptionStorageHandler={localEncryptionManager}
+                        store={storeInfo}
+                        closeModal={closeModal}
+                    />
+                );
+                break;
+            case ModalOperation.ImportStoreKey:
+                content = (
+                    <ImportMenu
+                        closeModal={closeModal}
+                        keyAvailabilityChecker={function (): Promise<boolean> {
+                            throw new Error("Function not implemented.");
+                        }}
+                        keySetter={function (keyAsJson: any): Promise<void> {
+                            throw new Error("Function not implemented.");
+                        }}
+                    />
+                );
+                break;
+            case ModalOperation.ExportStoreKey:
+                content = (
+                    <ExportMenu
+                        keyRetriever={async () =>
+                            (await localEncryptionManager.getStorePrivateKey(storeInfo.id))!
+                        }
+                    />
+                );
+                break;
+        }
+
+        return content;
+    }, [modalOperation]);
+
+    return (
+        <Stack>
+            <Text>Verwalten sie hier ihre persönlichen Sicherheitseinstellungen.</Text>
             <Group direction="row">
                 <Text weight={600}>Verschlüsselungsinfo für ihren Brillenpass:</Text>
                 <Button
                     leftIcon={<ArrowBarUp />}
-                    onClick={() => setModalOperation(ModalOperation.Export)}
+                    onClick={() => setModalOperation(ModalOperation.ExportSecret)}
                 >
                     Exportieren
                 </Button>
                 <Button
                     leftIcon={<ArrowBarDown />}
-                    onClick={() => setModalOperation(ModalOperation.Import)}
+                    onClick={() => setModalOperation(ModalOperation.ImportSecret)}
                 >
                     Importieren
                 </Button>
             </Group>
+            {(isAdmin || true) && (
+                <>
+                    <Divider orientation="horizontal" />
+                    <Text>
+                        Verwalten sie hier ihre Sicherheitseinstellungen für ihr ZEISS VISION
+                        CENTER.
+                    </Text>
+                    <Group direction="row">
+                        <Text weight={600}>Verschlüsselungsinfo für ihr ZEISS VISION CENTER:</Text>
+                        <Button
+                            leftIcon={<Rotate />}
+                            onClick={() => setModalOperation(ModalOperation.GenerateStorePair)}
+                        >
+                            Generieren
+                        </Button>
+                        <Button
+                            leftIcon={<ArrowBarUp />}
+                            onClick={() => setModalOperation(ModalOperation.ExportStoreKey)}
+                        >
+                            Exportieren
+                        </Button>
+                        <Button
+                            leftIcon={<ArrowBarDown />}
+                            onClick={() => setModalOperation(ModalOperation.ImportStoreKey)}
+                        >
+                            Importieren
+                        </Button>
+                    </Group>
+                </>
+            )}
             <Modal
                 size="xl"
                 centered
                 opened={modalOperation !== undefined}
                 onClose={() => setModalOperation(undefined)}
-                title={modalOperation === ModalOperation.Export ? "Exportieren" : "Importieren"}
+                title={
+                    modalOperation === ModalOperation.GenerateStorePair
+                        ? "Generieren"
+                        : modalOperation === ModalOperation.ExportStoreKey ||
+                          modalOperation === ModalOperation.ExportSecret
+                        ? "Exportieren"
+                        : "Importieren"
+                }
             >
-                {modalOperation === ModalOperation.Export ? (
-                    <ExportMenu
-                        user={user}
-                        localEncryptionManager={localEncryptionManager}
-                        store={storeInfo}
-                        closeModal={() => setModalOperation(undefined)}
-                    />
-                ) : (
-                    <ImportMenu
-                        user={user}
-                        localEncryptionManager={localEncryptionManager}
-                        store={storeInfo}
-                        closeModal={() => setModalOperation(undefined)}
-                    />
-                )}
+                {modalContent}
             </Modal>
         </Stack>
     );

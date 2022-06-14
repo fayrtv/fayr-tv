@@ -21,8 +21,7 @@ import { AwsUserResponse } from "~/helpers/awsModelParser";
 import { AuthBodyShell } from "~/components/auth/AuthBodyShell";
 
 const SignInPage: NextPageWithLayout = () => {
-    const storeInfo = useStoreInfo();
-    const encryption = useEncryption();
+    const { encryptionManager } = useEncryption();
     const [isSubmitting, setSubmitting] = useState(false);
     const [loginError, setLoginError] = useState<string | undefined>();
 
@@ -71,7 +70,10 @@ const SignInPage: NextPageWithLayout = () => {
                     try {
                         setSubmitting(true);
                         const user: AwsUserResponse = await Auth.signIn(email, password);
-                        await encryption.setupDeviceSecretIfNotExists(user.username, storeInfo.id);
+                        await encryptionManager.setupDeviceSecretIfNotExists(
+                            user.username,
+                            storeInfo.id,
+                        );
                         await Router.push("/spectaclepass");
                     } catch (error) {
                         setSubmitting(false);
