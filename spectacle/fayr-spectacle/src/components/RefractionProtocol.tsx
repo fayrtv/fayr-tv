@@ -75,6 +75,11 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
+type EncryptedModel = {
+    model: string;
+    iv: string;
+};
+
 export const RefractionProtocol = ({
     areActionsAllowed,
     entity,
@@ -99,19 +104,21 @@ export const RefractionProtocol = ({
 
     const [refractionProtocol, _, isRefractionProtocolReady] =
         useAsyncState<RefractionProtocolModel>(async () => {
-            let data = entity.data as any;
-
-            if (data.model) {
-                if (!user) {
-                    return null;
-                }
-                try {
-                    data = JSON.parse(await encryption.decrypt(data.model, user!.id, store.id));
-                } catch (_) {
-                    // TODO: Properly handle encryption failures
-                }
+            const encryptedModel = entity.data as unknown as EncryptedModel;
+            if (!user || !encryptedModel.model || !encryptedModel.iv) {
+                console.log("Returning null");
+                return null;
             }
-            return data;
+            return JSON.parse(
+                await encryption.decrypt(
+                    {
+                        encodedInitializationVector: encryptedModel.iv,
+                        encryptedPayload: encryptedModel.model,
+                    },
+                    user!.id,
+                    store.id,
+                ),
+            );
         }, [entity, user]);
 
     const createGridHeading = (heading: string, shortDescription: string): React.ReactNode => (
@@ -199,11 +206,11 @@ export const RefractionProtocol = ({
         );
     };
 
-    if (!isSelected) {
-        if (!refractionProtocol) {
-            return <>Loading</>;
-        }
+    if (!isRefractionProtocolReady) {
+        return <>Loading</>;
+    }
 
+    if (!isSelected) {
         return (
             <Paper
                 onClick={onClick}
