@@ -1,15 +1,13 @@
 export const base64EncodeBuffer = (buffer: Uint8Array): string => {
     const resultView = Array.from(buffer);
-    const encryptedDataStringified = resultView
-        .map((byte) => String.fromCharCode(byte))
-        .join("");
+    const encryptedDataStringified = resultView.map((byte) => String.fromCharCode(byte)).join("");
 
     const base64EncodedResult = window.btoa(encryptedDataStringified);
 
     return base64EncodedResult;
-}
+};
 
-export const base64DecodeToBuffer = (base64EncodedPayload: string) => {    
+export const base64DecodeToBuffer = (base64EncodedPayload: string) => {
     const base64DecodedData = window.atob(base64EncodedPayload);
 
     const decodedBuffer = new Uint8Array(base64DecodedData.length);
@@ -18,4 +16,12 @@ export const base64DecodeToBuffer = (base64EncodedPayload: string) => {
     }
 
     return decodedBuffer;
-}
+};
+
+export const ab2b64 = (arrayBuffer: ArrayBuffer) => {
+    return window.btoa(String.fromCharCode.apply(null, Array.from(new Uint8Array(arrayBuffer))));
+};
+
+export const b642ab = (base64string: string) => {
+    return Uint8Array.from(window.atob(base64string), (c) => c.charCodeAt(0));
+};

@@ -222,6 +222,7 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
                                     color="primary"
                                     leftIcon={<DeviceFloppy />}
                                     loading={saving}
+                                    type="submit"
                                 >
                                     Speichern
                                 </ResponsiveIconButton>

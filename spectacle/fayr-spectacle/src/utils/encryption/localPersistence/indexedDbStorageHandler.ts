@@ -52,7 +52,8 @@ export default class IndexedDbStorageHandler implements ILocalEncryptionStorageH
                 hash: "SHA-256",
             },
             true,
-            ["encrypt", "decrypt"],
+            // This is only for decryption, since we only deal with the private key here
+            ["decrypt"],
         );
 
         return importedKey;

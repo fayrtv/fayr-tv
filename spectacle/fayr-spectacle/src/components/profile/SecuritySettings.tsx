@@ -5,7 +5,6 @@ import {
     Group,
     Loader,
     Modal,
-    Popover,
     Stack,
     Text,
     Textarea,
@@ -131,7 +130,6 @@ const ImportMenu = ({ keyAvailabilityChecker, keySetter, closeModal }: ImportMod
                                 } catch (error) {
                                     setImportError(true);
                                     window.setTimeout(() => setImportError(false), 1000);
-                                    console.log(error);
                                 }
                             }}
                         >
@@ -145,10 +143,13 @@ const ImportMenu = ({ keyAvailabilityChecker, keySetter, closeModal }: ImportMod
 };
 
 type ExportModalProps = {
+    // TODO: Figure out how to get this working with the apparently much longer RSA key. QR Code lib either throws "too long" or (when attempting to
+    // compress with LZString) "Malformed"
+    allowQrCode?: boolean;
     keyRetriever: () => Promise<CryptoKey>;
 };
 
-const ExportMenu = ({ keyRetriever }: ExportModalProps) => {
+const ExportMenu = ({ allowQrCode = true, keyRetriever }: ExportModalProps) => {
     const clipboard = useClipboard();
 
     const [copied, setCopied] = React.useState(false);
@@ -177,10 +178,12 @@ const ExportMenu = ({ keyRetriever }: ExportModalProps) => {
                 </span>
             </Group>
             <Group spacing="xs" grow direction="row" align="start">
-                <Stack sx={() => ({ flexGrow: 2 })} align="center">
-                    <Text underline>Per QR Code</Text>
-                    <QRCode content={key!} />
-                </Stack>
+                {allowQrCode && (
+                    <Stack sx={() => ({ flexGrow: 2 })} align="center">
+                        <Text underline>Per QR Code</Text>
+                        <QRCode content={key!} />
+                    </Stack>
+                )}
                 <Stack sx={() => ({ flexGrow: 2 })} align="center">
                     <Text underline>Manuell</Text>
                     <Text>Kopieren sie diesen Text ins "Importieren" Menü auf dem Zielgerät</Text>
@@ -307,7 +310,7 @@ export const SecuritySettings = ({ user }: Props) => {
                             await localEncryptionManager.hasSecret(user.id, storeInfo.id)
                         }
                         keySetter={async (keyAsJson: any) => {
-                            const exportedKey = await window.crypto.subtle.importKey(
+                            const importedKey = await window.crypto.subtle.importKey(
                                 "jwk",
                                 keyAsJson,
                                 "AES-GCM",
@@ -315,7 +318,7 @@ export const SecuritySettings = ({ user }: Props) => {
                                 ["encrypt", "decrypt"],
                             );
                             await localEncryptionManager.setSecret(
-                                exportedKey,
+                                importedKey,
                                 user.id,
                                 storeInfo.id,
                             );
@@ -337,11 +340,21 @@ export const SecuritySettings = ({ user }: Props) => {
                 content = (
                     <ImportMenu
                         closeModal={closeModal}
-                        keyAvailabilityChecker={function (): Promise<boolean> {
-                            throw new Error("Function not implemented.");
-                        }}
-                        keySetter={function (keyAsJson: any): Promise<void> {
-                            throw new Error("Function not implemented.");
+                        keyAvailabilityChecker={async () =>
+                            await localEncryptionManager.hasStorePrivateKey(storeInfo.id)
+                        }
+                        keySetter={async (keyAsJson: any) => {
+                            const importedKey = await window.crypto.subtle.importKey(
+                                "jwk",
+                                keyAsJson,
+                                { name: "RSA-OAEP", hash: { name: "SHA-256" } },
+                                true,
+                                ["decrypt"],
+                            );
+                            await localEncryptionManager.setStorePrivateKey(
+                                importedKey,
+                                storeInfo.id,
+                            );
                         }}
                     />
                 );
@@ -349,6 +362,7 @@ export const SecuritySettings = ({ user }: Props) => {
             case ModalOperation.ExportStoreKey:
                 content = (
                     <ExportMenu
+                        allowQrCode={false}
                         keyRetriever={async () =>
                             (await localEncryptionManager.getStorePrivateKey(storeInfo.id))!
                         }

@@ -1,9 +1,10 @@
 import ILocalEncryptionStorageHandler from "./localPersistence/ILocalEncryptionStorageHandler";
 import IKeyExchanger from "./exchange/IKeyExchanger";
-import { Store } from "~/models";
+import { Customer, Store } from "~/models";
 import { User } from "~/types/user";
 import { SerializedAesEncryptionPackage } from "./encryptionTypes";
-import { base64EncodeBuffer, base64DecodeToBuffer } from "./encodingUtils";
+import { base64EncodeBuffer, base64DecodeToBuffer, ab2b64, b642ab } from "./encodingUtils";
+import { DataStore } from "aws-amplify";
 
 export interface IEncryptionManager {
     encrypt(
@@ -82,25 +83,25 @@ export class EncryptionManager implements IEncryptionManager {
         }
         const subtle = window.crypto.subtle;
 
-        const key = await this.generateLocalSecret(userId, storeId);
+        const secret = await this.generateLocalSecret(userId, storeId);
 
         // This is the exported key we can now sign with the stores public key
-        const exportedKey = await subtle.exportKey("jwk", key);
+        const exportedSecret = await subtle.exportKey("jwk", secret);
 
-        const exportedKeyStringified = this._encoder.encode(JSON.stringify(exportedKey));
+        const exportedKeyBuffer = this._encoder.encode(JSON.stringify(exportedSecret));
 
         // Get the public key of the store and encrypt it
         const storePublicKey = await this._keyExchanger.getStorePublicKey(storeId);
 
-        const encryptedKey: BufferSource = await subtle.encrypt(
+        const encryptedSecretBuffer: Uint8Array = await subtle.encrypt(
             {
                 name: "RSA-OAEP",
             },
             storePublicKey,
-            exportedKeyStringified,
+            exportedKeyBuffer,
         );
 
-        const encryptedKeyStringified = this._decoder.decode(encryptedKey);
+        const encryptedKeyStringified = ab2b64(encryptedSecretBuffer);
 
         await this._keyExchanger.persistEncryptedSecret(encryptedKeyStringified, userId, storeId);
     }
@@ -110,13 +111,59 @@ export class EncryptionManager implements IEncryptionManager {
         userId: User["id"],
         storeId: Store["id"],
     ): Promise<SerializedAesEncryptionPackage> {
-        // TODO: Get this secret from DB on demand
+        const hasCustomerSecret = await this._localEncryptionStorageHandler.hasSecret(
+            userId,
+            storeId,
+        );
+
+        const subtle = window.crypto.subtle;
+
+        if (!hasCustomerSecret) {
+            // First, grab the customers secret
+            const customers = await DataStore.query(Customer, (s) =>
+                s.id("eq", userId).customerOfStoreID("eq", storeId),
+            );
+
+            const stringifiedEncryptedSecret = customers[0].encryptedSecret as string;
+            const encryptedSecret = b642ab(stringifiedEncryptedSecret);
+
+            // Now, grab the private key of the store
+            const storePrivateKey = await this._localEncryptionStorageHandler.getStorePrivateKey(
+                storeId,
+            );
+
+            // Decrypt the secret with the stores private key
+            const decryptedSecretBuffer: BufferSource = await subtle.decrypt(
+                {
+                    name: "RSA-OAEP",
+                },
+                storePrivateKey!,
+                encryptedSecret,
+            );
+
+            const decryptedSecretJson = JSON.parse(this._decoder.decode(decryptedSecretBuffer));
+
+            // And import it to the indexeddb
+            const decryptedSecret = await window.crypto.subtle.importKey(
+                "jwk",
+                decryptedSecretJson,
+                {
+                    name: "AES-GCM",
+                    length: 256,
+                },
+                true,
+                ["encrypt", "decrypt"],
+            );
+
+            await this._localEncryptionStorageHandler.setSecret(decryptedSecret, userId, storeId);
+        }
+
         const secret = await this._localEncryptionStorageHandler.getSecret(userId, storeId);
 
         const operationScopedIv = this.createRandomInitializationVector();
 
         const encodedData = this._encoder.encode(data);
-        const encryptedData: ArrayBuffer = await window.crypto.subtle.encrypt(
+        const encryptedData: ArrayBuffer = await subtle.encrypt(
             {
                 name: "AES-GCM",
                 iv: operationScopedIv,
