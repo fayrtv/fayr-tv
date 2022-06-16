@@ -24,6 +24,10 @@ import {
 } from "~/types/refraction-protocol";
 import { RefractionProtocolQRCode } from "~/components/QRCode";
 import useBreakpoints from "~/hooks/useBreakpoints";
+import useEncryption from "~/hooks/useEncryption";
+import { useSession } from "../hooks/useSession";
+import { useStoreInfo } from "./StoreInfoProvider";
+import { useAsyncState } from "../hooks/useAsyncState";
 
 const GridText = (
     props: PropsWithChildren<
@@ -71,6 +75,11 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
+type EncryptedModel = {
+    model: string;
+    iv: string;
+};
+
 export const RefractionProtocol = ({
     areActionsAllowed,
     entity,
@@ -83,13 +92,34 @@ export const RefractionProtocol = ({
     const { isTablet } = useBreakpoints();
 
     const { classes } = useStyles();
+    const { encryptionManager: encryption } = useEncryption();
 
     const [qrCodeOpen, setQRCodeOpen] = useState(false);
 
-    const refractionProtocol = entity.data as unknown as RefractionProtocolModel;
-
     const isDarkMode = theme.colorScheme === "dark";
     const themedColor = isDarkMode ? theme.black : theme.white;
+
+    const { user } = useSession();
+    const store = useStoreInfo();
+
+    const [refractionProtocol, _, isRefractionProtocolReady] =
+        useAsyncState<RefractionProtocolModel>(async () => {
+            const encryptedModel = entity.data as unknown as EncryptedModel;
+            if (!user || !encryptedModel.model || !encryptedModel.iv) {
+                console.log("Returning null");
+                return null;
+            }
+            return JSON.parse(
+                await encryption.decrypt(
+                    {
+                        encodedInitializationVector: encryptedModel.iv,
+                        encryptedPayload: encryptedModel.model,
+                    },
+                    user!.id,
+                    store.id,
+                ),
+            );
+        }, [entity, user]);
 
     const createGridHeading = (heading: string, shortDescription: string): React.ReactNode => (
         <Group align="center" direction="column" sx={(_) => ({ gap: 0 })}>
@@ -108,6 +138,9 @@ export const RefractionProtocol = ({
         shortDescription: string,
         addBackgroundDecoration: boolean = false,
     ) => {
+        if (!refractionProtocol) {
+            return <>Kein Refraktionsprotokoll vorhanden</>;
+        }
         const backgroundSx: Sx = (_) => ({
             backgroundColor: addBackgroundDecoration ? "rgb(217, 217, 217, 0.25)" : "auto",
         });
@@ -132,7 +165,8 @@ export const RefractionProtocol = ({
     };
 
     const createRefractionProtocolSide = (side: "L" | "R") => {
-        const sideConfiguration = side === "L" ? refractionProtocol.left : refractionProtocol.right;
+        const sideConfiguration =
+            side === "L" ? refractionProtocol!.left : refractionProtocol!.right;
 
         const backgroundSx: Sx = (_) => ({
             backgroundColor: side === "L" ? "rgb(217, 217, 217, 0.25)" : "auto",
@@ -171,6 +205,10 @@ export const RefractionProtocol = ({
             </>
         );
     };
+
+    if (!isRefractionProtocolReady) {
+        return <>Loading</>;
+    }
 
     if (!isSelected) {
         return (

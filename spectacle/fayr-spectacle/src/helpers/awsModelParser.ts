@@ -1,6 +1,6 @@
 import { User } from "~/types/user";
 
-type AwsUserResponse = {
+export type AwsUserResponse = {
     username: string;
     attributes: { [key: string]: any };
 };

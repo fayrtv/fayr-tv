@@ -29,7 +29,7 @@ const ConfirmPage: NextPageWithLayout = () => {
                     </Text>
                     <Text mt="xs" size="sm">
                         Wir haben Ihnen eine E-Mail geschickt. Bitte klicken Sie auf den Link, um
-                        Ihre Registrierung abzuschließen.{" "}
+                        Ihre Registrierung abzuschließen.
                     </Text>
                     <br />
                     <Button component="a" href="/auth/signin">

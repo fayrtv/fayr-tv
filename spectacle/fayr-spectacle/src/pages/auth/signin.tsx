@@ -15,10 +15,13 @@ import { layoutFactory } from "~/components/layout/Layout";
 import { NextPageWithLayout } from "~/types/next-types";
 import { AlertCircle } from "tabler-icons-react";
 import Link from "next/link";
-import { AuthBodyShell } from "~/components/auth/AuthBodyShell";
 import { useStoreInfo } from "~/components/StoreInfoProvider";
+import useEncryption from "../../hooks/useEncryption";
+import { AwsUserResponse } from "~/helpers/awsModelParser";
+import { AuthBodyShell } from "~/components/auth/AuthBodyShell";
 
 const SignInPage: NextPageWithLayout = () => {
+    const { encryptionManager } = useEncryption();
     const [isSubmitting, setSubmitting] = useState(false);
     const [loginError, setLoginError] = useState<string | undefined>();
 
@@ -66,7 +69,11 @@ const SignInPage: NextPageWithLayout = () => {
                 onSubmit={form.onSubmit(async ({ email, password }) => {
                     try {
                         setSubmitting(true);
-                        await Auth.signIn(email, password);
+                        const user: AwsUserResponse = await Auth.signIn(email, password);
+                        await encryptionManager.setupDeviceSecretIfNotExists(
+                            user.username,
+                            storeInfo.id,
+                        );
                         await Router.push("/spectaclepass");
                     } catch (error) {
                         setSubmitting(false);

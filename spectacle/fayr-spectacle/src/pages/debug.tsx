@@ -10,7 +10,7 @@ const Debug: NextPageWithLayout = () => {
 
     const { customer } = useSession();
 
-    const encryption = useEncryption();
+    const { encryptionManager: encryption } = useEncryption();
 
     return (
         <Stack>
@@ -19,10 +19,7 @@ const Debug: NextPageWithLayout = () => {
             </Button>
             <Button
                 onClick={() =>
-                    encryption.setupDeviceSecretIfNotExists(
-                        "ce77a060-73b4-40e9-a2da-d43214ea0133",
-                        storeInfo.id,
-                    )
+                    encryption.setupDeviceSecretIfNotExists(customer!.userID!, storeInfo.id)
                 }
             >
                 setupDeviceSecretIfNotExists

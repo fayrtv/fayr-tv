@@ -1,21 +1,34 @@
 import ILocalEncryptionStorageHandler from "./localPersistence/ILocalEncryptionStorageHandler";
 import IKeyExchanger from "./exchange/IKeyExchanger";
-import { Store } from "~/models";
+import { Customer, Store } from "~/models";
 import { User } from "~/types/user";
+import { SerializedAesEncryptionPackage } from "./encryptionTypes";
+import { base64EncodeBuffer, base64DecodeToBuffer, ab2b64, b642ab } from "./encodingUtils";
+import { DataStore } from "aws-amplify";
 
 export interface IEncryptionManager {
-    encrypt(data: string, userId: User["id"], storeId: Store["id"]): Promise<string>;
-    decrypt(encryptedData: string, userId: User["id"], storeId: Store["id"]): Promise<string>;
+    encrypt(
+        data: string,
+        userId: User["id"],
+        storeId: Store["id"],
+    ): Promise<SerializedAesEncryptionPackage>;
+    decrypt(
+        encryptedData: SerializedAesEncryptionPackage,
+        userId: User["id"],
+        storeId: Store["id"],
+    ): Promise<string>;
     setupDeviceSecretIfNotExists(userId: User["id"], storeId: Store["id"]): Promise<void>;
     createStoreKeyPair(storeId: Store["id"]): Promise<CryptoKey>;
 }
+
+// Recommended IV length is 96 https://developer.mozilla.org/en-US/docs/Web/API/AesGcmParams#properties
+const defaultInitializationVectorLength = 96;
 
 export class EncryptionManager implements IEncryptionManager {
     private readonly _localEncryptionStorageHandler: ILocalEncryptionStorageHandler;
     private readonly _keyExchanger: IKeyExchanger;
     private readonly _encoder: TextEncoder;
     private readonly _decoder: TextDecoder;
-    private readonly _iv: Uint8Array;
 
     public constructor(
         localEncryptionStorageHandler: ILocalEncryptionStorageHandler,
@@ -26,11 +39,6 @@ export class EncryptionManager implements IEncryptionManager {
 
         this._encoder = new TextEncoder();
         this._decoder = new TextDecoder();
-
-        // TODO: Is this secure? Needs to be the same for encode & decode, but not sure how impactful it is not to regenerate?
-        this._iv = new Uint8Array([
-            47, 207, 210, 108, 112, 13, 31, 44, 90, 137, 252, 209, 159, 227, 206, 124,
-        ]);
     }
 
     /**
@@ -56,6 +64,7 @@ export class EncryptionManager implements IEncryptionManager {
         );
 
         await this._keyExchanger.setStorePublicKey(publicKey!, storeId);
+        await this._localEncryptionStorageHandler.setStorePrivateKey(privateKey!, storeId);
 
         return privateKey!;
     }
@@ -74,68 +83,128 @@ export class EncryptionManager implements IEncryptionManager {
         }
         const subtle = window.crypto.subtle;
 
-        const key = await this.generateLocalSecret(userId, storeId);
+        const secret = await this.generateLocalSecret(userId, storeId);
 
         // This is the exported key we can now sign with the stores public key
-        const exportedKey = await subtle.exportKey("jwk", key);
+        const exportedSecret = await subtle.exportKey("jwk", secret);
 
-        const exportedKeyStringified = this._encoder.encode(JSON.stringify(exportedKey));
+        const exportedKeyBuffer = this._encoder.encode(JSON.stringify(exportedSecret));
 
         // Get the public key of the store and encrypt it
         const storePublicKey = await this._keyExchanger.getStorePublicKey(storeId);
 
-        const encryptedKey: BufferSource = await subtle.encrypt(
+        const encryptedSecretBuffer: Uint8Array = await subtle.encrypt(
             {
                 name: "RSA-OAEP",
             },
             storePublicKey,
-            exportedKeyStringified,
+            exportedKeyBuffer,
         );
 
-        const encryptedKeyStringified = this._decoder.decode(encryptedKey);
+        const encryptedKeyStringified = ab2b64(encryptedSecretBuffer);
 
-        await this._keyExchanger.persistEncryptedSecret(encryptedKeyStringified, userId);
+        await this._keyExchanger.persistEncryptedSecret(encryptedKeyStringified, userId, storeId);
     }
 
-    public async encrypt(data: string, userId: User["id"], storeId: Store["id"]): Promise<string> {
+    public async encrypt(
+        data: string,
+        userId: User["id"],
+        storeId: Store["id"],
+    ): Promise<SerializedAesEncryptionPackage> {
+        const hasCustomerSecret = await this._localEncryptionStorageHandler.hasSecret(
+            userId,
+            storeId,
+        );
+
+        const subtle = window.crypto.subtle;
+
+        if (!hasCustomerSecret) {
+            // First, grab the customers secret
+            const customers = await DataStore.query(Customer, (s) =>
+                s.id("eq", userId).customerOfStoreID("eq", storeId),
+            );
+
+            const stringifiedEncryptedSecret = customers[0].encryptedSecret as string;
+            const encryptedSecret = b642ab(stringifiedEncryptedSecret);
+
+            // Now, grab the private key of the store
+            const storePrivateKey = await this._localEncryptionStorageHandler.getStorePrivateKey(
+                storeId,
+            );
+
+            // Decrypt the secret with the stores private key
+            const decryptedSecretBuffer: BufferSource = await subtle.decrypt(
+                {
+                    name: "RSA-OAEP",
+                },
+                storePrivateKey!,
+                encryptedSecret,
+            );
+
+            const decryptedSecretJson = JSON.parse(this._decoder.decode(decryptedSecretBuffer));
+
+            // And import it to the indexeddb
+            const decryptedSecret = await window.crypto.subtle.importKey(
+                "jwk",
+                decryptedSecretJson,
+                {
+                    name: "AES-GCM",
+                    length: 256,
+                },
+                true,
+                ["encrypt", "decrypt"],
+            );
+
+            await this._localEncryptionStorageHandler.setSecret(decryptedSecret, userId, storeId);
+        }
+
         const secret = await this._localEncryptionStorageHandler.getSecret(userId, storeId);
 
-        const encodedData = this._encoder.encode(data);
+        const operationScopedIv = this.createRandomInitializationVector();
 
-        const encryptedData: BufferSource = await window.crypto.subtle.encrypt(
+        const encodedData = this._encoder.encode(data);
+        const encryptedData: ArrayBuffer = await subtle.encrypt(
             {
                 name: "AES-GCM",
-                iv: this._iv,
+                iv: operationScopedIv,
                 length: 64,
             },
             secret!,
             encodedData,
         );
 
-        const encryptedDataStringified = this._decoder.decode(encryptedData);
+        const [base64EncodedResult, encodedInitializationVector] = [
+            base64EncodeBuffer(new Uint8Array(encryptedData)),
+            base64EncodeBuffer(operationScopedIv),
+        ];
 
-        return encryptedDataStringified;
+        return {
+            encryptedPayload: base64EncodedResult,
+            encodedInitializationVector,
+        };
     }
 
     public async decrypt(
-        encryptedData: string,
+        encryptedData: SerializedAesEncryptionPackage,
         userId: User["id"],
         storeId: Store["id"],
     ): Promise<string> {
         const secret = await this._localEncryptionStorageHandler.getSecret(userId, storeId);
 
-        const encodedEncryptedData = this._encoder.encode(encryptedData);
+        const [encryptedDataBuffer, initializationVectorBuffer] = [
+            base64DecodeToBuffer(encryptedData.encryptedPayload),
+            base64DecodeToBuffer(encryptedData.encodedInitializationVector),
+        ];
 
-        const decryptedData: BufferSource = await window.crypto.subtle.decrypt(
+        const decryptedData: ArrayBuffer = await window.crypto.subtle.decrypt(
             {
-                name: "AES-CTR",
-                iv: this._iv,
+                name: "AES-GCM",
+                iv: initializationVectorBuffer,
                 length: 64,
             },
             secret!,
-            encodedEncryptedData,
+            encryptedDataBuffer,
         );
-
         const decodedData = this._decoder.decode(decryptedData);
 
         return decodedData;
@@ -158,5 +227,12 @@ export class EncryptionManager implements IEncryptionManager {
         await this._localEncryptionStorageHandler.setSecret(aesSymmetricKey, userId, storeId);
 
         return aesSymmetricKey;
+    };
+
+    private createRandomInitializationVector = (
+        length: number = defaultInitializationVectorLength,
+    ) => {
+        const buffer = new Uint8Array(length);
+        return window.crypto.getRandomValues(buffer);
     };
 }
