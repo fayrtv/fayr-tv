@@ -392,7 +392,7 @@ export const SecuritySettings = ({ user }: Props) => {
                     Importieren
                 </Button>
             </Group>
-            {(isAdmin || true) && (
+            {isAdmin && (
                 <>
                     <Divider orientation="horizontal" />
                     <Text>
