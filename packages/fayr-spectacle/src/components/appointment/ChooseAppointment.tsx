@@ -1,12 +1,12 @@
-import React, { Dispatch, SetStateAction, useEffect, useMemo } from "react";
-import { useScrollIntoView } from "@mantine/hooks";
 import { createStyles, Group, Stack } from "@mantine/core";
 import { Button, Text } from "@mantine/core";
 import { Calendar } from "@mantine/dates";
-import { EARLIEST, LATEST, TimeSlot } from "~/components/appointment/types";
+import { useScrollIntoView } from "@mantine/hooks";
 import dayjs from "dayjs";
+import React, { Dispatch, SetStateAction, useEffect, useMemo } from "react";
 import { useStoreInfo } from "~/components/StoreInfoProvider";
 import { InfoBox } from "~/components/appointment/InfoBox";
+import { EARLIEST, LATEST, TimeSlot } from "~/components/appointment/types";
 
 const canSelectDate = (date: Date): boolean => {
     // No weekends
@@ -61,6 +61,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 type Props = {
+    unavailableSlots: TimeSlot[];
     date: Date | null;
     setDate: Dispatch<SetStateAction<Date | null>>;
     selectedSlot: TimeSlot | null;
@@ -68,6 +69,7 @@ type Props = {
     onConfirm: () => void;
 };
 export const ChooseAppointment = ({
+    unavailableSlots,
     date,
     setDate,
     selectedSlot,

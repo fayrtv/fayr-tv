@@ -23,6 +23,7 @@
         "@storyofams/next-api-decorators": "^1.7.2",
         "aframe": "^1.2.0",
         "aws-amplify": "^4.3.21",
+        "axios": "^0.27.2",
         "cookies-next": "^2.0.4",
         "dayjs": "^1.11.2",
         "idb-keyval": "^6.1.0",

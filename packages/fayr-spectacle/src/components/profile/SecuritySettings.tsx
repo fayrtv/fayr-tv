@@ -10,7 +10,6 @@ import {
     Textarea,
     ThemeIcon,
 } from "@mantine/core";
-import { useClipboard } from "@mantine/hooks";
 import * as React from "react";
 import {
     AlertCircle,
@@ -22,17 +21,17 @@ import {
     FileImport,
     Rotate,
 } from "tabler-icons-react";
-import { useAsyncState } from "~/hooks/useAsyncState";
-import useEncryption from "~/hooks/useEncryption";
-import { Store } from "~/models";
-import { SerializedModel } from "~/models/amplify-models";
 import { User } from "~/types/user";
+import useEncryption from "~/hooks/useEncryption";
 import ILocalEncryptionStorageHandler from "~/utils/encryption/localPersistence/ILocalEncryptionStorageHandler";
-
+import { useStoreInfo } from "../StoreInfoProvider";
+import { SerializedModel } from "~/models/amplify-models";
+import { Store } from "~/models";
+import { useAsyncState } from "~/hooks/useAsyncState";
+import { QRCode } from "../QRCode";
+import { useClipboard } from "@mantine/hooks";
 import { useSession } from "../../hooks/useSession";
 import { IEncryptionManager } from "../../utils/encryption/encryptionManager";
-import { QRCode } from "../QRCode";
-import { useStoreInfo } from "../StoreInfoProvider";
 
 type Props = {
     user: User;
@@ -70,7 +69,6 @@ const ImportMenu = ({ keyAvailabilityChecker, keySetter, closeModal }: ImportMod
             }
         };
         init();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     if (view === View.ConfirmRisk) {
@@ -374,7 +372,6 @@ export const SecuritySettings = ({ user }: Props) => {
         }
 
         return content;
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [modalOperation]);
 
     return (
