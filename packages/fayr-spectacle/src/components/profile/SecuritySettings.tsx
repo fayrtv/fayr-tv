@@ -69,6 +69,7 @@ const ImportMenu = ({ keyAvailabilityChecker, keySetter, closeModal }: ImportMod
             }
         };
         init();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     if (view === View.ConfirmRisk) {
@@ -372,7 +373,7 @@ export const SecuritySettings = ({ user }: Props) => {
         }
 
         return content;
-    }, [modalOperation]);
+    }, [encryptionManager, localEncryptionManager, modalOperation, storeInfo, user.id]);
 
     return (
         <Stack>
