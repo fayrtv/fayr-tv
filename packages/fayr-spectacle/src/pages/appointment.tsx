@@ -2,10 +2,9 @@ import dayjs from "dayjs";
 import { GetServerSideProps } from "next";
 import React, { useState } from "react";
 import { InlineWidget } from "react-calendly";
-import { getUnavailableSlots } from "~/calendly/events";
+import { getUnavailableSlots, TimeSlot } from "~/calendly/events";
 import { ChooseAppointment } from "~/components/appointment/ChooseAppointment";
 import ConfirmAppointment from "~/components/appointment/ConfirmAppointment";
-import { TimeSlot } from "~/components/appointment/types";
 import Layout from "~/components/layout/Layout";
 import MainContainer from "~/components/layout/MainContainer";
 import { NextPageWithLayout } from "~/types/next-types";
@@ -26,8 +25,8 @@ const AppointmentPage: NextPageWithLayout<ServerProps> = ({ unavailableSlots }) 
             </div>
             {isAppointmentSelected ? (
                 <ConfirmAppointment
-                    begin={dayjs(date!).add(selectedSlot![0], "hours").toDate()}
-                    end={dayjs(date!).add(selectedSlot![1], "hours").toDate()}
+                    begin={dayjs(date!).add(selectedSlot!.startUTC, "hours").toDate()}
+                    end={dayjs(date!).add(selectedSlot!.endUTC, "hours").toDate()}
                     onCancel={() => setAppointmentSelected(false)}
                 />
             ) : (
