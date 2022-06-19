@@ -23,7 +23,6 @@ export default class AmplifyStoreKeyExchanger implements IKeyExchanger {
     public async getStorePublicKey(storeId: string): Promise<CryptoKey> {
         const stores = await DataStore.query(Store, (s) => s.id("eq", storeId));
         const store = stores[0];
-
         const rawPublicKey = store.publicKey!;
 
         const parsedPublicKey = JSON.parse(rawPublicKey);
@@ -50,6 +49,7 @@ export default class AmplifyStoreKeyExchanger implements IKeyExchanger {
         const customers = await DataStore.query(Customer, (s) =>
             s.userID("eq", userId).customerOfStoreID("eq", storeId),
         );
+
         const customer = customers[0];
 
         await DataStore.save(

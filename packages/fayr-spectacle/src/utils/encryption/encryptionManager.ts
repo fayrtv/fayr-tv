@@ -6,6 +6,13 @@ import { SerializedAesEncryptionPackage } from "./encryptionTypes";
 import { base64EncodeBuffer, base64DecodeToBuffer, ab2b64, b642ab } from "./encodingUtils";
 import { DataStore } from "aws-amplify";
 
+export enum SecretAvailability {
+    RemoteAndLocalInSync,
+    RemoteAndLocalOutOfSync,
+    OnlyRemoteAvailable,
+    None,
+}
+
 export interface IEncryptionManager {
     encrypt(
         data: string,
@@ -17,8 +24,9 @@ export interface IEncryptionManager {
         userId: User["id"],
         storeId: Store["id"],
     ): Promise<string>;
-    isDeviceSecretSetForUser(userId: User["id"], storeId: Store["id"]): Promise<boolean>;
-    setupDeviceSecretIfNotExists(userId: User["id"], storeId: Store["id"]): Promise<void>;
+
+    getSecretAvailability(userId: User["id"], storeId: Store["id"]): Promise<SecretAvailability>;
+    setupDeviceSecret(userId: User["id"], storeId: Store["id"]): Promise<void>;
     createStoreKeyPair(storeId: Store["id"]): Promise<CryptoKey>;
 }
 
@@ -40,6 +48,49 @@ export class EncryptionManager implements IEncryptionManager {
 
         this._encoder = new TextEncoder();
         this._decoder = new TextDecoder();
+    }
+
+    /**
+     * Tries to determine the availability of the secret. The following constellations are possible:
+     * 1. None: Neither remote nor local is available -> New Account
+     * 2. OnlyRemoteAvailable: Only remote is available -> This is an existing account, but on a new device
+     * 3. RemoteAndLocalInSync: Both remote and local are in sync -> Recurring login on an established device
+     * This information is interesting to avoid accidental overwriting for a recurring account on a new device
+     */
+    public async getSecretAvailability(
+        userId: string,
+        storeId: string,
+    ): Promise<SecretAvailability> {
+        const hasLocalSecret = await this._localEncryptionStorageHandler.hasSecret(userId, storeId);
+
+        const isRemoteSecretAvailable = await this.isDeviceSecretSetForUser(userId, storeId);
+
+        // These are the simple checks
+        if (!hasLocalSecret) {
+            return isRemoteSecretAvailable
+                ? SecretAvailability.OnlyRemoteAvailable
+                : SecretAvailability.None;
+        }
+
+        // We need to compare the encrypted secret to what we have on the DB. This is a bit tricky, since
+        // our local secret has to be brought into DB format, since we can't reverse the encryption as only
+        // the shop owner with the private key can decrypt
+        const rawLocalSecret = await this._localEncryptionStorageHandler.getSecret(userId, storeId);
+
+        const encryptedLocalSecret = await this.encryptLocalSecret(rawLocalSecret!, storeId);
+
+        // TODO: This does not work as expected since RSA is not 100% deterministic in this case!
+        // Need to add timestamp to the DB
+        const customers = await DataStore.query(Customer, (s) =>
+            s.userID("eq", userId).customerOfStoreID("eq", storeId),
+        );
+        const encryptedRemoteSecret = customers[0].encryptedSecret!;
+
+        if (encryptedLocalSecret === encryptedRemoteSecret) {
+            return SecretAvailability.RemoteAndLocalInSync;
+        }
+
+        return SecretAvailability.RemoteAndLocalOutOfSync;
     }
 
     /**
@@ -73,37 +124,34 @@ export class EncryptionManager implements IEncryptionManager {
     /**
      * Check if secret is already set up for the account context
      */
-    public async isDeviceSecretSetForUser(userId: string, storeId: string): Promise<boolean> {
+    private async isDeviceSecretSetForUser(userId: string, storeId: string): Promise<boolean> {
         const customers = await DataStore.query(Customer, (s) =>
-            s.id("eq", userId).customerOfStoreID("eq", storeId),
+            s.userID("eq", userId).customerOfStoreID("eq", storeId),
         );
-
         const customer = customers[0];
 
-        return !!customer.encryptedSecret;
+        return customer !== undefined && !!customer.encryptedSecret;
     }
 
     /**
-     * Sets up local symmetric encryption key if it does not yet exist.
+     * Sets up local symmetric encryption key
      * In addition, this takes over the whole process of exchanging the key
      */
-    public async setupDeviceSecretIfNotExists(
-        userId: User["id"],
-        storeId: Store["id"],
-    ): Promise<void> {
-        // TODO: Add failure handling and transaction rollback logic
-        if (await this._localEncryptionStorageHandler.hasSecret(userId, storeId)) {
-            return;
-        }
-        const subtle = window.crypto.subtle;
-
+    public async setupDeviceSecret(userId: User["id"], storeId: Store["id"]): Promise<void> {
         const secret = await this.generateLocalSecret(userId, storeId);
+
+        const encryptedKeyStringified = await this.encryptLocalSecret(secret, storeId);
+
+        await this._keyExchanger.persistEncryptedSecret(encryptedKeyStringified, userId, storeId);
+    }
+
+    private async encryptLocalSecret(secret: CryptoKey, storeId: Store["id"]): Promise<string> {
+        const subtle = window.crypto.subtle;
 
         // This is the exported key we can now sign with the stores public key
         const exportedSecret = await subtle.exportKey("jwk", secret);
 
         const exportedKeyBuffer = this._encoder.encode(JSON.stringify(exportedSecret));
-
         // Get the public key of the store and encrypt it
         const storePublicKey = await this._keyExchanger.getStorePublicKey(storeId);
 
@@ -115,9 +163,7 @@ export class EncryptionManager implements IEncryptionManager {
             exportedKeyBuffer,
         );
 
-        const encryptedKeyStringified = ab2b64(encryptedSecretBuffer);
-
-        await this._keyExchanger.persistEncryptedSecret(encryptedKeyStringified, userId, storeId);
+        return ab2b64(encryptedSecretBuffer);
     }
 
     public async encrypt(
@@ -135,7 +181,7 @@ export class EncryptionManager implements IEncryptionManager {
         if (!hasCustomerSecret) {
             // First, grab the customers secret
             const customers = await DataStore.query(Customer, (s) =>
-                s.id("eq", userId).customerOfStoreID("eq", storeId),
+                s.userID("eq", userId).customerOfStoreID("eq", storeId),
             );
 
             const stringifiedEncryptedSecret = customers[0].encryptedSecret as string;

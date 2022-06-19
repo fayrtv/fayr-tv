@@ -57,7 +57,7 @@ export const getServerSideProps: GetServerSideProps<ServerProps | RedirectProps>
     const user = await ssrGetUser(req);
 
     if (!user) {
-        return redirectServerSide(res, "/auth/login");
+        return redirectServerSide(res, "/auth/signin");
     }
 
     return {

@@ -106,7 +106,6 @@ export const RefractionProtocol = ({
         useAsyncState<RefractionProtocolModel>(async () => {
             const encryptedModel = entity.data as unknown as EncryptedModel;
             if (!user || !encryptedModel.model || !encryptedModel.iv) {
-                console.log("Returning null");
                 return null;
             }
             return JSON.parse(

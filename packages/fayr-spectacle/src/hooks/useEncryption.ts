@@ -1,14 +1,25 @@
 import AmplifyStoreKeyExchanger from "~/utils/encryption/exchange/AmplifyStoreKeyExchanger";
 import IndexedDbStorageHandler from "~/utils/encryption/localPersistence/indexedDbStorageHandler";
-import { EncryptionManager } from "~/utils/encryption/encryptionManager";
+import { EncryptionManager, IEncryptionManager } from "~/utils/encryption/encryptionManager";
+import React from "react";
 
-const localEncryptionManager = new IndexedDbStorageHandler();
+const globalLocalEncryptionManager = new IndexedDbStorageHandler();
 
-const encryptionManager = new EncryptionManager(
-    localEncryptionManager,
-    new AmplifyStoreKeyExchanger(),
-);
+let globalEncryptionManager: IEncryptionManager | undefined = undefined;
 
 export default function useEncryption() {
-    return { encryptionManager, localEncryptionManager };
+    const encryptionManager = React.useMemo<IEncryptionManager>(() => {
+        if (globalEncryptionManager) {
+            return globalEncryptionManager;
+        }
+
+        globalEncryptionManager = new EncryptionManager(
+            globalLocalEncryptionManager,
+            new AmplifyStoreKeyExchanger(),
+        );
+
+        return globalEncryptionManager;
+    }, []);
+
+    return { encryptionManager, localEncryptionManager: globalLocalEncryptionManager };
 }

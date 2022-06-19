@@ -19,6 +19,7 @@ import { useStoreInfo } from "~/components/StoreInfoProvider";
 import useEncryption from "../../hooks/useEncryption";
 import { AwsUserResponse } from "~/helpers/awsModelParser";
 import { AuthBodyShell } from "~/components/auth/AuthBodyShell";
+import { SecretAvailability } from "~/utils/encryption/encryptionManager";
 
 const SignInPage: NextPageWithLayout = () => {
     const { encryptionManager } = useEncryption();
@@ -70,12 +71,29 @@ const SignInPage: NextPageWithLayout = () => {
                     try {
                         setSubmitting(true);
                         const user: AwsUserResponse = await Auth.signIn(email, password);
-                        await encryptionManager.setupDeviceSecretIfNotExists(
+
+                        const encryptionState = await encryptionManager.getSecretAvailability(
                             user.username,
                             storeInfo.id,
                         );
+
+                        if (
+                            encryptionState === SecretAvailability.RemoteAndLocalOutOfSync ||
+                            encryptionState === SecretAvailability.OnlyRemoteAvailable
+                        ) {
+                            //await Router.push("/profile/security/SecretMismatch");
+                            //return;
+                        }
+
+                        // If no encryption info is set up yet, or if remote and local are in sync -> Good to go!
+                        // In case nothing is set up yet, secrets need to be generated
+                        if (encryptionState === SecretAvailability.None) {
+                            await encryptionManager.setupDeviceSecret(user.username, storeInfo.id);
+                        }
+
                         await Router.push("/spectaclepass");
                     } catch (error) {
+                        console.log(error);
                         setSubmitting(false);
                         setLoginError(String(error).replace(/^.*Exception: /, ""));
                     }

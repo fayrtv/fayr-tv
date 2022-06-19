@@ -1,5 +1,6 @@
 import { injectable } from "inversify";
-import Event from "util/event";
+
+import Event from "@fayr/common/src/events/event";
 
 import IChimeEvents from "./interfaces/IChimeEvents";
 
