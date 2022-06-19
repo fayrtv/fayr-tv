@@ -43,7 +43,7 @@ export const ExportMenu = ({ allowQrCode = true, keyRetriever }: ExportModalProp
             <Group spacing="xs" grow direction="row" align="start">
                 {allowQrCode && (
                     <Stack sx={() => ({ flexGrow: 2 })} align="center">
-                        <Text underline>Per QR Code</Text>
+                        <Text underline>Per QR-Code</Text>
                         <QRCode content={key!} />
                     </Stack>
                 )}

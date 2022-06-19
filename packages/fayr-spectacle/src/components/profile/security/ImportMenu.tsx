@@ -53,7 +53,7 @@ export const ImportMenu = ({ keyAvailabilityChecker, keySetter, closeModal }: Im
         <Stack align="center">
             <Group spacing="xs" grow direction="row" align="start">
                 <Stack sx={() => ({ flexGrow: 2 })} align="center">
-                    <Text underline>Per QR Code</Text>
+                    <Text underline>Per QR-Code</Text>
                     TODO
                 </Stack>
                 <Stack sx={() => ({ flexGrow: 2 })} align="center">

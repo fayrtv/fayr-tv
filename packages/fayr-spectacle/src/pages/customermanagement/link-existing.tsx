@@ -133,7 +133,7 @@ const LinkExistingCustomerPage: NextPageWithLayout = () => {
                             shouldLink={false}
                             user={{ title: undefined, lastName: "Mustermann", address: "m" }}
                         />
-                        Dort wird der QR Code angezeigt, welchen Sie im nächsten Schritt abscannen
+                        Dort wird der QR-Code angezeigt, welchen Sie im nächsten Schritt abscannen
                         können.
                     </Stack>
                 </Paper>
