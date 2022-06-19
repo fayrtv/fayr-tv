@@ -127,6 +127,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "encryptionHash": {
+                    "name": "encryptionHash",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -382,5 +389,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "fb9706e275c2abf37543138152f48090"
+    "version": "aa61cb835e862b5fa6f30e3db9cc7626"
 };

@@ -76,17 +76,19 @@ export class EncryptionManager implements IEncryptionManager {
         // our local secret has to be brought into DB format, since we can't reverse the encryption as only
         // the shop owner with the private key can decrypt
         const rawLocalSecret = await this._localEncryptionStorageHandler.getSecret(userId, storeId);
+        const localSecretHashed = this._decoder.decode(
+            await window.crypto.subtle.digest(
+                "SHA-512",
+                this._encoder.encode(JSON.stringify(rawLocalSecret)),
+            ),
+        );
 
-        const encryptedLocalSecret = await this.encryptLocalSecret(rawLocalSecret!, storeId);
-
-        // TODO: This does not work as expected since RSA is not 100% deterministic in this case!
-        // Need to add timestamp to the DB
         const customers = await DataStore.query(Customer, (s) =>
             s.userID("eq", userId).customerOfStoreID("eq", storeId),
         );
-        const encryptedRemoteSecret = customers[0].encryptedSecret!;
+        const remoteSecretHash = customers[0].encryptionHash!;
 
-        if (encryptedLocalSecret === encryptedRemoteSecret) {
+        if (localSecretHashed === remoteSecretHash) {
             return SecretAvailability.RemoteAndLocalInSync;
         }
 
@@ -140,12 +142,23 @@ export class EncryptionManager implements IEncryptionManager {
     public async setupDeviceSecret(userId: User["id"], storeId: Store["id"]): Promise<void> {
         const secret = await this.generateLocalSecret(userId, storeId);
 
-        const encryptedKeyStringified = await this.encryptLocalSecret(secret, storeId);
+        const { encryptedKey, encryptionHash } = await this.encryptLocalSecret(secret, storeId);
 
-        await this._keyExchanger.persistEncryptedSecret(encryptedKeyStringified, userId, storeId);
+        await this._keyExchanger.persistEncryptedSecret(
+            encryptedKey,
+            encryptionHash,
+            userId,
+            storeId,
+        );
     }
 
-    private async encryptLocalSecret(secret: CryptoKey, storeId: Store["id"]): Promise<string> {
+    private async encryptLocalSecret(
+        secret: CryptoKey,
+        storeId: Store["id"],
+    ): Promise<{
+        encryptedKey: string;
+        encryptionHash: string;
+    }> {
         const subtle = window.crypto.subtle;
 
         // This is the exported key we can now sign with the stores public key
@@ -163,7 +176,12 @@ export class EncryptionManager implements IEncryptionManager {
             exportedKeyBuffer,
         );
 
-        return ab2b64(encryptedSecretBuffer);
+        return {
+            encryptedKey: ab2b64(encryptedSecretBuffer),
+            encryptionHash: this._decoder.decode(
+                await subtle.digest("SHA-512", this._encoder.encode(JSON.stringify(secret))),
+            ),
+        };
     }
 
     public async encrypt(

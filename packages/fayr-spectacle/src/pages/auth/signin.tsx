@@ -72,24 +72,24 @@ const SignInPage: NextPageWithLayout = () => {
                         setSubmitting(true);
                         const user: AwsUserResponse = await Auth.signIn(email, password);
 
-                        // const encryptionState = await encryptionManager.getSecretAvailability(
-                        //     user.username,
-                        //     storeInfo.id,
-                        // );
+                        const encryptionState = await encryptionManager.getSecretAvailability(
+                            user.username,
+                            storeInfo.id,
+                        );
 
-                        // if (
-                        //     encryptionState === SecretAvailability.RemoteAndLocalOutOfSync ||
-                        //     encryptionState === SecretAvailability.OnlyRemoteAvailable
-                        // ) {
-                        //     //await Router.push("/profile/security/SecretMismatch");
-                        //     //return;
-                        // }
+                        if (
+                            encryptionState === SecretAvailability.RemoteAndLocalOutOfSync ||
+                            encryptionState === SecretAvailability.OnlyRemoteAvailable
+                        ) {
+                            await Router.push("/profile/security/SecretMismatch");
+                            return;
+                        }
 
                         // If no encryption info is set up yet, or if remote and local are in sync -> Good to go!
                         // In case nothing is set up yet, secrets need to be generated
-                        //if (encryptionState === SecretAvailability.None) {
-                        await encryptionManager.setupDeviceSecret(user.username, storeInfo.id);
-                        // }
+                        if (encryptionState === SecretAvailability.None) {
+                            await encryptionManager.setupDeviceSecret(user.username, storeInfo.id);
+                        }
 
                         await Router.push("/spectaclepass");
                     } catch (error) {

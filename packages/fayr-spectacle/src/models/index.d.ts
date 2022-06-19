@@ -37,6 +37,7 @@ export declare class Customer {
   readonly userID?: string | null;
   readonly encryptedSecret?: string | null;
   readonly customerOfStoreID?: string | null;
+  readonly encryptionHash?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<Customer, CustomerMetaData>);

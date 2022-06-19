@@ -42,6 +42,7 @@ export default class AmplifyStoreKeyExchanger implements IKeyExchanger {
 
     public async persistEncryptedSecret(
         encryptedSecret: string,
+        secretHash: string,
         userId: User["id"],
         storeId: Store["id"],
     ): Promise<void> {
@@ -55,6 +56,7 @@ export default class AmplifyStoreKeyExchanger implements IKeyExchanger {
         await DataStore.save(
             Customer.copyOf(customer, (updated) => {
                 updated.encryptedSecret = encryptedSecret;
+                updated.encryptionHash = secretHash;
             }),
         );
     }
