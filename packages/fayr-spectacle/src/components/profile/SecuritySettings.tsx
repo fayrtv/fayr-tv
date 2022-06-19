@@ -32,18 +32,18 @@ import { QRCode } from "../QRCode";
 import { useClipboard } from "@mantine/hooks";
 import { useSession } from "../../hooks/useSession";
 import { IEncryptionManager } from "../../utils/encryption/encryptionManager";
+import { useRouter } from "next/router";
 
 type Props = {
     user: User;
 };
 
-enum ModalOperation {
-    ImportSecret,
-    ExportSecret,
-    GenerateStorePair,
-    ImportStoreKey,
-    ExportStoreKey,
-}
+type ModalOperation =
+    | "ImportSecret"
+    | "ExportSecret"
+    | "GenerateStorePair"
+    | "ImportStoreKey"
+    | "ExportStoreKey";
 
 type ImportModalProps = {
     keyAvailabilityChecker: () => Promise<boolean>;
@@ -279,22 +279,27 @@ const GenerateStorePair = ({
 };
 
 export const SecuritySettings = ({ user }: Props) => {
-    const [modalOperation, setModalOperation] = React.useState<ModalOperation | undefined>(
-        undefined,
-    );
-
     const { isAdmin } = useSession();
+
+    const router = useRouter();
+    const route: ModalOperation | undefined =
+        router.query.slug?.length !== 2
+            ? undefined
+            : (router.query.slug![1] as ModalOperation | undefined);
 
     const { encryptionManager, localEncryptionManager } = useEncryption();
 
+    const pushRoute = (routeSuffix?: ModalOperation) =>
+        router.push(`/profile/security${!!routeSuffix ? `/${routeSuffix}` : ""}`);
+
     const storeInfo = useStoreInfo();
-    const closeModal = () => setModalOperation(undefined);
+    const closeModal = React.useCallback(pushRoute, [router]);
 
     const modalContent = React.useMemo(() => {
         let content: React.ReactNode | null = null;
 
-        switch (modalOperation) {
-            case ModalOperation.ExportSecret:
+        switch (true) {
+            case route?.includes("ExportSecret"):
                 content = (
                     <ExportMenu
                         keyRetriever={async () =>
@@ -303,7 +308,7 @@ export const SecuritySettings = ({ user }: Props) => {
                     />
                 );
                 break;
-            case ModalOperation.ImportSecret:
+            case route?.includes("ImportSecret"):
                 content = (
                     <ImportMenu
                         closeModal={closeModal}
@@ -327,7 +332,7 @@ export const SecuritySettings = ({ user }: Props) => {
                     />
                 );
                 break;
-            case ModalOperation.GenerateStorePair:
+            case route?.includes("GenerateStorePair"):
                 content = (
                     <GenerateStorePair
                         encryptionManager={encryptionManager}
@@ -337,7 +342,7 @@ export const SecuritySettings = ({ user }: Props) => {
                     />
                 );
                 break;
-            case ModalOperation.ImportStoreKey:
+            case route?.includes("ImportStoreKey"):
                 content = (
                     <ImportMenu
                         closeModal={closeModal}
@@ -360,7 +365,7 @@ export const SecuritySettings = ({ user }: Props) => {
                     />
                 );
                 break;
-            case ModalOperation.ExportStoreKey:
+            case route?.includes("ExportStoreKey"):
                 content = (
                     <ExportMenu
                         allowQrCode={false}
@@ -373,23 +378,17 @@ export const SecuritySettings = ({ user }: Props) => {
         }
 
         return content;
-    }, [encryptionManager, localEncryptionManager, modalOperation, storeInfo, user.id]);
+    }, [closeModal, encryptionManager, localEncryptionManager, route, storeInfo, user.id]);
 
     return (
         <Stack>
             <Text>Verwalten sie hier ihre persönlichen Sicherheitseinstellungen.</Text>
             <Group direction="row">
                 <Text weight={600}>Verschlüsselungsinfo für ihren Brillenpass:</Text>
-                <Button
-                    leftIcon={<ArrowBarUp />}
-                    onClick={() => setModalOperation(ModalOperation.ExportSecret)}
-                >
+                <Button leftIcon={<ArrowBarUp />} onClick={() => pushRoute("ExportSecret")}>
                     Exportieren
                 </Button>
-                <Button
-                    leftIcon={<ArrowBarDown />}
-                    onClick={() => setModalOperation(ModalOperation.ImportSecret)}
-                >
+                <Button leftIcon={<ArrowBarDown />} onClick={() => pushRoute("ImportSecret")}>
                     Importieren
                 </Button>
             </Group>
@@ -404,19 +403,19 @@ export const SecuritySettings = ({ user }: Props) => {
                         <Text weight={600}>Verschlüsselungsinfo für ihr ZEISS VISION CENTER:</Text>
                         <Button
                             leftIcon={<Rotate />}
-                            onClick={() => setModalOperation(ModalOperation.GenerateStorePair)}
+                            onClick={() => pushRoute("GenerateStorePair")}
                         >
                             Generieren
                         </Button>
                         <Button
                             leftIcon={<ArrowBarUp />}
-                            onClick={() => setModalOperation(ModalOperation.ExportStoreKey)}
+                            onClick={() => pushRoute("ExportStoreKey")}
                         >
                             Exportieren
                         </Button>
                         <Button
                             leftIcon={<ArrowBarDown />}
-                            onClick={() => setModalOperation(ModalOperation.ImportStoreKey)}
+                            onClick={() => pushRoute("ImportStoreKey")}
                         >
                             Importieren
                         </Button>
@@ -426,13 +425,12 @@ export const SecuritySettings = ({ user }: Props) => {
             <Modal
                 size="xl"
                 centered
-                opened={modalOperation !== undefined}
-                onClose={() => setModalOperation(undefined)}
+                opened={route !== undefined}
+                onClose={closeModal}
                 title={
-                    modalOperation === ModalOperation.GenerateStorePair
+                    route === "GenerateStorePair"
                         ? "Generieren"
-                        : modalOperation === ModalOperation.ExportStoreKey ||
-                          modalOperation === ModalOperation.ExportSecret
+                        : route === "ExportStoreKey" || route === "ExportSecret"
                         ? "Exportieren"
                         : "Importieren"
                 }

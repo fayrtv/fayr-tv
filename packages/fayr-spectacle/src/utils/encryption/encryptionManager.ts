@@ -17,6 +17,7 @@ export interface IEncryptionManager {
         userId: User["id"],
         storeId: Store["id"],
     ): Promise<string>;
+    isDeviceSecretSetForUser(userId: User["id"], storeId: Store["id"]): Promise<boolean>;
     setupDeviceSecretIfNotExists(userId: User["id"], storeId: Store["id"]): Promise<void>;
     createStoreKeyPair(storeId: Store["id"]): Promise<CryptoKey>;
 }
@@ -67,6 +68,19 @@ export class EncryptionManager implements IEncryptionManager {
         await this._localEncryptionStorageHandler.setStorePrivateKey(privateKey!, storeId);
 
         return privateKey!;
+    }
+
+    /**
+     * Check if secret is already set up for the account context
+     */
+    public async isDeviceSecretSetForUser(userId: string, storeId: string): Promise<boolean> {
+        const customers = await DataStore.query(Customer, (s) =>
+            s.id("eq", userId).customerOfStoreID("eq", storeId),
+        );
+
+        const customer = customers[0];
+
+        return !!customer.encryptedSecret;
     }
 
     /**

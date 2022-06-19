@@ -8,9 +8,8 @@ import { RedirectProps, redirectServerSide } from "~/helpers/next-server";
 import { ssrGetUser } from "~/helpers/authentication";
 import { User } from "~/types/user";
 import ChangePassword from "~/components/profile/ChangePassword";
-import { AspectRatio, Container, Paper, Stack } from "@mantine/core";
+import { Stack } from "@mantine/core";
 import NotificationSettings from "~/components/profile/NotificationSettings";
-import { QRCode } from "~/components/QRCode";
 import MainContainer from "~/components/layout/MainContainer";
 import SecuritySettings from "~/components/profile/SecuritySettings";
 
