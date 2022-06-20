@@ -199,7 +199,7 @@ export class EncryptionManager implements IEncryptionManager {
         if (!hasCustomerSecret) {
             // First, grab the customers secret
             const customers = await DataStore.query(Customer, (s) =>
-                s.userID("eq", userId).customerOfStoreID("eq", storeId),
+                s.id("eq", userId).customerOfStoreID("eq", storeId),
             );
 
             const stringifiedEncryptedSecret = customers[0].encryptedSecret as string;
