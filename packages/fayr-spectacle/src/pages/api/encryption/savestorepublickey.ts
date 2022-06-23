@@ -21,7 +21,6 @@ class SaveStorePublicKey {
         @Body() { stringifiedPublicKey, storeId }: SavePublicKeyParameters,
         @Req() req: NextApiRequest,
     ) {
-        debugger;
         const user = await ssrGetUser(req);
         if (!user) {
             throw new ForbiddenException(
