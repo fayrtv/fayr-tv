@@ -2,6 +2,7 @@ import AmplifyStoreKeyExchanger from "~/utils/encryption/exchange/AmplifyStoreKe
 import IndexedDbStorageHandler from "~/utils/encryption/localPersistence/indexedDbStorageHandler";
 import { EncryptionManager, IEncryptionManager } from "~/utils/encryption/encryptionManager";
 import React from "react";
+import ClientSideAmplifyStoreKeyExchangerDecorator from "~/utils/encryption/exchange/ClientSideAmplifyStoreKeyExchanger";
 
 const globalLocalEncryptionManager = new IndexedDbStorageHandler();
 
@@ -15,7 +16,7 @@ export default function useEncryption() {
 
         globalEncryptionManager = new EncryptionManager(
             globalLocalEncryptionManager,
-            new AmplifyStoreKeyExchanger(),
+            new ClientSideAmplifyStoreKeyExchangerDecorator(new AmplifyStoreKeyExchanger()),
         );
 
         return globalEncryptionManager;

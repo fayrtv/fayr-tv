@@ -145,17 +145,12 @@ export class EncryptionManager implements IEncryptionManager {
 
         const { encryptedKey, encryptionHash } = await this.encryptLocalSecret(secret, storeId);
 
-        await fetch("/api/encryption/savesecret", {
-            body: JSON.stringify({
-                encryptedSecret: encryptedKey,
-                encryptionHash: encryptionHash,
-                storeId: storeId,
-            } as SaveSecretParameters),
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
+        await this._keyExchanger.persistEncryptedSecret(
+            encryptedKey,
+            encryptionHash,
+            userId,
+            storeId,
+        );
     }
 
     private async encryptLocalSecret(
