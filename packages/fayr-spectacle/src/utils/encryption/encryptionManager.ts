@@ -5,6 +5,7 @@ import { User } from "~/types/user";
 import { SerializedAesEncryptionPackage } from "./encryptionTypes";
 import { base64EncodeBuffer, base64DecodeToBuffer, ab2b64, b642ab } from "./encodingUtils";
 import { DataStore } from "aws-amplify";
+import { SaveSecretParameters } from "../../pages/api/encryption/savesecret";
 
 export enum SecretAvailability {
     RemoteAndLocalInSync,
@@ -144,12 +145,17 @@ export class EncryptionManager implements IEncryptionManager {
 
         const { encryptedKey, encryptionHash } = await this.encryptLocalSecret(secret, storeId);
 
-        await this._keyExchanger.persistEncryptedSecret(
-            encryptedKey,
-            encryptionHash,
-            userId,
-            storeId,
-        );
+        await fetch("/api/encryption/savesecret", {
+            body: JSON.stringify({
+                encryptedSecret: encryptedKey,
+                encryptionHash: encryptionHash,
+                storeId: storeId,
+            } as SaveSecretParameters),
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
     }
 
     private async encryptLocalSecret(
