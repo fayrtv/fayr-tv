@@ -206,7 +206,7 @@ export const RefractionProtocol = ({
     };
 
     if (!isRefractionProtocolReady) {
-        return <>Loading</>;
+        return <></>;
     }
 
     if (!isSelected) {
