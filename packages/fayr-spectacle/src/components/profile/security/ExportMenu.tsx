@@ -4,6 +4,7 @@ import React from "react";
 import { AlertTriangle, Check, Copy } from "tabler-icons-react";
 import { QRCode } from "~/components/QRCode";
 import { useAsyncState } from "~/hooks/useAsyncState";
+import useBreakpoints from "~/hooks/useBreakpoints";
 
 type ExportModalProps = {
     // TODO: Figure out how to get this working with the apparently much longer RSA key. QR Code lib either throws "too long" or (when attempting to
@@ -14,6 +15,8 @@ type ExportModalProps = {
 
 export const ExportMenu = ({ allowQrCode = true, keyRetriever }: ExportModalProps) => {
     const clipboard = useClipboard();
+
+    const { isMobile } = useBreakpoints();
 
     const [copied, setCopied] = React.useState(false);
 
@@ -40,13 +43,7 @@ export const ExportMenu = ({ allowQrCode = true, keyRetriever }: ExportModalProp
                     vertrauen!
                 </span>
             </Group>
-            <Group spacing="xs" grow direction="row" align="start">
-                {allowQrCode && (
-                    <Stack sx={() => ({ flexGrow: 2 })} align="center">
-                        <Text underline>Per QR-Code</Text>
-                        <QRCode content={key!} />
-                    </Stack>
-                )}
+            <Group spacing="xs" grow direction={isMobile ? "column" : "row"} align="start">
                 <Stack sx={() => ({ flexGrow: 2 })} align="center">
                     <Text underline>Manuell</Text>
                     <Text>Kopieren Sie diesen Text ins "Importieren" Menü auf dem Zielgerät</Text>
@@ -70,6 +67,12 @@ export const ExportMenu = ({ allowQrCode = true, keyRetriever }: ExportModalProp
                         </Button>
                     )}
                 </Stack>
+                {allowQrCode && (
+                    <Stack sx={() => ({ flexGrow: 2 })} align="center">
+                        <Text underline>Per QR-Code</Text>
+                        <QRCode content={key!} />
+                    </Stack>
+                )}
             </Group>
         </Stack>
     );
