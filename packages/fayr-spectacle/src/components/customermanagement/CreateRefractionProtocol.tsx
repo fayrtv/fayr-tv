@@ -29,11 +29,15 @@ export type PlainProtocol = {
     leftPd?: number;
     leftSphere?: number;
     leftAddition?: number;
+    leftPrisma?: number;
+    leftBasis?: number;
     rightAxis?: number;
     rightCylinder?: number;
     rightPd?: number;
     rightSphere?: number;
     rightAddition?: number;
+    rightPrisma?: number;
+    rightBasis?: number;
 };
 
 const defaultProtocol = {
@@ -42,11 +46,15 @@ const defaultProtocol = {
     leftPd: undefined,
     leftSphere: undefined,
     leftAddition: undefined,
+    leftPrisma: undefined,
+    leftBasis: undefined,
     rightAxis: undefined,
     rightCylinder: undefined,
     rightPd: undefined,
     rightSphere: undefined,
     rightAddition: undefined,
+    rightPrisma: undefined,
+    rightBasis: undefined,
 };
 
 const useStyles = createStyles((theme) => ({
@@ -122,6 +130,8 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
                     pd: protocol.leftPd!,
                     sphere: protocol.leftSphere!,
                     addition: protocol.leftAddition,
+                    prisma: protocol.leftPrisma,
+                    basis: protocol.leftBasis,
                 },
                 right: {
                     axis: protocol.rightAddition!,
@@ -129,6 +139,8 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
                     pd: protocol.rightPd!,
                     sphere: protocol.rightSphere!,
                     addition: protocol.rightAddition,
+                    prisma: protocol.rightPrisma,
+                    basis: protocol.rightBasis,
                 },
             };
 
