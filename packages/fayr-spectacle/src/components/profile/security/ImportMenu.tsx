@@ -1,6 +1,7 @@
 import { Button, Group, Stack, ThemeIcon, Text, Textarea, Alert } from "@mantine/core";
 import React from "react";
 import { AlertCircle, AlertTriangle, FileImport } from "tabler-icons-react";
+import { QRCodeReader } from "~/components/QRCodeReader";
 
 type ImportModalProps = {
     keyAvailabilityChecker: () => Promise<boolean>;
@@ -49,16 +50,27 @@ export const ImportMenu = ({ keyAvailabilityChecker, keySetter, closeModal }: Im
         );
     }
 
+    const onImport = async (data: string) => {
+        try {
+            const jsonKey = JSON.parse(window.atob(data));
+            await keySetter(jsonKey);
+            closeModal();
+        } catch (error) {
+            setImportError(true);
+            window.setTimeout(() => setImportError(false), 1000);
+        }
+    };
+
     return (
         <Stack align="center">
             <Group spacing="xs" grow direction="row" align="start">
-                <Stack sx={() => ({ flexGrow: 2 })} align="center">
+                <Stack sx={() => ({ flexGrow: 2, padding: "5px" })} align="center">
                     <Text underline>Per QR-Code</Text>
-                    TODO
+                    <QRCodeReader onError={console.error} onScan={onImport} />
                 </Stack>
                 <Stack sx={() => ({ flexGrow: 2 })} align="center">
                     <Text underline>Manuell</Text>
-                    <Text>
+                    <Text align="center">
                         Fügen sie hier den Schlüssel aus dem "Exportieren" Menü auf dem Quellgerät
                         ein
                     </Text>
@@ -80,16 +92,7 @@ export const ImportMenu = ({ keyAvailabilityChecker, keySetter, closeModal }: Im
                     ) : (
                         <Button
                             leftIcon={<FileImport />}
-                            onClick={async () => {
-                                try {
-                                    const jsonKey = JSON.parse(window.atob(manuallyEnteredKey));
-                                    await keySetter(jsonKey);
-                                    closeModal();
-                                } catch (error) {
-                                    setImportError(true);
-                                    window.setTimeout(() => setImportError(false), 1000);
-                                }
-                            }}
+                            onClick={() => onImport(manuallyEnteredKey)}
                         >
                             Importieren
                         </Button>

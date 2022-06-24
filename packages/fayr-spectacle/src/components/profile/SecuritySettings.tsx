@@ -58,6 +58,9 @@ const SecretMismatch = () => {
 export const SecuritySettings = ({ user }: Props) => {
     const { isAdmin } = useSession();
 
+    const [canExportSecret, setCanExportSecret] = React.useState(false);
+    const [canExportStorePrivateKey, setCanExportStorePrivateKey] = React.useState(false);
+
     const router = useRouter();
     const route: ModalOperation | undefined =
         router.query.slug?.length !== 2
@@ -66,8 +69,9 @@ export const SecuritySettings = ({ user }: Props) => {
 
     const { encryptionManager, localEncryptionManager } = useEncryption();
 
-    const pushRoute = (routeSuffix?: ModalOperation) =>
+    const pushRoute = (routeSuffix?: ModalOperation) => {
         router.push(`/profile/security${routeSuffix !== undefined ? `/${routeSuffix}` : ""}`);
+    };
 
     const storeInfo = useStoreInfo();
     const closeModal = React.useCallback(pushRoute, [router]);
@@ -170,12 +174,31 @@ export const SecuritySettings = ({ user }: Props) => {
         return content;
     }, [closeModal, encryptionManager, localEncryptionManager, route, storeInfo, user]);
 
+    React.useEffect(() => {
+        const init = async () => {
+            const storeId = storeInfo.id;
+            const [hasSecret, hasStorePrivateKey] = await Promise.all([
+                localEncryptionManager.hasSecret(user.id, storeInfo.id),
+                localEncryptionManager.hasStorePrivateKey(storeId),
+            ]);
+
+            setCanExportSecret(hasSecret);
+            setCanExportStorePrivateKey(hasStorePrivateKey);
+        };
+
+        init();
+    }, [localEncryptionManager, storeInfo.id, user.id]);
+
     return (
         <Stack>
             <Text>Verwalten sie hier ihre persönlichen Sicherheitseinstellungen.</Text>
             <Group direction="row">
                 <Text weight={600}>Verschlüsselungsinfo für ihren Brillenpass:</Text>
-                <Button leftIcon={<ArrowBarUp />} onClick={() => pushRoute("ExportSecret")}>
+                <Button
+                    leftIcon={<ArrowBarUp />}
+                    onClick={() => pushRoute("ExportSecret")}
+                    disabled={!canExportSecret}
+                >
                     Exportieren
                 </Button>
                 <Button leftIcon={<ArrowBarDown />} onClick={() => pushRoute("ImportSecret")}>
@@ -200,6 +223,7 @@ export const SecuritySettings = ({ user }: Props) => {
                         <Button
                             leftIcon={<ArrowBarUp />}
                             onClick={() => pushRoute("ExportStoreKey")}
+                            disabled={!canExportStorePrivateKey}
                         >
                             Exportieren
                         </Button>

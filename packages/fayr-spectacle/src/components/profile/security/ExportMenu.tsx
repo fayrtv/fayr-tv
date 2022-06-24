@@ -24,7 +24,7 @@ export const ExportMenu = ({ allowQrCode = true, keyRetriever }: ExportModalProp
     });
 
     if (!keyAvailable) {
-        return <p>Lade Schlüssel</p>;
+        return <p>Lade Schlüssel...</p>;
     }
 
     return (
