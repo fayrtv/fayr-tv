@@ -1,5 +1,5 @@
 import { SaveSecretParameters } from "~/pages/api/encryption/savesecret";
-import { SavePublicKeyParameters } from "~/pages/api/encryption/saveStorePublicKey";
+import { SavePublicKeyParameters } from "~/pages/api/encryption/savestorepublickey";
 import IKeyExchanger from "./IKeyExchanger";
 
 export default class ClientSideAmplifyStoreKeyExchangerDecorator implements IKeyExchanger {
