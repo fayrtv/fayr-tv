@@ -1,5 +1,5 @@
 import { Box, Container, Grid, Group, Stack, Text } from "@mantine/core";
-import { Auth } from "aws-amplify";
+import { Auth, DataStore } from "aws-amplify";
 import Router from "next/router";
 import React, { PropsWithChildren } from "react";
 import ZeissLogo from "~/components/ZeissLogo";
@@ -7,6 +7,8 @@ import { layoutFactory } from "~/components/layout/Layout";
 import { NextPageWithLayout } from "~/types/next-types";
 import { useProfileForm } from "~/components/profile/hooks/useProfileForm";
 import useBreakpoints from "~/hooks/useBreakpoints";
+import { useStoreInfo } from "~/components/StoreInfoProvider";
+import { Customer } from "~/models";
 
 const BodyShell = ({ children }: PropsWithChildren<{}>) => {
     return (
@@ -33,9 +35,10 @@ const BodyShell = ({ children }: PropsWithChildren<{}>) => {
 };
 
 const SignUpPage: NextPageWithLayout = () => {
+    const store = useStoreInfo();
     const { onSubmit, profileComponents } = useProfileForm({
         onSubmit: async ({ address, firstName, title, lastName, password, email, newsletter }) => {
-            await Auth.signUp({
+            const res = await Auth.signUp({
                 username: email,
                 password,
                 attributes: {
@@ -46,6 +49,14 @@ const SignUpPage: NextPageWithLayout = () => {
                     "custom:newsletter": String(newsletter),
                 },
             });
+            const userId = res.userSub;
+
+            const newCustomer = new Customer({
+                userID: userId,
+                customerOfStoreID: store.id,
+            });
+            await DataStore.save(newCustomer);
+
             await Router.push("/auth/confirm");
         },
         errorTitle: "Fehler beim Einloggen",
