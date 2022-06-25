@@ -3,5 +3,5 @@ export const env = {
     COGNITO_CLIENT_ID: process.env.COGNITO_CLIENT_ID as string,
     COGNITO_CLIENT_SECRET: process.env.COGNITO_CLIENT_SECRET as string,
     COGNITO_ISSUER: process.env.COGNITO_ISSUER as string,
+    TIMEKIT_API_KEY: process.env.TIMEKIT_API_KEY as string,
 } as const;
-

@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { GetServerSideProps } from "next";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ChooseAppointment } from "~/components/appointment/ChooseAppointment";
 import ConfirmAppointment from "~/components/appointment/ConfirmAppointment";
 import Layout from "~/components/layout/Layout";
