@@ -1,4 +1,4 @@
-import { Container, Group, ScrollArea, Stack, Text } from "@mantine/core";
+import { Container, Group, ScrollArea, Space, Stack, Text } from "@mantine/core";
 import React from "react";
 import { CircleX } from "tabler-icons-react";
 import { RefractionProtocol } from "~/components/RefractionProtocol";
@@ -68,9 +68,7 @@ const SpectaclePassPage: NextPageWithLayout<ServerProps> = ({ refractionProtocol
             }}
         >
             <Stack>
-                <Group direction="row" position="right">
-                    <CircleX size={30} />
-                </Group>
+                <Space h="xs" />
                 <Container
                     fluid
                     size="xl"
