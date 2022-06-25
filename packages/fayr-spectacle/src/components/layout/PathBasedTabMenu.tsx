@@ -146,6 +146,7 @@ export const PathBasedTabMenu = ({
                     className={classes.tabContentPaper}
                     withBorder={withBorder}
                     shadow={withBorder ? "md" : "none"}
+                    sx={{ width: "100%" }}
                 >
                     <Group direction="row" mb="md" className={classes.headline}>
                         <MediaQuery styles={{ display: "none" }} largerThan="md">
