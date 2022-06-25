@@ -1,5 +1,5 @@
 import { MediaPlayer } from "amazon-ivs-player";
-import { IEventConsumer } from "util/event";
+import { IEventConsumer } from "@fayr/common";
 
 export interface IDriftSyncStrategy<T> {
     apply(player: MediaPlayer, otherAttendeeDrifts: Array<AttendeeDriftMeasurement<T>>): void;

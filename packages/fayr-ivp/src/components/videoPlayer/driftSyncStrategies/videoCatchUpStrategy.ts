@@ -7,8 +7,7 @@ import {
     IDriftSyncStrategy,
 } from "components/videoPlayer/driftSyncStrategies/interfaces";
 
-import { IEvent } from "../../../util/event";
-import Event from "../../../util/event";
+import { Event, IEvent } from "@fayr/common";
 import { DriftInformation } from "./interfaces";
 
 class VideoCatchUpStrategy implements IDriftSyncStrategy<number> {

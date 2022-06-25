@@ -7,7 +7,7 @@ import {
     IDriftSyncStrategy,
 } from "components/videoPlayer/driftSyncStrategies/interfaces";
 
-import { Event, IEvent } from "../../../util/event";
+import { Event, IEvent } from "@fayr/common";
 
 function calculateDesiredPlaybackRate(latency: number) {
     if (latency < config.streamSync.liveStream.minimumDrift) {
