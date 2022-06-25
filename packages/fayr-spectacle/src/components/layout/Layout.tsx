@@ -10,7 +10,6 @@ type Props = {
 };
 
 const Layout = ({ children, subHeader = { enabled: true } }: Props) => {
-    const [burgerRef, setBurgerRef] = React.useState<HTMLElement | null>(null);
     const [burgerOpen, setBurgerOpen] = React.useState(false);
 
     return (
@@ -19,22 +18,15 @@ const Layout = ({ children, subHeader = { enabled: true } }: Props) => {
                 <Header
                     burgerOpen={burgerOpen}
                     setBurgerOpen={setBurgerOpen}
-                    // setBurgerRef={setBurgerRef}
                     subHeader={subHeader}
                 />
             }
             styles={{
                 root: { height: "100vh", display: "flex", flexDirection: "column" },
                 main: { padding: 0 },
-                body: { flexGrow: 1 },
+                body: { flexGrow: 1, overflowY: burgerOpen ? "hidden" : "auto" },
             }}
-            aside={
-                <Sidebar
-                    open={burgerOpen}
-                    onClickOutside={() => setBurgerOpen(false)}
-                    // burgerRef={burgerRef}
-                />
-            }
+            aside={<Sidebar open={burgerOpen} onClickOutside={() => setBurgerOpen(false)} />}
         >
             {children}
         </AppShell>
