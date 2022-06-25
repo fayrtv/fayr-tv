@@ -112,7 +112,7 @@ export const Sidebar = ({ open, onClickOutside }: Props) => {
                     {isAuthenticated && (
                         <>
                             <List.Item>
-                                <MenuItem href={"/settings"}>Einstellungen</MenuItem>
+                                <MenuItem href={"/profile/edit"}>Einstellungen</MenuItem>
                             </List.Item>
                             <List.Item>
                                 <MenuItem href={"/auth/signin?logout=true"}>Abmelden</MenuItem>
