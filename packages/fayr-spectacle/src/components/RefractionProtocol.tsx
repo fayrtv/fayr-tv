@@ -355,11 +355,11 @@ export const RefractionProtocol = ({
                             <Group direction="row" position="center">
                                 <Printer
                                     className={classes.actionItem}
-                                    onClick={() => areActionsAllowed && window.print()}
+                                    onClick={() => window.print()}
                                 />
                                 <Qrcode
                                     className={classes.actionItem}
-                                    onClick={() => areActionsAllowed && setQRCodeOpen(true)}
+                                    onClick={() => setQRCodeOpen(true)}
                                 />
                                 <Modal
                                     opened={qrCodeOpen}

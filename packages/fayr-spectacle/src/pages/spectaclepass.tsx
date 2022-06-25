@@ -136,33 +136,6 @@ export const getServerSideProps: GetServerSideProps<ServerProps | RedirectProps>
         x.userID("eq", user.email),
     );
 
-    if (!userProtocols || userProtocols.length === 0) {
-        // Create some dummy entries if none exist yet
-        const dummy: RefractionProtocolModel = {
-            left: {
-                axis: 170,
-                cylinder: -0.25,
-                pd: 35,
-                sphere: -2.5,
-                addition: undefined,
-            },
-            right: {
-                axis: 168,
-                cylinder: -0.75,
-                pd: 34.5,
-                sphere: -1.75,
-                addition: undefined,
-            },
-        };
-        await store.save(
-            new RefractionProtocolEntity({
-                recordedAt: new Date().toISOString(),
-                data: JSON.stringify(dummy),
-                userID: user.email,
-            }),
-        );
-    }
-
     return {
         props: {
             refractionProtocols: userProtocols.map(serializeModel),
