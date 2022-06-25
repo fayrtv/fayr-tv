@@ -1,8 +1,8 @@
-import { useStateWithEffect } from "@fayr/common";
 import useOutsideClickHandler from "hooks/useOutsideClickHandler";
 import { debounce } from "lodash";
 import React from "react";
 import { HexColorInput, HexColorPicker } from "react-colorful";
+import { useStateWithEffect } from "hooks/useStateWithCallback";
 
 type Props = {
     name: string;

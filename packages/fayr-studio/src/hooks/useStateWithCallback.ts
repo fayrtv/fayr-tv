@@ -29,19 +29,18 @@ const useStateWithLayoutEffect = <T>(
 const useStateWithLazyCallback = <T>(
     initialValue: InitialState<T>,
 ): [T, (newValue: T, callback: Callback<T>) => void] => {
-    const callbackRef = useRef(null);
+    const callbackRef = useRef<null | ((value: T) => void)>(null);
 
     const [value, setValue] = useState(initialValue);
 
     useEffect(() => {
         if (callbackRef.current) {
             callbackRef.current(value);
-
             callbackRef.current = null;
         }
     }, [value]);
 
-    const setValueWithCallback = (newValue, callback) => {
+    const setValueWithCallback = (newValue: T, callback: (value: T) => void) => {
         callbackRef.current = callback;
 
         return setValue(newValue);
