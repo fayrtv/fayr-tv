@@ -1,12 +1,13 @@
-import { usePersistedState } from "@fayr/common";
 import { SpeakerphoneIcon, XIcon } from "@heroicons/react/outline";
 import { A } from "components/A";
-import React from "react";
+import React, { useState } from "react";
 
 const BANNER_ID: string = "save-on-fayr-monthly";
 
 export default function Banner() {
-    const [isDismissed, setDismissed] = usePersistedState(`banner-${BANNER_ID}`, () => false);
+    // Commented out as it raises "invalid hooks call"
+    // const [isDismissed, setDismissed] = usePersistedState(`banner-${BANNER_ID}`, () => false);
+    const [isDismissed, setDismissed] = useState(false);
 
     return isDismissed ? (
         <></>

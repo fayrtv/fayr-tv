@@ -1,4 +1,3 @@
-import { NoSsr } from "@material-ui/core";
 import Banner from "components/Banner";
 import DashboardLayout from "components/layout/DashboardLayout";
 import { NextSeo } from "next-seo";
