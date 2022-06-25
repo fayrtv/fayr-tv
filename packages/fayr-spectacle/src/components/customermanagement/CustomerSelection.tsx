@@ -1,8 +1,9 @@
 // Framework
-import { Autocomplete, Button, Divider, Grid, Paper, Stack, Text } from "@mantine/core";
+import { Autocomplete, Button, Divider, Grid, Paper, Stack, Sx, Text } from "@mantine/core";
 import * as React from "react";
 import { Customer } from "~/types/user";
 import { CustomerStatusBadge } from "~/components/customermanagement/CustomerStatusBadge";
+import useBreakpoints from "../../hooks/useBreakpoints";
 
 type Props = {
     customers: Array<Customer>;
@@ -16,15 +17,16 @@ const CustomerRow = ({
     customer: Customer;
     pickCustomer: () => void;
 }) => {
+    const { isMobile } = useBreakpoints();
     return (
         <>
             <Grid.Col span={1}>{customer.lastName}</Grid.Col>
             <Grid.Col span={1}>{customer.firstName}</Grid.Col>
-            <Grid.Col span={1}>
+            <Grid.Col span={isMobile ? 3 : 1}>
                 <CustomerStatusBadge customer={customer} />
             </Grid.Col>
-            <Grid.Col span={1}>{customer.email}</Grid.Col>
-            <Grid.Col span={1} sx={{ textAlign: "right" }}>
+            <Grid.Col span={isMobile ? 3 : 1}>{customer.email}</Grid.Col>
+            <Grid.Col span={isMobile ? 2 : 1} sx={{ textAlign: "right" }}>
                 <Button onClick={pickCustomer} size="sm" compact>
                     Auswählen
                 </Button>
@@ -40,6 +42,8 @@ export const CustomerSelection = ({ customers = [], setCustomerSelection }: Prop
         () => customers.filter((x) => x.email.startsWith(query)),
         [customers, query],
     );
+
+    const { isMobile } = useBreakpoints();
 
     return (
         <Paper sx={(_) => ({ width: "100%" })}>
@@ -63,20 +67,29 @@ export const CustomerSelection = ({ customers = [], setCustomerSelection }: Prop
                     <Grid.Col span={1}>
                         <Text>Status</Text>
                     </Grid.Col>
-                    <Grid.Col span={1}>
-                        <Text>E-Mail</Text>
-                    </Grid.Col>
+                    {!isMobile && (
+                        <Grid.Col span={1}>
+                            <Text>E-Mail</Text>
+                        </Grid.Col>
+                    )}
                 </Grid>
                 <Divider my="sm" />
-                <Grid columns={5} align="center">
-                    {filteredCustomers.map((x) => (
+                {filteredCustomers.map((x, index) => (
+                    <Grid
+                        key={index}
+                        sx={(theme) => ({
+                            backgroundColor: index % 2 == 1 ? theme.colors.gray[2] : "auto",
+                        })}
+                        columns={5}
+                        align="center"
+                    >
                         <CustomerRow
                             customer={x}
                             key={x.email}
                             pickCustomer={() => setCustomerSelection(x)}
                         />
-                    ))}
-                </Grid>
+                    </Grid>
+                ))}
             </Stack>
         </Paper>
     );
