@@ -1,4 +1,4 @@
-import Event from "@fayr/common/src/events/event";
+import { Event } from "@fayr/common";
 
 export default interface IChimeEvents {
     roomLeft: Event<void>;
