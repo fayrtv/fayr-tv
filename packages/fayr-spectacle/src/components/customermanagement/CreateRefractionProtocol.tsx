@@ -212,24 +212,6 @@ const CreateRefractionProtocol: NextPageWithLayout<Props> = ({ customer }: Props
                             <Group noWrap spacing="sm" sx={{ justifyContent: "right" }}>
                                 <ResponsiveIconButton
                                     size="xs"
-                                    variant="light"
-                                    color="gray"
-                                    onClick={() => window.print()}
-                                    leftIcon={<Printer />}
-                                >
-                                    Drucken
-                                </ResponsiveIconButton>
-                                <ResponsiveIconButton
-                                    size="xs"
-                                    variant="light"
-                                    color="gray"
-                                    leftIcon={<Edit />}
-                                >
-                                    Bearbeiten
-                                </ResponsiveIconButton>
-
-                                <ResponsiveIconButton
-                                    size="xs"
                                     variant="filled"
                                     color="primary"
                                     leftIcon={<DeviceFloppy />}
