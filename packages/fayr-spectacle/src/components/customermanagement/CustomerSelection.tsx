@@ -86,7 +86,10 @@ export const CustomerSelection = ({ customers = [], setCustomerSelection }: Prop
                                     : "auto",
                             transition: "background 0.3s ease-in-out",
                             "&:hover": {
-                                background: theme.colors.gray[1],
+                                background:
+                                    theme.colorScheme === "light"
+                                        ? theme.colors.gray[1]
+                                        : theme.colors.gray[7],
                             },
                         })}
                         columns={5}
