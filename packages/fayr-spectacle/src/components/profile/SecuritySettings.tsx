@@ -240,7 +240,7 @@ export const SecuritySettings = ({ user }: Props) => {
                 size="xl"
                 centered
                 opened={route !== undefined}
-                onClose={closeModal}
+                onClose={() => closeModal()}
                 title={
                     route === "GenerateStorePair"
                         ? "Generieren"
