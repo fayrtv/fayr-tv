@@ -6201,7 +6201,6 @@ __metadata:
     qr-scanner: ^1.4.1
     qrcode-svg: ^1.1.0
     react: 18.0.0
-    react-calendly: ^4.0.1
     react-dom: 18.0.0
     react-qr-reader: ^3.0.0-beta-1
     react-query: ^3.39.0
@@ -27705,16 +27704,6 @@ __metadata:
     regenerator-runtime: ^0.13.9
     whatwg-fetch: ^3.6.2
   checksum: 1bb031080af15397d6eb9c69a0c2e93799991f7197a086e4409ba719398f1256b542a3d6c9a34673d516c684eef3e8226c99b335982593851f58f65f6e43571b
-  languageName: node
-  linkType: hard
-
-"react-calendly@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "react-calendly@npm:4.0.1"
-  peerDependencies:
-    react: ">=16.8.0"
-    react-dom: ">=16.8.0"
-  checksum: f65e4f16f6bbc9f360d46da3ed3d192292ceac9ac4a149f8c0ef67f8e3c819282f0185794a2332a7e54a73aee52cbbaa8f03ae428d1334867071ff48228c1048
   languageName: node
   linkType: hard
 

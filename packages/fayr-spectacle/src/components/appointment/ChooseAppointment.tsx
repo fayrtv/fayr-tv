@@ -4,10 +4,9 @@ import { Calendar } from "@mantine/dates";
 import { useScrollIntoView } from "@mantine/hooks";
 import dayjs from "dayjs";
 import React, { Dispatch, SetStateAction, useEffect, useMemo } from "react";
-import { TimeSlot } from "~/calendly/events";
 import { useStoreInfo } from "~/components/StoreInfoProvider";
 import { InfoBox } from "~/components/appointment/InfoBox";
-import { EARLIEST, LATEST } from "~/components/appointment/types";
+import { EARLIEST, LATEST, TimeSlot } from "~/components/appointment/types";
 
 const canSelectDate = (date: Date): boolean => {
     // No weekends
@@ -25,8 +24,8 @@ const TimeRangeSelectItem = ({
     onClick: (value: TimeSlot) => void;
     onConfirm: () => void;
 }) => {
-    const start = `${String(slot.startUTC).padStart(2, "0")}:00 Uhr`;
-    const end = `${String(slot.endUTC).padStart(2, "0")}:00 Uhr`;
+    const start = `${String(slot[0]).padStart(2, "0")}:00 Uhr`;
+    const end = `${String(slot[1]).padStart(2, "0")}:00 Uhr`;
 
     return isSelected ? (
         <Group spacing={0} position="apart" grow>
@@ -84,7 +83,7 @@ export const ChooseAppointment = ({
     const availableSlots = useMemo(() => {
         const slots: TimeSlot[] = [];
         for (let i = EARLIEST; i < LATEST; i++) {
-            slots.push({ startUTC: i, endUTC: i + 1 });
+            slots.push([i, i + 1]);
         }
         return slots;
     }, []);
