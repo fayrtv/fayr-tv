@@ -353,14 +353,27 @@ export const RefractionProtocol = ({
                     {isTablet ? (
                         <Container fluid sx={(_) => ({ margin: "auto 0", width: "100%" })}>
                             <Group direction="row" position="center">
-                                <Printer
-                                    className={classes.actionItem}
+                                <Button
+                                    color={isDarkMode ? "black" : "white"}
+                                    size="sm"
                                     onClick={() => window.print()}
-                                />
-                                <Qrcode
-                                    className={classes.actionItem}
-                                    onClick={() => setQRCodeOpen(true)}
-                                />
+                                >
+                                    <Printer
+                                        color={theme.colors.primary[7]}
+                                        className={classes.actionItem}
+                                    />
+                                </Button>
+                                <Button
+                                    color={isDarkMode ? "black" : "white"}
+                                    size="sm"
+                                    onClick={() => window.print()}
+                                >
+                                    <Qrcode
+                                        color={theme.colors.primary[7]}
+                                        className={classes.actionItem}
+                                        onClick={() => setQRCodeOpen(true)}
+                                    />
+                                </Button>
                                 <Modal
                                     opened={qrCodeOpen}
                                     onClose={() => setQRCodeOpen(false)}
