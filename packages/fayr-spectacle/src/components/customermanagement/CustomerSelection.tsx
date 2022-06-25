@@ -78,7 +78,12 @@ export const CustomerSelection = ({ customers = [], setCustomerSelection }: Prop
                     <Grid
                         key={index}
                         sx={(theme) => ({
-                            background: index % 2 == 1 ? theme.colors.gray[2] : "auto",
+                            background:
+                                index % 2 == 1
+                                    ? theme.colorScheme === "light"
+                                        ? theme.colors.gray[2]
+                                        : theme.colors.gray[8]
+                                    : "auto",
                             transition: "background 0.3s ease-in-out",
                             "&:hover": {
                                 background: theme.colors.gray[1],
