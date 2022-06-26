@@ -1,17 +1,20 @@
-import { createStyles, Group, Stack } from "@mantine/core";
-import { Button, Text } from "@mantine/core";
+import { Button, createStyles, Group, Stack, Text } from "@mantine/core";
 import { Calendar } from "@mantine/dates";
 import { useScrollIntoView } from "@mantine/hooks";
 import dayjs from "dayjs";
-import React, { Dispatch, SetStateAction, useEffect } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useMemo } from "react";
 import { useStoreInfo } from "~/components/StoreInfoProvider";
 import { InfoBox } from "~/components/appointment/InfoBox";
-import { EARLIEST, LATEST, TimeSlot } from "~/components/appointment/types";
+import { TimeSlot } from "~/components/appointment/types";
 
-const canSelectDate = (date: Date): boolean => {
-    // No weekends
-    return date.getDay() !== 0 && date.getDay() !== 6;
+const asDayJS = (dateString: string) => dayjs(new Date(dateString));
+
+const canSelectDate = (availableDays: Date[], date: Date): boolean => {
+    return availableDays.map((x) => x.toDateString()).includes(date.toDateString());
 };
+
+const fmtTimeOfDay = (dateString: string) =>
+    `${new Date(dateString).toLocaleTimeString([], { timeStyle: "short" })} Uhr`;
 
 const TimeRangeSelectItem = ({
     slot,
@@ -24,8 +27,8 @@ const TimeRangeSelectItem = ({
     onClick: (value: TimeSlot) => void;
     onConfirm: () => void;
 }) => {
-    const start = `${new Date(slot.startUTC).toLocaleTimeString([], { timeStyle: "short" })} Uhr`;
-    const end = `${new Date(slot.endUTC).toLocaleTimeString([], { timeStyle: "short" })} Uhr`;
+    const start = fmtTimeOfDay(slot.startUTC);
+    const end = fmtTimeOfDay(slot.endUTC);
 
     return isSelected ? (
         <Group spacing={0} position="apart" grow>
@@ -78,6 +81,19 @@ export const ChooseAppointment = ({
 }: Props) => {
     const { classes } = useStyles();
 
+    const availableSlotsForSelectedDay = useMemo(
+        () =>
+            date
+                ? availableSlots.filter((x) => {
+                      const s = new Date(x.startUTC);
+                      const start = dayjs(s);
+                      const selectedDay = dayjs(date);
+                      return start.isSame(selectedDay, "day");
+                  })
+                : [],
+        [availableSlots, date],
+    );
+
     const storeInfo = useStoreInfo();
 
     const { scrollIntoView, targetRef: scrollTargetRef } = useScrollIntoView<HTMLDivElement>({
@@ -92,6 +108,17 @@ export const ChooseAppointment = ({
         // eslint-disable-next-line
     }, [date]);
 
+    const availableDays = availableSlots
+        .map((x) => new Date(x.startUTC))
+        .reduce<Date[]>((agg, curr) => {
+            const currDateString = curr.toDateString();
+            if (!agg.some((x) => x.toDateString() == currDateString)) {
+                agg.push(curr);
+                return agg;
+            }
+            return agg;
+        }, []);
+
     return (
         <div className={classes.container}>
             <Stack spacing={0} align="center">
@@ -104,7 +131,7 @@ export const ChooseAppointment = ({
                 </Text>
                 <Calendar
                     minDate={dayjs(new Date()).toDate()}
-                    excludeDate={(x) => !canSelectDate(x)}
+                    excludeDate={(x) => !canSelectDate(availableDays, x)}
                     size="xs"
                     mt="md"
                     value={date}
@@ -114,7 +141,7 @@ export const ChooseAppointment = ({
             {/* IDEA: Use accordion instead: https://mantine.dev/core/accordion/ */}
             {date && (
                 <Stack spacing="sm" ref={scrollTargetRef} mb="md">
-                    {availableSlots.map((slot, n) => (
+                    {availableSlotsForSelectedDay.map((slot, n) => (
                         <TimeRangeSelectItem
                             isSelected={slot === selectedSlot}
                             onClick={setSelectedSlot}

@@ -18,15 +18,6 @@ const AppointmentPage: NextPageWithLayout<ServerProps> = ({ availableSlots }) =>
     const [selectedSlot, setSelectedSlot] = useState<TimeSlot | null>(null);
     const [isAppointmentSelected, setAppointmentSelected] = useState(false);
 
-    const availableSlotsForSelectedDay = date
-        ? availableSlots.filter((x) => {
-              const s = new Date(x.startUTC);
-              const start = dayjs(s);
-              const selectedDay = dayjs(date);
-              return start.isSame(selectedDay, "day");
-          })
-        : [];
-
     return (
         <MainContainer>
             {isAppointmentSelected ? (
@@ -36,7 +27,7 @@ const AppointmentPage: NextPageWithLayout<ServerProps> = ({ availableSlots }) =>
                 />
             ) : (
                 <ChooseAppointment
-                    availableSlots={availableSlotsForSelectedDay!}
+                    availableSlots={availableSlots}
                     date={date}
                     setDate={setDate}
                     selectedSlot={selectedSlot}
