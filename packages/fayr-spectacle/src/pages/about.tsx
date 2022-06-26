@@ -1,4 +1,5 @@
 import {
+    Anchor,
     Box,
     Container,
     createStyles,
@@ -7,7 +8,6 @@ import {
     MediaQuery,
     Paper,
     Stack,
-    Sx,
     Text,
 } from "@mantine/core";
 import React, { PropsWithChildren } from "react";
@@ -16,16 +16,12 @@ import Layout from "~/components/layout/Layout";
 import { NextPageWithLayout } from "~/types/next-types";
 import { useStoreInfo } from "~/components/StoreInfoProvider";
 import Link from "next/link";
-import { Anchor } from "@mantine/core";
 import { SerializedModel, serializeModel } from "~/models/amplify-models";
 import { RefractionProtocol as RefractionProtocolEntity } from "~/models";
 import { GetServerSideProps } from "next";
-import { RedirectProps, redirectServerSide } from "~/helpers/next-server";
 import { withSSRContext } from "aws-amplify";
 import { DataStore } from "@aws-amplify/datastore";
 import { ssrGetUser } from "~/helpers/authentication";
-import { RefractionProtocol as RefractionProtocolModel } from "~/types/refraction-protocol";
-import SpectaclePassPage from "~/pages/spectaclepass";
 
 const NumberBox = ({ n, title, children }: PropsWithChildren<{ n: number; title: string }>) => {
     return (
@@ -170,11 +166,15 @@ export const getServerSideProps: GetServerSideProps<ServerProps> = async ({ req,
         x.userID("eq", user.email),
     );
 
+    if (!userProtocols.length) {
+        return {
+            props: {},
+        };
+    }
+
     return {
         props: {
-            latestRefractionProtocol: userProtocols.length
-                ? serializeModel(userProtocols[0])
-                : undefined,
+            latestRefractionProtocol: serializeModel(userProtocols[0]),
         },
     };
 };

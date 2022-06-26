@@ -142,6 +142,11 @@ export const getServerSideProps: GetServerSideProps<ServerProps | RedirectProps>
         x.userID("eq", user.email),
     );
 
+    if (!userProtocols.length) {
+        redirectServerSide(res, "/about");
+        return { props: {} };
+    }
+
     return {
         props: {
             refractionProtocols: userProtocols.map(serializeModel),
