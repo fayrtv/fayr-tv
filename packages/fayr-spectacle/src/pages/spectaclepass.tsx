@@ -72,7 +72,7 @@ const SpectaclePassPage: NextPageWithLayout<ServerProps> = ({ refractionProtocol
                     sx={(_) => (isMobile ? {} : { marginLeft: "10%", marginRight: "10%" })}
                 >
                     <Stack align="center" spacing="xs">
-                        {currentProtocol || protocolHistory ? (
+                        {currentProtocol ? (
                             <>
                                 <Text weight="bold">Digitaler Brillenpass</Text>
                                 <Text weight="normal">{userName}</Text>
