@@ -10,19 +10,35 @@ timekit.configure({
     convertResponseToCamelcase: true,
 });
 
+export type Resource = {
+    id: string;
+    name: string;
+    timezone: string;
+};
+
 const PROJECT_ID = "c078564a-b4c4-4b9b-8060-cdcf684fdb7c";
 
-export const fetchAvailability = async (): Promise<
-    Array<{
-        start: string;
-        end: string;
-        resources: Array<any>;
-    }>
-> => {
-    const response = await timekit.fetchAvailability({
+export const fetchAvailability = async (forResourceID: string): Promise<TimeSlot[]> => {
+    const response: {
+        data: Array<{
+            start: string;
+            end: string;
+            resources: Array<Resource>;
+        }>;
+    } = await timekit.fetchAvailability({
         projectId: PROJECT_ID,
     });
-    return response.data;
+
+    return response.data
+        .filter((x) => x.resources.some((x) => x.id === forResourceID))
+        .map(
+            (x) =>
+                ({
+                    startUTC: x.start,
+                    endUTC: x.end,
+                    resourceID: forResourceID,
+                } as TimeSlot),
+        );
 };
 
 export const createBooking = async (timeSlot: TimeSlot, customer: AppointmentCustomerInfo) => {
@@ -48,4 +64,12 @@ export const createBooking = async (timeSlot: TimeSlot, customer: AppointmentCus
         },
     });
     return response.data;
+};
+
+export const getProjectResourceIDs = async (): Promise<string[]> => {
+    return (await timekit.getProjectResources({ id: PROJECT_ID })).data;
+};
+
+export const getAllResources = async (): Promise<Array<Resource & { email: string }>> => {
+    return (await timekit.getResources()).data;
 };
