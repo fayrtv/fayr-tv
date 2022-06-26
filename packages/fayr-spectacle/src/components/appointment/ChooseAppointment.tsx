@@ -7,12 +7,6 @@ import { useStoreInfo } from "~/components/StoreInfoProvider";
 import { InfoBox } from "~/components/appointment/InfoBox";
 import { TimeSlot } from "~/components/appointment/types";
 
-const asDayJS = (dateString: string) => dayjs(new Date(dateString));
-
-const canSelectDate = (availableDays: Date[], date: Date): boolean => {
-    return availableDays.map((x) => x.toDateString()).includes(date.toDateString());
-};
-
 const fmtTimeOfDay = (dateString: string) =>
     `${new Date(dateString).toLocaleTimeString([], { timeStyle: "short" })} Uhr`;
 
@@ -54,9 +48,9 @@ const useStyles = createStyles((theme) => ({
         justifyContent: "center",
         flexDirection: "row",
         gap: `${theme.spacing.md}px`,
-        alignItems: "end",
+        alignItems: "start",
 
-        [`@media (max-width: ${theme.breakpoints.xs}px)`]: {
+        [`@media (max-width: ${theme.breakpoints.sm}px)`]: {
             flexDirection: "column",
             alignItems: "center",
         },
@@ -108,16 +102,12 @@ export const ChooseAppointment = ({
         // eslint-disable-next-line
     }, [date]);
 
-    const availableDays = availableSlots
-        .map((x) => new Date(x.startUTC))
-        .reduce<Date[]>((agg, curr) => {
-            const currDateString = curr.toDateString();
-            if (!agg.some((x) => x.toDateString() == currDateString)) {
-                agg.push(curr);
-                return agg;
-            }
-            return agg;
-        }, []);
+    const canSelectDate = useMemo(() => {
+        const availableDayStrings = new Set<string>(
+            availableSlots.map((s) => new Date(s.startUTC).toDateString()),
+        );
+        return (date: Date): boolean => availableDayStrings.has(date.toDateString());
+    }, [availableSlots]);
 
     return (
         <div className={classes.container}>
@@ -131,7 +121,7 @@ export const ChooseAppointment = ({
                 </Text>
                 <Calendar
                     minDate={dayjs(new Date()).toDate()}
-                    excludeDate={(x) => !canSelectDate(availableDays, x)}
+                    excludeDate={(x) => !canSelectDate(x)}
                     size="xs"
                     mt="md"
                     value={date}
