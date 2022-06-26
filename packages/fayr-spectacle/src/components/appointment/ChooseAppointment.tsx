@@ -102,6 +102,9 @@ export const ChooseAppointment = ({
         // eslint-disable-next-line
     }, [date]);
 
+    /**
+     * Returns true if any available start date is on the same day as the given date
+     */
     const canSelectDate = useMemo(() => {
         const availableDayStrings = new Set<string>(
             availableSlots.map((s) => new Date(s.startUTC).toDateString()),
