@@ -138,7 +138,7 @@ export class AudioVideoManager implements IAudioVideoManager, DeviceChangeObserv
         this.publishDevicesUpdated();
     }
 
-    private initDevicesIfAllowed = async function(
+    private initDevicesIfAllowed = async function (
         permissionChecker: () => Promise<boolean>,
         deviceGatherer: () => Promise<Array<MediaDeviceInfo>>,
     ) {
@@ -174,8 +174,8 @@ export class AudioVideoManager implements IAudioVideoManager, DeviceChangeObserv
 
             await this._audioVideo?.chooseAudioInputDevice(actualDevice);
             this._currentAudioInputDevice = device;
-        } catch (error) {
-            this._logger.error(error);
+        } catch (error: unknown) {
+            this._logger.error(error as string);
         }
     };
 
@@ -218,8 +218,8 @@ export class AudioVideoManager implements IAudioVideoManager, DeviceChangeObserv
 
             await this._audioVideo?.chooseVideoInputDevice(actualDevice);
             this._currentVideoInputDevice = device;
-        } catch (error) {
-            this._logger.error(error);
+        } catch (error: unknown) {
+            this._logger.error(error as string);
         }
     }
 
@@ -230,8 +230,8 @@ export class AudioVideoManager implements IAudioVideoManager, DeviceChangeObserv
         try {
             await chooser(device?.value ?? null);
             return device;
-        } catch (error) {
-            this._logger.error(error);
+        } catch (error: unknown) {
+            this._logger.error(error as string);
             return null;
         }
     };
