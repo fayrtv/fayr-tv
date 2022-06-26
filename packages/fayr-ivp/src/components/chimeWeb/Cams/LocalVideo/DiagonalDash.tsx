@@ -27,6 +27,7 @@ type Props = {
     fill?: CssProperty.Background;
     width?: CssProperty.Width;
     onClick?(): void;
+    children?: React.ReactNode;
 };
 
 export const DiagonalDash: React.FC<Props> = ({ children, fill = "white", width = 2, onClick }) => {

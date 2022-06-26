@@ -1,7 +1,11 @@
 import React from "react";
 
-class ErrorBoundary extends React.Component<{}, { error?: string }> {
-    constructor(props: any) {
+type Props = {
+    children: React.ReactNode;
+};
+
+class ErrorBoundary extends React.Component<Props, { error?: string }> {
+    constructor(props: Props) {
         super(props);
         this.state = { error: undefined };
     }

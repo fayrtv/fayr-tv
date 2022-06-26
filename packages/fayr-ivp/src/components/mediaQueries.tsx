@@ -3,6 +3,7 @@ import { useMediaQuery } from "react-responsive";
 
 type Props = {
     additionalCondition?: boolean;
+    children?: React.ReactNode;
 };
 
 type ScreenSize = "mobile" | "largeScreens";
@@ -23,9 +24,11 @@ export const TabletOrMobile: React.FC<Props> = (props) => (
     <MediaQueryComponent {...props} query={useIsTabletOrMobile} />
 );
 
-const MediaQueryComponent: React.FC<Props & {
-    query(): boolean;
-}> = ({ additionalCondition, children, query }) => (
+const MediaQueryComponent: React.FC<
+    Props & {
+        query(): boolean;
+    }
+> = ({ additionalCondition, children, query }) => (
     <>{query() && (additionalCondition ?? true) ? children : null}</>
 );
 

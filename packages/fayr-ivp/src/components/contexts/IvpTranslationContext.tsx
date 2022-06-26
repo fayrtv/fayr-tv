@@ -5,7 +5,7 @@ import { createTranslationContext, TranslationContextProvider } from "@fayr/comm
 
 export const IvpTranslationContext = createTranslationContext<Translations>();
 
-export const IvpTranslationContextProvider: React.FC = ({ children }) => {
+export const IvpTranslationContextProvider = ({ children }: { children: React.ReactNode }) => {
     return (
         <TranslationContextProvider<Translations>
             initialLanguage="de"

@@ -57,7 +57,7 @@ export const CamSection = ({ joinInfo }: Props) => {
 
     const dispatch = useDispatch();
     const setPinnedHostIdentifier = React.useCallback(
-        (newHost) => {
+        (newHost: string) => {
             dispatch(updatePinnedHost(newHost));
         },
         [dispatch],

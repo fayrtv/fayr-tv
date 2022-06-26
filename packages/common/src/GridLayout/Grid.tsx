@@ -28,6 +28,7 @@ type GridProps = {
     display?: GridDisplay;
 
     gridProperties?: GridStyles;
+    children?: React.ReactNode;
 };
 
 export const Grid: React.FC<GridProps> = ({

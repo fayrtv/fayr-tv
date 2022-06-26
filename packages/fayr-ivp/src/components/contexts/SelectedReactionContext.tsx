@@ -17,7 +17,7 @@ const defaultValues = {
 
 export const SelectedReactionContext = createContext<Context>(defaultValues);
 
-export const SelectedReactionContextProvider: React.FC = ({ children }) => {
+export const SelectedReactionContextProvider = ({ children }: { children: React.ReactNode }) => {
     const [reactionsDisabled, setReactionsDisabled] = React.useState<boolean>(
         defaultValues.reactionsDisabled,
     );

@@ -11,7 +11,7 @@ export const ChatOpenContext = createContext<Context>({
     set: (_) => void 0,
 });
 
-export const ChatOpenContextProvider: React.FC = ({ children }) => {
+export const ChatOpenContextProvider = ({ children }: { children: React.ReactNode }) => {
     const [isOpen, setIsOpen] = useState(true);
 
     return (

@@ -14,7 +14,7 @@ export const SocketContext = React.createContext<Context>({
     setSocket: () => void 0,
 });
 
-export const SocketContextProvider: React.FC = ({ children }) => {
+export const SocketContextProvider = ({ children }: { children: React.ReactNode }) => {
     const [socket, setSocket] = React.useState<ISocketProvider>();
 
     const submitNewSocket = React.useCallback(
