@@ -39,7 +39,6 @@ const EditProfile = ({ user }: Props) => {
             <form onSubmit={onSubmit}>
                 {profileComponents.renderError()}
                 {profileComponents.renderLoadingOverlay()}
-                {/* TODO: No grid with columns on mobile */}
                 <Grid gutter="md">
                     <Grid.Col sm={6}>
                         <Stack spacing="sm">

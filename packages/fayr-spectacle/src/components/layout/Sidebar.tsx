@@ -5,6 +5,7 @@ import Link from "next/link";
 import ThemeToggleButton from "~/components/layout/ThemeToggleButton";
 import { useSession } from "~/hooks/useSession";
 import { useClickOutside } from "@mantine/hooks";
+import applicationConfig from "~/constants/applicationConfig";
 
 type Props = {
     open: boolean;
@@ -13,7 +14,6 @@ type Props = {
 
 export const Sidebar = ({ open, onClickOutside }: Props) => {
     const { isAuthenticated, isAdmin } = useSession();
-    const debug = process.env.NODE_ENV === "development";
 
     const sidebarRef = useClickOutside<HTMLDivElement>(onClickOutside, ["click"]);
 
@@ -76,11 +76,13 @@ export const Sidebar = ({ open, onClickOutside }: Props) => {
                     <List.Item>
                         <MenuItem href={"/appointment"}>Termin vereinbaren</MenuItem>
                     </List.Item>
-                    <List.Item>
-                        <MenuItem href={"/fittingroom"}>Online Anprobe</MenuItem>
-                    </List.Item>
+                    {applicationConfig.IS_FITTINGROOM_ENABLED && (
+                        <List.Item>
+                            <MenuItem href={"/fittingroom"}>Online Anprobe</MenuItem>
+                        </List.Item>
+                    )}
 
-                    {debug && (
+                    {applicationConfig.ARE_SIDEBAR_DEBUG_PAGES_ENABLED && (
                         <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
                             <div>
                                 <Text size="sm" mt="lg">
