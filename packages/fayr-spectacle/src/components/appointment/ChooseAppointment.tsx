@@ -3,7 +3,7 @@ import { Button, Text } from "@mantine/core";
 import { Calendar } from "@mantine/dates";
 import { useScrollIntoView } from "@mantine/hooks";
 import dayjs from "dayjs";
-import React, { Dispatch, SetStateAction, useEffect, useMemo } from "react";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { useStoreInfo } from "~/components/StoreInfoProvider";
 import { InfoBox } from "~/components/appointment/InfoBox";
 import { EARLIEST, LATEST, TimeSlot } from "~/components/appointment/types";
@@ -24,8 +24,8 @@ const TimeRangeSelectItem = ({
     onClick: (value: TimeSlot) => void;
     onConfirm: () => void;
 }) => {
-    const start = `${String(slot[0]).padStart(2, "0")}:00 Uhr`;
-    const end = `${String(slot[1]).padStart(2, "0")}:00 Uhr`;
+    const start = `${new Date(slot.startUTC).toLocaleTimeString([], { timeStyle: "short" })} Uhr`;
+    const end = `${new Date(slot.endUTC).toLocaleTimeString([], { timeStyle: "short" })} Uhr`;
 
     return isSelected ? (
         <Group spacing={0} position="apart" grow>
@@ -61,7 +61,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 type Props = {
-    unavailableSlots: TimeSlot[];
+    availableSlots: TimeSlot[];
     date: Date | null;
     setDate: Dispatch<SetStateAction<Date | null>>;
     selectedSlot: TimeSlot | null;
@@ -69,7 +69,7 @@ type Props = {
     onConfirm: () => void;
 };
 export const ChooseAppointment = ({
-    unavailableSlots,
+    availableSlots,
     date,
     setDate,
     selectedSlot,
@@ -79,14 +79,6 @@ export const ChooseAppointment = ({
     const { classes } = useStyles();
 
     const storeInfo = useStoreInfo();
-
-    const availableSlots = useMemo(() => {
-        const slots: TimeSlot[] = [];
-        for (let i = EARLIEST; i < LATEST; i++) {
-            slots.push([i, i + 1]);
-        }
-        return slots;
-    }, []);
 
     const { scrollIntoView, targetRef: scrollTargetRef } = useScrollIntoView<HTMLDivElement>({
         offset: 0,

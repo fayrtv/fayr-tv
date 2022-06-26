@@ -7,27 +7,36 @@ import Layout from "~/components/layout/Layout";
 import MainContainer from "~/components/layout/MainContainer";
 import { NextPageWithLayout } from "~/types/next-types";
 import { TimeSlot } from "~/components/appointment/types";
+import { fetchAvailability } from "~/timekit/timekitClient";
 
 type ServerProps = {
-    unavailableSlots: TimeSlot[];
+    availableSlots: TimeSlot[];
 };
 
-const AppointmentPage: NextPageWithLayout<ServerProps> = ({ unavailableSlots }) => {
+const AppointmentPage: NextPageWithLayout<ServerProps> = ({ availableSlots }) => {
     const [date, setDate] = useState<Date | null>(null);
     const [selectedSlot, setSelectedSlot] = useState<TimeSlot | null>(null);
     const [isAppointmentSelected, setAppointmentSelected] = useState(false);
+
+    const availableSlotsForSelectedDay = date
+        ? availableSlots.filter((x) => {
+              const s = new Date(x.startUTC);
+              const start = dayjs(s);
+              const selectedDay = dayjs(date);
+              return start.isSame(selectedDay, "day");
+          })
+        : [];
 
     return (
         <MainContainer>
             {isAppointmentSelected ? (
                 <ConfirmAppointment
-                    begin={dayjs(date!).add(selectedSlot![0], "hours").toDate()}
-                    end={dayjs(date!).add(selectedSlot![1], "hours").toDate()}
+                    timeSlot={selectedSlot!}
                     onCancel={() => setAppointmentSelected(false)}
                 />
             ) : (
                 <ChooseAppointment
-                    unavailableSlots={unavailableSlots}
+                    availableSlots={availableSlotsForSelectedDay!}
                     date={date}
                     setDate={setDate}
                     selectedSlot={selectedSlot}
@@ -44,8 +53,14 @@ AppointmentPage.layoutProps = {
 };
 
 export const getServerSideProps: GetServerSideProps<ServerProps> = async () => {
+    const availableSlots: TimeSlot[] = (await fetchAvailability()).map((x) => ({
+        startUTC: x.start,
+        endUTC: x.end,
+        resourceID: x.resources[0].id
+    }));
+    console.log(availableSlots);
     return {
-        props: { unavailableSlots: [] },
+        props: { availableSlots },
     };
 };
 

@@ -1,24 +1,22 @@
 import {
-    BadRequestException,
     Body,
     createHandler,
+    InternalServerErrorException,
     Post,
     Req,
     UnauthorizedException,
-    ValidationPipe,
 } from "@storyofams/next-api-decorators";
 import { ProfileFormData } from "~/components/profile/hooks/useProfileForm";
-import { Appointment } from "~/models";
 import { ssrGetUser } from "~/helpers/authentication";
 import { DataStore, withSSRContext } from "aws-amplify";
 import { User } from "~/types/user";
 import { NextApiRequest } from "next";
-import { serializeModel } from "~/models/amplify-models";
+import { createBooking } from "~/timekit/timekitClient";
+import { TimeSlot } from "~/components/appointment/types";
 
 export type CreateAppointment = {
     atStoreID: string;
-    beginDate: string;
-    endDate: string;
+    timeSlot: TimeSlot;
     message?: string;
     anonymousCustomer?: Pick<
         ProfileFormData,
@@ -42,20 +40,27 @@ class AppointmentsController {
             }
         }
 
-        const appointment = new Appointment({
-            appointmentAtStoreId: body.atStoreID,
-            beginDate: body.beginDate,
-            endDate: body.endDate,
-            message: body.message,
-            userID: user?.id,
-            customerInfo: body.anonymousCustomer
-                ? JSON.stringify(body.anonymousCustomer)
-                : undefined,
-        });
+        // const appointment = new Appointment({
+        //     appointmentAtStoreId: body.atStoreID,
+        //     beginDate: body.beginDate,
+        //     endDate: body.endDate,
+        //     message: body.message,
+        //     userID: user?.id,
+        //     customerInfo: body.anonymousCustomer
+        //         ? JSON.stringify(body.anonymousCustomer)
+        //         : undefined,
+        // });
+        //
+        // await dataStore.save(appointment);
+        //
+        // return serializeModel(appointment);
 
-        await dataStore.save(appointment);
-
-        return serializeModel(appointment);
+        try {
+            return await createBooking(body.timeSlot);
+        } catch(err: any) {
+            console.log(err.data);
+            throw new InternalServerErrorException("lel");
+        }
     }
 }
 

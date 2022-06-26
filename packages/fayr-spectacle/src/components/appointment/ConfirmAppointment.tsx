@@ -24,18 +24,18 @@ import { DataStore } from "@aws-amplify/datastore";
 import { CreateAppointment } from "~/pages/api/appointments/[[...params]]";
 import { useError } from "~/hooks/useError";
 import { Check } from "tabler-icons-react";
+import { TimeSlot } from "~/components/appointment/types";
 
 // https://day.js.org/docs/en/plugin/localized-format
 dayjs.extend(localizedFormat);
 dayjs.locale("de");
 
 type Props = {
-    begin: Date;
-    end: Date;
+    timeSlot: TimeSlot;
     onCancel: () => void;
 };
 
-const ConfirmAppointment = ({ begin, end, onCancel }: Props) => {
+const ConfirmAppointment = ({ timeSlot, onCancel }: Props) => {
     const { isAuthenticated } = useSession();
     const [success, setSuccess] = useState(false);
     const { name, city, fullAddress, id: storeID } = useStoreInfo();
@@ -56,8 +56,7 @@ const ConfirmAppointment = ({ begin, end, onCancel }: Props) => {
         onSubmit: async (userProfile, setError) => {
             const payload: CreateAppointment = {
                 atStoreID: storeID,
-                beginDate: begin.toISOString(),
-                endDate: end.toISOString(),
+                timeSlot,
                 message: message,
             };
 
@@ -106,10 +105,10 @@ const ConfirmAppointment = ({ begin, end, onCancel }: Props) => {
                 </Paper>
                 <Group spacing="sm">
                     {/* https://day.js.org/docs/en/display/format */}
-                    <InfoBox>{dayjs(begin).format("dddd")}</InfoBox>
-                    <InfoBox>{dayjs(begin).format("ll")}</InfoBox>
+                    <InfoBox>{dayjs(timeSlot.startUTC).format("dddd")}</InfoBox>
+                    <InfoBox>{dayjs(timeSlot.endUTC).format("ll")}</InfoBox>
                     <InfoBox>
-                        {dayjs(begin).format("LT")} - {dayjs(end).format("LT")}
+                        {dayjs(timeSlot.startUTC).format("LT")} - {dayjs(timeSlot.endUTC).format("LT")}
                     </InfoBox>
                 </Group>
                 <Text size="xxxs" color="gray">
