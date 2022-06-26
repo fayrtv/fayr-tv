@@ -14,14 +14,16 @@ import { NextApiRequest } from "next";
 import { createBooking } from "~/timekit/timekitClient";
 import { TimeSlot } from "~/components/appointment/types";
 
+export type AppointmentCustomerInfo = Pick<
+    ProfileFormData,
+    "address" | "title" | "firstName" | "lastName" | "phone" | "email"
+>;
+
 export type CreateAppointment = {
     atStoreID: string;
     timeSlot: TimeSlot;
     message?: string;
-    anonymousCustomer?: Pick<
-        ProfileFormData,
-        "address" | "title" | "firstName" | "lastName" | "phone" | "email"
-    >;
+    anonymousCustomer?: AppointmentCustomerInfo;
 };
 
 class AppointmentsController {
@@ -56,10 +58,10 @@ class AppointmentsController {
         // return serializeModel(appointment);
 
         try {
-            return await createBooking(body.timeSlot);
-        } catch(err: any) {
-            console.log(err.data);
-            throw new InternalServerErrorException("lel");
+            return await createBooking(body.timeSlot, user ?? body.anonymousCustomer!);
+        } catch(err) {
+            console.error(err);
+            throw new InternalServerErrorException();
         }
     }
 }

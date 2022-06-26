@@ -49,7 +49,6 @@ export const getServerSideProps: GetServerSideProps<ServerProps> = async () => {
         endUTC: x.end,
         resourceID: x.resources[0].id
     }));
-    console.log(availableSlots);
     return {
         props: { availableSlots },
     };
