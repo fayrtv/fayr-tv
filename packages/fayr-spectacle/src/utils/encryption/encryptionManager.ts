@@ -179,9 +179,7 @@ export class EncryptionManager implements IEncryptionManager {
 
         return {
             encryptedKey: ab2b64(encryptedSecretBuffer),
-            encryptionHash: this._decoder.decode(
-                await subtle.digest("SHA-512", this._encoder.encode(JSON.stringify(secret))),
-            ),
+            encryptionHash: this._decoder.decode(await subtle.digest("SHA-512", exportedKeyBuffer)),
         };
     }
 
