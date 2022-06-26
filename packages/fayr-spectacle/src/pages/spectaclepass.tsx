@@ -1,9 +1,7 @@
-import { Container, Group, ScrollArea, Space, Stack, Text } from "@mantine/core";
+import { Container, ScrollArea, Space, Stack, Text } from "@mantine/core";
 import React from "react";
-import { CircleX } from "tabler-icons-react";
 import { RefractionProtocol } from "~/components/RefractionProtocol";
 import { RefractionProtocol as RefractionProtocolEntity } from "~/models";
-import { RefractionProtocol as RefractionProtocolModel } from "~/types/refraction-protocol";
 import { NextPageWithLayout } from "~/types/next-types";
 
 import Layout from "~/components/layout/Layout";
@@ -11,11 +9,10 @@ import { GetServerSideProps } from "next";
 import { ssrGetUser } from "~/helpers/authentication";
 import { DataStore } from "@aws-amplify/datastore";
 import { withSSRContext } from "aws-amplify";
-import { Moment } from "moment";
-import moment from "moment";
+import moment, { Moment } from "moment";
 import { SerializedModel, serializeModel } from "~/models/amplify-models";
 import { RedirectProps, redirectServerSide } from "~/helpers/next-server";
-import { useSession } from "../hooks/useSession";
+import { useSession } from "~/hooks/useSession";
 import useBreakpoints from "~/hooks/useBreakpoints";
 
 type ServerProps = {
@@ -60,6 +57,8 @@ const SpectaclePassPage: NextPageWithLayout<ServerProps> = ({ refractionProtocol
 
     const userName = `${user?.firstName} ${user?.lastName}`;
 
+    console.log({ currentProtocol, selectedProtocol, protocolHistory });
+
     return (
         <Container
             fluid
@@ -75,37 +74,48 @@ const SpectaclePassPage: NextPageWithLayout<ServerProps> = ({ refractionProtocol
                     sx={(_) => (isMobile ? {} : { marginLeft: "10%", marginRight: "10%" })}
                 >
                     <Stack align="center" spacing="xs">
-                        <Text weight="bold">Digitaler Brillenpass</Text>
-                        <Text weight="normal">{userName}</Text>
+                        {currentProtocol || protocolHistory ? (
+                            <>
+                                <Text weight="bold">Digitaler Brillenpass</Text>
+                                <Text weight="normal">{userName}</Text>
 
-                        <ScrollArea
-                            style={{
-                                height: "65vh",
-                                overflowX: "hidden",
-                            }}
-                            type="always"
-                        >
-                            <Stack>
-                                <RefractionProtocol
-                                    areActionsAllowed={true}
-                                    entity={currentProtocol}
-                                    isSelected={selectedProtocol === 0}
-                                    onClick={() => setSelectedProtocol(0)}
-                                    userName={userName}
-                                />
-                                {protocolHistory.map((oldEntity, index) => (
-                                    <RefractionProtocol
-                                        areActionsAllowed={false}
-                                        entity={oldEntity}
-                                        key={oldEntity.id}
-                                        isArchived={true}
-                                        isSelected={index + 1 === selectedProtocol}
-                                        onClick={() => setSelectedProtocol(index + 1)}
-                                        userName={userName}
-                                    />
-                                ))}
-                            </Stack>
-                        </ScrollArea>
+                                <ScrollArea
+                                    style={{
+                                        height: "65vh",
+                                        overflowX: "hidden",
+                                    }}
+                                    type="always"
+                                >
+                                    <Stack>
+                                        <RefractionProtocol
+                                            areActionsAllowed={true}
+                                            entity={currentProtocol}
+                                            isSelected={selectedProtocol === 0}
+                                            onClick={() => setSelectedProtocol(0)}
+                                            userName={userName}
+                                        />
+                                        {protocolHistory.map((oldEntity, index) => (
+                                            <RefractionProtocol
+                                                areActionsAllowed={false}
+                                                entity={oldEntity}
+                                                key={oldEntity.id}
+                                                isArchived={true}
+                                                isSelected={index + 1 === selectedProtocol}
+                                                onClick={() => setSelectedProtocol(index + 1)}
+                                                userName={userName}
+                                            />
+                                        ))}
+                                    </Stack>
+                                </ScrollArea>
+                            </>
+                        ) : (
+                            <>
+                                <Text weight="bold">
+                                    Ihr Optiker hat Ihnen noch keinen digitalen Brillenpass
+                                    ausgestellt.
+                                </Text>
+                            </>
+                        )}
                     </Stack>
                 </Container>
             </Stack>
