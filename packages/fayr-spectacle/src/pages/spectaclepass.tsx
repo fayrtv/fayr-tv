@@ -57,8 +57,6 @@ const SpectaclePassPage: NextPageWithLayout<ServerProps> = ({ refractionProtocol
 
     const userName = `${user?.firstName} ${user?.lastName}`;
 
-    console.log({ currentProtocol, selectedProtocol, protocolHistory });
-
     return (
         <Container
             fluid
