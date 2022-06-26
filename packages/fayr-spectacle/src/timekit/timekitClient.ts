@@ -41,7 +41,7 @@ export const fetchAvailability = async (forResourceID: string): Promise<TimeSlot
         );
 };
 
-export const createBooking = async (timeSlot: TimeSlot, customer: AppointmentCustomerInfo) => {
+export const createBooking = async (timeSlot: TimeSlot, customer: AppointmentCustomerInfo, message?: string) => {
     const response = await timekit.createBooking({
         projectId: PROJECT_ID,
         // https://help.timekit.io/en/articles/1389944-introduction-to-booking-graphs
@@ -59,6 +59,7 @@ export const createBooking = async (timeSlot: TimeSlot, customer: AppointmentCus
             title: customer.title,
             firstName: customer.firstName,
             lastName: customer.lastName,
+            message
             // voip: "McFly",
             // timezone: "America/Los_Angeles",
         },

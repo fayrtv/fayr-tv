@@ -58,7 +58,7 @@ class AppointmentsController {
         // return serializeModel(appointment);
 
         try {
-            return await createBooking(body.timeSlot, user ?? body.anonymousCustomer!);
+            return await createBooking(body.timeSlot, user ?? body.anonymousCustomer!, body.message);
         } catch(err) {
             console.error(err);
             throw new InternalServerErrorException();
