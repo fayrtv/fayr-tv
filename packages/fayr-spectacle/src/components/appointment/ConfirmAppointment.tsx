@@ -19,10 +19,7 @@ import React, { useState } from "react";
 import { useInputState } from "@mantine/hooks";
 import { useProfileForm } from "~/components/profile/hooks/useProfileForm";
 import { useSession } from "~/hooks/useSession";
-import { Appointment } from "~/models";
-import { DataStore } from "@aws-amplify/datastore";
 import { CreateAppointment } from "~/pages/api/appointments/[[...params]]";
-import { useError } from "~/hooks/useError";
 import { Check } from "tabler-icons-react";
 import { TimeSlot } from "~/components/appointment/types";
 
