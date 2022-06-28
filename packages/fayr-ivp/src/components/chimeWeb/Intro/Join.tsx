@@ -8,7 +8,6 @@ import * as config from "../../../config";
 
 export const Join = ({ location, history }: RouteComponentProps) => {
     const [showError, setShowError] = useState(false);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [errorMessage, setErrorMessage] = useState("");
 
     const [userName, setUserName] = useState("");

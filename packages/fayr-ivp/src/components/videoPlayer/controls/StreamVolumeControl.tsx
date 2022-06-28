@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 // Framework
 import { MediaPlayer } from "amazon-ivs-player";
 import classNames from "classnames";
