@@ -40,9 +40,6 @@
         "build": "craco build",
         "test": "craco test --passWithNoTests"
     },
-    "eslintConfig": {
-        "extends": "react-app"
-    },
     "browserslist": {
         "production": [
             ">0.2%",

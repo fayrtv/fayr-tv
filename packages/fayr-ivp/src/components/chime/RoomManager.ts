@@ -136,8 +136,8 @@ export default class RoomManager implements IRoomManager {
     public async leaveRoom(end: boolean) {
         try {
             this._audioVideoManager.audioVideo?.stop();
-        } catch (error) {
-            this._logger.error(error);
+        } catch (error: unknown) {
+            this._logger.error(error as string);
         }
 
         // try {
@@ -155,8 +155,8 @@ export default class RoomManager implements IRoomManager {
                     },
                 );
             }
-        } catch (error) {
-            this._logger.error(error);
+        } catch (error: unknown) {
+            this._logger.error(error as string);
         }
 
         this._chimeEvents.roomLeft.publish();
