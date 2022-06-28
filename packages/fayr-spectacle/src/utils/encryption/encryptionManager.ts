@@ -29,6 +29,8 @@ export interface IEncryptionManager {
     getSecretAvailability(userId: User["id"], storeId: Store["id"]): Promise<SecretAvailability>;
     setupDeviceSecret(userId: User["id"], storeId: Store["id"]): Promise<void>;
     createStoreKeyPair(storeId: Store["id"]): Promise<CryptoKey>;
+
+    getCustomerSecret(userId: User["id"], storeId: Store["id"]): Promise<CryptoKey>;
 }
 
 // Recommended IV length is 96 https://developer.mozilla.org/en-US/docs/Web/API/AesGcmParams#properties
@@ -183,11 +185,7 @@ export class EncryptionManager implements IEncryptionManager {
         };
     }
 
-    public async encrypt(
-        data: string,
-        userId: User["id"],
-        storeId: Store["id"],
-    ): Promise<SerializedAesEncryptionPackage> {
+    public async getCustomerSecret(userId: User["id"], storeId: Store["id"]): Promise<CryptoKey> {
         const hasCustomerSecret = await this._localEncryptionStorageHandler.hasSecret(
             userId,
             storeId,
@@ -236,6 +234,17 @@ export class EncryptionManager implements IEncryptionManager {
         }
 
         const secret = await this._localEncryptionStorageHandler.getSecret(userId, storeId);
+
+        return secret!;
+    }
+
+    public async encrypt(
+        data: string,
+        userId: User["id"],
+        storeId: Store["id"],
+    ): Promise<SerializedAesEncryptionPackage> {
+        const subtle = window.crypto.subtle;
+        const secret = await this.getCustomerSecret(userId, storeId);
 
         const operationScopedIv = this.createRandomInitializationVector();
 

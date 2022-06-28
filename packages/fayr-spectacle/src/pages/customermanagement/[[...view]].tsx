@@ -17,6 +17,7 @@ import Link from "next/link";
 import MainContainer from "~/components/layout/MainContainer";
 import { getCurrentStore } from "~/helpers/storeLocator";
 import AppointmentsOverview from "~/components/customermanagement/AppointmentsOverview";
+import { ExportCustomerSecret } from "~/components/customermanagement/ExportCustomerSecret";
 
 type ServerSideProps = {
     cred: any;
@@ -47,6 +48,11 @@ const CustomerManagementRouter: NextPageWithLayout<ServerSideProps> = ({ custome
             title: "Termine anzeigen",
             slug: "show-appointments",
             render: () => <AppointmentsOverview customer={selectedCustomer!} />,
+        },
+        {
+            title: "Verschlüsselungsgeheimnis exportieren",
+            slug: "export-customersecret",
+            render: () => <ExportCustomerSecret customer={selectedCustomer!} />,
         },
     ];
 

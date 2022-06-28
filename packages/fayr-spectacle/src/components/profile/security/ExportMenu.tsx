@@ -47,9 +47,7 @@ export const ExportMenu = ({ allowQrCode = true, keyRetriever }: ExportModalProp
                 <Stack sx={() => ({ flexGrow: 2 })} align="center">
                     <Text underline>Manuell</Text>
                     <Text>Kopieren Sie diesen Text ins "Importieren" Menü auf dem Zielgerät</Text>
-                    <Textarea autosize sx={{ width: "100%" }}>
-                        {key}
-                    </Textarea>
+                    <Textarea autosize sx={{ width: "100%" }} value={key!} />
                     {copied ? (
                         <ThemeIcon color="green" size="xl">
                             <Check />

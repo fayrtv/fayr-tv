@@ -62,13 +62,15 @@ export const GenerateStorePair = ({
                     </span>
                 </Group>
             )}
-            {loading ? (
-                <Loader />
-            ) : (
-                <Button leftIcon={<Rotate />} onClick={onClick}>
-                    Generieren
-                </Button>
-            )}
+            <Group position="center">
+                {loading ? (
+                    <Loader />
+                ) : (
+                    <Button leftIcon={<Rotate />} onClick={onClick}>
+                        Generieren
+                    </Button>
+                )}
+            </Group>
         </Stack>
     );
 };
