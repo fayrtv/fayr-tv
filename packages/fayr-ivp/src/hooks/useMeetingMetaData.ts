@@ -25,7 +25,6 @@ export default function useMeetingMetaData(
         if (initializer) {
             updateMetaData(initializer());
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     if (initializer && Object.keys(metaData).length === 0) {

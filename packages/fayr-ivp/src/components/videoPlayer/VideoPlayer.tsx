@@ -171,7 +171,6 @@ const VideoPlayer = ({
                 player.current?.seekTo(player.current?.getLiveLatency() + plusMinus);
             },
         };
-        //eslint-disable-next-line react-hooks/exhaustive-deps
     }, [videoStream]);
 
     React.useEffect(() => {
@@ -182,7 +181,6 @@ const VideoPlayer = ({
         mediaPlayerScript.onload = mediaPlayerScriptLoaded;
 
         document.body.appendChild(mediaPlayerScript);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {

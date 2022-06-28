@@ -140,7 +140,6 @@ export const MeetingContainer = ({
                 });
             }
         },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
         [roomManager, audioVideoManager.audioVideo],
     );
     const { isLoading } = useLoadingGuard(true, initializeSession);
@@ -174,7 +173,6 @@ export const MeetingContainer = ({
                 }
             });
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
@@ -196,7 +194,6 @@ export const MeetingContainer = ({
         };
         audioVideoManager.audioVideo.addObserver(observer);
         return () => audioVideoManager.audioVideo?.removeObserver(observer);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [roomTitle, meetingMetaData?.role, audioVideoManager.audioVideo, roomManager, history]);
 
     return isLoading || !meetingMetaData.joinInfo ? (

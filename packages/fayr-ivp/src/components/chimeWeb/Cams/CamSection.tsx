@@ -160,13 +160,11 @@ export const CamSection = ({ joinInfo }: Props) => {
         }
 
         return () => audioVideoManager.tryRemoveObserver(observer);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [audioVideoManager.audioVideo]);
 
     // Initializes the initial roster so we don't only depend on the notifications
     React.useEffect(() => {
         onRosterUpdate(roomManager.roster);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {

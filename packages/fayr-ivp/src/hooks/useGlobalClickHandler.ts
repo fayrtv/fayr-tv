@@ -9,7 +9,6 @@ export const useGlobalClickHandler = (
         document.body.addEventListener("click", callback);
 
         return () => document.body.removeEventListener("click", callback);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [callback, ...additionalDeps]);
 };
 
