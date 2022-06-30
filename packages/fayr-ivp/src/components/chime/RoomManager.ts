@@ -155,7 +155,7 @@ export default class RoomManager implements IRoomManager {
                     },
                 );
             }
-        } catch (error: unknown) {
+        } catch (error: any) {
             this._logger.error(error as string);
         }
 
