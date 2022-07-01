@@ -2,6 +2,7 @@
     "name": "@fayr/ivp-components",
     "version": "1.0.0",
     "main": "lib/index.js",
+	"type": "commonjs",
     "scripts": {
         "build": "yarn clean && yarn copy-files && tsc",
         "dev": "yarn clean && nodemon --watch ./src -e js,ts,tsx,css,scss,less --exec \"yarn run copy-files && tsc\"",
