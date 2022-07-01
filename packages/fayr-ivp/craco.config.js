@@ -17,7 +17,7 @@ module.exports = {
                     },
                 ],
             },
-            ignoreWarnings: [/amazon-chime-sdk-js/],
+            ignoreWarnings: [/amazon-chime-sdk-js/, /inversify/],
         },
     },
     babel: {
