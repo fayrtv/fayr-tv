@@ -12,7 +12,12 @@ const withTM = require("next-transpile-modules")(["@fayr/common"]);
 const nextConfig = {
     // https://www.npmjs.com/package/next-react-svg
     include: path.resolve(__dirname, "src/assets"),
-    webpack(config, options) {
+    webpack: (config, { isServer }) => {
+        // Fixes npm packages that depend on `fs` module
+        if (!isServer) {
+            config.resolve.fallback.fs = false;
+        }
+
         return config;
     },
 };
