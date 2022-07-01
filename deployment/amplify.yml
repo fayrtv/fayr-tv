@@ -6,7 +6,7 @@ applications:
           commands:
             - cd ..
             - cd ..
-            - yarn run setup
+            - yarn install
             - cd packages/fayr-ivp
       artifacts:
         baseDirectory: build
