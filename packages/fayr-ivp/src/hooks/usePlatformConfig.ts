@@ -8,14 +8,22 @@ export const usePlatformConfig = () => {
 
     const platformId = params.platform;
 
-    const { isLoading, data } = useQuery<PlatformConfig>("platform-config", async () => {
-        if (!platformId) {
-            return undefined;
-        }
+    const { isLoading, data } = useQuery<PlatformConfig>(
+        "platform-config",
+        async () => {
+            if (!platformId) {
+                return undefined;
+            }
 
-        const result = await fetch(`${API_BASE_URL}platforms/${platformId}`);
-        return await result.json();
-    });
+            const result = await fetch(`${API_BASE_URL}platforms/${platformId}`);
+            return await result.json();
+        },
+        {
+            refetchOnWindowFocus: false,
+            staleTime: Infinity,
+            cacheTime: Infinity,
+        },
+    );
 
     return { isLoading, platformConfig: data };
 };
