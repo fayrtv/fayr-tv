@@ -71,7 +71,7 @@ export const streamSync: StreamSyncOptions = {
     heartBeatInterval: 1000,
     heartBeatInactiveThreshold: 30,
     synchronizationInterval: 1000,
-    loggingEnabled: true,
+    loggingEnabled: DEBUG && true,
     liveStream: {
         minimumDrift: 1.0,
     },
