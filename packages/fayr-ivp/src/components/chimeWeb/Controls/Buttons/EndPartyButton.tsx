@@ -21,7 +21,7 @@ import IRoomManager from "../../../chime/interfaces/IRoomManager";
 import EndPartyConfirmation from "../EndPartyConfirmation";
 
 const StyledButton = styled.div`
-    max-width: 80px;
+    max-width: 100px;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -83,7 +83,7 @@ export const EndPartyButton = ({ ssName, role, baseHref, title }: Props) => {
                 <LeftNavigationButton>
                     <MaterialIcon iconName="navigate_before" />
                 </LeftNavigationButton>
-                <ExitSpan>EXIT</ExitSpan>
+                <ExitSpan>ENDE</ExitSpan>
             </StyledButton>
             {leaveState === LeaveState.AwaitingConfirmation && (
                 <Portal.Client>
