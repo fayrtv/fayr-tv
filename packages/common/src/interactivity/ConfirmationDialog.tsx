@@ -35,10 +35,10 @@ const ConfirmationDialog = ({ text, onConfirm, onDeny }: Props) => {
             <MarginSpan>{text}</MarginSpan>
             <Flex direction="Row" space="Around">
                 <Button className="btn btn--primary" onClick={onConfirm}>
-                    Confirm
+                    Ja
                 </Button>
                 <Button className="btn btn--secondary" onClick={onDeny}>
-                    Deny
+                    Nein
                 </Button>
             </Flex>
         </ConfirmationDialogWrapper>
