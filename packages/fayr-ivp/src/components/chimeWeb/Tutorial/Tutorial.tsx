@@ -29,6 +29,12 @@ type Props = {
 };
 
 export default function Tutorial({ onClose }: Props) {
+    const [show, setShow] = React.useState(true);
+
+    if (!show) {
+        return null;
+    }
+
     return (
         <Grid
             className={styles.TutorialContainer}
@@ -48,7 +54,7 @@ export default function Tutorial({ onClose }: Props) {
             }}
         >
             <Cell gridArea="CloseButton">
-                <div className={styles.CloseButton} onClick={onClose}>
+                <div className={styles.CloseButton} onClick={() => setShow(false)}>
                     <span>Schließen</span>
                 </div>
             </Cell>
