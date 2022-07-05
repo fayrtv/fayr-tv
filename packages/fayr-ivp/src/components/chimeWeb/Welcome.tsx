@@ -10,6 +10,7 @@ import * as config from "../../config";
 import Error from "./Error";
 import { JoinInfoForm } from "./JoinInfoForm";
 import { formatMeetingSsKey } from "./Meeting/storage";
+import Tutorial from "./Tutorial/Tutorial";
 
 type Props = RouteComponentProps;
 
@@ -52,10 +53,10 @@ const Welcome = (props: Props) => {
         createRoom();
     };
 
-    const roomUrlRelative = React.useMemo(() => `${url}/meeting?room=${roomTitle}`, [
-        roomTitle,
-        url,
-    ]);
+    const roomUrlRelative = React.useMemo(
+        () => `${url}/meeting?room=${roomTitle}`,
+        [roomTitle, url],
+    );
 
     const createRoom = () => {
         const data = {
@@ -81,6 +82,8 @@ const Welcome = (props: Props) => {
                         <h3>{tl.WelcomeMessageBody}</h3>
                     </div>
                 </div>
+
+                <Tutorial onClose={() => void 0} />
 
                 <div className="welcome__content pd-4">
                     <div className="content__inner">
