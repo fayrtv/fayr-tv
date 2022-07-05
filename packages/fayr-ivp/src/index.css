@@ -158,66 +158,70 @@ select {
 /* !! Good tool for font faces: https://transfonter.org/ !! */
 
 @font-face {
-    font-family: 'ZionTrain Pro';
-    src: url('./fonts/ZionTrainPro-Regular.woff2') format('woff2'),
-    url('./fonts/ZionTrainPro-Regular.woff') format('woff');
+    font-family: "ZionTrain Pro";
+    src: url("./fonts/ZionTrainPro-Regular.woff2") format("woff2"),
+        url("./fonts/ZionTrainPro-Regular.woff") format("woff");
     font-weight: normal;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'ZionTrain Pro';
-    src: url('fonts/ZionTrainPro-BoldItalic.woff2') format('woff2'),
-    url('fonts/ZionTrainPro-BoldItalic.woff') format('woff');
+    font-family: "ZionTrain Pro";
+    src: url("fonts/ZionTrainPro-BoldItalic.woff2") format("woff2"),
+        url("fonts/ZionTrainPro-BoldItalic.woff") format("woff");
     font-weight: bold;
     font-style: italic;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'ZionTrain Pro';
-    src: url('fonts/ZionTrainPro-Italic.woff2') format('woff2'),
-    url('fonts/ZionTrainPro-Italic.woff') format('woff');
+    font-family: "ZionTrain Pro";
+    src: url("fonts/ZionTrainPro-Italic.woff2") format("woff2"),
+        url("fonts/ZionTrainPro-Italic.woff") format("woff");
     font-weight: normal;
     font-style: italic;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'ZionTrain Pro';
-    src: url('fonts/ZionTrainPro-BlackItalic.woff2') format('woff2'),
-    url('fonts/ZionTrainPro-BlackItalic.woff') format('woff');
+    font-family: "ZionTrain Pro";
+    src: url("fonts/ZionTrainPro-BlackItalic.woff2") format("woff2"),
+        url("fonts/ZionTrainPro-BlackItalic.woff") format("woff");
     font-weight: 900;
     font-style: italic;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'ZionTrain Pro';
-    src: url('fonts/ZionTrainPro-Bold.woff2') format('woff2'),
-    url('fonts/ZionTrainPro-Bold.woff') format('woff');
+    font-family: "ZionTrain Pro";
+    src: url("fonts/ZionTrainPro-Bold.woff2") format("woff2"),
+        url("fonts/ZionTrainPro-Bold.woff") format("woff");
     font-weight: bold;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'ZionTrain Pro';
-    src: url('fonts/ZionTrainPro-LightItalic.woff2') format('woff2'),
-    url('fonts/ZionTrainPro-LightItalic.woff') format('woff');
+    font-family: "ZionTrain Pro";
+    src: url("fonts/ZionTrainPro-LightItalic.woff2") format("woff2"),
+        url("fonts/ZionTrainPro-LightItalic.woff") format("woff");
     font-weight: 300;
     font-style: italic;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'ZionTrain Pro';
-    src: url('fonts/ZionTrainPro-Light.woff2') format('woff2'),
-    url('fonts/ZionTrainPro-Light.woff') format('woff');
+    font-family: "ZionTrain Pro";
+    src: url("fonts/ZionTrainPro-Light.woff2") format("woff2"),
+        url("fonts/ZionTrainPro-Light.woff") format("woff");
     font-weight: 300;
     font-style: normal;
     font-display: swap;
+}
+
+* {
+    text-underline-offset: 3px;
 }
 
 /* Mediaqueries */

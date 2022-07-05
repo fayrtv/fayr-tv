@@ -3,6 +3,7 @@ import * as React from "react";
 import { Cell, Flex, Grid } from "@fayr/common";
 
 import styles from "./Tutorial.module.scss";
+import { Dispatch, SetStateAction } from "react";
 
 type InfoRowProps = {
     index: number;
@@ -25,11 +26,11 @@ const InfoRow = ({ index, infoText }: InfoRowProps) => {
 };
 
 type Props = {
-    onClose(): void;
+    show: boolean;
+    setShow: Dispatch<SetStateAction<boolean>>
 };
 
-export default function Tutorial({ onClose }: Props) {
-    const [show, setShow] = React.useState(true);
+export default function Tutorial({ show, setShow }: Props) {
 
     if (!show) {
         return null;

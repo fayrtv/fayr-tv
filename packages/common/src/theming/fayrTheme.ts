@@ -22,7 +22,7 @@ export const VFB_THEME: Theme = {
     colorPrimary: "#D30029",
     colorPrimaryDark: "#D30029",
     colorPrimaryLight: "#D30029",
-    colorSecondary: "#FFDC00",
+    colorSecondary: "#FFDD00",
     colorTertiary: "transparent",
     colorGray: "#6C6C6C",
     colorBlueish: "#181F29",

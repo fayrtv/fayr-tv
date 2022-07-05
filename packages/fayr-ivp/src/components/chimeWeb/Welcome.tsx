@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { RouteComponentProps, useRouteMatch, withRouter } from "react-router-dom";
 
 import { usePlatformConfig } from "hooks/usePlatformConfig";
@@ -67,6 +67,8 @@ const Welcome = (props: Props) => {
         props.history.push(roomUrlRelative);
     };
 
+    const [showTutorial, setShowTutorial] = useState(false);
+
     return (
         <>
             <div className="welcome form-grid">
@@ -76,11 +78,12 @@ const Welcome = (props: Props) => {
                     </div>
                 </div>
 
-                <Tutorial onClose={() => void 0} />
+                <Tutorial show={showTutorial} setShow={setShowTutorial}  />
 
                 <div className="welcome__content pd-4">
                     <div className="content__inner">
                         <JoinInfoForm
+                            onHowItWorksClicked={() => setShowTutorial(true)}
                             username={username}
                             usernameInputRef={usernameInputRef}
                             onUsernameChanged={setUsername}

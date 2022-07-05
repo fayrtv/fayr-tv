@@ -8,6 +8,7 @@ import { isFalsyOrWhitespace } from "@fayr/common";
 import styles from "./JoinInfoForm.module.scss";
 
 type Props = {
+    onHowItWorksClicked: () => void;
     username: string;
     onUsernameChanged: React.Dispatch<string>;
     roomTitle: string;
@@ -19,6 +20,7 @@ type Props = {
 };
 
 export function JoinInfoForm({
+    onHowItWorksClicked,
     username,
     onUsernameChanged,
     roomTitle,
@@ -45,12 +47,10 @@ export function JoinInfoForm({
                             style={{
                                 marginTop: "20px",
                                 marginBottom: "20px",
-                                color: "var(--color-gray)",
-                                textDecoration: "underline",
                                 textAlign: "center",
                             }}
                         >
-                            Wie funktioniert das?
+                            <a onClick={onHowItWorksClicked} className={styles.HowItWorksLink}>Wie funktioniert das?</a>
                         </div>
                         <input
                             ref={usernameInputRef}

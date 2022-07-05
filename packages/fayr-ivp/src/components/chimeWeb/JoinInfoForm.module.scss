@@ -23,3 +23,14 @@
     position: absolute;
     bottom: 41px;
 }
+
+.HowItWorksLink {
+    font-weight: 350;
+    color: var(--color-gray);
+    text-decoration: underline;
+}
+
+.HowItWorksLink:hover {
+    cursor: pointer;
+    color: #949494;
+}
