@@ -1,3 +1,4 @@
+import * as config from "config";
 import React from "react";
 import { useMediaQuery } from "react-responsive";
 
@@ -75,7 +76,7 @@ const Controls: React.FC<Props> = ({ title, attendeeId, openSettings }) => {
         <SettingsButton openSettings={openSettings} key="SettingsButton" />,
         <SharePartyButton title={title} key="SharePartyButton" />,
         chatButton,
-        <ReactionButton key="ReactionButton" />,
+        config.ShowReactionButton ? <ReactionButton key="ReactionButton" /> : React.Fragment,
         // Voting Button
         <VotingButton attendeeId={attendeeId} key="VotingButton" />,
     ];

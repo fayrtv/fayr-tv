@@ -30,7 +30,7 @@ export const DEFAULT_VIDEO_STREAM = sample([
     // Amazon IVS
     // "https://5f1b94db7198.eu-central-1.playback.live-video.net/api/video/v1/eu-central-1.676057042583.channel.hWxKBDpLJc9h.m3u8"
     // AWS Elemental MediaLive
-    "https://528dc4ef17d725ed.mediapackage.eu-central-1.amazonaws.com/out/v1/2ff189e75e344a229c386c0af778e623/index.m3u8"
+    "https://528dc4ef17d725ed.mediapackage.eu-central-1.amazonaws.com/out/v1/2ff189e75e344a229c386c0af778e623/index.m3u8",
 ]) as string;
 
 // Default Chat websocket link
@@ -46,6 +46,8 @@ export const RANDOM = makeid(8);
 export const HighlightVideoAlignment: "Top" | "Bottom" = "Bottom";
 export const HostPinningFeatureEnabled: boolean = false;
 export const ShowStartScreen: boolean = true;
+export const ShowUmfrage: boolean = false;
+export const ShowReactionButton: boolean = false;
 
 export type StreamSyncOptions = {
     // Type of synchronization
