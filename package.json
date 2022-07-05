@@ -15,7 +15,7 @@
         "format": "prettier --write \"**/*.{ts,js,html,jsx,tsx,css,less,scss,json}\"",
         "format:check": "prettier --check \"**/*.{ts,js,html,jsx,tsx,css,less,scss,json}\"",
         "test": "lerna run test",
-        "dev:shared": "lerna run dev --parallel --scope @fayr/{common,ivp-components}",
+        "dev:shared": "lerna run dev --parallel --scope @fayr/\\{common,ivp-components\\}",
         "dev:all": "lerna run dev --parallel --no-bail"
     },
     "devDependencies": {
