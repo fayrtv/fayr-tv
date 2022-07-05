@@ -16,6 +16,10 @@ export default function Rating() {
 
     const onMouseLeave = () => setSelectedRating(0);
 
+    const onClick = (rating: number) => {
+        console.log(`Rated with ${rating} stars`);
+    };
+
     const Star = (index: number) => (
         <span
             key={index}
@@ -25,6 +29,7 @@ export default function Rating() {
             })}
             onMouseOver={onMouseOver}
             onMouseLeave={onMouseLeave}
+            onClick={() => onClick(index)}
         >
             star_rate
         </span>
