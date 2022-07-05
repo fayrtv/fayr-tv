@@ -1,15 +1,25 @@
 .JoinInfoForm {
-    &.Mobile {
-        display: flex;
-        flex-direction: row;
-    }
-
     > div {
         display: grid;
         place-items: center;
-
-        &:last-child {
-            margin-left: 10px;
-        }
     }
+}
+
+.JoinInfoFormControls {
+    padding: 25px 40px;
+}
+
+.BannerStripe {
+    background-color: var(--color-primary);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    margin-top: 146px;
+    height: 109px;
+}
+
+.Banner {
+    position: absolute;
+    bottom: 41px;
 }

@@ -78,7 +78,9 @@ input:disabled {
 }
 
 .content__inner {
-    width: 300px;
+    width: 350px;
+    background-color: #ffffff;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.20);
 }
 
 @media (max-width: mq.$largeScreens) {
@@ -244,10 +246,6 @@ a.btn {
     text-align: center;
     border: 2px solid transparent;
     border-radius: var(--radius-small);
-}
-
-.btn--primary {
-    color: var(--color-text-inverted);
 }
 
 .hidden {

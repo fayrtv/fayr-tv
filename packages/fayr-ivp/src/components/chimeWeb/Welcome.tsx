@@ -87,8 +87,6 @@ const Welcome = (props: Props) => {
 
                 <div className="welcome__content pd-4">
                     <div className="content__inner">
-                        <h2 className="mg-b-2">{tl.StartWatchPartyHeader}</h2>
-                        <h3>{tl.StartWatchPartyBody}</h3>
                         <JoinInfoForm
                             username={username}
                             usernameInputRef={usernameInputRef}

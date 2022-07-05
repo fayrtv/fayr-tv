@@ -1179,7 +1179,7 @@ input.rounded {
 }
 
 .btn--primary {
-    background: #fa7751;
+    background: var(--color-primary);
     color: var(--color-text-inverted);
 }
 
@@ -1189,8 +1189,8 @@ input.rounded {
 }
 
 .btn--secondary {
-    background: var(--color-bg-button-secondary-default);
-    color: var(--color-white);
+    background: var(--color-secondary);
+    color: black;
 }
 
 .btn--destruct {
