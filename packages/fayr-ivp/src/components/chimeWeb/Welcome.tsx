@@ -21,8 +21,6 @@ const Welcome = (props: Props) => {
         url = "";
     }
 
-    const { platformConfig } = usePlatformConfig();
-
     const tl = useTranslations();
 
     const [username, setUsername] = usePersistedState<string>("USERNAME", () => "");
@@ -69,17 +67,12 @@ const Welcome = (props: Props) => {
         props.history.push(roomUrlRelative);
     };
 
-    const welcomeMessage = platformConfig?.info?.welcomeMessage ?? tl.WelcomeMessageHeader;
-
     return (
         <>
             <div className="welcome form-grid">
                 <div className="welcome__intro">
                     <div className="intro__inner formatted-text">
-                        <FayrLogo style={{ border: "none" }} />
-                        <br />
-                        <h2>{welcomeMessage}</h2>
-                        <h3>{tl.WelcomeMessageBody}</h3>
+                        Willkommen&nbsp;in&nbsp;der VfB&nbsp;Watch&nbsp;Party
                     </div>
                 </div>
 
