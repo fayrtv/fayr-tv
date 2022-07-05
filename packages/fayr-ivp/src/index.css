@@ -76,9 +76,9 @@ select {
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   --font-mono: Consolas, monaco, "Ubuntu Mono", "Liberation Mono", "Courier New",
     Courier, monospace; */
-    --font-sans: "WinnerSans";
-    --font-serif: "WinnerSans";
-    --font-mono: "WinnerSans";
+    --font-sans: "Roboto";
+    --font-serif: "Roboto";
+    --font-mono: "Roboto";
     /* Color tokens (overridden by theme) */
     --color-background: #07090c;
     --color-neutral: #d9d9d9;
