@@ -8,7 +8,8 @@ type DynamoNumber = { N: string };
 type DynamoString = { S: string };
 
 const ddb = new AWS.DynamoDB();
-const { CONNECTIONS_TABLE_NAME, MEETINGS_TABLE_NAME, ATTENDEES_TABLE_NAME } = process.env;
+const { CONNECTIONS_TABLE_NAME, MEETINGS_TABLE_NAME, ATTENDEES_TABLE_NAME, RATINGS_TABLE_NAME } =
+    process.env;
 
 if (!CONNECTIONS_TABLE_NAME) {
     throw new Error("Must provide a value for 'CONNECTIONS_TABLE_NAME' in env vars.");
@@ -18,6 +19,9 @@ if (!MEETINGS_TABLE_NAME) {
 }
 if (!ATTENDEES_TABLE_NAME) {
     throw new Error("Must provide a value for 'ATTENDEES_TABLE_NAME' in env vars.");
+}
+if (!RATINGS_TABLE_NAME) {
+    throw new Error("Must provide a value for 'RATINGS_TABLE_NAME' in env vars.");
 }
 
 const chime = new AWS.Chime({ region: "us-east-1" }); // Must be in us-east-1
@@ -43,7 +47,7 @@ type MeetingInfo = {
 };
 
 function uuid() {
-    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
         const r = (Math.random() * 16) | 0;
         const v = c === "x" ? r : (r & 0x3) | 0x8;
         return v.toString(16);
@@ -674,4 +678,27 @@ export const end: Handler<APIGatewayProxyEvent> = async (event, context, callbac
     console.info("end event > response:", JSON.stringify(response, null, 2));
 
     callback(null, response);
+};
+
+type RatingPostPayload = {
+    rating: number;
+};
+
+export const addRating: Handler<APIGatewayProxyEvent> = async (event, context, callback) => {
+    if (!event.body) {
+        return { statusCode: 400, body: "No request body provided" };
+    }
+
+    const ratingData = JSON.parse(event.body) as RatingPostPayload;
+
+    await ddb
+        .putItem({
+            TableName: ATTENDEES_TABLE_NAME,
+            Item: {
+                Rating: {
+                    N: ratingData.rating.toString(),
+                },
+            },
+        })
+        .promise();
 };
