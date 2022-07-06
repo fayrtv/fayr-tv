@@ -1199,7 +1199,7 @@ button {
 input,
 select,
 textarea {
-    border: var(--btn-border-size) solid transparent;
+    border: 1px solid #949494;
     outline: none;
     appearance: none;
     resize: none;
@@ -1224,7 +1224,7 @@ input:focus,
 textarea:focus,
 .btn:focus,
 .btn:active {
-    border: var(--btn-border-size) solid var(--color-primary);
+    border: var(--btn-border-size) solid #949494;
 }
 
 select {
