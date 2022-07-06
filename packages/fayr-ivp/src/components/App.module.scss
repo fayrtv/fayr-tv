@@ -3,6 +3,11 @@ html,
 .App {
     height: 100%;
     width: 100%;
+}
+
+.ArenaBackground {
+    height: 100%;
+    width: 100%;
     background-color: var(--color-background);
     background-image: url("../assets/vfb-arena.jpg");
     background-size: cover;

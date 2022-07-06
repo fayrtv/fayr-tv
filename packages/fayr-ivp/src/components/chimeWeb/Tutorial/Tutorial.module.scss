@@ -1,0 +1,107 @@
+@use "../../mediaQueries" as mq;
+
+.TutorialContainer {
+    position: absolute;
+    top: 10%;
+    left: 20%;
+
+    height: 75vh;
+    width: 25vw;
+    padding: 20px;
+
+    @media (max-width: mq.$largeScreens) {
+        height: calc(100vh - 10px);
+        width: calc(100vw - 10px);
+        top: 5px;
+        left: 5px;
+    }
+
+    background-color: white;
+    box-shadow: 0px 0px 5px 0px black;
+
+    .CloseButton {
+        display: grid;
+        place-items: center;
+        background-color: black;
+        cursor: pointer;
+
+        border-radius: 5px;
+
+        span {
+            color: white;
+        }
+    }
+
+    span {
+        color: black;
+    }
+
+    @mixin Dot {
+        border-radius: 50px;
+        height: 40px;
+        width: 40px;
+        display: grid;
+        place-items: center;
+
+        span {
+            color: white;
+        }
+    }
+
+    .IndexButtonContainer {
+        display: grid;
+        place-items: center;
+
+        .IndexButton {
+            @include Dot;
+            background-color: #d30029;
+        }
+    }
+
+    .InfoTextContainer {
+        display: grid;
+        place-items: center;
+
+        .ShareWithIconText {
+            .TogetherIcon {
+                display: inline-block;
+                background-color: red;
+                border-radius: 3px;
+                height: 25px;
+                width: 25px;
+
+                position: relative;
+
+                margin: 5px 5px -5px 5px;
+
+                svg {
+                    top: 3px;
+                    left: 3px;
+                    position: absolute;
+                }
+            }
+        }
+    }
+
+    .PreferDesktopNoticeContainer {
+        display: grid;
+        place-items: center;
+        .PreferDesktopNotice {
+            height: 80%;
+            width: 80%;
+            background-color: #ffdc00;
+
+            display: grid;
+            place-items: center;
+
+            .ActionDot {
+                @include Dot;
+                background-color: black;
+            }
+
+            > div > span {
+                width: 75%;
+            }
+        }
+    }
+}

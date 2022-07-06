@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { RouteComponentProps, useRouteMatch, withRouter } from "react-router-dom";
 
 import { usePlatformConfig } from "hooks/usePlatformConfig";
@@ -10,6 +10,7 @@ import * as config from "../../config";
 import Error from "./Error";
 import { JoinInfoForm } from "./JoinInfoForm";
 import { formatMeetingSsKey } from "./Meeting/storage";
+import Tutorial from "./Tutorial/Tutorial";
 
 type Props = RouteComponentProps;
 
@@ -19,8 +20,6 @@ const Welcome = (props: Props) => {
     if (url === "/") {
         url = "";
     }
-
-    const { platformConfig } = usePlatformConfig();
 
     const tl = useTranslations();
 
@@ -52,10 +51,10 @@ const Welcome = (props: Props) => {
         createRoom();
     };
 
-    const roomUrlRelative = React.useMemo(() => `${url}/meeting?room=${roomTitle}`, [
-        roomTitle,
-        url,
-    ]);
+    const roomUrlRelative = React.useMemo(
+        () => `${url}/meeting?room=${roomTitle}`,
+        [roomTitle, url],
+    );
 
     const createRoom = () => {
         const data = {
@@ -68,25 +67,23 @@ const Welcome = (props: Props) => {
         props.history.push(roomUrlRelative);
     };
 
-    const welcomeMessage = platformConfig?.info?.welcomeMessage ?? tl.WelcomeMessageHeader;
+    const [showTutorial, setShowTutorial] = useState(false);
 
     return (
         <>
             <div className="welcome form-grid">
                 <div className="welcome__intro">
                     <div className="intro__inner formatted-text">
-                        <FayrLogo style={{ border: "none" }} />
-                        <br />
-                        <h2>{welcomeMessage}</h2>
-                        <h3>{tl.WelcomeMessageBody}</h3>
+                        Willkommen&nbsp;in&nbsp;der VfB&nbsp;Watch&nbsp;Party
                     </div>
                 </div>
 
+                <Tutorial show={showTutorial} setShow={setShowTutorial}  />
+
                 <div className="welcome__content pd-4">
                     <div className="content__inner">
-                        <h2 className="mg-b-2">{tl.StartWatchPartyHeader}</h2>
-                        <h3>{tl.StartWatchPartyBody}</h3>
                         <JoinInfoForm
+                            onHowItWorksClicked={() => setShowTutorial(true)}
                             username={username}
                             usernameInputRef={usernameInputRef}
                             onUsernameChanged={setUsername}

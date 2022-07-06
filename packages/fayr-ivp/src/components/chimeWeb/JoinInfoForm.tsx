@@ -7,10 +7,8 @@ import { isFalsyOrWhitespace } from "@fayr/common";
 
 import styles from "./JoinInfoForm.module.scss";
 
-import { formatJoinRoomUrl } from "./Intro/urls";
-import QRCodeView from "./QRCodeView";
-
 type Props = {
+    onHowItWorksClicked: () => void;
     username: string;
     onUsernameChanged: React.Dispatch<string>;
     roomTitle: string;
@@ -22,10 +20,10 @@ type Props = {
 };
 
 export function JoinInfoForm({
+    onHowItWorksClicked,
     username,
     onUsernameChanged,
     roomTitle,
-    onRoomTitleChanged,
     onSubmit,
     usernameInputRef,
     roomTitleInputRef,
@@ -37,46 +35,40 @@ export function JoinInfoForm({
 
     const setUsername = (newValue: string) => onUsernameChanged(newValue);
 
-    const qrSize = isMobile ? 100 : 150;
-
     return (
         <form action="">
-            <fieldset
-                className={classNames("mg-b-2", styles.JoinInfoForm, { [styles.Mobile]: isMobile })}
-            >
+            <fieldset className={classNames(styles.JoinInfoForm, { [styles.Mobile]: isMobile })}>
                 <div>
-                    <input
-                        className="mg-b-2"
-                        ref={usernameInputRef}
-                        type="text"
-                        placeholder="Dein Name"
-                        value={username}
-                        onChange={(ev) => setUsername(ev.target.value)}
-                    />
-                    <input
-                        ref={roomTitleInputRef}
-                        type="text"
-                        placeholder="Code / Titel"
-                        value={roomTitle}
-                        onChange={(ev) => onRoomTitleChanged(ev.target.value)}
-                    />
-                    <button
-                        className="mg-t-2 btn btn--primary"
-                        disabled={!isValid || disableSubmit}
-                        onClick={onSubmit}
-                    >
-                        Watch Party
-                    </button>
+                    <div className={styles.BannerStripe}>
+                        <img src={require("../../assets/vfb-logo.png")} alt="VfB Banner" className={styles.Banner} />
+                    </div>
+                    <div className={styles.JoinInfoFormControls}>
+                        <div
+                            style={{
+                                marginTop: "20px",
+                                marginBottom: "20px",
+                                textAlign: "center",
+                            }}
+                        >
+                            <a onClick={onHowItWorksClicked} className={styles.HowItWorksLink}>Wie funktioniert das?</a>
+                        </div>
+                        <input
+                            ref={usernameInputRef}
+                            type="text"
+                            placeholder="Dein Name"
+                            value={username}
+                            onChange={(ev) => setUsername(ev.target.value)}
+                        />
+                        <button
+                            className="btn btn--secondary"
+                            disabled={!isValid || disableSubmit}
+                            onClick={onSubmit}
+                        >
+                            STARTEN
+                        </button>
+                    </div>
                 </div>
                 {/* <input type="text" placeholder="Playback URL" value={playbackURL} onChange={this.handlePlaybackURLChange} /> */}
-                {roomTitle && (
-                    <QRCodeView
-                        content={formatJoinRoomUrl(roomTitle)}
-                        width={qrSize}
-                        height={qrSize}
-                        padding={1}
-                    />
-                )}
             </fieldset>
         </form>
     );

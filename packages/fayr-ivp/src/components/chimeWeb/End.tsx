@@ -1,5 +1,7 @@
 import { withRouter } from "react-router-dom";
 
+import Rating from "./Rating/Rating";
+
 const End = () => {
     return (
         <div className="welcome form-grid">
@@ -7,6 +9,7 @@ const End = () => {
                 <div className="intro__inner formatted-text">
                     <h1>FAYR TV</h1>
                     <h3>Wir hoffen ihr hattet Spaß und würden uns über euer Feedback freuen!</h3>
+                    <Rating />
                 </div>
             </div>
 

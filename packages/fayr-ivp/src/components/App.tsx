@@ -39,7 +39,9 @@ function MainIvpRouter() {
         <Router>
             <Switch>
                 <Route path={`${path}/end`}>
-                    <End />
+                    <div className={styles.ArenaBackground}>
+                        <End />
+                    </div>
                 </Route>
                 <Route path={`${path}/meeting`}>
                     <Provider store={store}>
@@ -53,11 +55,15 @@ function MainIvpRouter() {
                     </Provider>
                 </Route>
                 <Route path={`${path}/join`}>
-                    <Join />
+                    <div className={styles.ArenaBackground}>
+                        <Join />
+                    </div>
                 </Route>
                 <Route path={`${path}/`}>
                     <ErrorBoundary>
-                        <Welcome />
+                        <div className={styles.ArenaBackground}>
+                            <Welcome />
+                        </div>
                     </ErrorBoundary>
                 </Route>
             </Switch>
