@@ -38,7 +38,9 @@ export default function Rating() {
     return (
         <Flex direction="Column">
             <h2>Wie fandest du die Watch Party?</h2>
-            <Flex direction="Row">{[1, 2, 3, 4, 5].map((x) => Star(x))}</Flex>
+            <Flex direction="Row" mainAlign="Center">
+                {[1, 2, 3, 4, 5].map((x) => Star(x))}
+            </Flex>
         </Flex>
     );
 }
