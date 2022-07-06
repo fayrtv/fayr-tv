@@ -5,8 +5,10 @@
     top: 10%;
     left: 20%;
 
+    z-index: 99;
+
     height: 75vh;
-    width: 25vw;
+    width: 30vw;
     padding: 20px;
 
     @media (max-width: mq.$largeScreens) {

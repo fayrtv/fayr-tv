@@ -4,6 +4,8 @@ import { Nullable } from "types/global";
 
 import Error from "components/chimeWeb/Error";
 
+import { Flex } from "@fayr/common";
+
 import * as config from "../../../config";
 
 export const Join = ({ location, history }: RouteComponentProps) => {
@@ -93,6 +95,22 @@ export const Join = ({ location, history }: RouteComponentProps) => {
                     </form>
                 </div>
             </div>
+            <Flex className="imprint__links" direction="Row">
+                <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://www.vfb.de/de/1893/club/service/formales/impressum/"
+                >
+                    Impressum
+                </a>
+                <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://www.vfb.de/de/1893/club/service/formales/datenschutz/"
+                >
+                    Datenschutz
+                </a>
+            </Flex>
 
             {showError && <Error closeError={closeError} errorMsg={errorMessage} />}
         </div>

@@ -1,5 +1,7 @@
 import { withRouter } from "react-router-dom";
 
+import { Flex } from "@fayr/common";
+
 import Rating from "./Rating/Rating";
 
 const End = () => {
@@ -22,6 +24,22 @@ const End = () => {
                     </a>
                 </div>
             </div>
+            <Flex className="imprint__links" direction="Row">
+                <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://www.vfb.de/de/1893/club/service/formales/impressum/"
+                >
+                    Impressum
+                </a>
+                <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://www.vfb.de/de/1893/club/service/formales/datenschutz/"
+                >
+                    Datenschutz
+                </a>
+            </Flex>
         </div>
     );
 };

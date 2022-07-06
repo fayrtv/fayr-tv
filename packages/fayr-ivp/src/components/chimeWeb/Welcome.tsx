@@ -5,6 +5,7 @@ import { usePlatformConfig } from "hooks/usePlatformConfig";
 import useTranslations from "hooks/useTranslations";
 
 import { FayrLogo, usePersistedState } from "@fayr/common";
+import { Flex } from "@fayr/common";
 
 import * as config from "../../config";
 import Error from "./Error";
@@ -78,7 +79,7 @@ const Welcome = (props: Props) => {
                     </div>
                 </div>
 
-                <Tutorial show={showTutorial} setShow={setShowTutorial}  />
+                <Tutorial show={showTutorial} setShow={setShowTutorial} />
 
                 <div className="welcome__content pd-4">
                     <div className="content__inner">
@@ -94,6 +95,22 @@ const Welcome = (props: Props) => {
                         />
                     </div>
                 </div>
+                <Flex className="imprint__links" direction="Row">
+                    <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href="https://www.vfb.de/de/1893/club/service/formales/impressum/"
+                    >
+                        Impressum
+                    </a>
+                    <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href="https://www.vfb.de/de/1893/club/service/formales/datenschutz/"
+                    >
+                        Datenschutz
+                    </a>
+                </Flex>
             </div>
             {showError && <Error closeError={() => setShowError(false)} errorMsg={errorMessage} />}
         </>
