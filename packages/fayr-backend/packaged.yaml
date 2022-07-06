@@ -1,0 +1,450 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: FAYR Lambda-Function
+Globals:
+  Function:
+    Runtime: nodejs12.x
+    Timeout: 30
+    MemorySize: 128
+    Environment:
+      Variables:
+        MEETINGS_TABLE_NAME:
+          Ref: Meetings
+        ATTENDEES_TABLE_NAME:
+          Ref: Attendees
+        CONNECTIONS_TABLE_NAME:
+          Ref: ConnectionsTable
+        MESSAGING_WSS_URL:
+          Fn::Join:
+          - ''
+          - - wss://
+            - Ref: WebSocketApi
+            - .execute-api.
+            - Ref: AWS::Region
+            - .amazonaws.com/Prod
+Resources:
+  ChimeMeetingsAccessPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: ChimeMeetingsAccess
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - chime:CreateMeeting
+          - chime:DeleteMeeting
+          - chime:GetMeeting
+          - chime:ListMeetings
+          - chime:BatchCreateAttendee
+          - chime:CreateAttendee
+          - chime:DeleteAttendee
+          - chime:GetAttendee
+          - chime:ListAttendees
+          Resource: '*'
+      Roles:
+      - Ref: ChimeSdkJoinLambdaRole
+      - Ref: ChimeSdkAttendeeLambdaRole
+      - Ref: ChimeSdkEndLambdaRole
+      - Ref: ChimeSdkCreateMeetingLambdaRole
+      - Ref: AuthorizeFunctionRole
+    Metadata:
+      SamResourceId: ChimeMeetingsAccessPolicy
+  Meetings:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+      - AttributeName: Title
+        AttributeType: S
+      - AttributeName: Passcode
+        AttributeType: S
+      KeySchema:
+      - AttributeName: Title
+        KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: '5'
+        WriteCapacityUnits: '5'
+      GlobalSecondaryIndexes:
+      - IndexName: Passcode
+        KeySchema:
+        - AttributeName: Passcode
+          KeyType: HASH
+        Projection:
+          ProjectionType: ALL
+        ProvisionedThroughput:
+          ReadCapacityUnits: '5'
+          WriteCapacityUnits: '5'
+      TimeToLiveSpecification:
+        AttributeName: TTL
+        Enabled: true
+    Metadata:
+      SamResourceId: Meetings
+  Attendees:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+      - AttributeName: AttendeeId
+        AttributeType: S
+      KeySchema:
+      - AttributeName: AttendeeId
+        KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: '5'
+        WriteCapacityUnits: '5'
+    Metadata:
+      SamResourceId: Attendees
+  ChimeSdkCreateMeetingLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.createMeeting
+      CodeUri: s3://fayr-s3-v008/1e826d124ddb42d28d7a56e18240cce9
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: Meetings
+      Events:
+        Api1:
+          Type: Api
+          Properties:
+            Path: /meeting
+            Method: POST
+    Metadata:
+      SamResourceId: ChimeSdkCreateMeetingLambda
+  ChimeSdkJoinLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.join
+      CodeUri: s3://fayr-s3-v008/1e826d124ddb42d28d7a56e18240cce9
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: Meetings
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: Attendees
+      Events:
+        Api1:
+          Type: Api
+          Properties:
+            Path: /join
+            Method: POST
+    Metadata:
+      SamResourceId: ChimeSdkJoinLambda
+  ChimeSdkEndLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.end
+      CodeUri: s3://fayr-s3-v008/1e826d124ddb42d28d7a56e18240cce9
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: Meetings
+      Events:
+        Api1:
+          Type: Api
+          Properties:
+            Path: /end
+            Method: POST
+    Metadata:
+      SamResourceId: ChimeSdkEndLambda
+  ChimeSdkAttendeeLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.attendee
+      CodeUri: s3://fayr-s3-v008/1e826d124ddb42d28d7a56e18240cce9
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: Meetings
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: Attendees
+      Events:
+        Api1:
+          Type: Api
+          Properties:
+            Path: /attendee
+            Method: GET
+    Metadata:
+      SamResourceId: ChimeSdkAttendeeLambda
+  ChimeSdkAttendeesLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.attendees
+      CodeUri: s3://fayr-s3-v008/1e826d124ddb42d28d7a56e18240cce9
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: Meetings
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: Attendees
+      Events:
+        Api1:
+          Type: Api
+          Properties:
+            Path: /attendees
+            Method: GET
+    Metadata:
+      SamResourceId: ChimeSdkAttendeesLambda
+  WebSocketApi:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name:
+        Fn::Sub: ${AWS::StackName}-websocket
+      ProtocolType: WEBSOCKET
+      RouteSelectionExpression: $request.body.message
+    Metadata:
+      SamResourceId: WebSocketApi
+  ConnectRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId:
+        Ref: WebSocketApi
+      RouteKey: $connect
+      AuthorizationType: CUSTOM
+      AuthorizerId:
+        Ref: Authorizer
+      OperationName: ConnectRoute
+      Target:
+        Fn::Join:
+        - /
+        - - integrations
+          - Ref: ConnectIntegration
+    Metadata:
+      SamResourceId: ConnectRoute
+  ConnectIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId:
+        Ref: WebSocketApi
+      Description: Connect Integration
+      IntegrationType: AWS_PROXY
+      IntegrationUri:
+        Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OnConnectFunction.Arn}/invocations
+    Metadata:
+      SamResourceId: ConnectIntegration
+  DisconnectRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId:
+        Ref: WebSocketApi
+      RouteKey: $disconnect
+      AuthorizationType: NONE
+      OperationName: DisconnectRoute
+      Target:
+        Fn::Join:
+        - /
+        - - integrations
+          - Ref: DisconnectIntegration
+    Metadata:
+      SamResourceId: DisconnectRoute
+  DisconnectIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId:
+        Ref: WebSocketApi
+      Description: Disconnect Integration
+      IntegrationType: AWS_PROXY
+      IntegrationUri:
+        Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OnDisconnectFunction.Arn}/invocations
+    Metadata:
+      SamResourceId: DisconnectIntegration
+  SendRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId:
+        Ref: WebSocketApi
+      RouteKey: sendmessage
+      AuthorizationType: NONE
+      OperationName: SendRoute
+      Target:
+        Fn::Join:
+        - /
+        - - integrations
+          - Ref: SendIntegration
+    Metadata:
+      SamResourceId: SendRoute
+  SendIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId:
+        Ref: WebSocketApi
+      Description: Send Integration
+      IntegrationType: AWS_PROXY
+      IntegrationUri:
+        Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${SendMessageFunction.Arn}/invocations
+    Metadata:
+      SamResourceId: SendIntegration
+  Deployment:
+    Type: AWS::ApiGatewayV2::Deployment
+    DependsOn:
+    - ConnectRoute
+    - SendRoute
+    - DisconnectRoute
+    Properties:
+      ApiId:
+        Ref: WebSocketApi
+    Metadata:
+      SamResourceId: Deployment
+  Stage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      StageName: Prod
+      Description: Prod Stage
+      DeploymentId:
+        Ref: Deployment
+      ApiId:
+        Ref: WebSocketApi
+    Metadata:
+      SamResourceId: Stage
+  ConnectionsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+      - AttributeName: MeetingId
+        AttributeType: S
+      - AttributeName: AttendeeId
+        AttributeType: S
+      KeySchema:
+      - AttributeName: MeetingId
+        KeyType: HASH
+      - AttributeName: AttendeeId
+        KeyType: RANGE
+      BillingMode: PAY_PER_REQUEST
+      SSESpecification:
+        SSEEnabled: true
+      TimeToLiveSpecification:
+        AttributeName: TTL
+        Enabled: true
+    Metadata:
+      SamResourceId: ConnectionsTable
+  OnConnectFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://fayr-s3-v008/1e826d124ddb42d28d7a56e18240cce9
+      Handler: index.onconnect
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: ConnectionsTable
+    Metadata:
+      SamResourceId: OnConnectFunction
+  OnConnectPermission:
+    Type: AWS::Lambda::Permission
+    DependsOn:
+    - WebSocketApi
+    - OnConnectFunction
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Ref: OnConnectFunction
+      Principal: apigateway.amazonaws.com
+    Metadata:
+      SamResourceId: OnConnectPermission
+  AuthorizeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://fayr-s3-v008/1e826d124ddb42d28d7a56e18240cce9
+      Handler: index.authorize
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: ConnectionsTable
+    Metadata:
+      SamResourceId: AuthorizeFunction
+  AuthorizePermission:
+    Type: AWS::Lambda::Permission
+    DependsOn:
+    - WebSocketApi
+    - AuthorizeFunction
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Ref: AuthorizeFunction
+      Principal: apigateway.amazonaws.com
+    Metadata:
+      SamResourceId: AuthorizePermission
+  Authorizer:
+    Type: AWS::ApiGatewayV2::Authorizer
+    Properties:
+      Name: LambdaAuthorizer
+      ApiId:
+        Ref: WebSocketApi
+      AuthorizerType: REQUEST
+      AuthorizerUri:
+        Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AuthorizeFunction.Arn}/invocations
+      IdentitySource:
+      - route.request.querystring.MeetingId
+      - route.request.querystring.AttendeeId
+      - route.request.querystring.JoinToken
+    Metadata:
+      SamResourceId: Authorizer
+  OnDisconnectFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://fayr-s3-v008/1e826d124ddb42d28d7a56e18240cce9
+      Handler: index.ondisconnect
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: ConnectionsTable
+    Metadata:
+      SamResourceId: OnDisconnectFunction
+  OnDisconnectPermission:
+    Type: AWS::Lambda::Permission
+    DependsOn:
+    - WebSocketApi
+    - OnDisconnectFunction
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Ref: OnDisconnectFunction
+      Principal: apigateway.amazonaws.com
+    Metadata:
+      SamResourceId: OnDisconnectPermission
+  SendMessageFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://fayr-s3-v008/1e826d124ddb42d28d7a56e18240cce9
+      Handler: index.sendmessage
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: ConnectionsTable
+      - Statement:
+        - Effect: Allow
+          Action:
+          - execute-api:ManageConnections
+          Resource:
+          - Fn::Sub: arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${WebSocketApi}/*
+    Metadata:
+      SamResourceId: SendMessageFunction
+  SendMessagePermission:
+    Type: AWS::Lambda::Permission
+    DependsOn:
+    - WebSocketApi
+    - SendMessageFunction
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Ref: SendMessageFunction
+      Principal: apigateway.amazonaws.com
+    Metadata:
+      SamResourceId: SendMessagePermission
+Outputs:
+  ApiURL:
+    Description: API endpoint URL for Prod environment
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/
+  WebSocketURI:
+    Description: The Messaging WSS Protocol URI to connect to
+    Value:
+      Fn::Join:
+      - ''
+      - - wss://
+        - Ref: WebSocketApi
+        - .execute-api.
+        - Ref: AWS::Region
+        - .amazonaws.com/
+        - Ref: Stage
