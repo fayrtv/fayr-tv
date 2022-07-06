@@ -38,20 +38,24 @@ export default function Rating() {
         });
     };
 
-    const Star = (index: number) => (
-        <span
-            key={index}
-            id={`star-${index}`}
-            className={classNames("material-icons", styles.Star, {
-                [styles.YellowStar]: selectedRating >= index,
-            })}
-            onMouseOver={onMouseOver}
-            onMouseLeave={onMouseLeave}
-            onClick={() => onClick(index)}
-        >
-            star_rate
-        </span>
-    );
+    const Star = (index: number) => {
+        const outlined = selectedRating < index;
+
+        return (
+            <span
+                key={index}
+                id={`star-${index}`}
+                className={classNames(`material-icons${outlined ? "-outlined" : ""}`, styles.Star, {
+                    [styles.YellowStar]: selectedRating >= index,
+                })}
+                onMouseOver={onMouseOver}
+                onMouseLeave={onMouseLeave}
+                onClick={() => onClick(index)}
+            >
+                star_rate
+            </span>
+        );
+    };
 
     return (
         <Flex direction="Column">
