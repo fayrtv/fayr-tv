@@ -12,6 +12,7 @@ Globals:
         MEETINGS_TABLE_NAME: !Ref Meetings
         ATTENDEES_TABLE_NAME: !Ref Attendees
         CONNECTIONS_TABLE_NAME: !Ref ConnectionsTable
+        RATINGS_TABLE_NAME: !Ref RatingsTable
         MESSAGING_WSS_URL: !Join ['', ['wss://', !Ref WebSocketApi, '.execute-api.', !Ref 'AWS::Region','.amazonaws.com/Prod']]
 Resources:
 
@@ -81,6 +82,20 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: "5"
         WriteCapacityUnits: "5"
+  RatingsTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+          AttributeDefinitions:
+              - AttributeName: "ID"
+                AttributeType: "S"
+              - AttributeName: "Rating"
+                AttributeType: "N"
+          KeySchema:
+              - AttributeName: "ID"
+                KeyType: "HASH"
+          ProvisionedThroughput:
+              ReadCapacityUnits: "5"
+              WriteCapacityUnits: "5"
   ChimeSdkCreateMeetingLambda:
     Type: 'AWS::Serverless::Function'
     Properties:
@@ -157,6 +172,20 @@ Resources:
           Properties:
             Path: /attendees
             Method: GET
+  AddRatingLambda:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: index.addRating
+      CodeUri: compiled/
+      Policies:
+        - DynamoDBCrudPolicy:
+          TableName: !Ref RatingsTable
+      Events:
+        Api1:
+          Type: Api
+          Properties:
+            Path: /addRating
+            Method: POST
 
 # Websocket
 

@@ -19,6 +19,13 @@ import IChimeEvents from "./interfaces/IChimeEvents";
 import IRoomManager, { RosterMap, RosterUpdateCallback } from "./interfaces/IRoomManager";
 import { Attendee, Role } from "./types";
 
+export class RoomFullError extends Error {
+    constructor(message?: string) {
+        super(message);
+        this.name = "RoomFullError";
+    }
+}
+
 @injectable()
 export default class RoomManager implements IRoomManager {
     private _configuration: Nullable<MeetingSessionConfiguration> = null;
@@ -94,6 +101,10 @@ export default class RoomManager implements IRoomManager {
             method: "POST",
             body: JSON.stringify(payload),
         });
+
+        if (response.status === 429) {
+            throw new RoomFullError();
+        }
 
         const json = await response.json();
 
