@@ -1,8 +1,9 @@
-import { useState, useEffect, MouseEventHandler } from "react";
+import React, { useState, useEffect, MouseEventHandler } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { Nullable } from "types/global";
 
 import Error from "components/chimeWeb/Error";
+import styles from "components/chimeWeb/JoinInfoForm.module.scss";
 
 import { Flex } from "@fayr/common";
 
@@ -65,34 +66,38 @@ export const Join = ({ location, history }: RouteComponentProps) => {
         <div className="welcome form-grid" onClick={handleClick}>
             <div className="welcome__intro">
                 <div className="intro__inner formatted-text">
-                    <h1>FAYR TV</h1>
-                    <h3>
-                        Erstelle eine WatchParty oder trete einer bei und verbringe mit deinen
-                        Freunden eine geile Zeit!
-                    </h3>
+                    Du wurdest zu einer Watch-Party eingeladen
                 </div>
             </div>
 
             <div className="welcome__content pd-4">
                 <div className="content__inner">
-                    <h2 className="mg-b-2">Du wurdest zu einer Watch Party eingeladen!</h2>
-                    <form action="">
-                        <fieldset className="mg-b-2">
-                            <input
-                                type="text"
-                                placeholder="Name"
-                                value={userName}
-                                onChange={(e) => setUserName(e.target.value)}
-                            />
-                            <button
-                                className="mg-t-1 btn btn--primary"
-                                disabled={joinRoomDisabled}
-                                onClick={handleJoinRoom}
-                            >
-                                Beitreten
-                            </button>
-                        </fieldset>
-                    </form>
+                    <div className={styles.BannerStripe}>
+                        <img
+                            src={require("../../../assets/vfb-logo.png")}
+                            alt="VfB Banner"
+                            className={styles.Banner}
+                        />
+                    </div>
+                    <div className={styles.JoinInfoFormControls}>
+                        <form action="">
+                            <fieldset className="mg-b-2">
+                                <input
+                                    type="text"
+                                    placeholder="Name"
+                                    value={userName}
+                                    onChange={(e) => setUserName(e.target.value)}
+                                />
+                                <button
+                                    className="mg-t-1 btn btn--primary"
+                                    disabled={joinRoomDisabled}
+                                    onClick={handleJoinRoom}
+                                >
+                                    Beitreten
+                                </button>
+                            </fieldset>
+                        </form>
+                    </div>
                 </div>
             </div>
             <Flex className="imprint__links" direction="Row">
