@@ -85,6 +85,7 @@ input:disabled {
     line-height: 48px;
     color: #ffffff;
     text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+    word-break: break-word;
 }
 
 .welcome__content {
@@ -114,6 +115,20 @@ input:disabled {
 
     .content__inner {
         width: 100%;
+    }
+}
+
+@media (max-width: mq.$mobile) {
+    .welcome__content {
+        padding-top: 0;
+        padding-bottom: 0;
+        width: 100vw;
+    }
+
+    .intro__inner {
+        @media (max-width: mq.$mobile) {
+            font-size: 30px;
+        }
     }
 }
 

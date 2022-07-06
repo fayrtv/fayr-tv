@@ -75,7 +75,7 @@ const Welcome = (props: Props) => {
             <div className="welcome form-grid">
                 <div className="welcome__intro">
                     <div className="intro__inner formatted-text">
-                        Willkommen&nbsp;in&nbsp;der VfB&nbsp;Watch&nbsp;Party
+                        Willkommen in der VfB Watch Party
                     </div>
                 </div>
 
