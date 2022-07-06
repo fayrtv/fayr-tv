@@ -324,7 +324,7 @@ export const CamSection = ({ joinInfo }: Props) => {
         <div className={styles.ParticipantVideoWrapper}>
             <ParticipantVideoGroup
                 key="ParticipantVideoGroup"
-                participantVideos={participantVideos.values()}
+                participants={Array.from(participantVideos.values())}
                 localVideoInfo={
                     !pinnedHostIdentifier
                         ? {
