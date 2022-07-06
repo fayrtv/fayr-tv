@@ -28,9 +28,9 @@ export const DEFAULT_VIDEO_STREAM = sample([
     // Tagesschau 24
     // "https://tagesschau.akamaized.net/hls/live/2020117/tagesschau/tagesschau_3/master_720.m3u8",
     // Amazon IVS
-    // "https://5f1b94db7198.eu-central-1.playback.live-video.net/api/video/v1/eu-central-1.676057042583.channel.hWxKBDpLJc9h.m3u8"
+    "https://5f1b94db7198.eu-central-1.playback.live-video.net/api/video/v1/eu-central-1.676057042583.channel.hWxKBDpLJc9h.m3u8"
     // AWS Elemental MediaLive
-    "https://528dc4ef17d725ed.mediapackage.eu-central-1.amazonaws.com/out/v1/2ff189e75e344a229c386c0af778e623/index.m3u8",
+    // "https://528dc4ef17d725ed.mediapackage.eu-central-1.amazonaws.com/out/v1/2ff189e75e344a229c386c0af778e623/index.m3u8",
 ]) as string;
 
 // Default Chat websocket link
@@ -82,6 +82,6 @@ export const streamSync: StreamSyncOptions = {
         minimumDrift: 1.0,
     },
     staticStream: {
-        minimumDrift: 2,
+        minimumDrift: 1,
     },
 };
