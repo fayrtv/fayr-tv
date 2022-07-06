@@ -539,6 +539,14 @@ export const join: Handler<APIGatewayProxyEvent> = async (event, context, callba
         meetingInfo = await chime.createMeeting(request).promise();
         meetingInfo.PlaybackURL = payload.playbackURL;
         await putMeeting(title, meetingInfo, payload.playbackURL);
+    } else {
+        const attendees = await getAttendees(title);
+        if (attendees !== "Unknown" && attendees.length >= 11) {
+            response.statusCode = 429;
+            response.body = "Cannot have more than 11 participants in a VfB meeting";
+            callback(null, response);
+            return;
+        }
     }
 
     console.info("join event > meetingInfo:", JSON.stringify(meetingInfo, null, 2));
