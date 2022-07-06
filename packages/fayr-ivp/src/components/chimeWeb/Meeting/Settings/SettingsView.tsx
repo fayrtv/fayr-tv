@@ -232,7 +232,7 @@ export const SettingsView = React.forwardRef<HTMLDivElement, Props>(
                         <Flex direction="Column">
                             <Flex className={styles.Item} direction="Column">
                                 <Flex direction="Row" space="Between">
-                                    <span>Camera</span>
+                                    <span>Kamera</span>
                                     <Toggle
                                         toggleState={isCameraEnabled}
                                         onToggle={onCamToggleClick}
@@ -255,7 +255,7 @@ export const SettingsView = React.forwardRef<HTMLDivElement, Props>(
                             </Flex>
                             <Flex className={styles.Item} direction="Column">
                                 <Flex direction="Row" space="Between">
-                                    <span>Microphone</span>
+                                    <span>Mikrofon</span>
                                     <Toggle
                                         toggleState={isMicrophoneEnabled}
                                         onToggle={onMicToggleClick}
@@ -278,7 +278,7 @@ export const SettingsView = React.forwardRef<HTMLDivElement, Props>(
                             </Flex>
                             <Flex className={styles.Item} direction="Column">
                                 <Flex direction="Row" space="Between">
-                                    <span>Speaker</span>
+                                    <span>Lautsprecher</span>
                                     <Toggle
                                         toggleState={isAudioOutputEnabled}
                                         onToggle={onSpeakersClick}
@@ -320,7 +320,7 @@ export const SettingsView = React.forwardRef<HTMLDivElement, Props>(
                     <Cell gridArea="ProcessingOptions">
                         <Flex crossAlign="Center" direction="Column">
                             {createToggledSpan(
-                                "Background blur",
+                                "Hintergrundunschärfe",
                                 {
                                     toggleState: shouldUseBackgroundBlur,
                                     onToggle: async (toggleState: boolean) => {
@@ -337,7 +337,7 @@ export const SettingsView = React.forwardRef<HTMLDivElement, Props>(
                                 isCameraEnabled ? "" : "Keine Kamera ausgewählt",
                             )}
                             {createToggledSpan(
-                                "Noise Cancellation",
+                                "Lärmunterdrückung",
                                 {
                                     toggleState: shouldUseNoiseCancellation,
                                     onToggle: async (toggleState: boolean) => {
