@@ -3,6 +3,7 @@ import { withRouter, RouteComponentProps } from "react-router-dom";
 import { Nullable } from "types/global";
 
 import Error from "components/chimeWeb/Error";
+import ImprintFooter from "components/chimeWeb/ImprintFooter";
 import styles from "components/chimeWeb/JoinInfoForm.module.scss";
 
 import { Flex } from "@fayr/common";
@@ -66,7 +67,7 @@ export const Join = ({ location, history }: RouteComponentProps) => {
         <div className="welcome form-grid" onClick={handleClick}>
             <div className="welcome__intro">
                 <div className="intro__inner formatted-text">
-                    Du wurdest zu einer Watch-Party eingeladen
+                    <h1>Du wurdest zu einer Watch-Party eingeladen</h1>
                 </div>
             </div>
 
@@ -100,22 +101,7 @@ export const Join = ({ location, history }: RouteComponentProps) => {
                     </div>
                 </div>
             </div>
-            <Flex className="imprint__links" direction="Row">
-                <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href="https://www.vfb.de/de/1893/club/service/formales/impressum/"
-                >
-                    Impressum
-                </a>
-                <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href="https://www.vfb.de/de/1893/club/service/formales/datenschutz/"
-                >
-                    Datenschutz
-                </a>
-            </Flex>
+            <ImprintFooter />
 
             {showError && <Error closeError={closeError} errorMsg={errorMessage} />}
         </div>
