@@ -712,4 +712,8 @@ export const addRating: Handler<APIGatewayProxyEvent> = async (event, context, c
             },
         })
         .promise();
+
+    response.statusCode = 200;
+
+    callback(null, response);
 };
