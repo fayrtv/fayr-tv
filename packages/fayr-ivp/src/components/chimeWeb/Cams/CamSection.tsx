@@ -1,5 +1,5 @@
 // Framework
-import { VideoTileState } from "amazon-chime-sdk-js";
+import { AudioVideoObserver, VideoTileState } from "amazon-chime-sdk-js";
 // Functionality
 import * as config from "config";
 import { useInjection } from "inversify-react";
@@ -63,27 +63,6 @@ export const CamSection = ({ joinInfo }: Props) => {
         [dispatch],
     );
 
-    const videoTileDidUpdateCallback = React.useCallback(
-        (tileState: VideoTileState) => {
-            if (
-                !tileState.boundAttendeeId ||
-                tileState.localTile ||
-                tileState.isContent ||
-                !tileState.tileId
-            ) {
-                return;
-            }
-
-            putAttendee({
-                videoEnabled: tileState.active,
-                attendeeId: tileState.boundAttendeeId,
-                tileId: tileState.tileId,
-                activityState: ActivityState.Available,
-            });
-        },
-        [putAttendee],
-    );
-
     const onVideoTileRemoved = React.useCallback(
         (tileId: number) => {
             removeAttendeeAtTile(tileId);
@@ -94,7 +73,6 @@ export const CamSection = ({ joinInfo }: Props) => {
         },
         [removeAttendeeAtTile],
     );
-
     const onRosterUpdate = React.useCallback(
         (roster: RosterMap) => {
             if (config.DEBUG) {
@@ -151,7 +129,6 @@ export const CamSection = ({ joinInfo }: Props) => {
 
     React.useEffect(() => {
         const observer = {
-            videoTileDidUpdate: videoTileDidUpdateCallback,
             videoTileWasRemoved: onVideoTileRemoved,
         };
 

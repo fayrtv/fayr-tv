@@ -1,9 +1,11 @@
 import {
+    AudioVideoObserver,
     DefaultDeviceController,
     DefaultMeetingSession,
     DefaultModality,
     Logger,
     MeetingSessionConfiguration,
+    VideoTileState,
 } from "amazon-chime-sdk-js";
 import * as config from "config";
 import { inject, injectable } from "inversify";
@@ -11,6 +13,7 @@ import { throttle } from "lodash";
 import { Nullable } from "types/global";
 import Types from "types/inject";
 
+import { ActivityState } from "components/chimeWeb/Cams/types";
 import { JoinInfo } from "components/chimeWeb/types";
 
 import LogProvider from "./LogProvider";
@@ -214,12 +217,52 @@ export default class RoomManager implements IRoomManager {
 
         await this._audioVideoManager.initializeMeetingSession();
 
+        const observer: AudioVideoObserver = {
+            videoTileDidUpdate: (tileState: VideoTileState) => {
+                if (
+                    !tileState.boundAttendeeId ||
+                    tileState.localTile ||
+                    tileState.isContent ||
+                    tileState.tileId === null
+                ) {
+                    return;
+                }
+
+                if (this._roster[tileState.boundAttendeeId]) {
+                    this._roster[tileState.boundAttendeeId] = {
+                        ...this._roster[tileState.boundAttendeeId],
+                        videoEnabled: tileState.active,
+                        attendeeId: tileState.boundAttendeeId,
+                        tileId: tileState.tileId,
+                        activityState: ActivityState.Available,
+                    };
+                } else {
+                    this._roster[tileState.boundAttendeeId] = {
+                        videoEnabled: tileState.active,
+                        attendeeId: tileState.boundAttendeeId,
+                        tileId: tileState.tileId,
+                        activityState: ActivityState.Available,
+                    } as Attendee;
+                }
+
+                this.publishRosterUpdate()();
+            },
+        };
+
+        audioVideo.addObserver(observer);
+
         audioVideo.realtimeSubscribeToAttendeeIdPresence((presentAttendeeId, present) => {
             if (!present) {
                 delete this._roster[presentAttendeeId];
                 this.publishRosterUpdate()();
                 return;
             }
+
+            this._roster[presentAttendeeId] = {
+                ...this._roster[presentAttendeeId],
+                name: "",
+                role: Role.Attendee,
+            } as Attendee;
 
             this._audioVideoManager.audioVideo?.realtimeSubscribeToVolumeIndicator(
                 presentAttendeeId,
@@ -237,29 +280,25 @@ export default class RoomManager implements IRoomManager {
                         return;
                     }
 
-                    let shouldPublishImmediately = false;
+                    const attendee = this.roster[attendeeId];
 
-                    if (!this._roster[attendeeId]) {
-                        this._roster[attendeeId] = { name: "", role: Role.Attendee } as Attendee;
-                    }
                     if (volume !== null) {
-                        this._roster[attendeeId].volume = Math.round(volume * 100);
+                        attendee.volume = Math.round(volume * 100);
                     }
                     if (muted !== null) {
-                        this._roster[attendeeId].muted = muted;
+                        attendee.muted = muted;
                     }
                     if (signalStrength !== null) {
-                        this._roster[attendeeId].signalStrength = Math.round(signalStrength * 100);
+                        attendee.signalStrength = Math.round(signalStrength * 100);
                     }
 
-                    if (this._title && attendeeId && !this._roster[attendeeId].name) {
+                    if (this._title && attendeeId && !attendee.name) {
                         const response = await fetch(
                             `${config.CHIME_ROOM_API}/attendee?title=${encodeURIComponent(
                                 this._title,
                             )}&attendeeId=${encodeURIComponent(attendeeId)}`,
                         );
                         const json = await response.json();
-                        const attendee = this._roster[attendeeId];
                         if (json.AttendeeInfo && attendee) {
                             attendee.name = json.AttendeeInfo.Name || "";
 
@@ -268,13 +307,7 @@ export default class RoomManager implements IRoomManager {
                                 role = Role.Host;
                             }
                             attendee.role = role;
-
-                            shouldPublishImmediately = true;
                         }
-                    }
-
-                    if (shouldPublishImmediately) {
-                        //this.publishRosterUpdate.cancel();
                     }
 
                     this.publishRosterUpdate()();
