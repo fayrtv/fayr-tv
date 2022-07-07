@@ -23,6 +23,7 @@
     .SettingsView {
         padding: 10px 50px;
         height: 100%;
+        color: var(--color-white);
 
         @media (min-width: mq.$mobile) and (max-width: mq.$largeScreens) {
             padding: 0px 15px;
@@ -40,6 +41,7 @@
 
             span {
                 font-size: 3rem;
+                color: var(--color-white)
             }
         }
 

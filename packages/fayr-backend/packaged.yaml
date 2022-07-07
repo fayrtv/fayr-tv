@@ -14,6 +14,8 @@ Globals:
           Ref: Attendees
         CONNECTIONS_TABLE_NAME:
           Ref: ConnectionsTable
+        RATINGS_TABLE_NAME:
+          Ref: RatingsTable
         MESSAGING_WSS_URL:
           Fn::Join:
           - ''
@@ -93,11 +95,27 @@ Resources:
         WriteCapacityUnits: '5'
     Metadata:
       SamResourceId: Attendees
+  RatingsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+      - AttributeName: ID
+        AttributeType: S
+      - AttributeName: Rating
+        AttributeType: N
+      KeySchema:
+      - AttributeName: ID
+        KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: '5'
+        WriteCapacityUnits: '5'
+    Metadata:
+      SamResourceId: RatingsTable
   ChimeSdkCreateMeetingLambda:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.createMeeting
-      CodeUri: s3://fayr-s3-v008/1e826d124ddb42d28d7a56e18240cce9
+      CodeUri: s3://fayr-s3-v008/207c9bf9792488aa466c3396b6159531
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
@@ -114,7 +132,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.join
-      CodeUri: s3://fayr-s3-v008/1e826d124ddb42d28d7a56e18240cce9
+      CodeUri: s3://fayr-s3-v008/207c9bf9792488aa466c3396b6159531
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
@@ -134,7 +152,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.end
-      CodeUri: s3://fayr-s3-v008/1e826d124ddb42d28d7a56e18240cce9
+      CodeUri: s3://fayr-s3-v008/207c9bf9792488aa466c3396b6159531
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
@@ -151,7 +169,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.attendee
-      CodeUri: s3://fayr-s3-v008/1e826d124ddb42d28d7a56e18240cce9
+      CodeUri: s3://fayr-s3-v008/207c9bf9792488aa466c3396b6159531
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
@@ -171,7 +189,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.attendees
-      CodeUri: s3://fayr-s3-v008/1e826d124ddb42d28d7a56e18240cce9
+      CodeUri: s3://fayr-s3-v008/207c9bf9792488aa466c3396b6159531
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
@@ -187,6 +205,23 @@ Resources:
             Method: GET
     Metadata:
       SamResourceId: ChimeSdkAttendeesLambda
+  AddRatingLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.addRating
+      CodeUri: s3://fayr-s3-v008/207c9bf9792488aa466c3396b6159531
+      Policies:
+      - DynamoDBCrudPolicy: null
+        TableName:
+          Ref: RatingsTable
+      Events:
+        Api1:
+          Type: Api
+          Properties:
+            Path: /addRating
+            Method: POST
+    Metadata:
+      SamResourceId: AddRatingLambda
   WebSocketApi:
     Type: AWS::ApiGatewayV2::Api
     Properties:
@@ -322,7 +357,7 @@ Resources:
   OnConnectFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://fayr-s3-v008/1e826d124ddb42d28d7a56e18240cce9
+      CodeUri: s3://fayr-s3-v008/207c9bf9792488aa466c3396b6159531
       Handler: index.onconnect
       Policies:
       - DynamoDBCrudPolicy:
@@ -345,7 +380,7 @@ Resources:
   AuthorizeFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://fayr-s3-v008/1e826d124ddb42d28d7a56e18240cce9
+      CodeUri: s3://fayr-s3-v008/207c9bf9792488aa466c3396b6159531
       Handler: index.authorize
       Policies:
       - DynamoDBCrudPolicy:
@@ -383,7 +418,7 @@ Resources:
   OnDisconnectFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://fayr-s3-v008/1e826d124ddb42d28d7a56e18240cce9
+      CodeUri: s3://fayr-s3-v008/207c9bf9792488aa466c3396b6159531
       Handler: index.ondisconnect
       Policies:
       - DynamoDBCrudPolicy:
@@ -406,7 +441,7 @@ Resources:
   SendMessageFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://fayr-s3-v008/1e826d124ddb42d28d7a56e18240cce9
+      CodeUri: s3://fayr-s3-v008/207c9bf9792488aa466c3396b6159531
       Handler: index.sendmessage
       Policies:
       - DynamoDBCrudPolicy:

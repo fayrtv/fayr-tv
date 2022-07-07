@@ -3,6 +3,7 @@
 :root {
     --section-max-width: 700px;
     --color-text-base: var(--color-white);
+    --color-text-dark: var(--color-black);
     --color-text-hint: var(--color-secondary);
     --color-text-link: var(--color-primary-dark);
     --color-text-inverted: #000;
@@ -261,7 +262,7 @@ input:disabled {
 /* Overwrites */
 input,
 select {
-    color: var(--color-text-hint);
+    color: var(--color-text-dark);
 }
 
 a {
