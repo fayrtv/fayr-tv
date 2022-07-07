@@ -28,7 +28,7 @@ import { JoinInfo, ForceMicChangeDto, ForceCamChangeDto } from "../types";
 import LocalVideo from "./LocalVideo/LocalVideo";
 import ParticipantVideo from "./Participants/ParticipantVideo";
 import ParticipantVideoGroup from "./Participants/ParticipantVideoGroup";
-import { ActivityState, ActivityStateChangeDto } from "./types";
+import { ActivityStateChangeDto } from "./types";
 
 type Props = {
     joinInfo: JoinInfo;
@@ -127,6 +127,16 @@ export const CamSection = ({ joinInfo }: Props) => {
         ],
     );
 
+    // Initializes the initial roster so we don't only depend on the notifications
+    React.useEffect(() => {
+        onRosterUpdate(roomManager.roster);
+    }, []);
+
+    React.useEffect(() => {
+        roomManager.subscribeToRosterUpdate(onRosterUpdate);
+        return () => roomManager.unsubscribeFromRosterUpdate(onRosterUpdate);
+    }, [roomManager, onRosterUpdate]);
+
     React.useEffect(() => {
         const observer = {
             videoTileWasRemoved: onVideoTileRemoved,
@@ -139,15 +149,163 @@ export const CamSection = ({ joinInfo }: Props) => {
         return () => audioVideoManager.tryRemoveObserver(observer);
     }, [audioVideoManager.audioVideo]);
 
-    // Initializes the initial roster so we don't only depend on the notifications
+    // B04 repo compat section
+    const previousRoster = React.useRef<any>({});
+    const [roster, setRoster] = React.useState<Array<any>>([]);
+
+    const findRosterSlot = React.useCallback(
+        (attendeeId: any) => {
+            let index;
+            for (index = 0; index < roster.length; index++) {
+                if (roster[index].attendeeId === attendeeId) {
+                    return index;
+                }
+            }
+            for (index = 0; index < roster.length; index++) {
+                if (!roster[index].attendeeId) {
+                    return index;
+                }
+            }
+            return 0;
+        },
+        [roster],
+    );
+
+    const rosterCallback = React.useCallback(
+        (newRoster: any) => {
+            if (Object.keys(newRoster).length > 2) {
+                if (config.DEBUG) console.log("More than 2");
+            }
+
+            if (Object.keys(newRoster).length < Object.keys(previousRoster.current).length) {
+                if (config.DEBUG) console.log("Attendee(s) left");
+                const differ = Object.keys(previousRoster.current).filter(
+                    (k) => previousRoster.current[k] !== newRoster[k],
+                );
+                if (config.DEBUG) console.log(differ);
+
+                if (differ.length) {
+                    let i;
+                    for (i in differ) {
+                        const index = findRosterSlot(differ[i]);
+                        roster[index] = {
+                            videoElement: roster[index].videoElement,
+                        };
+                        setRoster(roster);
+                    }
+                }
+            }
+
+            previousRoster.current = Object.assign({}, newRoster);
+
+            let attendeeId;
+            for (attendeeId in newRoster) {
+                // Exclude self
+                if (attendeeId === joinInfo.Attendee.AttendeeId) {
+                    continue;
+                }
+
+                // exclude empty name
+                if (!newRoster[attendeeId].name) {
+                    continue;
+                }
+
+                const index = findRosterSlot(attendeeId);
+                const attendee = {
+                    ...roster[index],
+                    attendeeId,
+                    ...newRoster[attendeeId],
+                };
+
+                roster[index] = attendee;
+                setRoster(roster);
+            }
+        },
+        [roster, findRosterSlot],
+    );
+
+    const videoTileDidUpdateCallback = React.useCallback(
+        (tileState: any) => {
+            if (
+                !tileState.boundAttendeeId ||
+                tileState.localTile ||
+                tileState.isContent ||
+                !tileState.tileId
+            ) {
+                return;
+            }
+
+            let index = findRosterSlot(tileState.boundAttendeeId);
+            const attendee = {
+                ...roster[index],
+                videoEnabled: tileState.active,
+                attendeeId: tileState.boundAttendeeId,
+                tileId: tileState.tileId,
+            };
+            roster[index] = attendee;
+            setRoster(roster);
+
+            setTimeout(() => {
+                if (config.DEBUG) console.log(roster[index]);
+                const videoElement = document.getElementById(`video_${tileState.boundAttendeeId}`);
+                if (videoElement) {
+                    audioVideoManager.audioVideo.bindVideoElement(
+                        tileState.tileId,
+                        videoElement as any,
+                    );
+                }
+            }, 1000);
+        },
+        [roster, findRosterSlot],
+    );
+
+    const videoTileWasRemovedCallback = React.useCallback(
+        (tileId: any) => {
+            // Find the removed tileId in the roster and mark the video as disabled.
+            // eslint-disable-next-line
+            roster.find((o, i) => {
+                if (o.tileId === tileId) {
+                    roster[i].videoEnabled = false;
+                    setRoster(roster);
+                    if (config.DEBUG) {
+                        console.log(`Tile was removed ${tileId}`);
+                    }
+                }
+            });
+        },
+        [roster],
+    );
+
     React.useEffect(() => {
-        onRosterUpdate(roomManager.roster);
+        const tempRoster: any[] = [];
+        // eslint-disable-next-line
+        Array.from(Array(config.CHIME_ROOM_MAX_ATTENDEE).keys()).map((_, index) => {
+            tempRoster[index] = {
+                videoElement: React.createRef(),
+            };
+        });
+
+        setRoster(tempRoster);
     }, []);
 
     React.useEffect(() => {
-        roomManager.subscribeToRosterUpdate(onRosterUpdate);
-        return () => roomManager.unsubscribeFromRosterUpdate(onRosterUpdate);
-    }, [roomManager, onRosterUpdate]);
+        roomManager.subscribeToRosterUpdate(rosterCallback);
+
+        return () => roomManager.unsubscribeFromRosterUpdate(rosterCallback);
+    }, [rosterCallback]);
+
+    React.useEffect(() => {
+        const observer = {
+            videoTileDidUpdate: videoTileDidUpdateCallback,
+            videoTileWasRemoved: videoTileWasRemovedCallback,
+        };
+
+        if (audioVideoManager.audioVideo) {
+            audioVideoManager.audioVideo.addObserver(observer);
+        }
+
+        return () => audioVideoManager.tryRemoveObserver(observer);
+    }, [audioVideoManager.audioVideo, videoTileDidUpdateCallback, videoTileWasRemovedCallback]);
 
     const isSelfHost = role === "host";
 
@@ -265,31 +423,34 @@ export const CamSection = ({ joinInfo }: Props) => {
         <LocalVideo key="LocalVideo" joinInfo={joinInfo} pin={setPinnedHostIdentifier} />
     );
 
-    const participantVideos = React.useMemo(() => {
-        const participantVideoMap = new Map<string, JSX.Element>();
+    const participantVideos = new Map<string, JSX.Element>();
 
-        attendeeMap.forEach((attendee) => {
-            participantVideoMap.set(
-                attendee.attendeeId,
-                <ParticipantVideo
-                    isSelfHost={isSelfHost}
-                    onMicClick={onMicClicked}
-                    tileIndex={attendee.tileId}
-                    key={attendee.attendeeId}
-                    forceMuted={attendee.forceMuted}
-                    forceVideoDisabled={attendee.forceVideoDisabled}
-                    attendeeId={attendee.attendeeId}
-                    videoEnabled={attendee.videoEnabled}
-                    name={attendee.name}
-                    muted={attendee.muted}
-                    volume={attendee.volume}
-                    pin={setPinnedHostIdentifier}
-                />,
-            );
-        });
+    roster.forEach((attendee) => {
+        if (attendee.attendeeId === undefined) {
+            return;
+        }
 
-        return participantVideoMap;
-    }, [attendeeMap, setPinnedHostIdentifier, isSelfHost, onMicClicked]);
+        participantVideos.set(
+            attendee.attendeeId,
+            <ParticipantVideo
+                isSelfHost={isSelfHost}
+                onMicClick={onMicClicked}
+                tileIndex={attendee.tileId}
+                key={attendee.attendeeId}
+                forceMuted={attendee.forceMuted}
+                forceVideoDisabled={attendee.forceVideoDisabled}
+                attendeeId={attendee.attendeeId}
+                videoEnabled={attendee.videoEnabled}
+                name={attendee.name}
+                muted={attendee.muted}
+                volume={attendee.volume}
+                pin={setPinnedHostIdentifier}
+            />,
+        );
+    });
+
+    console.log(roster);
+    console.log(participantVideos.entries.length);
 
     const highlightVideo = (
         <div className={styles.HighlightVideoWrapper}>
