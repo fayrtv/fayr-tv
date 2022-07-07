@@ -35,13 +35,15 @@ export function useAttendeeInfo(): AttendeeInfoData {
     const dispatch = useDispatch();
 
     const add: AddAction = React.useCallback((data) => dispatch(addAttendee(data)), [dispatch]);
-    const update: UpdateAction = React.useCallback((data) => dispatch(updateAttendee(data)), [
-        dispatch,
-    ]);
+    const update: UpdateAction = React.useCallback(
+        (data) => dispatch(updateAttendee(data)),
+        [dispatch],
+    );
     const put: PutAction = React.useCallback((data) => dispatch(putAttendee(data)), [dispatch]);
-    const remove: RemoveAction = React.useCallback((data) => dispatch(removeAttendee(data)), [
-        dispatch,
-    ]);
+    const remove: RemoveAction = React.useCallback(
+        (data) => dispatch(removeAttendee(data)),
+        [dispatch],
+    );
     const removeById = React.useCallback(
         (id: string) =>
             remove({
