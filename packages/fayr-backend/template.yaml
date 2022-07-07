@@ -179,7 +179,7 @@ Resources:
       CodeUri: compiled/
       Policies:
         - DynamoDBCrudPolicy:
-          TableName: !Ref RatingsTable
+            TableName: !Ref RatingsTable
       Events:
         Api1:
           Type: Api

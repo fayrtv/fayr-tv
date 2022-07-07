@@ -14,7 +14,7 @@ param (
 
 $ErrorActionPreference = "Stop";
 
-Write-Output "Don't forget to run `aws configure` with the 'us-east-1' region first."
+Write-Output "Don't forget to run 'aws configure' with the 'us-east-1' region first."
 
 Write-Output "Creating S3 bucket..."
 aws s3api create-bucket --bucket $bucket --region $region --create-bucket-configuration LocationConstraint=$region
