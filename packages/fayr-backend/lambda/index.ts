@@ -701,7 +701,7 @@ export const addRating: Handler<APIGatewayProxyEvent> = async (event, context, c
 
     await ddb
         .putItem({
-            TableName: ATTENDEES_TABLE_NAME,
+            TableName: RATINGS_TABLE_NAME,
             Item: {
                 ID: {
                     S: uuid()
