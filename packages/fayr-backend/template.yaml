@@ -83,19 +83,19 @@ Resources:
         ReadCapacityUnits: "5"
         WriteCapacityUnits: "5"
   RatingsTable:
-      Type: 'AWS::DynamoDB::Table'
-      Properties:
-          AttributeDefinitions:
-              - AttributeName: "ID"
-                AttributeType: "S"
-              - AttributeName: "Rating"
-                AttributeType: "N"
-          KeySchema:
-              - AttributeName: "ID"
-                KeyType: "HASH"
-          ProvisionedThroughput:
-              ReadCapacityUnits: "5"
-              WriteCapacityUnits: "5"
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: "ID"
+          AttributeType: "S"
+        - AttributeName: "Rating"
+          AttributeType: "N"
+      KeySchema:
+        - AttributeName: "ID"
+          KeyType: "HASH"
+      ProvisionedThroughput:
+        ReadCapacityUnits: "5"
+        WriteCapacityUnits: "5"
   ChimeSdkCreateMeetingLambda:
     Type: 'AWS::Serverless::Function'
     Properties:
