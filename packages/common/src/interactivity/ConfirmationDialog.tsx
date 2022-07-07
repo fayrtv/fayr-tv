@@ -7,6 +7,7 @@ const ConfirmationDialogWrapper = styled(Flex)`
     background: #282828;
     border-radius: 5px;
     padding: 0.5em;
+    color: #ffffff;
 `;
 
 const MarginSpan = styled.span`
