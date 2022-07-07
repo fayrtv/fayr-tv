@@ -51,6 +51,8 @@ Resources:
       - Ref: ChimeSdkCreateMeetingLambdaRole
       - Ref: AuthorizeFunctionRole
       - Ref: AddRatingLambdaRole
+    Metadata:
+      SamResourceId: ChimeMeetingsAccessPolicy
   Meetings:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -78,6 +80,8 @@ Resources:
       TimeToLiveSpecification:
         AttributeName: TTL
         Enabled: true
+    Metadata:
+      SamResourceId: Meetings
   Attendees:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -90,6 +94,8 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: '5'
         WriteCapacityUnits: '5'
+    Metadata:
+      SamResourceId: Attendees
   RatingsTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -102,11 +108,13 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: '5'
         WriteCapacityUnits: '5'
+    Metadata:
+      SamResourceId: RatingsTable
   ChimeSdkCreateMeetingLambda:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.createMeeting
-      CodeUri: s3://vfb-testspiel-2/d0b0c1deaa97b83d46ba1adc6db7c93e
+      CodeUri: s3://fayr-s3-v008/732274da2478a51b5d317918a106f1ed
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
@@ -117,11 +125,13 @@ Resources:
           Properties:
             Path: /meeting
             Method: POST
+    Metadata:
+      SamResourceId: ChimeSdkCreateMeetingLambda
   ChimeSdkJoinLambda:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.join
-      CodeUri: s3://vfb-testspiel-2/d0b0c1deaa97b83d46ba1adc6db7c93e
+      CodeUri: s3://fayr-s3-v008/732274da2478a51b5d317918a106f1ed
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
@@ -135,11 +145,13 @@ Resources:
           Properties:
             Path: /join
             Method: POST
+    Metadata:
+      SamResourceId: ChimeSdkJoinLambda
   ChimeSdkEndLambda:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.end
-      CodeUri: s3://vfb-testspiel-2/d0b0c1deaa97b83d46ba1adc6db7c93e
+      CodeUri: s3://fayr-s3-v008/732274da2478a51b5d317918a106f1ed
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
@@ -150,11 +162,13 @@ Resources:
           Properties:
             Path: /end
             Method: POST
+    Metadata:
+      SamResourceId: ChimeSdkEndLambda
   ChimeSdkAttendeeLambda:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.attendee
-      CodeUri: s3://vfb-testspiel-2/d0b0c1deaa97b83d46ba1adc6db7c93e
+      CodeUri: s3://fayr-s3-v008/732274da2478a51b5d317918a106f1ed
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
@@ -168,11 +182,13 @@ Resources:
           Properties:
             Path: /attendee
             Method: GET
+    Metadata:
+      SamResourceId: ChimeSdkAttendeeLambda
   ChimeSdkAttendeesLambda:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.attendees
-      CodeUri: s3://vfb-testspiel-2/d0b0c1deaa97b83d46ba1adc6db7c93e
+      CodeUri: s3://fayr-s3-v008/732274da2478a51b5d317918a106f1ed
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
@@ -186,11 +202,13 @@ Resources:
           Properties:
             Path: /attendees
             Method: GET
+    Metadata:
+      SamResourceId: ChimeSdkAttendeesLambda
   AddRatingLambda:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.addRating
-      CodeUri: s3://vfb-testspiel-2/d0b0c1deaa97b83d46ba1adc6db7c93e
+      CodeUri: s3://fayr-s3-v008/732274da2478a51b5d317918a106f1ed
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
@@ -201,6 +219,8 @@ Resources:
           Properties:
             Path: /addRating
             Method: POST
+    Metadata:
+      SamResourceId: AddRatingLambda
   WebSocketApi:
     Type: AWS::ApiGatewayV2::Api
     Properties:
@@ -208,6 +228,8 @@ Resources:
         Fn::Sub: ${AWS::StackName}-websocket
       ProtocolType: WEBSOCKET
       RouteSelectionExpression: $request.body.message
+    Metadata:
+      SamResourceId: WebSocketApi
   ConnectRoute:
     Type: AWS::ApiGatewayV2::Route
     Properties:
@@ -223,6 +245,8 @@ Resources:
         - /
         - - integrations
           - Ref: ConnectIntegration
+    Metadata:
+      SamResourceId: ConnectRoute
   ConnectIntegration:
     Type: AWS::ApiGatewayV2::Integration
     Properties:
@@ -232,6 +256,8 @@ Resources:
       IntegrationType: AWS_PROXY
       IntegrationUri:
         Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OnConnectFunction.Arn}/invocations
+    Metadata:
+      SamResourceId: ConnectIntegration
   DisconnectRoute:
     Type: AWS::ApiGatewayV2::Route
     Properties:
@@ -245,6 +271,8 @@ Resources:
         - /
         - - integrations
           - Ref: DisconnectIntegration
+    Metadata:
+      SamResourceId: DisconnectRoute
   DisconnectIntegration:
     Type: AWS::ApiGatewayV2::Integration
     Properties:
@@ -254,6 +282,8 @@ Resources:
       IntegrationType: AWS_PROXY
       IntegrationUri:
         Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OnDisconnectFunction.Arn}/invocations
+    Metadata:
+      SamResourceId: DisconnectIntegration
   SendRoute:
     Type: AWS::ApiGatewayV2::Route
     Properties:
@@ -267,6 +297,8 @@ Resources:
         - /
         - - integrations
           - Ref: SendIntegration
+    Metadata:
+      SamResourceId: SendRoute
   SendIntegration:
     Type: AWS::ApiGatewayV2::Integration
     Properties:
@@ -276,6 +308,8 @@ Resources:
       IntegrationType: AWS_PROXY
       IntegrationUri:
         Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${SendMessageFunction.Arn}/invocations
+    Metadata:
+      SamResourceId: SendIntegration
   Deployment:
     Type: AWS::ApiGatewayV2::Deployment
     DependsOn:
@@ -285,6 +319,8 @@ Resources:
     Properties:
       ApiId:
         Ref: WebSocketApi
+    Metadata:
+      SamResourceId: Deployment
   Stage:
     Type: AWS::ApiGatewayV2::Stage
     Properties:
@@ -294,6 +330,8 @@ Resources:
         Ref: Deployment
       ApiId:
         Ref: WebSocketApi
+    Metadata:
+      SamResourceId: Stage
   ConnectionsTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -313,15 +351,19 @@ Resources:
       TimeToLiveSpecification:
         AttributeName: TTL
         Enabled: true
+    Metadata:
+      SamResourceId: ConnectionsTable
   OnConnectFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://vfb-testspiel-2/d0b0c1deaa97b83d46ba1adc6db7c93e
+      CodeUri: s3://fayr-s3-v008/732274da2478a51b5d317918a106f1ed
       Handler: index.onconnect
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
             Ref: ConnectionsTable
+    Metadata:
+      SamResourceId: OnConnectFunction
   OnConnectPermission:
     Type: AWS::Lambda::Permission
     DependsOn:
@@ -332,15 +374,19 @@ Resources:
       FunctionName:
         Ref: OnConnectFunction
       Principal: apigateway.amazonaws.com
+    Metadata:
+      SamResourceId: OnConnectPermission
   AuthorizeFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://vfb-testspiel-2/d0b0c1deaa97b83d46ba1adc6db7c93e
+      CodeUri: s3://fayr-s3-v008/732274da2478a51b5d317918a106f1ed
       Handler: index.authorize
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
             Ref: ConnectionsTable
+    Metadata:
+      SamResourceId: AuthorizeFunction
   AuthorizePermission:
     Type: AWS::Lambda::Permission
     DependsOn:
@@ -351,6 +397,8 @@ Resources:
       FunctionName:
         Ref: AuthorizeFunction
       Principal: apigateway.amazonaws.com
+    Metadata:
+      SamResourceId: AuthorizePermission
   Authorizer:
     Type: AWS::ApiGatewayV2::Authorizer
     Properties:
@@ -364,15 +412,19 @@ Resources:
       - route.request.querystring.MeetingId
       - route.request.querystring.AttendeeId
       - route.request.querystring.JoinToken
+    Metadata:
+      SamResourceId: Authorizer
   OnDisconnectFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://vfb-testspiel-2/d0b0c1deaa97b83d46ba1adc6db7c93e
+      CodeUri: s3://fayr-s3-v008/732274da2478a51b5d317918a106f1ed
       Handler: index.ondisconnect
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
             Ref: ConnectionsTable
+    Metadata:
+      SamResourceId: OnDisconnectFunction
   OnDisconnectPermission:
     Type: AWS::Lambda::Permission
     DependsOn:
@@ -383,10 +435,12 @@ Resources:
       FunctionName:
         Ref: OnDisconnectFunction
       Principal: apigateway.amazonaws.com
+    Metadata:
+      SamResourceId: OnDisconnectPermission
   SendMessageFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://vfb-testspiel-2/d0b0c1deaa97b83d46ba1adc6db7c93e
+      CodeUri: s3://fayr-s3-v008/732274da2478a51b5d317918a106f1ed
       Handler: index.sendmessage
       Policies:
       - DynamoDBCrudPolicy:
@@ -398,6 +452,8 @@ Resources:
           - execute-api:ManageConnections
           Resource:
           - Fn::Sub: arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${WebSocketApi}/*
+    Metadata:
+      SamResourceId: SendMessageFunction
   SendMessagePermission:
     Type: AWS::Lambda::Permission
     DependsOn:
@@ -408,6 +464,8 @@ Resources:
       FunctionName:
         Ref: SendMessageFunction
       Principal: apigateway.amazonaws.com
+    Metadata:
+      SamResourceId: SendMessagePermission
 Outputs:
   ApiURL:
     Description: API endpoint URL for Prod environment
