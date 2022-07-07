@@ -50,6 +50,7 @@ Resources:
       - Ref: ChimeSdkEndLambdaRole
       - Ref: ChimeSdkCreateMeetingLambdaRole
       - Ref: AuthorizeFunctionRole
+      - Ref: AddRatingLambdaRole
   Meetings:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -194,6 +195,9 @@ Resources:
       - DynamoDBCrudPolicy:
           TableName:
             Ref: RatingsTable
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: Attendees
       Events:
         Api1:
           Type: Api
