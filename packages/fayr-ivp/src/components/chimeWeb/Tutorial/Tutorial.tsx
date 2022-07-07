@@ -66,8 +66,7 @@ export default function Tutorial({ show, setShow }: Props) {
                 index={1}
                 infoText={
                     <span>
-                        Öffne einen Raum für deine Mannschaft. (Du kannst max. 10 weitere Personen
-                        einladen.)
+                        Öffne einen Raum für deine Mannschaft.
                     </span>
                 }
             />
