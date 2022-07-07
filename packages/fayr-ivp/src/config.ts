@@ -7,7 +7,7 @@ export const API_BASE_URL = "https://h9iohvkr9b.execute-api.us-east-1.amazonaws.
 
 // API endpoint for retrieving the attendees list, joining the room, and ending the room.
 // Value without trailing slash.
-export const CHIME_ROOM_API = "https://enb885lh75.execute-api.eu-central-1.amazonaws.com/Prod";
+export const CHIME_ROOM_API = "https://1jwd1062pa.execute-api.us-east-1.amazonaws.com/Prod/";
 // For local AWS SAM container:
 //export const CHIME_ROOM_API = "http://127.0.0.1:5859";
 
@@ -28,13 +28,13 @@ export const DEFAULT_VIDEO_STREAM = sample([
     // Tagesschau 24
     // "https://tagesschau.akamaized.net/hls/live/2020117/tagesschau/tagesschau_3/master_720.m3u8",
     // Amazon IVS
-    "https://5f1b94db7198.eu-central-1.playback.live-video.net/api/video/v1/eu-central-1.676057042583.channel.hWxKBDpLJc9h.m3u8"
+    "https://5f1b94db7198.eu-central-1.playback.live-video.net/api/video/v1/eu-central-1.676057042583.channel.hWxKBDpLJc9h.m3u8",
     // AWS Elemental MediaLive
     // "https://528dc4ef17d725ed.mediapackage.eu-central-1.amazonaws.com/out/v1/2ff189e75e344a229c386c0af778e623/index.m3u8",
 ]) as string;
 
 // Default Chat websocket link
-export const CHAT_WEBSOCKET = "wss://glql810lxg.execute-api.eu-central-1.amazonaws.com/Prod";
+export const CHAT_WEBSOCKET = "wss://2v95p9rkwi.execute-api.us-east-1.amazonaws.com/Prod";
 
 // Chime-SDK logging level: INFO, WARN, ERROR, DEBUG
 export const CHIME_LOG_LEVEL = "DEBUG";
