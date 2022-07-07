@@ -94,10 +94,10 @@ Resources:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
-      - AttributeName: ID
+      - AttributeName: ItemID
         AttributeType: S
       KeySchema:
-      - AttributeName: ID
+      - AttributeName: ItemID
         KeyType: HASH
       ProvisionedThroughput:
         ReadCapacityUnits: '5'
@@ -106,7 +106,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.createMeeting
-      CodeUri: s3://joscha-testing/35e70012d007969e0d3cf5df65ddd69e
+      CodeUri: s3://vfb-testspiel/c0d95bb9f70dc418b88425ce568a1049
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
@@ -121,7 +121,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.join
-      CodeUri: s3://joscha-testing/35e70012d007969e0d3cf5df65ddd69e
+      CodeUri: s3://vfb-testspiel/c0d95bb9f70dc418b88425ce568a1049
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
@@ -139,7 +139,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.end
-      CodeUri: s3://joscha-testing/35e70012d007969e0d3cf5df65ddd69e
+      CodeUri: s3://vfb-testspiel/c0d95bb9f70dc418b88425ce568a1049
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
@@ -154,7 +154,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.attendee
-      CodeUri: s3://joscha-testing/35e70012d007969e0d3cf5df65ddd69e
+      CodeUri: s3://vfb-testspiel/c0d95bb9f70dc418b88425ce568a1049
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
@@ -172,7 +172,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.attendees
-      CodeUri: s3://joscha-testing/35e70012d007969e0d3cf5df65ddd69e
+      CodeUri: s3://vfb-testspiel/c0d95bb9f70dc418b88425ce568a1049
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
@@ -190,14 +190,11 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.addRating
-      CodeUri: s3://joscha-testing/35e70012d007969e0d3cf5df65ddd69e
+      CodeUri: s3://vfb-testspiel/c0d95bb9f70dc418b88425ce568a1049
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
             Ref: RatingsTable
-      - DynamoDBCrudPolicy:
-          TableName:
-            Ref: Attendees
       Events:
         Api1:
           Type: Api
@@ -319,7 +316,7 @@ Resources:
   OnConnectFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://joscha-testing/35e70012d007969e0d3cf5df65ddd69e
+      CodeUri: s3://vfb-testspiel/c0d95bb9f70dc418b88425ce568a1049
       Handler: index.onconnect
       Policies:
       - DynamoDBCrudPolicy:
@@ -338,7 +335,7 @@ Resources:
   AuthorizeFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://joscha-testing/35e70012d007969e0d3cf5df65ddd69e
+      CodeUri: s3://vfb-testspiel/c0d95bb9f70dc418b88425ce568a1049
       Handler: index.authorize
       Policies:
       - DynamoDBCrudPolicy:
@@ -370,7 +367,7 @@ Resources:
   OnDisconnectFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://joscha-testing/35e70012d007969e0d3cf5df65ddd69e
+      CodeUri: s3://vfb-testspiel/c0d95bb9f70dc418b88425ce568a1049
       Handler: index.ondisconnect
       Policies:
       - DynamoDBCrudPolicy:
@@ -389,7 +386,7 @@ Resources:
   SendMessageFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://joscha-testing/35e70012d007969e0d3cf5df65ddd69e
+      CodeUri: s3://vfb-testspiel/c0d95bb9f70dc418b88425ce568a1049
       Handler: index.sendmessage
       Policies:
       - DynamoDBCrudPolicy:

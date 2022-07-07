@@ -703,7 +703,7 @@ export const addRating: Handler<APIGatewayProxyEvent> = async (event, context, c
         .putItem({
             TableName: RATINGS_TABLE_NAME,
             Item: {
-                ID: {
+                ItemID: {
                     S: uuid()
                 },
                 Rating: {

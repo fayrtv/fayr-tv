@@ -87,10 +87,10 @@ Resources:
     Type: 'AWS::DynamoDB::Table'
     Properties:
       AttributeDefinitions:
-        - AttributeName: "ID"
+        - AttributeName: "ItemID"
           AttributeType: "S"
       KeySchema:
-        - AttributeName: "ID"
+        - AttributeName: "ItemID"
           KeyType: "HASH"
       ProvisionedThroughput:
         ReadCapacityUnits: "5"
@@ -179,8 +179,6 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref RatingsTable
-        - DynamoDBCrudPolicy:
-            TableName: !Ref Attendees
       Events:
         Api1:
           Type: Api
