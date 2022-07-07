@@ -8,6 +8,7 @@ import * as Sentry from "@sentry/browser";
 import { BrowserTracing } from "@sentry/tracing";
 
 Sentry.init({
+    environment: process.env.NODE_ENV ?? "development",
     dsn: "https://293ed1830d174d679336eec179b10774@o1309673.ingest.sentry.io/6556053",
     integrations: [new BrowserTracing()],
 
