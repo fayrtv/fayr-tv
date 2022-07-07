@@ -88,8 +88,6 @@ Resources:
       AttributeDefinitions:
         - AttributeName: "ID"
           AttributeType: "S"
-        - AttributeName: "Rating"
-          AttributeType: "N"
       KeySchema:
         - AttributeName: "ID"
           KeyType: "HASH"
