@@ -7,6 +7,7 @@ import { makeid } from "util/guidHelper";
 import useGlobalKeyHandler from "hooks/useGlobalKeyHandler";
 import useManyClickHandlers from "hooks/useManyClickHandlers";
 
+import Controls from "components/chimeWeb/Controls/Controls";
 import { EMOJI_SIZE } from "components/chimeWeb/Controls/emoji-reactions/EmojiReactionButton";
 import Emoji from "components/common/Emoji";
 import { SelectedReactionContext } from "components/contexts/SelectedReactionContext";
@@ -28,6 +29,7 @@ type Props = {
     role: RoomMemberRole;
     ssName: string;
     baseHref: string;
+    openSettings(): void;
 };
 
 const VideoPlayer = ({
@@ -38,6 +40,7 @@ const VideoPlayer = ({
     role,
     ssName,
     baseHref,
+    openSettings,
 }: Props) => {
     const videoElement = React.useRef<HTMLDivElement>(null);
     const [player, setPlayer] = React.useState<MediaPlayer>();
@@ -118,20 +121,20 @@ const VideoPlayer = ({
         );
 
         // Attach event listeners
-        initializedPlayer.addEventListener(PlayerState.PLAYING, function() {
+        initializedPlayer.addEventListener(PlayerState.PLAYING, function () {
             if (config.DEBUG) console.log("Player State - PLAYING");
         });
-        initializedPlayer.addEventListener(PlayerState.ENDED, function() {
+        initializedPlayer.addEventListener(PlayerState.ENDED, function () {
             if (config.DEBUG) console.log("Player State - ENDED");
         });
-        initializedPlayer.addEventListener(PlayerState.READY, function() {
+        initializedPlayer.addEventListener(PlayerState.READY, function () {
             if (config.DEBUG) console.log("Player State - READY");
         });
-        initializedPlayer.addEventListener(PlayerEventType.ERROR, function(err: any) {
+        initializedPlayer.addEventListener(PlayerEventType.ERROR, function (err: any) {
             if (config.DEBUG) console.warn("Player Event - ERROR:", err);
         });
 
-        initializedPlayer.addEventListener(PlayerEventType.TEXT_METADATA_CUE, function(cue: any) {
+        initializedPlayer.addEventListener(PlayerEventType.TEXT_METADATA_CUE, function (cue: any) {
             const metadataText = cue.text;
             const position = initializedPlayer.getPosition().toFixed(2);
             if (config.DEBUG)
@@ -154,13 +157,13 @@ const VideoPlayer = ({
         // Show/Hide player controls
         playerOverlay.addEventListener(
             "mouseover",
-            function() {
+            function () {
                 playerOverlay.classList.add("overlay--hover");
             },
             false,
         );
 
-        playerOverlay.addEventListener("mouseout", function() {
+        playerOverlay.addEventListener("mouseout", function () {
             playerOverlay.classList.remove("overlay--hover");
         });
 
@@ -249,6 +252,14 @@ const VideoPlayer = ({
             />
             {reactionElements}
             {fullScreen && <div className={styles.FullScreenCams}>{fullScreenCamSection}</div>}
+            {fullScreen && (
+                <Controls
+                    attendeeId={attendeeId!}
+                    title={title}
+                    openSettings={openSettings}
+                    fullScreen={true}
+                />
+            )}
         </div>
     );
 };

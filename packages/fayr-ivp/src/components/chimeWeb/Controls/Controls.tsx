@@ -20,9 +20,10 @@ type Props = {
     title: string;
     attendeeId: string;
     openSettings(): void;
+    fullScreen?: boolean;
 };
 
-const Controls: React.FC<Props> = ({ title, attendeeId, openSettings }) => {
+const Controls: React.FC<Props> = ({ title, attendeeId, openSettings, fullScreen = false }) => {
     const { isOpen: isChatOpen, set: setChatOpen } = React.useContext(ChatOpenContext);
 
     const isMobile = useMediaQuery({ maxWidth: 1024 });
@@ -73,12 +74,16 @@ const Controls: React.FC<Props> = ({ title, attendeeId, openSettings }) => {
         <MicrophoneToggleButton key="MicrophoneToggleButton" />,
         <CamToggleButton key="CamToggleButton" />,
         // {/* Setting button */}
-        <SettingsButton openSettings={openSettings} key="SettingsButton" />,
-        <SharePartyButton title={title} key="SharePartyButton" />,
-        chatButton,
+        !fullScreen ? (
+            <SettingsButton openSettings={openSettings} key="SettingsButton" />
+        ) : (
+            React.Fragment
+        ),
+        !fullScreen ? <SharePartyButton title={title} key="SharePartyButton" /> : React.Fragment,
+        !fullScreen ? chatButton : React.Fragment,
         config.ShowReactionButton ? <ReactionButton key="ReactionButton" /> : React.Fragment,
         // Voting Button
-        <VotingButton attendeeId={attendeeId} key="VotingButton" />,
+        !fullScreen ? <VotingButton attendeeId={attendeeId} key="VotingButton" /> : React.Fragment,
     ];
 
     return (
