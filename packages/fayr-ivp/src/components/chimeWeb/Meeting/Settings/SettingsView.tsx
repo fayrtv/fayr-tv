@@ -53,7 +53,9 @@ export const SettingsView = React.forwardRef<HTMLDivElement, Props>(
             meetingInputOutputDevices?.cam == null ? VideoStatus.Disabled : VideoStatus.Enabled,
         );
 
-        const [shouldUseBackgroundBlur, setShouldUseBackgroundBlur] = React.useState(false);
+        const [shouldUseBackgroundBlur, setShouldUseBackgroundBlur] = React.useState(
+            audioVideoManager.getBlurState(),
+        );
         const [shouldUseNoiseCancellation, setShouldUseNoiseCancellation] = React.useState(false);
 
         const [volume, setVolume] = React.useState<number>(0);

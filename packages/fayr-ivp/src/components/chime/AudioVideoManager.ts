@@ -41,6 +41,8 @@ export type DeviceUpdateCallback = (deviceInfo: DeviceUpdatePayload) => void;
 @injectable()
 export class AudioVideoManager implements IAudioVideoManager, DeviceChangeObserver {
     private _audioVideo!: AudioVideoFacade;
+    private _blurState: boolean = false;
+
     public set audioVideo(device: AudioVideoFacade) {
         this._audioVideo = device;
     }
@@ -198,6 +200,8 @@ export class AudioVideoManager implements IAudioVideoManager, DeviceChangeObserv
             }
 
             let actualDevice: string | DefaultVideoTransformDevice = device.value;
+            this._blurState = blurBackground;
+
             if (blurBackground) {
                 // Background Blur
                 const processors: Array<BackgroundBlurProcessor> = [];
@@ -236,8 +240,15 @@ export class AudioVideoManager implements IAudioVideoManager, DeviceChangeObserv
         }
     };
 
-    public changeBlurState = (blurBackground: boolean) =>
-        this.setVideoInputDeviceSafe(this._currentVideoInputDevice, blurBackground);
+    public changeBlurState = (blurBackground: boolean) => {
+        const result = this.setVideoInputDeviceSafe(this._currentVideoInputDevice, blurBackground);
+        this._blurState = blurBackground;
+        return result;
+    };
+
+    public getBlurState(): boolean {
+        return this._blurState;
+    }
 
     public listAudioInputDevices = async (): Promise<MediaDeviceInfo[]> => {
         const inputDevices = await this.listAudioInputDevicesInternal();

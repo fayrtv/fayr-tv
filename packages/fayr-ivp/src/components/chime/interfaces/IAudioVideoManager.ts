@@ -20,6 +20,7 @@ export default interface IAudioVideoManager {
     setAudioOutputDeviceSafe(device: Nullable<DeviceInfo>): Promise<void>;
     setVideoInputDeviceSafe(device: Nullable<DeviceInfo>, blurBackground?: boolean): Promise<void>;
     changeBlurState(blurBackground: boolean): Promise<void>;
+    getBlurState(): boolean;
 
     initializeMeetingSession(): Promise<void>;
     subscribeToDevicesUpdated(callback: DeviceUpdateCallback): void;
