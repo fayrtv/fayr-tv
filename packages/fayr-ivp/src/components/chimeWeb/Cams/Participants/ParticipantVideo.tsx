@@ -223,7 +223,7 @@ const ParticipantVideo = ({
                 direction="Row"
                 space="Between"
             >
-                <span className="participantMeta_name">{name}</span>
+                <span className={styles.ParticipantName}>{name}</span>
                 <Flex mainAlign="Center" direction="Row" className={styles.ParticipantControls}>
                     {renderDeviceToggle(
                         forceMuted ? tl.ParticipantVideo_ForceMuted : "",
