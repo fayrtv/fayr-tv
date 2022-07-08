@@ -449,9 +449,6 @@ export const CamSection = ({ joinInfo }: Props) => {
         );
     });
 
-    console.log(roster);
-    console.log(participantVideos.entries.length);
-
     const highlightVideo = (
         <div className={styles.HighlightVideoWrapper}>
             {!pinnedHostIdentifier ? localVideo : participantVideos.get(pinnedHostIdentifier!)}
