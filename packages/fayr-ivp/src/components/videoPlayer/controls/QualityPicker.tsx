@@ -80,7 +80,9 @@ export default function QualityPicker({
         player.addEventListener(PlayerState.READY, onReady);
     }, [currentQuality, player]);
 
-    return (
+    return currentQuality === "unknown" ? (
+        <></>
+    ) : (
         <button
             id="settings"
             className={classNames(
