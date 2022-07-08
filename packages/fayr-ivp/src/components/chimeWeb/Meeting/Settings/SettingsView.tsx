@@ -56,7 +56,9 @@ export const SettingsView = React.forwardRef<HTMLDivElement, Props>(
         const [shouldUseBackgroundBlur, setShouldUseBackgroundBlur] = React.useState(
             audioVideoManager.getBlurState(),
         );
-        const [shouldUseNoiseCancellation, setShouldUseNoiseCancellation] = React.useState(false);
+        const [shouldUseNoiseCancellation, setShouldUseNoiseCancellation] = React.useState(
+            audioVideoManager.getNoiseSuppressionState(),
+        );
 
         const [volume, setVolume] = React.useState<number>(0);
 

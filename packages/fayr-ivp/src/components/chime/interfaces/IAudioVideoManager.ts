@@ -17,6 +17,7 @@ export default interface IAudioVideoManager {
         device: Nullable<DeviceInfo>,
         addNoiseSuppression?: boolean,
     ): Promise<void>;
+    getNoiseSuppressionState(): boolean;
     setAudioOutputDeviceSafe(device: Nullable<DeviceInfo>): Promise<void>;
     setVideoInputDeviceSafe(device: Nullable<DeviceInfo>, blurBackground?: boolean): Promise<void>;
     changeBlurState(blurBackground: boolean): Promise<void>;

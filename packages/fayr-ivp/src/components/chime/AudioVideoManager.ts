@@ -42,6 +42,7 @@ export type DeviceUpdateCallback = (deviceInfo: DeviceUpdatePayload) => void;
 export class AudioVideoManager implements IAudioVideoManager, DeviceChangeObserver {
     private _audioVideo!: AudioVideoFacade;
     private _blurState: boolean = false;
+    private _noiseSuppressionState: boolean = false;
 
     public set audioVideo(device: AudioVideoFacade) {
         this._audioVideo = device;
@@ -160,6 +161,8 @@ export class AudioVideoManager implements IAudioVideoManager, DeviceChangeObserv
         try {
             let actualDevice: Nullable<string> | VoiceFocusTransformDevice = device?.value ?? null;
 
+            this._noiseSuppressionState = addNoiseSuppression;
+
             if (addNoiseSuppression && (await VoiceFocusDeviceTransformer.isSupported())) {
                 const transformer = await VoiceFocusDeviceTransformer.create();
 
@@ -180,6 +183,10 @@ export class AudioVideoManager implements IAudioVideoManager, DeviceChangeObserv
             this._logger.error(error as string);
         }
     };
+
+    public getNoiseSuppressionState(): boolean {
+        return this._noiseSuppressionState;
+    }
 
     public setAudioOutputDeviceSafe = async (device: Nullable<DeviceInfo>) => {
         this.currentAudioOutputDevice = await this.setDeviceSafe(
