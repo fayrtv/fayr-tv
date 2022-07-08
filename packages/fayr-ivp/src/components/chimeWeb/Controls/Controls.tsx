@@ -15,13 +15,16 @@ import SharePartyButton from "./Buttons/SharePartyButton";
 import VotingButton from "./Buttons/VotingButton";
 import ReactionButton from "./emoji-reactions/ReactionButton";
 
+import * as config from "../../../config";
+
 type Props = {
     title: string;
     attendeeId: string;
     openSettings(): void;
+    fullScreen?: boolean;
 };
 
-const Controls: React.FC<Props> = ({ title, attendeeId, openSettings }) => {
+const Controls: React.FC<Props> = ({ title, attendeeId, openSettings, fullScreen = false }) => {
     const { isOpen: isChatOpen, set: setChatOpen } = React.useContext(ChatOpenContext);
 
     const isMobile = useMediaQuery({ maxWidth: 1024 });
@@ -72,12 +75,16 @@ const Controls: React.FC<Props> = ({ title, attendeeId, openSettings }) => {
         <MicrophoneToggleButton key="MicrophoneToggleButton" />,
         <CamToggleButton key="CamToggleButton" />,
         // {/* Setting button */}
-        <SettingsButton openSettings={openSettings} key="SettingsButton" />,
-        <SharePartyButton title={title} key="SharePartyButton" />,
-        chatButton,
-        <ReactionButton key="ReactionButton" />,
+        !fullScreen ? (
+            <SettingsButton openSettings={openSettings} key="SettingsButton" />
+        ) : (
+            React.Fragment
+        ),
+        !fullScreen ? <SharePartyButton title={title} key="SharePartyButton" /> : React.Fragment,
+        !fullScreen ? chatButton : React.Fragment,
+        !fullScreen ? <ReactionButton key="ReactionButton" /> : React.Fragment,
         // Voting Button
-        <VotingButton attendeeId={attendeeId} key="VotingButton" />,
+        !fullScreen ? <VotingButton attendeeId={attendeeId} key="VotingButton" /> : React.Fragment,
     ];
 
     return (

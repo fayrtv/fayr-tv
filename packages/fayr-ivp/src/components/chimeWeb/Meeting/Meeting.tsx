@@ -98,6 +98,7 @@ const Meeting = ({
                             baseHref={config.BASE_HREF}
                             ssName={formatMeetingSsKey(roomTitle)}
                             role={role}
+                            openSettings={() => setShowSettings(true)}
                             title={title}
                         />
 
