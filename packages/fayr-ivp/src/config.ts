@@ -36,7 +36,10 @@ export const DEFAULT_VIDEO_STREAM = sample([
 ]) as string;
 
 // Default Chat websocket link
-export const CHAT_WEBSOCKET = "wss://glql810lxg.execute-api.eu-central-1.amazonaws.com/Prod";
+export const CHAT_WEBSOCKET = "wss://glql810lxg.execute-api.eu-central-1.amazonaws.com/Prod"
+    .trim()
+    .replace(/\/$/, "");
+
 
 // Chime-SDK logging level: INFO, WARN, ERROR, DEBUG
 export const CHIME_LOG_LEVEL = "DEBUG";
