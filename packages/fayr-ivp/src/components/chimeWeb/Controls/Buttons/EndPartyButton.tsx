@@ -69,7 +69,7 @@ export const EndPartyButton = ({ ssName, role, baseHref, title }: Props) => {
         await roomManager.leaveRoom(role === "host");
         dispatch(GlobalResetAction());
         localStorage.removeItem(ssName);
-        const whereTo = `${baseHref}/${role === "host" ? "" : "join?room=" + title}`;
+        const whereTo = `${baseHref}/end`;
         history.push(whereTo);
     };
 
