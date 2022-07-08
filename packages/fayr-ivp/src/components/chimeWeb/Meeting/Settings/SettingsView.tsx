@@ -283,10 +283,6 @@ export const SettingsView = React.forwardRef<HTMLDivElement, Props>(
                             <Flex className={styles.Item} direction="Column">
                                 <Flex direction="Row" space="Between">
                                     <span>Lautsprecher</span>
-                                    <Toggle
-                                        toggleState={isAudioOutputEnabled}
-                                        onToggle={onSpeakersClick}
-                                    />
                                 </Flex>
                                 <div
                                     className={classNames(styles.SelectionDropdown, {
