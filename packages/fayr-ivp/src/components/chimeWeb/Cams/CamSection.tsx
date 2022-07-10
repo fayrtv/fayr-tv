@@ -430,23 +430,25 @@ export const CamSection = ({ joinInfo }: Props) => {
             return;
         }
 
-        participantVideos.set(
-            attendee.attendeeId,
-            <ParticipantVideo
-                isSelfHost={isSelfHost}
-                onMicClick={onMicClicked}
-                tileIndex={attendee.tileId}
-                key={attendee.attendeeId}
-                forceMuted={attendee.forceMuted}
-                forceVideoDisabled={attendee.forceVideoDisabled}
-                attendeeId={attendee.attendeeId}
-                videoEnabled={attendee.videoEnabled}
-                name={attendee.name}
-                muted={attendee.muted}
-                volume={attendee.volume}
-                pin={setPinnedHostIdentifier}
-            />,
-        );
+        for (let id of [1, 2, 5, 6, 7, 8, 9, 12]) {
+            participantVideos.set(
+                id.toString(),
+                <ParticipantVideo
+                    isSelfHost={isSelfHost}
+                    onMicClick={onMicClicked}
+                    tileIndex={attendee.tileId}
+                    key={attendee.attendeeId}
+                    forceMuted={attendee.forceMuted}
+                    forceVideoDisabled={attendee.forceVideoDisabled}
+                    attendeeId={attendee.attendeeId}
+                    videoEnabled={attendee.videoEnabled}
+                    name={attendee.name}
+                    muted={attendee.muted}
+                    volume={attendee.volume}
+                    pin={setPinnedHostIdentifier}
+                />,
+            );
+        }
     });
 
     const highlightVideo = (
