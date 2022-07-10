@@ -18,6 +18,7 @@ import * as config from "../../../config";
 import Chat from "../../chat/Chat";
 import IRoomManager from "../../chime/interfaces/IRoomManager";
 import Portal from "../../common/Portal";
+import { SettingsViewOpenContext } from "../../contexts/SettingsViewOpenContext";
 // Components
 import VideoPlayer from "../../videoPlayer/VideoPlayer";
 import CamSection from "../Cams/CamSection";
@@ -44,7 +45,8 @@ const Meeting = ({
     meetingStatus,
     roomTitle,
 }: Props) => {
-    const [showSettings, setShowSettings] = React.useState(false);
+    const { isOpen: showSettings, set: setShowSettings } =
+        React.useContext(SettingsViewOpenContext);
 
     const [errorState, setErrorState] = React.useState({
         showError: false,

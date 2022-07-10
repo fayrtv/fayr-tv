@@ -9,6 +9,7 @@ import useSocket from "hooks/useSocket";
 
 import { SocketEventType } from "components/chime/interfaces/ISocketProvider";
 import { JoinInfo } from "components/chimeWeb/types";
+import { SettingsViewOpenContext } from "components/contexts/SettingsViewOpenContext";
 
 import { Flex, MaterialIcon } from "@fayr/common";
 
@@ -26,6 +27,7 @@ type Props = {
 };
 
 const LocalVideo = ({ joinInfo, pin }: Props) => {
+    const { isOpen: showSettings } = React.useContext(SettingsViewOpenContext);
     const videoElement = React.useRef<HTMLVideoElement>(null);
 
     const audioVideoManager = useInjection<IAudioVideoManager>(Types.IAudioVideoManager);
@@ -37,10 +39,26 @@ const LocalVideo = ({ joinInfo, pin }: Props) => {
     const [activityState, setActivityState] = React.useState(ActivityState.Available);
 
     const [cameraBlurred, setCameraBlurred] = React.useState(false);
+
     React.useEffect(() => {
+        if (!showSettings) {
+            return;
+        }
+
+        const localVideoTile = audioVideoManager.audioVideo.getLocalVideoTile();
+        if (localVideoTile) {
+            audioVideoManager.audioVideo.unbindVideoElement(localVideoTile.id());
+        }
+    }, [showSettings]);
+
+    React.useEffect(() => {
+        if (showSettings) {
+            return;
+        }
+
         if (audioVideoManager.audioVideo) {
             if (!audioVideoManager.audioVideo.getLocalVideoTile()) {
-                audioVideoManager.audioVideo.addObserver({
+                const observer = {
                     videoTileDidUpdate: (tileState: any) => {
                         if (
                             !tileState.boundAttendeeId ||
@@ -56,7 +74,11 @@ const LocalVideo = ({ joinInfo, pin }: Props) => {
                             videoElement.current,
                         );
                     },
-                });
+                };
+
+                audioVideoManager.audioVideo.addObserver(observer);
+
+                return () => audioVideoManager.audioVideo.removeObserver(observer);
             } else {
                 const currentTile = audioVideoManager.audioVideo.getLocalVideoTile()!.state();
 
@@ -66,7 +88,7 @@ const LocalVideo = ({ joinInfo, pin }: Props) => {
                 );
             }
         }
-    }, [audioVideoManager.audioVideo]);
+    }, [showSettings, audioVideoManager.audioVideo]);
 
     const onAfkClick = React.useCallback(() => {
         if (!socket) {
