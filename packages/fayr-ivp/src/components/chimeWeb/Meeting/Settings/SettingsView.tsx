@@ -144,27 +144,6 @@ export const SettingsView = React.forwardRef<HTMLDivElement, Props>(
             });
         };
 
-        const onSpeakersClick = async () => {
-            if (!isAudioOutputEnabled) {
-                // Pick the first device
-                const devices = await audioVideoManager.listAudioOutputDevices();
-                const deviceInfos: Array<DeviceInfo> = devices.map((x) => ({
-                    label: x.label,
-                    value: x.deviceId,
-                }));
-                await audioVideoManager.setAudioOutputDeviceSafe(deviceInfos[0]);
-
-                // Start chime
-                audioVideoManager.audioVideo.start();
-                audioVideoManager.audioVideo.realtimeUnmuteLocalAudio();
-
-                setSpeakersData(deviceInfos[0]);
-            } else {
-                await audioVideoManager.setAudioOutputDeviceSafe(null);
-                setSpeakersData();
-            }
-        };
-
         React.useEffect(() => {
             if (videoStatus === VideoStatus.Enabled && videoRef.current) {
                 const currentTile = (audioVideoManager.audioVideo as any).videoTileController
@@ -173,9 +152,12 @@ export const SettingsView = React.forwardRef<HTMLDivElement, Props>(
                     currentTile.tileId,
                     videoRef.current!,
                 );
-                audioVideoManager.audioVideo.startLocalVideoTile();
+
+                if (!audioVideoManager.audioVideo.hasStartedLocalVideoTile()) {
+                    audioVideoManager.audioVideo.startLocalVideoTile();
+                }
             }
-        }, [videoStatus, audioVideoManager.audioVideo]);
+        }, [shouldUseBackgroundBlur, videoStatus, audioVideoManager.audioVideo]);
 
         React.useEffect(() => {
             audioVideoManager.listAudioOutputDevices().then(async (devices) => {
