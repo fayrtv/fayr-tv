@@ -24,6 +24,7 @@ export function JoinInfoForm({
     username,
     onUsernameChanged,
     roomTitle,
+    onRoomTitleChanged,
     onSubmit,
     usernameInputRef,
     roomTitleInputRef,
@@ -40,7 +41,11 @@ export function JoinInfoForm({
             <fieldset className={classNames(styles.JoinInfoForm, { [styles.Mobile]: isMobile })}>
                 <div>
                     <div className={styles.BannerStripe}>
-                        <img src={require("../../assets/vfb-logo.png")} alt="VfB Banner" className={styles.Banner} />
+                        <img
+                            src={require("../../assets/vfb-logo.png")}
+                            alt="VfB Banner"
+                            className={styles.Banner}
+                        />
                     </div>
                     <div className={styles.JoinInfoFormControls}>
                         <div
@@ -50,7 +55,9 @@ export function JoinInfoForm({
                                 textAlign: "center",
                             }}
                         >
-                            <a onClick={onHowItWorksClicked} className={styles.HowItWorksLink}>Wie funktioniert das?</a>
+                            <a onClick={onHowItWorksClicked} className={styles.HowItWorksLink}>
+                                Wie funktioniert das?
+                            </a>
                         </div>
                         <input
                             ref={usernameInputRef}
@@ -58,6 +65,13 @@ export function JoinInfoForm({
                             placeholder="Dein Name"
                             value={username}
                             onChange={(ev) => setUsername(ev.target.value)}
+                        />
+                        <input
+                            ref={roomTitleInputRef}
+                            type="text"
+                            placeholder="Code"
+                            value={roomTitle}
+                            onChange={(ev) => onRoomTitleChanged(ev.target.value)}
                         />
                         <button
                             className="btn btn--secondary"

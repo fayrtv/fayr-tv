@@ -99,6 +99,7 @@
             .ActionDot {
                 @include Dot;
                 background-color: black;
+                color: white;
             }
 
             > div > span {

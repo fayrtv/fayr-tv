@@ -25,7 +25,7 @@ const Welcome = (props: Props) => {
     const tl = useTranslations();
 
     const [username, setUsername] = usePersistedState<string>("USERNAME", () => "");
-    const [roomTitle, setRoomTitle] = React.useState(config.RANDOM);
+    const [roomTitle, setRoomTitle] = React.useState("");
     const [playbackURL] = React.useState(config.DEFAULT_VIDEO_STREAM);
     const [errorMessage] = React.useState("");
     const [showError, setShowError] = React.useState(false);
