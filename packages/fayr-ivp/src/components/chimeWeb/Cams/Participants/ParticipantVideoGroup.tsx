@@ -28,7 +28,7 @@ export const ParticipantVideoGroup = ({ localVideoInfo, participants }: Props) =
 
     const rowsRequired = Math.ceil(participantCount / 2);
 
-    const rowPercentage = Math.ceil(100 / rowsRequired);
+    const rowPercentage = 100 / rowsRequired;
 
     return (
         <Grid
