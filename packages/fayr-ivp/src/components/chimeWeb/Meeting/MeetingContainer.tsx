@@ -220,9 +220,9 @@ export const MeetingContainer = ({
                 Sorry, aber diese Watch-Party ist bereits <b>voll</b> mit einer gesammelten
                 Mannschaft (11) 😟
             </h2>
-            <a href="/">
-                <button className="btn btn--secondary">Erstelle deine eigene Watch-Party</button>
-            </a>
+            {/*<a href="/">*/}
+            {/*    <button className="btn btn--secondary">Erstelle deine eigene Watch-Party</button>*/}
+            {/*</a>*/}
         </AlreadyFullScreen>
     ) : isLoading || !meetingMetaData.joinInfo ? (
         <LoadingAnimation fullScreen={true} />
