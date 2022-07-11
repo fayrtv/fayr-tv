@@ -1,3 +1,5 @@
+import { CSSProperties } from "react";
+
 import { Cell, Flex, Grid } from "@fayr/common";
 
 import styles from "./ParticipantVideoGroup.module.scss";
@@ -13,14 +15,18 @@ export const ParticipantVideoGroup = ({ localVideoInfo, participants }: Props) =
     const participantCount = participants.length;
 
     if (participantCount <= 3) {
+        const heightPercentage = `${100 / participantCount}%`;
+
+        const style: CSSProperties = { height: heightPercentage, maxHeight: heightPercentage };
+
         return (
             <Flex className={styles.ParticipantVideoGroup} direction="Column">
                 {participants.map((video, index) => {
                     if (localVideoInfo.replace && index === localVideoInfo.tile) {
-                        return <Cell key={index}>{localVideoInfo.node}</Cell>;
+                        return <div style={style}>{localVideoInfo.node}</div>;
                     }
 
-                    return <Cell key={index}>{video}</Cell>;
+                    return <div style={style}>{video}</div>;
                 })}
             </Flex>
         );
