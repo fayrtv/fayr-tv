@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { RouteComponentProps, useRouteMatch, withRouter } from "react-router-dom";
 
-import { usePlatformConfig } from "hooks/usePlatformConfig";
-import useTranslations from "hooks/useTranslations";
-
-import { FayrLogo, usePersistedState } from "@fayr/common";
+import { usePersistedState } from "@fayr/common";
 import { Flex } from "@fayr/common";
 
 import * as config from "../../config";
@@ -21,8 +18,6 @@ const Welcome = (props: Props) => {
     if (url === "/") {
         url = "";
     }
-
-    const tl = useTranslations();
 
     const [username, setUsername] = usePersistedState<string>("USERNAME", () => "");
     const [roomTitle, setRoomTitle] = React.useState("");

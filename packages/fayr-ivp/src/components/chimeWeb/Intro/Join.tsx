@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import React, { useState, useEffect, MouseEventHandler } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { Nullable } from "types/global";
@@ -8,7 +9,10 @@ import styles from "components/chimeWeb/JoinInfoForm.module.scss";
 
 import { Flex } from "@fayr/common";
 
+import joinStyles from "./Join.module.scss";
+
 import * as config from "../../../config";
+import Tutorial from "../Tutorial/Tutorial";
 
 export const Join = ({ location, history }: RouteComponentProps) => {
     const [showError, setShowError] = useState(false);
@@ -63,6 +67,8 @@ export const Join = ({ location, history }: RouteComponentProps) => {
 
     const joinRoomDisabled = !userName;
 
+    const [showTutorial, setShowTutorial] = useState(false);
+
     return (
         <div className="welcome form-grid" onClick={handleClick}>
             <div className="welcome__intro">
@@ -71,8 +77,10 @@ export const Join = ({ location, history }: RouteComponentProps) => {
                 </div>
             </div>
 
+            <Tutorial show={showTutorial} setShow={setShowTutorial} />
+
             <div className="welcome__content pd-4">
-                <div className="content__inner">
+                <div className={classNames("content__inner", joinStyles.ContentInner)}>
                     <div className={styles.BannerStripe}>
                         <img
                             src={require("../../../assets/vfb-logo.png")}
@@ -80,6 +88,9 @@ export const Join = ({ location, history }: RouteComponentProps) => {
                             className={styles.Banner}
                         />
                     </div>
+                    <a onClick={() => setShowTutorial(true)} className={joinStyles.HowItWorksLink}>
+                        Wie funktioniert das?
+                    </a>
                     <div className={styles.JoinInfoFormControls}>
                         <form action="">
                             <fieldset className="mg-b-2">
