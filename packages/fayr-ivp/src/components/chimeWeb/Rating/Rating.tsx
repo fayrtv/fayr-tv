@@ -29,6 +29,9 @@ export default function Rating() {
     };
 
     const onClick = async (rating: number) => {
+        if (wasRatingSubmitted) {
+            return;
+        }
         setWasRatingSubmitted(true);
         await fetch(`${config.CHIME_ROOM_API}/addRating`, {
             method: "POST",
