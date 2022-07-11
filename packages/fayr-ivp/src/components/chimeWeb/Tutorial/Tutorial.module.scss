@@ -16,6 +16,7 @@
         width: calc(100vw - 10px);
         top: 5px;
         left: 5px;
+        padding: 10px;
     }
 
     background-color: white;
@@ -104,6 +105,10 @@
 
             > div > span {
                 width: 75%;
+
+                @media (max-width: mq.$largeScreens) {
+                    font-size: 1.25rem;
+                }
             }
         }
     }

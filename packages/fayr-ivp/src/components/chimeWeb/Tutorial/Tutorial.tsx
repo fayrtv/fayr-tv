@@ -1,9 +1,9 @@
 import * as React from "react";
+import { Dispatch, SetStateAction } from "react";
 
 import { Cell, Flex, Grid } from "@fayr/common";
 
 import styles from "./Tutorial.module.scss";
-import { Dispatch, SetStateAction } from "react";
 
 type InfoRowProps = {
     index: number;
@@ -27,11 +27,10 @@ const InfoRow = ({ index, infoText }: InfoRowProps) => {
 
 type Props = {
     show: boolean;
-    setShow: Dispatch<SetStateAction<boolean>>
+    setShow: Dispatch<SetStateAction<boolean>>;
 };
 
 export default function Tutorial({ show, setShow }: Props) {
-
     if (!show) {
         return null;
     }
@@ -62,14 +61,7 @@ export default function Tutorial({ show, setShow }: Props) {
             <Cell gridArea="TutorialTitle">
                 <h2>Anleitung</h2>
             </Cell>
-            <InfoRow
-                index={1}
-                infoText={
-                    <span>
-                        Öffne einen Raum für deine Mannschaft.
-                    </span>
-                }
-            />
+            <InfoRow index={1} infoText={<span>Öffne einen Raum für deine Mannschaft.</span>} />
             <InfoRow
                 index={2}
                 infoText={

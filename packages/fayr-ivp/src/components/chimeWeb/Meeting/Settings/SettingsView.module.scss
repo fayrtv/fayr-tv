@@ -2,8 +2,8 @@
 
 .Container {
     max-height: 90vh;
-    height: 60vh;
-    min-height: 60vh;
+    height: 80vh;
+    min-height: 80vh;
     max-width: 80vw;
 
     @media (min-width: mq.$mobile) and (max-width: mq.$largeScreens) {
@@ -41,7 +41,7 @@
 
             span {
                 font-size: 3rem;
-                color: var(--color-white)
+                color: var(--color-white);
             }
         }
 
