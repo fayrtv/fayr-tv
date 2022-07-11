@@ -20,17 +20,17 @@ export type VotingReducerState = Array<VotingData>;
 const initialState: VotingReducerState = [
     {
         hostTeam: {
+            identifier: "brentford",
+            teamIconSource:
+                "https://fayr-image-library.s3.eu-central-1.amazonaws.com/club-material/badges/brentford_fc.png",
+        },
+        guestTeam: {
             identifier: "vfb",
             teamIconSource:
                 "https://fayr-image-library.s3.eu-central-1.amazonaws.com/club-material/badges/vfb.png",
         },
-        guestTeam: {
-            identifier: "fc_zurich",
-            teamIconSource:
-                "https://fayr-image-library.s3.eu-central-1.amazonaws.com/club-material/badges/fc_zürich.svg",
-        },
         votes: [],
-        votingId: "215235236",
+        votingId: "215235237",
     },
 ];
 
