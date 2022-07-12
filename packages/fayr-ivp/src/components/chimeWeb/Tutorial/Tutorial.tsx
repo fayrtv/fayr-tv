@@ -96,7 +96,7 @@ export default function Tutorial({ show, setShow }: Props) {
                 infoText={
                     <span>
                         Lasst euch vom VfB begeistern und schaut das Spiel mit euren Freunden als
-                        wenn ihr nebeneinander auf dem Sofa seid.
+                        wärt ihr nebeneinander auf dem Sofa.
                     </span>
                 }
             />
