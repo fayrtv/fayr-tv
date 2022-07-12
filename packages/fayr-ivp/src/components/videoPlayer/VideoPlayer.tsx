@@ -3,8 +3,8 @@ import classNames from "classnames";
 import { useInjection } from "inversify-react";
 import React, { MouseEventHandler } from "react";
 import { RoomMemberRole } from "types/Room";
-import { isAfterSpecificTimestamp, useTimedFeatureToggle } from "util/dateUtil";
 import Types from "types/inject";
+import { isAfterSpecificTimestamp, useTimedFeatureToggle } from "util/dateUtil";
 import { makeid } from "util/guidHelper";
 
 import useGlobalKeyHandler from "hooks/useGlobalKeyHandler";
@@ -250,7 +250,6 @@ const VideoPlayer = ({
 
     return (
         <div ref={videoElement} className={styles.PlayerWrapper}>
-            {shouldShowAdOverlay && <div className={styles.AdOverlay} />}
             <div
                 id="overlay"
                 className={classNames("overlay", { fullScreen: fullScreen }, styles.Overlay)}
@@ -267,11 +266,10 @@ const VideoPlayer = ({
                     baseHref={baseHref}
                 />
             </div>
-            <video
-                id="video-player"
-                className={classNames(styles.VideoPlayer, { [styles.fullscreen]: fullScreen })}
-                playsInline
-            />
+            <div className={classNames(styles.VideoPlayer, { [styles.fullscreen]: fullScreen })}>
+                {shouldShowAdOverlay && <div className={styles.AdOverlay} />}
+                <video id="video-player" playsInline />
+            </div>
             {reactionElements}
             {fullScreen && <div className={styles.FullScreenCams}>{fullScreenCamSection}</div>}
             {fullScreen && (
