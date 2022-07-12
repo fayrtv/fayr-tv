@@ -1,5 +1,8 @@
 import classNames from "classnames";
-import React, { MouseEventHandler } from "react";
+import moment from "moment";
+import React, { MouseEventHandler, useDebugValue } from "react";
+import { isAfterSpecificTimestamp } from "util/dateUtil";
+import isDevMode from "util/isDevMode";
 
 import { useIsMobile } from "components/mediaQueries";
 
@@ -32,6 +35,9 @@ export function JoinInfoForm({
 }: Props) {
     const isMobile = useIsMobile();
 
+    const shouldDisplayFormInputs =
+        isDevMode || isAfterSpecificTimestamp("2022-07-16T14:50:00+02:00");
+
     const isValid = !isFalsyOrWhitespace(roomTitle) && !isFalsyOrWhitespace(username);
 
     const setUsername = (newValue: string) => onUsernameChanged(newValue);
@@ -50,9 +56,13 @@ export function JoinInfoForm({
                         {/* </a> */}
                     </div>
                     <div className={styles.JoinInfoFormControls}>
-                        Am <b>Samstag, den 16. Juli 2022 ab 14:55 Uhr</b> kannst du hier mit deinen
-                        Freunden auf der virtuellen Couch das Testspiel gegen den{" "}
-                        <b>FC Brentford</b> verfolgen!
+                        {!shouldDisplayFormInputs && (
+                            <>
+                                Am <b>Samstag, den 16. Juli 2022 ab 14:55 Uhr</b> kannst du hier mit
+                                deinen Freunden auf der virtuellen Couch das Testspiel gegen den{" "}
+                                <b>FC Brentford</b> verfolgen!
+                            </>
+                        )}
                         <div
                             style={{
                                 marginTop: "20px",
@@ -64,27 +74,31 @@ export function JoinInfoForm({
                                 Wie funktioniert das?
                             </a>
                         </div>
-                        {/*<input*/}
-                        {/*    ref={usernameInputRef}*/}
-                        {/*    type="text"*/}
-                        {/*    placeholder="Dein Name"*/}
-                        {/*    value={username}*/}
-                        {/*    onChange={(ev) => setUsername(ev.target.value)}*/}
-                        {/*/>*/}
-                        {/*<input*/}
-                        {/*    ref={roomTitleInputRef}*/}
-                        {/*    type="text"*/}
-                        {/*    placeholder="Code"*/}
-                        {/*    value={roomTitle}*/}
-                        {/*    onChange={(ev) => onRoomTitleChanged(ev.target.value)}*/}
-                        {/*/>*/}
-                        {/*<button*/}
-                        {/*    className="btn btn--secondary"*/}
-                        {/*    disabled={!isValid || disableSubmit}*/}
-                        {/*    onClick={onSubmit}*/}
-                        {/*>*/}
-                        {/*    STARTEN*/}
-                        {/*</button>*/}
+                        {shouldDisplayFormInputs && (
+                            <>
+                                <input
+                                    ref={usernameInputRef}
+                                    type="text"
+                                    placeholder="Dein Name"
+                                    value={username}
+                                    onChange={(ev) => setUsername(ev.target.value)}
+                                />
+                                <input
+                                    ref={roomTitleInputRef}
+                                    type="text"
+                                    placeholder="Code"
+                                    value={roomTitle}
+                                    onChange={(ev) => onRoomTitleChanged(ev.target.value)}
+                                />
+                                <button
+                                    className="btn btn--secondary"
+                                    disabled={!isValid || disableSubmit}
+                                    onClick={onSubmit}
+                                >
+                                    STARTEN
+                                </button>
+                            </>
+                        )}
                     </div>
                 </div>
                 {/* <input type="text" placeholder="Playback URL" value={playbackURL} onChange={this.handlePlaybackURLChange} /> */}
