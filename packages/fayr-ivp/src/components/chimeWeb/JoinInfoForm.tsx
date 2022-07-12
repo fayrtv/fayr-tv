@@ -59,7 +59,7 @@ export function JoinInfoForm({
                         {!shouldDisplayFormInputs && (
                             <>
                                 Am <b>Samstag, den 16. Juli 2022 ab 14:55 Uhr</b> kannst du hier mit
-                                deinen Freunden auf der virtuellen Couch das Testspiel gegen den{" "}
+                                deinen Freunden auf dem virtuellen Sofa das Testspiel gegen den{" "}
                                 <b>FC Brentford</b> verfolgen!
                             </>
                         )}
