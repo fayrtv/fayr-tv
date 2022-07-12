@@ -106,9 +106,14 @@ export default function QualityPicker({
                 >
                     {availableQualities.length === 0 || availableQualities[0].name === "unknown"
                         ? tl.NoQualitySettingsAvailable
-                        : availableQualities.map((x) => (
-                              <span key={x.name} onClick={(event) => onQualityClick(event, x)}>
-                                  {x.name}
+                        : availableQualities.map((x, n) => (
+                              <span
+                                  key={x.name + x.bitrate}
+                                  onClick={(event) => onQualityClick(event, x)}
+                              >
+                                  {availableQualities[n + 1]?.name === x.name
+                                      ? `${x.name} (HQ)`
+                                      : x.name}
                               </span>
                           ))}
                 </Flex>
