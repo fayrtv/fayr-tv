@@ -2,6 +2,7 @@ import { isPlayerSupported, MediaPlayer, PlayerEventType, PlayerState } from "am
 import classNames from "classnames";
 import React, { MouseEventHandler } from "react";
 import { RoomMemberRole } from "types/Room";
+import { isAfterSpecificTimestamp, useTimedFeatureToggle } from "util/dateUtil";
 import { makeid } from "util/guidHelper";
 
 import useGlobalKeyHandler from "hooks/useGlobalKeyHandler";
@@ -19,6 +20,7 @@ import { EmojiReaction, useEmojiReactions } from "components/videoPlayer/useEmoj
 import styles from "./VideoPlayer.module.scss";
 
 import * as config from "../../config";
+import { VFB_STREAM_TIMINGS } from "../../config";
 import VideoPlayerControls from "./controls/VideoPlayerControls";
 
 type Props = {
@@ -227,8 +229,11 @@ const VideoPlayer = ({
     useGlobalKeyHandler("ArrowRight", fastForward);
     useGlobalKeyHandler([" ", "Space"], pause);
 
+    const shouldShowAdOverlay = useTimedFeatureToggle(VFB_STREAM_TIMINGS.StreamOverlayAd);
+
     return (
         <div ref={videoElement} className={styles.PlayerWrapper}>
+            {shouldShowAdOverlay && <div className={styles.AdOverlay} />}
             <div
                 id="overlay"
                 className={classNames("overlay", { fullScreen: fullScreen }, styles.Overlay)}

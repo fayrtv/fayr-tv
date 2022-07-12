@@ -1,5 +1,18 @@
 import { sample } from "lodash";
+import { TimedFeatureToggleParams } from "util/dateUtil";
 import { makeid } from "util/guidHelper";
+
+type TimingValues = "StreamOverlayAd" | "AllowToJoin";
+
+export const VFB_STREAM_TIMINGS: Record<TimingValues, TimedFeatureToggleParams> = {
+    StreamOverlayAd: {
+        enabledBefore: "2022-07-16T14:55:00+02:00",
+    },
+    AllowToJoin: {
+        enabledBefore: "2022-07-16T14:50:00+02:00",
+        enabledInDevMode: true,
+    },
+};
 
 export const BASE_HREF = "";
 
@@ -34,7 +47,7 @@ export const DEFAULT_VIDEO_STREAM = sample([
     // AWS Elemental MediaLive
     // "https://528dc4ef17d725ed.mediapackage.eu-central-1.amazonaws.com/out/v1/2ff189e75e344a229c386c0af778e623/index.m3u8",
     // Sky-Stream
-    "https://websitefreestreaming.akamaized.net/hls/live/2024637/hls-deevent-06/index.m3u8"
+    "https://websitefreestreaming.akamaized.net/hls/live/2024637/hls-deevent-06/index.m3u8",
 ]) as string;
 
 // Default Chat websocket link

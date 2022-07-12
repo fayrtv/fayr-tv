@@ -1,7 +1,8 @@
 import classNames from "classnames";
+import { VFB_STREAM_TIMINGS } from "config";
 import moment from "moment";
 import React, { MouseEventHandler, useDebugValue } from "react";
-import { isAfterSpecificTimestamp } from "util/dateUtil";
+import { isAfterSpecificTimestamp, useTimedFeatureToggle } from "util/dateUtil";
 import isDevMode from "util/isDevMode";
 
 import { useIsMobile } from "components/mediaQueries";
@@ -35,8 +36,8 @@ export function JoinInfoForm({
 }: Props) {
     const isMobile = useIsMobile();
 
-    const shouldDisplayFormInputs =
-        isDevMode || isAfterSpecificTimestamp("2022-07-16T14:50:00+02:00");
+    const shouldAllowJoining = useTimedFeatureToggle(VFB_STREAM_TIMINGS.AllowToJoin);
+    const shouldDisplayFormInputs = isDevMode || shouldAllowJoining;
 
     const isValid = !isFalsyOrWhitespace(roomTitle) && !isFalsyOrWhitespace(username);
 

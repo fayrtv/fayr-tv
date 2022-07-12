@@ -74,4 +74,18 @@
             width: 100%;
         }
     }
+
+    .AdOverlay {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 14%;
+        bottom: 10%;
+        z-index: 999;
+        background-image: url("../../assets/vfb-ad.jpg");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position-y: center;
+        user-select: none;
+    }
 }
