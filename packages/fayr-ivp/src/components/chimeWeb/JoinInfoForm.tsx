@@ -34,7 +34,7 @@ export function JoinInfoForm({
 }: Props) {
     const isMobile = useIsMobile();
 
-    const shouldDisplayFormInputs = false; //useTimedFeatureToggle(VFB_STREAM_TIMINGS.AllowToJoin);
+    const shouldDisplayFormInputs = useTimedFeatureToggle(VFB_STREAM_TIMINGS.AllowToJoin);
 
     const isValid = !isFalsyOrWhitespace(roomTitle) && !isFalsyOrWhitespace(username);
 
