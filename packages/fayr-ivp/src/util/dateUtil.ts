@@ -28,7 +28,7 @@ export const useTimedFeatureToggle = ({
                         ? !isAfterSpecificTimestamp(enabledBefore!)
                         : isAfterSpecificTimestamp(enabledAfter!),
                 ),
-            1000,
+            10000,
         );
         return () => clearInterval(intervalHandle);
     }, [enabledBefore, enabledAfter]);
