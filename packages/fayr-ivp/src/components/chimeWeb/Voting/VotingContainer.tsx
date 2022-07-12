@@ -18,6 +18,7 @@ import { Flex } from "@fayr/common";
 import styles from "./styles/VotingContainer.module.scss";
 
 import { useAttendeeInfo } from "../../../hooks/useAttendeeInfo";
+import useMeetingMetaData from "../../../hooks/useMeetingMetaData";
 import IRoomManager, { RosterMap } from "../../chime/interfaces/IRoomManager";
 import Voting from "./Voting";
 import { AttendeeVoteDto, VotingData } from "./types";
@@ -31,8 +32,6 @@ type Props = {
 export const VotingContainer = ({ attendeeId, votings, onClose }: Props) => {
     const votingRef = React.createRef<HTMLDivElement>();
 
-    const roomManager = useInjection<IRoomManager>(Types.IRoomManager);
-
     const dispatch = useDispatch();
 
     const { socket } = useSocket();
@@ -41,12 +40,18 @@ export const VotingContainer = ({ attendeeId, votings, onClose }: Props) => {
 
     const { getAttendee } = useAttendeeInfo();
 
+    const [{ userName }] = useMeetingMetaData();
+
     React.useEffect(() => {
         if (!socket) {
             return;
         }
 
         return socket.addListener<AttendeeVoteDto>(SocketEventType.AttendeeVote, (event) => {
+            if (event.attendeeId === attendeeId) {
+                return Promise.resolve();
+            }
+
             const nameOfAttendee = getAttendee(event.attendeeId)?.name ?? event.attendeeId;
             dispatch(
                 updateVote({
@@ -56,7 +61,7 @@ export const VotingContainer = ({ attendeeId, votings, onClose }: Props) => {
             );
             return Promise.resolve();
         });
-    }, [socket, dispatch, getAttendee]);
+    }, [socket, dispatch, getAttendee, attendeeId]);
 
     React.useEffect(() => {
         if (!votings) {
@@ -87,7 +92,6 @@ export const VotingContainer = ({ attendeeId, votings, onClose }: Props) => {
     useGlobalKeyHandler("Escape", onClose);
 
     const updateTip = (hostTip: number, guestTip: number) => {
-        const nameOfAttendee = getAttendee(attendeeId)?.name ?? attendeeId;
         const attendeeVote: AttendeeVoteDto = {
             attendeeId,
             guestTeam: guestTip,
@@ -98,7 +102,7 @@ export const VotingContainer = ({ attendeeId, votings, onClose }: Props) => {
         dispatch(
             updateVote({
                 ...attendeeVote,
-                name: nameOfAttendee,
+                name: userName,
             }),
         );
 
