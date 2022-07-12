@@ -436,6 +436,15 @@ export const createMeeting: Handler<APIGatewayProxyEvent> = async (event, contex
         callback(null, response);
         return;
     }
+
+    if (!ALLOWED_CODES_LOWERCASE.includes(payload.title.trim().toLowerCase())) {
+        console.log("createMeeting event > Not an allowed code");
+        response.statusCode = 403;
+        response.body = "Code not allowed";
+        callback(null, response);
+        return;
+    }
+
     const title = simplifyTitle(payload.title);
     if (!title) {
         response.statusCode = 400;
@@ -505,6 +514,14 @@ export const join: Handler<APIGatewayProxyEvent> = async (event, context, callba
         console.log("join > missing required fields: Must provide title and name");
         response.statusCode = 400;
         response.body = "Must provide title and name";
+        callback(null, response);
+        return;
+    }
+
+    if (!ALLOWED_CODES_LOWERCASE.includes(payload.title.trim().toLowerCase())) {
+        console.log("join > Not an allowed code");
+        response.statusCode = 403;
+        response.body = "Code not allowed";
         callback(null, response);
         return;
     }
@@ -4218,4 +4235,15 @@ const ALLOWED_CODES = [
     "uL5yrq96YH",
     "kuQLK8G0BO",
     "1Qw06BMSdo",
+    "fayr-testing-1",
+    "fayr-testing-2",
+    "fayr-testing-3",
+    "fayr-testing-4",
+    "fayr-testing-5",
+    "fayr-testing-6",
+    "fayr-testing-7",
+    "fayr-testing-8",
+    "fayr-testing-9",
 ];
+
+const ALLOWED_CODES_LOWERCASE = ALLOWED_CODES.map((x) => x.toLowerCase());

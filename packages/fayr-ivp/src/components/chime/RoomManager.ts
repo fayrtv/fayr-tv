@@ -29,6 +29,13 @@ export class RoomFullError extends Error {
     }
 }
 
+export class CodeNotAllowedError extends Error {
+    constructor(message?: string) {
+        super(message);
+        this.name = "CodeNotAllowedError";
+    }
+}
+
 @injectable()
 export default class RoomManager implements IRoomManager {
     private _configuration: Nullable<MeetingSessionConfiguration> = null;
@@ -107,6 +114,10 @@ export default class RoomManager implements IRoomManager {
 
         if (response.status === 429) {
             throw new RoomFullError();
+        }
+
+        if (response.status === 403) {
+            throw new CodeNotAllowedError();
         }
 
         const json = await response.json();

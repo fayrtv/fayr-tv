@@ -40,6 +40,8 @@ export function JoinInfoForm({
 
     const setUsername = (newValue: string) => onUsernameChanged(newValue);
 
+    const isInvalidCodeError = new URLSearchParams(location.search).get("unknown-code") !== null;
+
     return (
         <form action="">
             <fieldset className={classNames(styles.JoinInfoForm, { [styles.Mobile]: isMobile })}>
@@ -95,6 +97,11 @@ export function JoinInfoForm({
                                 >
                                     STARTEN
                                 </button>
+                                {isInvalidCodeError && (
+                                    <span className={styles.ErrorMessage}>
+                                        Entschuldigung, diesen Code kennen wir nicht.
+                                    </span>
+                                )}
                             </>
                         )}
                     </div>

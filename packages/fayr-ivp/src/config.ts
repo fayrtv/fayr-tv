@@ -20,11 +20,17 @@ export const API_BASE_URL = "https://h9iohvkr9b.execute-api.us-east-1.amazonaws.
 
 // API endpoint for retrieving the attendees list, joining the room, and ending the room.
 // Value without trailing slash.
-export const CHIME_ROOM_API = "https://iyte6naueg.execute-api.eu-central-1.amazonaws.com/Prod/"
+export const CHIME_ROOM_API = "https://wnnuybj8ne.execute-api.us-east-1.amazonaws.com/Prod/"
     .trim()
     .replace(/\/$/, "");
+
 // For local AWS SAM container:
 //export const CHIME_ROOM_API = "http://127.0.0.1:5859";
+
+// Default Chat websocket link
+export const CHAT_WEBSOCKET = "wss://j5s9vpii57.execute-api.us-east-1.amazonaws.com/Prod"
+    .trim()
+    .replace(/\/$/, "");
 
 // Chime-SDK allows up to 16 attendee videos
 export const CHIME_ROOM_MAX_ATTENDEE = 16;
@@ -49,11 +55,6 @@ export const DEFAULT_VIDEO_STREAM = sample([
     // Sky-Stream
     "https://websitefreestreaming.akamaized.net/hls/live/2024637/hls-deevent-06/index.m3u8",
 ]) as string;
-
-// Default Chat websocket link
-export const CHAT_WEBSOCKET = "wss://3n1wh2j0ae.execute-api.eu-central-1.amazonaws.com/Prod"
-    .trim()
-    .replace(/\/$/, "");
 
 // Chime-SDK logging level: INFO, WARN, ERROR, DEBUG
 export const CHIME_LOG_LEVEL = "DEBUG";
