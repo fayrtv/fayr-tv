@@ -41,12 +41,12 @@ export default function QualityPicker({
     );
 
     const onQualityClick = React.useCallback(
-        (event: React.MouseEvent<HTMLSpanElement, MouseEvent>, quality: Quality) => {
+        (event: React.MouseEvent<HTMLSpanElement, MouseEvent>, quality: Quality, isHQ: boolean) => {
             event.stopPropagation();
 
             if (!!player) {
                 player.setQuality(quality);
-                setCurrentQuality(quality.name);
+                setCurrentQuality(isHQ ? `${quality.name} (HQ)` : quality.name);
             }
 
             setShowQualitySettings(false);
@@ -106,16 +106,17 @@ export default function QualityPicker({
                 >
                     {availableQualities.length === 0 || availableQualities[0].name === "unknown"
                         ? tl.NoQualitySettingsAvailable
-                        : availableQualities.map((x, n) => (
-                              <span
-                                  key={x.name + x.bitrate}
-                                  onClick={(event) => onQualityClick(event, x)}
-                              >
-                                  {availableQualities[n + 1]?.name === x.name
-                                      ? `${x.name} (HQ)`
-                                      : x.name}
-                              </span>
-                          ))}
+                        : availableQualities.map((x, n) => {
+                              const isHQ = availableQualities[n + 1]?.name === x.name;
+                              return (
+                                  <span
+                                      key={x.name + x.bitrate}
+                                      onClick={(event) => onQualityClick(event, x, isHQ)}
+                                  >
+                                      {isHQ ? `${x.name} (HQ)` : x.name}
+                                  </span>
+                              );
+                          })}
                 </Flex>
             )}
         </button>
