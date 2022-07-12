@@ -19,11 +19,13 @@ const End = () => {
             <div className="welcome__content pd-4">
                 <div className="content__inner">
                     <div className={styles.BannerStripe}>
-                        <img
-                            src={require("../../assets/vfb-logo.png")}
-                            alt="VfB Banner"
-                            className={styles.Banner}
-                        />
+                        {/* <a href="./"> */}
+                            <img
+                                src={require("../../assets/vfb-logo.png")}
+                                alt="VfB Banner"
+                                className={styles.Banner}
+                            />
+                        {/* </a> */}
                     </div>
                     <div className={styles.JoinInfoFormControls}>
                         <div className={styles.NewsletterBox}>

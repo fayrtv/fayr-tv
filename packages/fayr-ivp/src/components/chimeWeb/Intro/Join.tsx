@@ -82,11 +82,13 @@ export const Join = ({ location, history }: RouteComponentProps) => {
             <div className="welcome__content pd-4">
                 <div className={classNames("content__inner", joinStyles.ContentInner)}>
                     <div className={styles.BannerStripe}>
-                        <img
-                            src={require("../../../assets/vfb-logo.png")}
-                            alt="VfB Banner"
-                            className={styles.Banner}
-                        />
+                        {/* <a href="../"> */}
+                            <img
+                                src={require("../../../assets/vfb-logo.png")}
+                                alt="VfB Banner"
+                                className={styles.Banner}
+                            />
+                        {/* </a> */}
                     </div>
                     <a onClick={() => setShowTutorial(true)} className={joinStyles.HowItWorksLink}>
                         Wie funktioniert das?

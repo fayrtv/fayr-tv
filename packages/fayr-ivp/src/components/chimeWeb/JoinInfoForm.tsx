@@ -41,11 +41,13 @@ export function JoinInfoForm({
             <fieldset className={classNames(styles.JoinInfoForm, { [styles.Mobile]: isMobile })}>
                 <div>
                     <div className={styles.BannerStripe}>
-                        <img
-                            src={require("../../assets/vfb-logo.png")}
-                            alt="VfB Banner"
-                            className={styles.Banner}
-                        />
+                        {/* <a href="./"> */}
+                            <img
+                                src={require("../../assets/vfb-logo.png")}
+                                alt="VfB Banner"
+                                className={styles.Banner}
+                            />
+                        {/* </a> */}
                     </div>
                     <div className={styles.JoinInfoFormControls}>
                         <div
