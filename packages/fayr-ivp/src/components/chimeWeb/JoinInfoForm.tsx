@@ -42,15 +42,15 @@ export function JoinInfoForm({
                 <div>
                     <div className={styles.BannerStripe}>
                         {/* <a href="./"> */}
-                            <img
-                                src={require("../../assets/vfb-logo.png")}
-                                alt="VfB Banner"
-                                className={styles.Banner}
-                            />
+                        <img
+                            src={require("../../assets/vfb-logo.png")}
+                            alt="VfB Banner"
+                            className={styles.Banner}
+                        />
                         {/* </a> */}
                     </div>
                     <div className={styles.JoinInfoFormControls}>
-                        Am <b>16.11. ab 17:25</b> kannst du hier mit deinen Freunden auf der
+                        Am <b>16.11. ab 15:25</b> kannst du hier mit deinen Freunden auf der
                         virtuellen Couch das Testspiel gegen den <b>Brentford FC</b> verfolgen!
                         <div
                             style={{
