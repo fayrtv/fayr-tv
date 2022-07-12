@@ -160,18 +160,18 @@ export default class RoomManager implements IRoomManager {
         //   this.logError(error);
         // }
 
-        try {
-            if (end && this._title) {
-                await fetch(
-                    `${config.CHIME_ROOM_API}/end?title=${encodeURIComponent(this._title)}`,
-                    {
-                        method: "POST",
-                    },
-                );
-            }
-        } catch (error: unknown) {
-            this._logger.error(error as string);
-        }
+        // try {
+        //     if (end && this._title) {
+        //         await fetch(
+        //             `${config.CHIME_ROOM_API}/end?title=${encodeURIComponent(this._title)}`,
+        //             {
+        //                 method: "POST",
+        //             },
+        //         );
+        //     }
+        // } catch (error: unknown) {
+        //     this._logger.error(error as string);
+        // }
 
         this._chimeEvents.roomLeft.publish();
     }
