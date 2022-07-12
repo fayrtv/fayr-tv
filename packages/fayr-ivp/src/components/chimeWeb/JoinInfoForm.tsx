@@ -50,6 +50,8 @@ export function JoinInfoForm({
                         {/* </a> */}
                     </div>
                     <div className={styles.JoinInfoFormControls}>
+                        Am <b>16.11. ab 17:25</b> kannst du hier mit deinen Freunden auf der
+                        virtuellen Couch das Testspiel gegen den <b>Brentford FC</b> verfolgen!
                         <div
                             style={{
                                 marginTop: "20px",
@@ -61,27 +63,27 @@ export function JoinInfoForm({
                                 Wie funktioniert das?
                             </a>
                         </div>
-                        <input
-                            ref={usernameInputRef}
-                            type="text"
-                            placeholder="Dein Name"
-                            value={username}
-                            onChange={(ev) => setUsername(ev.target.value)}
-                        />
-                        <input
-                            ref={roomTitleInputRef}
-                            type="text"
-                            placeholder="Code"
-                            value={roomTitle}
-                            onChange={(ev) => onRoomTitleChanged(ev.target.value)}
-                        />
-                        <button
-                            className="btn btn--secondary"
-                            disabled={!isValid || disableSubmit}
-                            onClick={onSubmit}
-                        >
-                            STARTEN
-                        </button>
+                        {/*<input*/}
+                        {/*    ref={usernameInputRef}*/}
+                        {/*    type="text"*/}
+                        {/*    placeholder="Dein Name"*/}
+                        {/*    value={username}*/}
+                        {/*    onChange={(ev) => setUsername(ev.target.value)}*/}
+                        {/*/>*/}
+                        {/*<input*/}
+                        {/*    ref={roomTitleInputRef}*/}
+                        {/*    type="text"*/}
+                        {/*    placeholder="Code"*/}
+                        {/*    value={roomTitle}*/}
+                        {/*    onChange={(ev) => onRoomTitleChanged(ev.target.value)}*/}
+                        {/*/>*/}
+                        {/*<button*/}
+                        {/*    className="btn btn--secondary"*/}
+                        {/*    disabled={!isValid || disableSubmit}*/}
+                        {/*    onClick={onSubmit}*/}
+                        {/*>*/}
+                        {/*    STARTEN*/}
+                        {/*</button>*/}
                     </div>
                 </div>
                 {/* <input type="text" placeholder="Playback URL" value={playbackURL} onChange={this.handlePlaybackURLChange} /> */}
