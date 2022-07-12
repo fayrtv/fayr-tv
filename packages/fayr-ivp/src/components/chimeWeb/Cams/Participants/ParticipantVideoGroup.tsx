@@ -23,10 +23,18 @@ export const ParticipantVideoGroup = ({ localVideoInfo, participants }: Props) =
             <Flex className={styles.ParticipantVideoGroup} direction="Column">
                 {participants.map((video, index) => {
                     if (localVideoInfo.replace && index === localVideoInfo.tile) {
-                        return <div style={style}>{localVideoInfo.node}</div>;
+                        return (
+                            <div key={index} style={style}>
+                                {localVideoInfo.node}
+                            </div>
+                        );
                     }
 
-                    return <div style={style}>{video}</div>;
+                    return (
+                        <div key={index} style={style}>
+                            {video}
+                        </div>
+                    );
                 })}
             </Flex>
         );
