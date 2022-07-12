@@ -61,7 +61,7 @@ export default function Tutorial({ show, setShow }: Props) {
             <Cell gridArea="TutorialTitle">
                 <h2>Anleitung</h2>
             </Cell>
-            <InfoRow index={1} infoText={<span>Öffne einen Raum für deine Mannschaft.</span>} />
+            <InfoRow index={1} infoText={<span>Gebe Name und Code ein und öffne damit einen Raum für deine Gruppe.</span>} />
             <InfoRow
                 index={2}
                 infoText={

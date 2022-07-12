@@ -50,8 +50,8 @@ export function JoinInfoForm({
                         {/* </a> */}
                     </div>
                     <div className={styles.JoinInfoFormControls}>
-                        Am <b>16.11. ab 15:25</b> kannst du hier mit deinen Freunden auf der
-                        virtuellen Couch das Testspiel gegen den <b>Brentford FC</b> verfolgen!
+                        Am <b>Samstag, 16. Juli 2022 ab 14:55 Uhr</b> kannst du hier mit deinen Freunden auf der
+                        virtuellen Couch das Testspiel gegen den <b>FC Brentford</b> verfolgen!
                         <div
                             style={{
                                 marginTop: "20px",
