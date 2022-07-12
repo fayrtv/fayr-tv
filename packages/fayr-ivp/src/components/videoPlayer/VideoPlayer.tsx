@@ -1,13 +1,16 @@
 import { isPlayerSupported, MediaPlayer, PlayerEventType, PlayerState } from "amazon-ivs-player";
 import classNames from "classnames";
+import { useInjection } from "inversify-react";
 import React, { MouseEventHandler } from "react";
 import { RoomMemberRole } from "types/Room";
 import { isAfterSpecificTimestamp, useTimedFeatureToggle } from "util/dateUtil";
+import Types from "types/inject";
 import { makeid } from "util/guidHelper";
 
 import useGlobalKeyHandler from "hooks/useGlobalKeyHandler";
 import useManyClickHandlers from "hooks/useManyClickHandlers";
 
+import IChimeEvents from "components/chime/interfaces/IChimeEvents";
 import Controls from "components/chimeWeb/Controls/Controls";
 import { EMOJI_SIZE } from "components/chimeWeb/Controls/emoji-reactions/EmojiReactionButton";
 import Emoji from "components/common/Emoji";
@@ -50,6 +53,8 @@ const VideoPlayer = ({
     const [fullScreen, setFullScreen] = React.useState(false);
 
     const { selectedEmojiReaction, reactionsDisabled } = React.useContext(SelectedReactionContext);
+
+    const chimeEvents = useInjection<IChimeEvents>(Types.IChimeEvents);
 
     const { reactionElements, addEmojiReaction } = useEmojiReactions(
         attendeeId,
@@ -101,6 +106,18 @@ const VideoPlayer = ({
         },
         [fullScreen],
     );
+
+    React.useEffect(() => {
+        const onRoomLeft = () => {
+            const videoPlayer = document.getElementById("video-player")! as HTMLVideoElement | null;
+
+            player?.pause();
+            videoPlayer?.pause();
+        };
+
+        chimeEvents.roomLeft.register(onRoomLeft);
+        return () => chimeEvents.roomLeft.unregister(onRoomLeft);
+    }, [chimeEvents]);
 
     const mediaPlayerScriptLoaded = React.useCallback(() => {
         const mediaPlayerPackage = (window as any).IVSPlayer;

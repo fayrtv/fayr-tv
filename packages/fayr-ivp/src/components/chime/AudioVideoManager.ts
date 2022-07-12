@@ -118,6 +118,7 @@ export class AudioVideoManager implements IAudioVideoManager, DeviceChangeObserv
     }
 
     private resetFields = () => {
+        this._audioVideo.stop();
         this._audioInputDevices = [];
         this._audioOutputDevices = [];
         this._videoInputDevices = [];
