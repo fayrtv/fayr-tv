@@ -113,7 +113,8 @@ export default function Tutorial({ show, setShow }: Props) {
                         <div className={styles.ActionDot}>!</div>
                         <span>
                             Für ein einwandfreies Erlebnis empfehlen wir dir die Verwendung auf
-                            einem <u>PC</u> mit Mikrofon und Webcam. Sorge am besten für eine{" "}
+                            einem <u>PC</u> mit Mikrofon und Webcam. Für ein optimales Erlebnis auf{" "}
+                            dem Handy nutze bitte den Landscape Modus. Sorge außerdem für eine{" "}
                             <u>stabile Internetverbindung</u>.
                         </span>
                     </Flex>
