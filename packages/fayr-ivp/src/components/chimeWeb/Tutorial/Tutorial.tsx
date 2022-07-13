@@ -64,7 +64,9 @@ export default function Tutorial({ show, setShow }: Props) {
             <InfoRow
                 index={1}
                 infoText={
-                    <span>Gib Name und Code ein und öffne damit einen Raum für deine Gruppe.</span>
+                    <span>
+                        Gib Name und Code ein und öffne damit einen Raum für deine Mannschaft.
+                    </span>
                 }
             />
             <InfoRow
