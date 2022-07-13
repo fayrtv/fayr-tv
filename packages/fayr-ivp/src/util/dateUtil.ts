@@ -20,6 +20,8 @@ export const useTimedFeatureToggle = ({
 }: TimedFeatureToggleParams) => {
     const [isEnabled, setEnabled] = useState(false);
 
+    const isSpecialTestDomain = window.location.hostname === "testing.fayrtv.com";
+
     useEffect(() => {
         const intervalHandle = setInterval(
             () =>
@@ -32,6 +34,10 @@ export const useTimedFeatureToggle = ({
         );
         return () => clearInterval(intervalHandle);
     }, [enabledBefore, enabledAfter]);
+
+    if (isSpecialTestDomain) {
+        return true;
+    }
 
     if (enabledInDevMode && isDevMode) {
         return true;
