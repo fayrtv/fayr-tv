@@ -17,6 +17,7 @@ import useSocket from "hooks/useSocket";
 import IAudioVideoManager from "components/chime/interfaces/IAudioVideoManager";
 import { SocketEventType } from "components/chime/interfaces/ISocketProvider";
 import { Role } from "components/chime/types";
+import { RosterContext } from "components/contexts/RosterContext";
 
 // Styles
 import styles from "./CamSection.module.scss";
@@ -158,8 +159,7 @@ export const CamSection = ({ joinInfo }: Props) => {
     }, [audioVideoManager.audioVideo]);
 
     // B04 repo compat section
-    const previousRoster = React.useRef<any>({});
-    const [roster, setRoster] = React.useState<Array<any>>([]);
+    const { previousRoster, roster, setRoster } = React.useContext(RosterContext);
 
     const findRosterSlot = React.useCallback(
         (attendeeId: any) => {

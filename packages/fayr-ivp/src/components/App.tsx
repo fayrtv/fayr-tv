@@ -20,6 +20,7 @@ import Join from "./chimeWeb/Intro/Join";
 import MeetingContainer from "./chimeWeb/Meeting/MeetingContainer";
 import ChatOpenContextProvider from "./contexts/ChatOpenContext";
 import IvpTranslationContextProvider from "./contexts/IvpTranslationContext";
+import RosterContextProvider from "./contexts/RosterContext";
 import SelectedReactionContextProvider from "./contexts/SelectedReactionContext";
 import SettingsViewOpenContext from "./contexts/SettingsViewOpenContext";
 
@@ -49,9 +50,11 @@ function MainIvpRouter() {
                         <ChatOpenContextProvider>
                             <SettingsViewOpenContext>
                                 <SocketContextProvider>
-                                    <SelectedReactionContextProvider>
-                                        <MeetingContainer />
-                                    </SelectedReactionContextProvider>
+                                    <RosterContextProvider>
+                                        <SelectedReactionContextProvider>
+                                            <MeetingContainer />
+                                        </SelectedReactionContextProvider>
+                                    </RosterContextProvider>
                                 </SocketContextProvider>
                             </SettingsViewOpenContext>
                         </ChatOpenContextProvider>
