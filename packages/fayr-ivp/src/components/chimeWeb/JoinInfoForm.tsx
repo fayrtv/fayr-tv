@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { VFB_STREAM_TIMINGS } from "config";
-import React, { MouseEventHandler } from "react";
+import React, { MouseEventHandler, useState } from "react";
 import { useTimedFeatureToggle } from "util/dateUtil";
 
 import { useIsMobile } from "components/mediaQueries";
@@ -40,7 +40,9 @@ export function JoinInfoForm({
 
     const setUsername = (newValue: string) => onUsernameChanged(newValue);
 
-    const isInvalidCodeError = new URLSearchParams(location.search).get("unknown-code") !== null;
+    const [isInvalidCodeError, setInvalidCodeError] = useState(
+        () => new URLSearchParams(location.search).get("unknown-code") !== null,
+    );
 
     return (
         <form action="">
@@ -88,7 +90,11 @@ export function JoinInfoForm({
                                     type="text"
                                     placeholder="Code"
                                     value={roomTitle}
-                                    onChange={(ev) => onRoomTitleChanged(ev.target.value)}
+                                    className={isInvalidCodeError ? styles.InputError : ""}
+                                    onChange={(ev) => {
+                                        onRoomTitleChanged(ev.target.value);
+                                        setInvalidCodeError(false);
+                                    }}
                                 />
                                 <button
                                     className="btn btn--secondary"
