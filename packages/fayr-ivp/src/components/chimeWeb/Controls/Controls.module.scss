@@ -71,6 +71,17 @@
         }
     }
 
+    .VfBIcon {
+        height: 55px;
+        position: absolute;
+        left: 15px;
+        bottom: 13px;
+
+        @media (max-width: mq.$largeScreens) {
+            display: none;
+        }
+    }
+
     .ControlsMinified {
         height: 100%;
         width: 100%;

@@ -100,7 +100,11 @@ const Controls: React.FC<Props> = ({ title, attendeeId, openSettings, fullScreen
             }}
             ref={controlsRef}
         >
-            <FayrLogo className={styles.FayrIcon} />
+            <img
+                src={require("../../../assets/vfb-logo.png")}
+                alt="VfB Banner"
+                className={styles.VfBIcon}
+            />
             {isMobile && isChatOpen && (
                 <Flex direction="Row" mainAlign="Start" className={styles.ControlsMinified}>
                     <Grid
