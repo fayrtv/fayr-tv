@@ -94,7 +94,7 @@ function App() {
                             </Switch>
                         </Router>
                     </IvpTranslationContextProvider>
-                    <ReactQueryDevtools initialIsOpen={false} />
+                    {/*<ReactQueryDevtools initialIsOpen={false} />*/}
                 </QueryClientProvider>
             </InversifyProvider>
         </div>
