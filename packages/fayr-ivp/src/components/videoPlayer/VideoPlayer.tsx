@@ -261,7 +261,6 @@ const VideoPlayer = ({
                     video={videoElement.current}
                     driftSyncStrategy={driftSyncStrategy}
                     role={role}
-                    title={title}
                     ssName={ssName}
                     baseHref={baseHref}
                 />

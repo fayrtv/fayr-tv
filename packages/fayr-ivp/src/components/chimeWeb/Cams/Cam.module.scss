@@ -14,13 +14,17 @@
     position: relative;
     border-radius: var(--radius-small);
 
+    @media (max-width: mq.$mobile) {
+        margin: 0;
+    }
+
     .preview {
         flex-grow: 1;
         width: 100%;
         height: 100%;
 
         @media (max-width: mq.$mobile) {
-            width: 50%;
+            width: 100%;
             place-self: center;
         }
 
