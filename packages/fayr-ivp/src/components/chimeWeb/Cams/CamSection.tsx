@@ -277,6 +277,10 @@ export const CamSection = ({ joinInfo }: Props) => {
     );
 
     React.useEffect(() => {
+        if (Object.entries(previousRoster.current).length > 0) {
+            return;
+        }
+
         const tempRoster: any[] = [];
         // eslint-disable-next-line
         Array.from(Array(config.CHIME_ROOM_MAX_ATTENDEE).keys()).map((_, index) => {
