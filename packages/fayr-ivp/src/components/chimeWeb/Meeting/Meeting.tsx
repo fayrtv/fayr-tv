@@ -89,7 +89,8 @@ const Meeting = ({
         }
     };
 
-    const camSection = <CamSection joinInfo={joinInfo} />;
+    const [fullScreen, setFullScreen] = React.useState(false);
+    const camSection = React.useMemo(() => <CamSection key="camSection" joinInfo={joinInfo} />, []);
 
     return (
         <>
@@ -105,6 +106,8 @@ const Meeting = ({
                             role={role}
                             openSettings={() => setShowSettings(true)}
                             title={title}
+                            fullScreen={fullScreen}
+                            setFullScreen={setFullScreen}
                         />
 
                         <Controls
@@ -116,9 +119,11 @@ const Meeting = ({
                         {!isMobilePortrait && <Chat title={title} userName={userName} />}
                     </div>
 
-                    <div className={`full-height pos-relative ${styles.CamContainer}`}>
-                        {camSection}
-                    </div>
+                    {!fullScreen && (
+                        <div className={`full-height pos-relative ${styles.CamContainer}`}>
+                            {camSection}
+                        </div>
+                    )}
 
                     {isMobilePortrait && <Chat title={title} userName={userName} />}
 
