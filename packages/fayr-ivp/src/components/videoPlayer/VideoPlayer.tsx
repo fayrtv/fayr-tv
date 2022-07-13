@@ -34,6 +34,8 @@ type Props = {
     ssName: string;
     baseHref: string;
     openSettings(): void;
+    fullScreen: boolean;
+    setFullScreen: (fs: boolean) => void;
 };
 
 const VideoPlayer = ({
@@ -45,11 +47,12 @@ const VideoPlayer = ({
     ssName,
     baseHref,
     openSettings,
+    fullScreen,
+    setFullScreen,
 }: Props) => {
     const videoElement = React.useRef<HTMLDivElement>(null);
     const [player, setPlayer] = React.useState<MediaPlayer>();
     const [paused, setPaused] = React.useState(false);
-    const [fullScreen, setFullScreen] = React.useState(false);
 
     const { selectedEmojiReaction, reactionsDisabled } = React.useContext(SelectedReactionContext);
 
@@ -209,13 +212,13 @@ const VideoPlayer = ({
             return;
         }
 
-        const cb = (_: Event) => setFullScreen((x) => !x);
+        const cb = (_: Event) => setFullScreen(!fullScreen);
 
         const currentVideoElement = videoElement.current;
         videoElement.current.onfullscreenchange = cb;
 
         return () => currentVideoElement?.removeEventListener("fullscreenchange", cb);
-    }, [videoElement]);
+    }, [fullScreen, setFullScreen, videoElement]);
 
     const onVideoClicked: MouseEventHandler = React.useCallback(
         (event) => {
