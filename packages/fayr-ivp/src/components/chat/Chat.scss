@@ -66,6 +66,10 @@
         width: 60%;
     }
 
+    @media (max-width: mq.$mobile) {
+        height: 20%;
+    }
+
     &.Closed {
         transform: translateX(100%);
     }

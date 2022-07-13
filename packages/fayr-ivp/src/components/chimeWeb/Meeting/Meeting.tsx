@@ -9,6 +9,7 @@ import Error from "components/chimeWeb/Error";
 import { MeetingStatus, MeetingMetaData } from "components/chimeWeb/Meeting/meetingTypes";
 import { formatMeetingSsKey } from "components/chimeWeb/Meeting/storage";
 import { JoinInfo } from "components/chimeWeb/types";
+import { useIsMobilePortrait } from "components/mediaQueries";
 
 // Styles
 import "../ChimeWeb.scss";
@@ -64,6 +65,8 @@ const Meeting = ({
     const socketProvider = useInjection<ISocketProvider>(Types.ISocketProvider);
     const attendeeId = useInjection<IRoomManager>(Types.IRoomManager).attendeeId;
 
+    const isMobilePortrait = useIsMobilePortrait();
+
     React.useEffect(() => {
         socketProvider.joinRoomSocket();
         setSocket(socketProvider);
@@ -110,12 +113,14 @@ const Meeting = ({
                             openSettings={() => setShowSettings(true)}
                         />
 
-                        <Chat title={title} userName={userName} />
+                        {!isMobilePortrait && <Chat title={title} userName={userName} />}
                     </div>
 
                     <div className={`full-height pos-relative ${styles.CamContainer}`}>
                         {camSection}
                     </div>
+
+                    {isMobilePortrait && <Chat title={title} userName={userName} />}
 
                     <Portal.Root />
 

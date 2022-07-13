@@ -1,6 +1,7 @@
 import * as config from "config";
 import React from "react";
 import { useMediaQuery } from "react-responsive";
+import { RoomMemberRole } from "types/Room";
 
 import { SupportButton } from "components/chimeWeb/Controls/Buttons/SupportButton";
 
@@ -9,9 +10,11 @@ import { Cell, FayrLogo, Flex, Grid } from "@fayr/common";
 import styles from "./Controls.module.scss";
 
 import { ChatOpenContext } from "../../contexts/ChatOpenContext";
+import { useIsMobileLandscape, useIsMobilePortrait } from "../../mediaQueries";
 // Buttons
 import CamToggleButton from "./Buttons/CamToggleButton";
 import ChatButton from "./Buttons/ChatButton";
+import EndPartyButton from "./Buttons/EndPartyButton";
 import MicrophoneToggleButton from "./Buttons/MicrophoneToggleButton";
 import SettingsButton from "./Buttons/SettingsButton";
 import SharePartyButton from "./Buttons/SharePartyButton";
@@ -28,6 +31,7 @@ type Props = {
 const Controls: React.FC<Props> = ({ title, attendeeId, openSettings, fullScreen = false }) => {
     const { isOpen: isChatOpen, set: setChatOpen } = React.useContext(ChatOpenContext);
 
+    const isMobileLandscape = useIsMobileLandscape();
     const isMobile = useMediaQuery({ maxWidth: 1024 });
 
     const controlsRef = React.useRef<HTMLDivElement>(null);
@@ -110,7 +114,7 @@ const Controls: React.FC<Props> = ({ title, attendeeId, openSettings, fullScreen
                     className={styles.VfBIcon}
                 />
             </a>
-            {isMobile && isChatOpen && (
+            {isMobileLandscape && isChatOpen && (
                 <Flex direction="Row" mainAlign="Start" className={styles.ControlsMinified}>
                     <Grid
                         className={styles.ControlsMinifiedBlock}
@@ -129,7 +133,7 @@ const Controls: React.FC<Props> = ({ title, attendeeId, openSettings, fullScreen
                     {chatButton}
                 </Flex>
             )}
-            {(!isMobile || (isMobile && !isChatOpen)) && buttons}
+            {(!isMobileLandscape || (isMobileLandscape && !isChatOpen)) && buttons}
         </Flex>
     );
 };
