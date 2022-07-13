@@ -106,7 +106,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.createMeeting
-      CodeUri: s3://vfb-testspiel-1/641dd014c50f7436f56651669a21b60d
+      CodeUri: s3://vfb-testspiel-3/38212744a624e48deaa64ead25a8889c
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
@@ -121,7 +121,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.join
-      CodeUri: s3://vfb-testspiel-1/641dd014c50f7436f56651669a21b60d
+      CodeUri: s3://vfb-testspiel-3/38212744a624e48deaa64ead25a8889c
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
@@ -139,7 +139,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.end
-      CodeUri: s3://vfb-testspiel-1/641dd014c50f7436f56651669a21b60d
+      CodeUri: s3://vfb-testspiel-3/38212744a624e48deaa64ead25a8889c
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
@@ -154,7 +154,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.attendee
-      CodeUri: s3://vfb-testspiel-1/641dd014c50f7436f56651669a21b60d
+      CodeUri: s3://vfb-testspiel-3/38212744a624e48deaa64ead25a8889c
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
@@ -172,7 +172,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.attendees
-      CodeUri: s3://vfb-testspiel-1/641dd014c50f7436f56651669a21b60d
+      CodeUri: s3://vfb-testspiel-3/38212744a624e48deaa64ead25a8889c
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
@@ -190,7 +190,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.addRating
-      CodeUri: s3://vfb-testspiel-1/641dd014c50f7436f56651669a21b60d
+      CodeUri: s3://vfb-testspiel-3/38212744a624e48deaa64ead25a8889c
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
@@ -316,7 +316,7 @@ Resources:
   OnConnectFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://vfb-testspiel-1/641dd014c50f7436f56651669a21b60d
+      CodeUri: s3://vfb-testspiel-3/38212744a624e48deaa64ead25a8889c
       Handler: index.onconnect
       Policies:
       - DynamoDBCrudPolicy:
@@ -335,7 +335,7 @@ Resources:
   AuthorizeFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://vfb-testspiel-1/641dd014c50f7436f56651669a21b60d
+      CodeUri: s3://vfb-testspiel-3/38212744a624e48deaa64ead25a8889c
       Handler: index.authorize
       Policies:
       - DynamoDBCrudPolicy:
@@ -367,7 +367,7 @@ Resources:
   OnDisconnectFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://vfb-testspiel-1/641dd014c50f7436f56651669a21b60d
+      CodeUri: s3://vfb-testspiel-3/38212744a624e48deaa64ead25a8889c
       Handler: index.ondisconnect
       Policies:
       - DynamoDBCrudPolicy:
@@ -386,7 +386,7 @@ Resources:
   SendMessageFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://vfb-testspiel-1/641dd014c50f7436f56651669a21b60d
+      CodeUri: s3://vfb-testspiel-3/38212744a624e48deaa64ead25a8889c
       Handler: index.sendmessage
       Policies:
       - DynamoDBCrudPolicy:
