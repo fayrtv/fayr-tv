@@ -103,11 +103,13 @@ const Controls: React.FC<Props> = ({ title, attendeeId, openSettings, fullScreen
             }}
             ref={controlsRef}
         >
-            <img
-                src={require("../../../assets/VfB-Heimtrikot.png")}
-                alt="Das neue VfB Heimtrikot"
-                className={styles.VfBIcon}
-            />
+            <a href="https://trikot.vfb.de/heim" target="_blank">
+                <img
+                    src={require("../../../assets/VfB-Heimtrikot.png")}
+                    alt="Das neue VfB Heimtrikot"
+                    className={styles.VfBIcon}
+                />
+            </a>
             {isMobile && isChatOpen && (
                 <Flex direction="Row" mainAlign="Start" className={styles.ControlsMinified}>
                     <Grid

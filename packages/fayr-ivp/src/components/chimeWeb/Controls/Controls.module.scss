@@ -72,10 +72,10 @@
     }
 
     .VfBIcon {
-        height: 55px;
+        height: 65px;
         position: absolute;
+        top: 7px;
         left: 15px;
-        bottom: 13px;
 
         @media (max-width: mq.$largeScreens) {
             display: none;
