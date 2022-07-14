@@ -1,5 +1,4 @@
 // Framework
-import { AudioVideoObserver, VideoTileState } from "amazon-chime-sdk-js";
 // Functionality
 import * as config from "config";
 import { useInjection } from "inversify-react";
@@ -23,15 +22,24 @@ import { Role } from "components/chime/types";
 import styles from "./CamSection.module.scss";
 
 import IRoomManager, { RosterMap } from "../../chime/interfaces/IRoomManager";
-import { JoinInfo, ForceMicChangeDto, ForceCamChangeDto } from "../types";
+import { ForceCamChangeDto, ForceMicChangeDto, JoinInfo } from "../types";
 // Components
 import LocalVideo from "./LocalVideo/LocalVideo";
 import ParticipantVideo from "./Participants/ParticipantVideo";
 import ParticipantVideoGroup from "./Participants/ParticipantVideoGroup";
-import { ActivityStateChangeDto } from "./types";
+import { ActivityState, ActivityStateChangeDto } from "./types";
 
 type Props = {
     joinInfo: JoinInfo;
+};
+
+type Roster = {
+    [attendeeId: string]: {
+        activityState: ActivityState;
+        attendeeId: string;
+        tileId: number;
+        videoEnabled: boolean;
+    };
 };
 
 export const CamSection = ({ joinInfo }: Props) => {
@@ -211,13 +219,11 @@ export const CamSection = ({ joinInfo }: Props) => {
                 }
 
                 const index = findRosterSlot(attendeeId);
-                const attendee = {
+                roster[index] = {
                     ...roster[index],
                     attendeeId,
                     ...newRoster[attendeeId],
                 };
-
-                roster[index] = attendee;
                 setRoster(roster);
             }
         },
@@ -236,13 +242,12 @@ export const CamSection = ({ joinInfo }: Props) => {
             }
 
             let index = findRosterSlot(tileState.boundAttendeeId);
-            const attendee = {
+            roster[index] = {
                 ...roster[index],
                 videoEnabled: tileState.active,
                 attendeeId: tileState.boundAttendeeId,
                 tileId: tileState.tileId,
             };
-            roster[index] = attendee;
             setRoster(roster);
 
             setTimeout(() => {
