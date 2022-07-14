@@ -1,0 +1,14 @@
+@use "../Controls.module.scss" as commonControls;
+
+.Button {
+    @include commonControls.CommonButton;
+
+    &.SupportContainer {
+        position: absolute;
+        z-index: 999999;
+        left: 20%;
+        right: 20%;
+        top: 20%;
+        bottom: 20%;
+    }
+}

@@ -116,7 +116,14 @@ export const ShareInvite = ({ title, onCancel }: Props) => {
                     }}
                 >
                     <Cell gridArea="Header">
-                        <h2>{tl.Invitation}</h2>
+                        <h1
+                            style={{
+                                color: "#ffffff",
+                                wordBreak: "keep-all",
+                            }}
+                        >
+                            {tl.Invitation}
+                        </h1>
                     </Cell>
                     <Cell gridArea="LinkCopyResponse" className={styles.LinkCopyResponse}>
                         {copied && (

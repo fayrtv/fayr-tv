@@ -2,6 +2,8 @@ import * as config from "config";
 import React from "react";
 import { useMediaQuery } from "react-responsive";
 
+import { SupportButton } from "components/chimeWeb/Controls/Buttons/SupportButton";
+
 import { Cell, FayrLogo, Flex, Grid } from "@fayr/common";
 
 import styles from "./Controls.module.scss";
@@ -80,6 +82,7 @@ const Controls: React.FC<Props> = ({ title, attendeeId, openSettings, fullScreen
             React.Fragment
         ),
         !fullScreen ? <SharePartyButton title={title} key="SharePartyButton" /> : React.Fragment,
+        !fullScreen ? <SupportButton /> : React.Fragment,
         !fullScreen ? chatButton : React.Fragment,
         config.ShowReactionButton ? <ReactionButton key="ReactionButton" /> : React.Fragment,
         // Voting Button
