@@ -65,7 +65,7 @@ export default function Tutorial({ show, setShow }: Props) {
                 index={1}
                 infoText={
                     <span>
-                        Gib Name und Code ein und öffne damit einen Raum für deine Mannschaft.
+                        Gib deinen Namen und deinen persönlichen Code ein und öffne damit einen Raum für deine Gruppe.
                     </span>
                 }
             />
