@@ -104,8 +104,8 @@ const Controls: React.FC<Props> = ({ title, attendeeId, openSettings, fullScreen
             ref={controlsRef}
         >
             <img
-                src={require("../../../assets/vfb-logo.png")}
-                alt="VfB Banner"
+                src={require("../../../assets/VfB-Heimtrikot.png")}
+                alt="Das neue VfB Heimtrikot"
                 className={styles.VfBIcon}
             />
             {isMobile && isChatOpen && (
@@ -114,11 +114,11 @@ const Controls: React.FC<Props> = ({ title, attendeeId, openSettings, fullScreen
                         className={styles.ControlsMinifiedBlock}
                         gridProperties={{
                             gridTemplateRows: "50% 50%",
-                            gridTemplateColumns: "50% 50%",
+                            gridTemplateColumns: "33% 33% 33%",
                             gap: 0,
                         }}
                     >
-                        {buttons.slice(0, 4).map((x, index) => (
+                        {buttons.slice(0, 5).map((x, index) => (
                             <Cell key={index} className={styles.MinifiedControlButtonCell}>
                                 {x}
                             </Cell>
