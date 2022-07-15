@@ -193,6 +193,7 @@ export default class RoomManager implements IRoomManager {
 
     public subscribeToRosterUpdate = (callback: RosterUpdateCallback) => {
         this._rosterUpdateCallbacks.push(callback);
+        this.publishRosterUpdate();
         return callback;
     };
 
