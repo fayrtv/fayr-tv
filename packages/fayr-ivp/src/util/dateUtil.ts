@@ -1,3 +1,4 @@
+import { Duration } from "moment";
 import moment from "moment/moment";
 import { useEffect, useState } from "react";
 import isDevMode from "util/isDevMode";
@@ -19,29 +20,41 @@ export const useTimedFeatureToggle = ({
     enabledInDevMode = false,
 }: TimedFeatureToggleParams) => {
     const [isEnabled, setEnabled] = useState(false);
+    const [timeRemaining, setTimeRemaining] = useState<Duration | undefined>(undefined);
 
     const isSpecialTestDomain = window.location.hostname === "testing.fayrtv.com";
 
     useEffect(() => {
-        const intervalHandle = setInterval(
-            () =>
-                setEnabled(
-                    enabledBefore
-                        ? !isAfterSpecificTimestamp(enabledBefore!)
-                        : isAfterSpecificTimestamp(enabledAfter!),
-                ),
-            10000,
-        );
+        const intervalHandle = setInterval(() => {
+            const enabled = enabledBefore
+                ? !isAfterSpecificTimestamp(enabledBefore!)
+                : isAfterSpecificTimestamp(enabledAfter!);
+
+            setEnabled(enabled);
+
+            setTimeRemaining(
+                enabled
+                    ? moment.duration(
+                          enabledAfter
+                              ? moment.utc().diff(moment.utc(enabledAfter))
+                              : moment.utc(enabledBefore).diff(moment.utc()),
+                      )
+                    : undefined,
+            );
+        }, 1000);
         return () => clearInterval(intervalHandle);
     }, [enabledBefore, enabledAfter]);
 
     if (isSpecialTestDomain) {
-        return true;
+        return { isEnabled: true, timeRemaining: undefined };
     }
 
     if (enabledInDevMode && isDevMode) {
-        return true;
+        return { isEnabled: true, timeRemaining: undefined };
     }
 
-    return isEnabled;
+    return {
+        isEnabled,
+        timeRemaining,
+    };
 };

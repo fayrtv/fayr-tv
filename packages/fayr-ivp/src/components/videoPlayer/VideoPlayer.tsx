@@ -1,10 +1,13 @@
 import { isPlayerSupported, MediaPlayer, PlayerEventType, PlayerState } from "amazon-ivs-player";
 import classNames from "classnames";
+import { VFB_STREAM_TIMINGS } from "config";
 import { useInjection } from "inversify-react";
+import { Duration } from "moment";
 import React, { MouseEventHandler } from "react";
+import styled from "styled-components";
 import { RoomMemberRole } from "types/Room";
 import Types from "types/inject";
-import { isAfterSpecificTimestamp, useTimedFeatureToggle } from "util/dateUtil";
+import { useTimedFeatureToggle } from "util/dateUtil";
 import { makeid } from "util/guidHelper";
 
 import useGlobalKeyHandler from "hooks/useGlobalKeyHandler";
@@ -23,7 +26,6 @@ import { EmojiReaction, useEmojiReactions } from "components/videoPlayer/useEmoj
 import styles from "./VideoPlayer.module.scss";
 
 import * as config from "../../config";
-import { VFB_STREAM_TIMINGS } from "../../config";
 import VideoPlayerControls from "./controls/VideoPlayerControls";
 
 type Props = {
@@ -38,6 +40,38 @@ type Props = {
     fullScreen: boolean;
     setFullScreen: (fs: boolean) => void;
 };
+
+function CountdownTimer({ timeRemaining }: { timeRemaining: Duration }) {
+    if (timeRemaining.as("s") <= 0) {
+        return <></>;
+    }
+
+    const parts = [];
+
+    if (timeRemaining.as("s") > 3600) {
+        parts.push(timeRemaining.hours().toString().padStart(2, "0"));
+    }
+    if (timeRemaining.as("s") > 60) {
+        parts.push(timeRemaining.minutes().toString().padStart(2, "0"));
+    }
+    parts.push(timeRemaining.seconds().toString().padStart(2, "0"));
+
+    return <h1 style={{ color: "white" }}>{parts.join(":")}</h1>;
+}
+
+function AdOverlay({ timeRemaining }: { timeRemaining: Duration | undefined }) {
+    if (!timeRemaining || timeRemaining.as("s") <= 0) {
+        return <></>;
+    }
+
+    const shouldFadeOut = timeRemaining.as("s") < 20;
+
+    return (
+        <div className={classNames(styles.AdOverlay, { [styles.FadeOutSlow]: shouldFadeOut })}>
+            {timeRemaining && <CountdownTimer timeRemaining={timeRemaining} />}
+        </div>
+    );
+}
 
 const VideoPlayer = ({
     videoStream,
@@ -249,7 +283,9 @@ const VideoPlayer = ({
     useGlobalKeyHandler("ArrowRight", fastForward);
     useGlobalKeyHandler([" ", "Space"], pause);
 
-    const shouldShowAdOverlay = useTimedFeatureToggle(VFB_STREAM_TIMINGS.StreamOverlayAd);
+    const { isEnabled: shouldShowAdOverlay, timeRemaining } = useTimedFeatureToggle(
+        VFB_STREAM_TIMINGS.StreamOverlayAd,
+    );
 
     return (
         <div ref={videoElement} className={styles.PlayerWrapper}>
@@ -269,7 +305,7 @@ const VideoPlayer = ({
                 />
             </div>
             <div className={classNames(styles.VideoPlayer, { [styles.fullscreen]: fullScreen })}>
-                {shouldShowAdOverlay && <div className={styles.AdOverlay} />}
+                {shouldShowAdOverlay && <AdOverlay timeRemaining={timeRemaining} />}
                 <video id="video-player" playsInline />
             </div>
             {reactionElements}
