@@ -9,7 +9,7 @@
 
 .JoinInfoFormControls {
     padding: 25px 40px;
-    @media (min-width: mq.$mobile) and (max-width: mq.$largeScreens) {
+    @media (min-width: mq.$mobile) and (max-width: mq.$largeScreens) and (max-height: mq.$tablet) {
         padding-top: 15px;
         padding-bottom: 15px;
     }
@@ -34,7 +34,7 @@
     margin-top: 146px;
     height: 109px;
 
-    @media (min-width: mq.$mobile) and (max-width: mq.$largeScreens) {
+    @media (min-width: mq.$mobile) and (max-width: mq.$largeScreens) and (max-height: mq.$tablet) {
         margin-top: 73px;
         height: 54px;
 

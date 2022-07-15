@@ -95,6 +95,8 @@ input:disabled {
     align-content: center;
     justify-content: center;
     text-align: var(--intro-text-align);
+
+    align-self: center;
 }
 
 .content__inner {
