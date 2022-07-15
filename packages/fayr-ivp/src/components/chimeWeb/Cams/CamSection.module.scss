@@ -3,12 +3,17 @@
 .CamSection {
     height: 100vh;
 
+    @media (max-width: mq.$mobile) {
+        display: flex;
+        flex-direction: row;
+    }
+
     .HighlightVideoWrapper {
         height: 25%;
 
         @media (max-width: mq.$mobile) {
-            height: 30%;
-            width: auto;
+            height: 100%;
+            width: 30%;
         }
     }
 
@@ -16,7 +21,8 @@
         height: 75%;
 
         @media (max-width: mq.$mobile) {
-            height: 70%;
+            height: 100%;
+            width: 70%;
         }
     }
 }

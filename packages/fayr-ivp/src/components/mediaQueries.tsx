@@ -23,9 +23,11 @@ export const TabletOrMobile: React.FC<Props> = (props) => (
     <MediaQueryComponent {...props} query={useIsTabletOrMobile} />
 );
 
-const MediaQueryComponent: React.FC<Props & {
-    query(): boolean;
-}> = ({ additionalCondition, children, query }) => (
+const MediaQueryComponent: React.FC<
+    Props & {
+        query(): boolean;
+    }
+> = ({ additionalCondition, children, query }) => (
     <>{query() && (additionalCondition ?? true) ? children : null}</>
 );
 
@@ -35,6 +37,11 @@ export const useIsTablet = () =>
     useMediaQuery({ minWidth: getSizeFromCss("mobile"), maxWidth: getSizeFromCss("largeScreens") });
 
 export const useIsMobile = () => useMediaQuery({ maxWidth: getSizeFromCss("largeScreens") });
+
+export const useIsMobilePortrait = () => useMediaQuery({ maxWidth: getSizeFromCss("mobile") });
+
+export const useIsMobileLandscape = () =>
+    useMediaQuery({ minWidth: getSizeFromCss("mobile"), maxWidth: 1224 });
 
 export const useIsTabletOrMobile = () => useMediaQuery({ maxWidth: 1224 });
 
