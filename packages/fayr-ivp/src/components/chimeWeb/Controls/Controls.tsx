@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import * as config from "config";
 import React from "react";
 import { useMediaQuery } from "react-responsive";
@@ -9,7 +10,7 @@ import { Cell, Flex, Grid } from "@fayr/common";
 import styles from "./Controls.module.scss";
 
 import { ChatOpenContext } from "../../contexts/ChatOpenContext";
-import { useIsMobileLandscape, useIsTabletPortrait } from "../../mediaQueries";
+import { useIsMobileLandscape, useIsMobilePortrait, useIsTabletPortrait } from "../../mediaQueries";
 // Buttons
 import CamToggleButton from "./Buttons/CamToggleButton";
 import ChatButton from "./Buttons/ChatButton";
@@ -30,6 +31,7 @@ const Controls: React.FC<Props> = ({ title, attendeeId, openSettings, fullScreen
     const { isOpen: isChatOpen, set: setChatOpen } = React.useContext(ChatOpenContext);
 
     const isMobileLandscape = useIsMobileLandscape();
+    const isMobilePortrait = useIsMobilePortrait();
     const isTabletPortrait = useIsTabletPortrait();
 
     const controlsRef = React.useRef<HTMLDivElement>(null);
@@ -85,7 +87,7 @@ const Controls: React.FC<Props> = ({ title, attendeeId, openSettings, fullScreen
         ),
         !fullScreen ? <SharePartyButton title={title} key="SharePartyButton" /> : React.Fragment,
         !fullScreen ? <SupportButton key="SupportButton" /> : React.Fragment,
-        !fullScreen ? chatButton : React.Fragment,
+        !isMobilePortrait && !fullScreen ? chatButton : React.Fragment,
         config.ShowReactionButton ? <ReactionButton key="ReactionButton" /> : React.Fragment,
         // Voting Button
         !fullScreen ? <VotingButton attendeeId={attendeeId} key="VotingButton" /> : React.Fragment,
@@ -95,7 +97,7 @@ const Controls: React.FC<Props> = ({ title, attendeeId, openSettings, fullScreen
         <Flex
             direction="Row"
             mainAlign="Center"
-            className={styles.Controls}
+            className={classNames(styles.Controls, { [styles.ChatOpen]: isChatOpen })}
             onClick={(e: any) => {
                 if (isMobileLandscape) {
                     e.stopPropagation();
@@ -105,13 +107,15 @@ const Controls: React.FC<Props> = ({ title, attendeeId, openSettings, fullScreen
             }}
             ref={controlsRef}
         >
-            <a href="https://trikot.vfb.de/heim" target="_blank">
-                <img
-                    src={require("../../../assets/VfB-Heimtrikot.png")}
-                    alt="Das neue VfB Heimtrikot"
-                    className={styles.VfBIcon}
-                />
-            </a>
+            {isTabletPortrait && !isChatOpen && (
+                <a href="https://trikot.vfb.de/heim" target="_blank">
+                    <img
+                        src={require("../../../assets/VfB-Heimtrikot.png")}
+                        alt="Das neue VfB Heimtrikot"
+                        className={styles.VfBIcon}
+                    />
+                </a>
+            )}
             {(isMobileLandscape || isTabletPortrait) && isChatOpen && !fullScreen && (
                 <Flex direction="Row" mainAlign="Start" className={styles.ControlsMinified}>
                     <Grid

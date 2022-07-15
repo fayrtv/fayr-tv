@@ -82,6 +82,22 @@
         }
     }
 
+    @media (max-width: mq.$largeScreens) and (min-width: mq.$mobile) {
+        padding-left: 90px;
+
+        &.ChatOpen {
+            padding-left: 2rem;
+        }
+
+        .VfBIcon {
+            display: block;
+            height: 45px;
+            position: absolute;
+            top: 3px;
+            left: 10px;
+        }
+    }
+
     .ControlsMinified {
         height: 100%;
         width: 100%;
