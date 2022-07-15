@@ -297,11 +297,18 @@ export const CamSection = ({ joinInfo }: Props) => {
         setRoster(tempRoster);
     }, []);
 
+    const [initialized, setInitialized] = React.useState(false);
+
     React.useEffect(() => {
         roomManager.subscribeToRosterUpdate(rosterCallback);
 
+        if (!initialized) {
+            roomManager.publishUpdate();
+            setInitialized(true);
+        }
+
         return () => roomManager.unsubscribeFromRosterUpdate(rosterCallback);
-    }, [rosterCallback]);
+    }, [initialized, rosterCallback]);
 
     React.useEffect(() => {
         const observer = {

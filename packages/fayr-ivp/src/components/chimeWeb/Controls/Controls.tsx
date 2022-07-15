@@ -1,11 +1,12 @@
 import React from "react";
 import { useMediaQuery } from "react-responsive";
 
-import { Cell, FayrLogo, Flex, Grid } from "@fayr/common";
+import { Cell, Flex, Grid } from "@fayr/common";
 
 import styles from "./Controls.module.scss";
 
 import { ChatOpenContext } from "../../contexts/ChatOpenContext";
+import { useIsMobileLandscape } from "../../mediaQueries";
 // Buttons
 import CamToggleButton from "./Buttons/CamToggleButton";
 import ChatButton from "./Buttons/ChatButton";
