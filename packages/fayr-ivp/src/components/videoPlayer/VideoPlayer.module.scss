@@ -85,13 +85,14 @@
         position: absolute;
         left: 0;
         right: 0;
-        top: 14%;
+        top: 12%;
         bottom: 10%;
-        z-index: 999;
-        background-image: url("../../assets/vfb-ad.jpg");
-        background-size: contain;
+        z-index: 0;
+        background-image: url("../../assets/vfb-arena-overlay.png");
+        background-size: cover;
         background-repeat: no-repeat;
-        background-position-y: center;
+        background-position: center;
+        background-clip: border-box;
         user-select: none;
     }
 }
