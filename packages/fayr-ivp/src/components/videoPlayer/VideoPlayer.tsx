@@ -4,10 +4,9 @@ import { VFB_STREAM_TIMINGS } from "config";
 import { useInjection } from "inversify-react";
 import { Duration } from "moment";
 import React, { MouseEventHandler } from "react";
-import styled from "styled-components";
 import { RoomMemberRole } from "types/Room";
 import Types from "types/inject";
-import { useTimedFeatureToggle } from "util/dateUtil";
+import { formatDiffAsCountdown, useTimedFeatureToggle } from "util/dateUtil";
 import { makeid } from "util/guidHelper";
 
 import useGlobalKeyHandler from "hooks/useGlobalKeyHandler";
@@ -41,24 +40,6 @@ type Props = {
     setFullScreen: (fs: boolean) => void;
 };
 
-function CountdownTimer({ timeRemaining }: { timeRemaining: Duration }) {
-    if (timeRemaining.as("s") <= 0) {
-        return <></>;
-    }
-
-    const parts = [];
-
-    if (timeRemaining.as("s") > 3600) {
-        parts.push(timeRemaining.hours().toString().padStart(2, "0"));
-    }
-    if (timeRemaining.as("s") > 60) {
-        parts.push(timeRemaining.minutes().toString().padStart(2, "0"));
-    }
-    parts.push(timeRemaining.seconds().toString().padStart(2, "0"));
-
-    return <h1 style={{ color: "white" }}>{parts.join(":")}</h1>;
-}
-
 function AdOverlay({ timeRemaining }: { timeRemaining: Duration | undefined }) {
     if (!timeRemaining || timeRemaining.as("s") <= 0) {
         return <></>;
@@ -68,7 +49,9 @@ function AdOverlay({ timeRemaining }: { timeRemaining: Duration | undefined }) {
 
     return (
         <div className={classNames(styles.AdOverlay, { [styles.FadeOutSlow]: shouldFadeOut })}>
-            {timeRemaining && <CountdownTimer timeRemaining={timeRemaining} />}
+            {timeRemaining && (
+                <h1 style={{ color: "white" }}>{formatDiffAsCountdown(timeRemaining)}</h1>
+            )}
         </div>
     );
 }

@@ -41,7 +41,7 @@ export const useTimedFeatureToggle = ({
             setTimeRemaining(
                 moment.duration(
                     enabledAfter
-                        ? moment.utc().diff(moment.utc(enabledAfter))
+                        ? moment.utc(enabledAfter).diff(moment.utc())
                         : moment.utc(enabledBefore).diff(moment.utc()),
                 ),
             );
@@ -67,4 +67,22 @@ export const useTimedFeatureToggle = ({
         isEnabled,
         timeRemaining,
     };
+};
+
+export const formatDiffAsCountdown = (timeRemaining: Duration): string => {
+    if (timeRemaining.as("s") <= 0) {
+        return "";
+    }
+
+    const parts = [];
+
+    if (timeRemaining.as("s") > 3600) {
+        parts.push(timeRemaining.hours().toString().padStart(2, "0"));
+    }
+    if (timeRemaining.as("s") > 60) {
+        parts.push(timeRemaining.minutes().toString().padStart(2, "0"));
+    }
+    parts.push(timeRemaining.seconds().toString().padStart(2, "0"));
+
+    return parts.join(":");
 };
