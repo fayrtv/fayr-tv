@@ -11,10 +11,6 @@ export const Desktop: React.FC<Props> = (props) => (
     <MediaQueryComponent {...props} query={useIsDesktop} />
 );
 
-export const Tablet: React.FC<Props> = (props) => (
-    <MediaQueryComponent {...props} query={useIsTablet} />
-);
-
 export const Mobile: React.FC<Props> = (props) => (
     <MediaQueryComponent {...props} query={useIsMobile} />
 );
@@ -33,7 +29,7 @@ const MediaQueryComponent: React.FC<
 
 export const useIsDesktop = () => useMediaQuery({ minWidth: getSizeFromCss("largeScreens") + 1 });
 
-export const useIsTablet = () =>
+export const useIsTabletPortrait = () =>
     useMediaQuery({ minWidth: getSizeFromCss("mobile"), maxWidth: getSizeFromCss("largeScreens") });
 
 export const useIsMobile = () => useMediaQuery({ maxWidth: getSizeFromCss("largeScreens") });
@@ -41,7 +37,7 @@ export const useIsMobile = () => useMediaQuery({ maxWidth: getSizeFromCss("large
 export const useIsMobilePortrait = () => useMediaQuery({ maxWidth: getSizeFromCss("mobile") });
 
 export const useIsMobileLandscape = () =>
-    useMediaQuery({ minWidth: getSizeFromCss("mobile"), maxWidth: 1224 });
+    useMediaQuery({ minWidth: getSizeFromCss("mobile"), maxWidth: 1224, maxHeight: 500 });
 
 export const useIsTabletOrMobile = () => useMediaQuery({ maxWidth: 1224 });
 

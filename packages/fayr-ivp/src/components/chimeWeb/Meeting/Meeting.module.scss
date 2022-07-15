@@ -68,6 +68,10 @@
 
         width: 355px;
 
+        @media (min-width: mq.$mobile) and (max-width: mq.$largeScreens) {
+            width: auto !important;
+        }
+
         > div {
             height: 100%;
 

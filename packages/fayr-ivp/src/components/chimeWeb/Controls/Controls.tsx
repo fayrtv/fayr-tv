@@ -9,7 +9,7 @@ import { Cell, Flex, Grid } from "@fayr/common";
 import styles from "./Controls.module.scss";
 
 import { ChatOpenContext } from "../../contexts/ChatOpenContext";
-import { useIsMobileLandscape } from "../../mediaQueries";
+import { useIsMobileLandscape, useIsTabletPortrait } from "../../mediaQueries";
 // Buttons
 import CamToggleButton from "./Buttons/CamToggleButton";
 import ChatButton from "./Buttons/ChatButton";
@@ -30,7 +30,7 @@ const Controls: React.FC<Props> = ({ title, attendeeId, openSettings, fullScreen
     const { isOpen: isChatOpen, set: setChatOpen } = React.useContext(ChatOpenContext);
 
     const isMobileLandscape = useIsMobileLandscape();
-    const isMobile = useMediaQuery({ maxWidth: 1024 });
+    const isTabletPortrait = useIsTabletPortrait();
 
     const controlsRef = React.useRef<HTMLDivElement>(null);
 
@@ -70,7 +70,7 @@ const Controls: React.FC<Props> = ({ title, attendeeId, openSettings, fullScreen
                 controlRef.removeEventListener("touchmove", handleTouchMove);
             };
         }
-    }, [isChatOpen, isMobile, setChatOpen]);
+    }, [isChatOpen, isMobileLandscape, setChatOpen]);
 
     const chatButton = <ChatButton key="ChatButton" />;
 
@@ -97,7 +97,7 @@ const Controls: React.FC<Props> = ({ title, attendeeId, openSettings, fullScreen
             mainAlign="Center"
             className={styles.Controls}
             onClick={(e: any) => {
-                if (isMobile) {
+                if (isMobileLandscape) {
                     e.stopPropagation();
                     e.preventDefault();
                     setChatOpen(!isChatOpen);
@@ -112,7 +112,7 @@ const Controls: React.FC<Props> = ({ title, attendeeId, openSettings, fullScreen
                     className={styles.VfBIcon}
                 />
             </a>
-            {isMobileLandscape && isChatOpen && !fullScreen && (
+            {(isMobileLandscape || isTabletPortrait) && isChatOpen && !fullScreen && (
                 <Flex direction="Row" mainAlign="Start" className={styles.ControlsMinified}>
                     <Grid
                         className={styles.ControlsMinifiedBlock}
@@ -131,9 +131,9 @@ const Controls: React.FC<Props> = ({ title, attendeeId, openSettings, fullScreen
                     {chatButton}
                 </Flex>
             )}
-            {(!isMobileLandscape ||
-                (isMobileLandscape && !isChatOpen) ||
-                (isMobileLandscape && fullScreen)) &&
+            {(!(isMobileLandscape || isTabletPortrait) ||
+                ((isMobileLandscape || isTabletPortrait) && !isChatOpen) ||
+                ((isMobileLandscape || isTabletPortrait) && fullScreen)) &&
                 buttons}
         </Flex>
     );
