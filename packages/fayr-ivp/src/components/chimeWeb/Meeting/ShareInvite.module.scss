@@ -18,6 +18,11 @@
         color: var(--color-white);
 
         padding: 2rem 5rem;
+
+        @media (max-height: mq.$largeScreens) and (min-width: mq.$largeScreens) {
+            width: 50%;
+        }
+
         .LinkCopyResponse {
             display: grid;
             place-items: center;
