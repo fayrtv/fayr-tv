@@ -1,3 +1,5 @@
+@use "../mediaQueries" as mq;
+
 .JoinInfoForm {
     > div {
         display: grid;
@@ -7,6 +9,10 @@
 
 .JoinInfoFormControls {
     padding: 25px 40px;
+    @media (min-width: mq.$mobile) and (max-width: mq.$largeScreens) {
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
 }
 
 .NewsletterBox {
@@ -27,6 +33,16 @@
     position: relative;
     margin-top: 146px;
     height: 109px;
+
+    @media (min-width: mq.$mobile) and (max-width: mq.$largeScreens) {
+        margin-top: 73px;
+        height: 54px;
+
+        > img {
+            bottom: -25px;
+            transform: scale(0.5);
+        }
+    }
 }
 
 .Banner {
@@ -46,9 +62,9 @@
 }
 
 .ErrorMessage {
-    color: #D30029;
+    color: #d30029;
 }
 
 .InputError {
-    border: 2px solid #D30029;
+    border: 2px solid #d30029;
 }

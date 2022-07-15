@@ -20,11 +20,11 @@ const End = () => {
                 <div className="content__inner">
                     <div className={styles.BannerStripe}>
                         {/* <a href="./"> */}
-                            <img
-                                src={require("../../assets/vfb-logo.png")}
-                                alt="VfB Banner"
-                                className={styles.Banner}
-                            />
+                        <img
+                            src={require("../../assets/vfb-logo.png")}
+                            alt="VfB Banner"
+                            className={styles.Banner}
+                        />
                         {/* </a> */}
                     </div>
                     <div className={styles.JoinInfoFormControls}>
