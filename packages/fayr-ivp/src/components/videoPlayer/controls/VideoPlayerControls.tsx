@@ -102,7 +102,7 @@ export const VideoPlayerControls = ({
             >
                 <EndPartyButton ssName={ssName} role={role} baseHref={baseHref} title={title} />
 
-                <Flex direction="Row">
+                <Flex className={styles.PlayerControls} direction="Row">
                     {streamControl}
 
                     <QualityPicker player={player} />

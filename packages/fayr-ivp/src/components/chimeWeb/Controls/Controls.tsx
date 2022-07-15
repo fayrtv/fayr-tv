@@ -28,6 +28,7 @@ type Props = {
 const Controls: React.FC<Props> = ({ title, attendeeId, openSettings, fullScreen = false }) => {
     const { isOpen: isChatOpen, set: setChatOpen } = React.useContext(ChatOpenContext);
 
+    const isMobileLandscape = useIsMobileLandscape();
     const isMobile = useMediaQuery({ maxWidth: 1024 });
 
     const controlsRef = React.useRef<HTMLDivElement>(null);
@@ -122,7 +123,10 @@ const Controls: React.FC<Props> = ({ title, attendeeId, openSettings, fullScreen
                     {chatButton}
                 </Flex>
             )}
-            {(!isMobile || (isMobile && !isChatOpen)) && buttons}
+            {(!isMobileLandscape ||
+                (isMobileLandscape && !isChatOpen) ||
+                (isMobileLandscape && fullScreen)) &&
+                buttons}
         </Flex>
     );
 };
