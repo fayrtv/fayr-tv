@@ -56,7 +56,12 @@ export const useTimedFeatureToggle = ({
     }, [enabledBefore, enabledAfter]);
 
     if (isSpecialTestDomain) {
-        return { isEnabled: true, timeRemaining: undefined };
+        if (enabledAfter) {
+            return { isEnabled: true, timeRemaining: undefined };
+        }
+        if (enabledBefore) {
+            return { isEnabled: false, timeRemaining: undefined };
+        }
     }
 
     if (enabledInDevMode && isDevMode) {
