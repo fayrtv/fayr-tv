@@ -107,7 +107,7 @@ const Controls: React.FC<Props> = ({ title, attendeeId, openSettings, fullScreen
             }}
             ref={controlsRef}
         >
-            {isTabletPortrait && !isChatOpen && (
+            {((isTabletPortrait && !isChatOpen) || !isTabletPortrait) && (
                 <a href="https://trikot.vfb.de/heim" target="_blank">
                     <img
                         src={require("../../../assets/VfB-Heimtrikot.png")}
