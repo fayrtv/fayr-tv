@@ -18,6 +18,7 @@ export default interface IRoomManager {
     subscribeToRosterUpdate(callback: RosterUpdateCallback): void;
     unsubscribeFromRosterUpdate(callback: RosterUpdateCallback): void;
     reInitializeMeetingSession(joinInfo: JoinInfo, name: string): Promise<void>;
+    publishUpdate(): void;
 
     joinRoom(element: HTMLAudioElement): Promise<void>;
     createRoom: (

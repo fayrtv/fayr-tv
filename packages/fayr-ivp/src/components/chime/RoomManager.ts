@@ -204,9 +204,10 @@ export default class RoomManager implements IRoomManager {
 
     public subscribeToRosterUpdate = (callback: RosterUpdateCallback) => {
         this._rosterUpdateCallbacks.push(callback);
-        this.publishRosterUpdate()();
         return callback;
     };
+
+    public publishUpdate = () => this.publishRosterUpdate()();
 
     public unsubscribeFromRosterUpdate(callback: RosterUpdateCallback) {
         const index = this._rosterUpdateCallbacks.indexOf(callback);

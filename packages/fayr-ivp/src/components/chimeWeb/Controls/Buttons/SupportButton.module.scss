@@ -1,7 +1,22 @@
 @use "../Controls.module.scss" as commonControls;
+@use "../../../mediaQueries" as mediaQueries;
 
 .Button {
     @include commonControls.CommonButton;
+
+    @media (max-width: mediaQueries.$largeScreens) {
+        > svg {
+            height: 100%;
+            width: 100%;
+        }
+    }
+
+    @media (min-width: mediaQueries.$largeScreens) {
+        > svg {
+            height: calc(100% - 0.5rem);
+            width: calc(100% - 0.5rem);
+        }
+    }
 
     &.SupportContainer {
         position: absolute;

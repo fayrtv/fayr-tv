@@ -1,20 +1,18 @@
 import * as config from "config";
 import React from "react";
 import { useMediaQuery } from "react-responsive";
-import { RoomMemberRole } from "types/Room";
 
 import { SupportButton } from "components/chimeWeb/Controls/Buttons/SupportButton";
 
-import { Cell, FayrLogo, Flex, Grid } from "@fayr/common";
+import { Cell, Flex, Grid } from "@fayr/common";
 
 import styles from "./Controls.module.scss";
 
 import { ChatOpenContext } from "../../contexts/ChatOpenContext";
-import { useIsMobileLandscape, useIsMobilePortrait } from "../../mediaQueries";
+import { useIsMobileLandscape } from "../../mediaQueries";
 // Buttons
 import CamToggleButton from "./Buttons/CamToggleButton";
 import ChatButton from "./Buttons/ChatButton";
-import EndPartyButton from "./Buttons/EndPartyButton";
 import MicrophoneToggleButton from "./Buttons/MicrophoneToggleButton";
 import SettingsButton from "./Buttons/SettingsButton";
 import SharePartyButton from "./Buttons/SharePartyButton";
