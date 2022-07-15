@@ -112,7 +112,7 @@ const Controls: React.FC<Props> = ({ title, attendeeId, openSettings, fullScreen
                     className={styles.VfBIcon}
                 />
             </a>
-            {isMobileLandscape && isChatOpen && (
+            {isMobileLandscape && isChatOpen && !fullScreen && (
                 <Flex direction="Row" mainAlign="Start" className={styles.ControlsMinified}>
                     <Grid
                         className={styles.ControlsMinifiedBlock}
@@ -131,7 +131,10 @@ const Controls: React.FC<Props> = ({ title, attendeeId, openSettings, fullScreen
                     {chatButton}
                 </Flex>
             )}
-            {(!isMobileLandscape || (isMobileLandscape && !isChatOpen)) && buttons}
+            {(!isMobileLandscape ||
+                (isMobileLandscape && !isChatOpen) ||
+                (isMobileLandscape && fullScreen)) &&
+                buttons}
         </Flex>
     );
 };

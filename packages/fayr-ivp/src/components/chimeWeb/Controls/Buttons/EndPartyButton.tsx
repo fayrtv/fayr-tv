@@ -42,6 +42,10 @@ const ExitSpan = styled.span`
     font-size: 2rem;
     font-weight: 500;
     color: white;
+
+    @media (max-width: 480px) {
+        font-size: 1.5rem;
+    }
 `;
 
 type Props = {
