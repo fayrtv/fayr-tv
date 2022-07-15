@@ -1,3 +1,5 @@
+@use "../../mediaQueries" as mq;
+
 .ShareInviteContainer {
     position: absolute;
     height: 100vh;
@@ -49,11 +51,16 @@
             }
         }
 
-        .CloseButton {
-            background: rgb(0, 0, 0, 0.5);
-            padding: 5px;
-            border-radius: 5px;
-            cursor: pointer;
+        .CloseButtonContainer {
+            display: grid;
+            place-items: center;
+
+            .CloseButton {
+                background: rgb(0, 0, 0, 0.5);
+                padding: 5px;
+                border-radius: 5px;
+                cursor: pointer;
+            }
         }
     }
 }

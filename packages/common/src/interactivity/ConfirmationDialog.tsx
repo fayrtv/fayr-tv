@@ -11,6 +11,7 @@ const ConfirmationDialogWrapper = styled(Flex)`
 `;
 
 const MarginSpan = styled.span`
+    color: white;
     margin: 1em 0;
 `;
 
@@ -36,10 +37,10 @@ const ConfirmationDialog = ({ text, onConfirm, onDeny }: Props) => {
             <MarginSpan>{text}</MarginSpan>
             <Flex direction="Row" space="Around">
                 <Button className="btn btn--primary" onClick={onConfirm}>
-                    Ja
+                    <span color="white">Ja</span>
                 </Button>
                 <Button className="btn btn--secondary" onClick={onDeny}>
-                    Nein
+                    <span color="white">Nein</span>
                 </Button>
             </Flex>
         </ConfirmationDialogWrapper>
