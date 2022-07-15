@@ -86,7 +86,7 @@ const Controls: React.FC<Props> = ({ title, attendeeId, openSettings, fullScreen
             React.Fragment
         ),
         !fullScreen ? <SharePartyButton title={title} key="SharePartyButton" /> : React.Fragment,
-        !fullScreen ? <SupportButton /> : React.Fragment,
+        !fullScreen ? <SupportButton key="SupportButton" /> : React.Fragment,
         !fullScreen ? chatButton : React.Fragment,
         config.ShowReactionButton ? <ReactionButton key="ReactionButton" /> : React.Fragment,
         // Voting Button
