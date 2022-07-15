@@ -1,3 +1,5 @@
+@use "../../mediaQueries" as mq;
+
 .ChatInput {
     display: flex;
     flex-direction: row;
@@ -54,6 +56,10 @@
             bottom: calc(100% + 10px);
 
             z-index: 500;
+
+            @media (max-width: mq.$mobile) {
+                right: 0;
+            }
         }
 
         & input {
