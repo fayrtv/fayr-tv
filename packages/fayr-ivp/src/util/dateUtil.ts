@@ -32,17 +32,27 @@ export const useTimedFeatureToggle = ({
 
             setEnabled(enabled);
 
+            if ((enabledAfter && enabled) || (enabledBefore && !enabled)) {
+                setTimeRemaining(undefined);
+                clearInterval(intervalHandle);
+                return;
+            }
+
             setTimeRemaining(
-                enabled
-                    ? moment.duration(
-                          enabledAfter
-                              ? moment.utc().diff(moment.utc(enabledAfter))
-                              : moment.utc(enabledBefore).diff(moment.utc()),
-                      )
-                    : undefined,
+                moment.duration(
+                    enabledAfter
+                        ? moment.utc().diff(moment.utc(enabledAfter))
+                        : moment.utc(enabledBefore).diff(moment.utc()),
+                ),
             );
         }, 1000);
-        return () => clearInterval(intervalHandle);
+        return () => {
+            try {
+                clearInterval(intervalHandle);
+            } catch (_) {
+                // ok
+            }
+        };
     }, [enabledBefore, enabledAfter]);
 
     if (isSpecialTestDomain) {
