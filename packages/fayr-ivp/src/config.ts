@@ -9,7 +9,7 @@ export const VFB_STREAM_TIMINGS: Record<TimingValues, TimedFeatureToggleParams> 
         enabledBefore: "2022-07-16T14:55:00+02:00",
     },
     AllowToJoin: {
-        enabledAfter: "2022-07-16T14:40:00+02:00",
+        enabledAfter: "2022-07-16T08:40:00+02:00",
         enabledInDevMode: true,
     },
 };
