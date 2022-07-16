@@ -36,6 +36,8 @@ export class CodeNotAllowedError extends Error {
     }
 }
 
+export type AttendeeRosterCallback = (attendeeRoster: any) => any;
+
 @injectable()
 export default class RoomManager implements IRoomManager {
     private _configuration: Nullable<MeetingSessionConfiguration> = null;
@@ -53,6 +55,8 @@ export default class RoomManager implements IRoomManager {
     private _name: Nullable<string> = null;
     private _region: Nullable<string> = null;
     private _meetingSession: Nullable<DefaultMeetingSession> = null;
+
+    private _joinInfo: Nullable<JoinInfo> = null;
 
     private _audioVideoManager: IAudioVideoManager;
     private _logger: Logger;
@@ -188,6 +192,7 @@ export default class RoomManager implements IRoomManager {
     }
 
     public async reInitializeMeetingSession(joinInfo: JoinInfo, name: string) {
+        this._joinInfo = joinInfo;
         this._configuration = new MeetingSessionConfiguration(joinInfo.Meeting, joinInfo.Attendee);
         await this.initializeMeetingSession(this._configuration);
 
@@ -216,6 +221,135 @@ export default class RoomManager implements IRoomManager {
         }
     }
 
+    private _attendeeRoster: any = [];
+    private _previousRoster: any = [];
+
+    private findRosterSlot = (attendeeId: any) => {
+        let index;
+        for (index = 0; index < this._attendeeRoster.length; index++) {
+            if (this._attendeeRoster[index].attendeeId === attendeeId) {
+                return index;
+            }
+        }
+        for (index = 0; index < config.CHIME_ROOM_MAX_ATTENDEE; index++) {
+            if (!this._attendeeRoster[index]?.attendeeId) {
+                return index;
+            }
+        }
+        return 0;
+    };
+
+    private _attendeeRosterCallbacks: Array<AttendeeRosterCallback> = [];
+
+    public registerAttendeeRosterCallback = (cb: AttendeeRosterCallback) =>
+        this._attendeeRosterCallbacks.push(cb);
+
+    public unRegisterAttendeeRosterCallback = (cb: AttendeeRosterCallback) => {
+        const index = this._attendeeRosterCallbacks.indexOf(cb);
+        if (index !== -1) {
+            this._attendeeRosterCallbacks.splice(index, 1);
+        }
+    };
+
+    public publishAttendeeRoster = () => {
+        for (let cb of this._attendeeRosterCallbacks) {
+            cb(this._attendeeRoster);
+        }
+    };
+
+    private rosterCallback = (newRoster: any) => {
+        if (Object.keys(newRoster).length > 2) {
+            if (config.DEBUG) console.log("More than 2");
+        }
+
+        if (Object.keys(newRoster).length < Object.keys(this._previousRoster).length) {
+            if (config.DEBUG) console.log("Attendee(s) left");
+            const differ = Object.keys(this._previousRoster).filter(
+                (k) => this._previousRoster[k] !== newRoster[k],
+            );
+            if (config.DEBUG) console.log(differ);
+
+            if (differ.length) {
+                let i;
+                for (i in differ) {
+                    const index = this.findRosterSlot(differ[i]);
+                    this._attendeeRoster[index] = {
+                        videoElement: this._attendeeRoster[index].videoElement,
+                    };
+                    this.publishAttendeeRoster();
+                }
+            }
+        }
+
+        this._previousRoster = Object.assign({}, newRoster);
+
+        let attendeeId;
+        for (attendeeId in newRoster) {
+            // Exclude self
+            if (attendeeId === this._joinInfo?.Attendee?.AttendeeId ?? "") {
+                continue;
+            }
+
+            // exclude empty name
+            if (!newRoster[attendeeId].name) {
+                continue;
+            }
+
+            const index = this.findRosterSlot(attendeeId);
+            this._attendeeRoster[index] = {
+                ...this._attendeeRoster[index],
+                attendeeId,
+                ...newRoster[attendeeId],
+            };
+            this.publishAttendeeRoster();
+        }
+    };
+
+    private videoTileDidUpdateCallback = (tileState: any) => {
+        if (
+            !tileState.boundAttendeeId ||
+            tileState.localTile ||
+            tileState.isContent ||
+            !tileState.tileId
+        ) {
+            return;
+        }
+
+        let index = this.findRosterSlot(tileState.boundAttendeeId);
+        this._attendeeRoster[index] = {
+            ...this._attendeeRoster[index],
+            videoEnabled: tileState.active,
+            attendeeId: tileState.boundAttendeeId,
+            tileId: tileState.tileId,
+        };
+        this.publishAttendeeRoster();
+
+        setTimeout(() => {
+            if (config.DEBUG) console.log(this._attendeeRoster[index]);
+            const videoElement = document.getElementById(`video_${tileState.boundAttendeeId}`);
+            if (videoElement) {
+                this._audioVideoManager.audioVideo.bindVideoElement(
+                    tileState.tileId,
+                    videoElement as any,
+                );
+            }
+        }, 2000);
+    };
+
+    private videoTileWasRemovedCallback = (tileId: any) => {
+        // Find the removed tileId in the roster and mark the video as disabled.
+        // eslint-disable-next-line
+        this._attendeeRoster.find((o: any, i: number) => {
+            if (o.tileId === tileId) {
+                this._attendeeRoster[i].videoEnabled = false;
+                this.publishAttendeeRoster();
+                if (config.DEBUG) {
+                    console.log(`Tile was removed ${tileId}`);
+                }
+            }
+        });
+    };
+
     private async initializeMeetingSession(configuration: MeetingSessionConfiguration) {
         const deviceController = new DefaultDeviceController(this._logger);
         this._meetingSession = new DefaultMeetingSession(
@@ -229,6 +363,8 @@ export default class RoomManager implements IRoomManager {
         this._audioVideoManager.audioVideo = audioVideo;
 
         await this._audioVideoManager.initializeMeetingSession();
+
+        this.subscribeToRosterUpdate(this.rosterCallback);
 
         const observer: AudioVideoObserver = {
             videoTileDidUpdate: (tileState: VideoTileState) => {
@@ -262,7 +398,13 @@ export default class RoomManager implements IRoomManager {
             },
         };
 
+        const compatObserver = {
+            videoTileDidUpdate: this.videoTileDidUpdateCallback,
+            videoTileWasRemoved: this.videoTileWasRemovedCallback,
+        };
+
         audioVideo.addObserver(observer);
+        audioVideo.addObserver(compatObserver);
 
         audioVideo.realtimeSubscribeToAttendeeIdPresence((presentAttendeeId, present) => {
             if (!present) {
