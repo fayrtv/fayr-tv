@@ -2,7 +2,7 @@ import { MeetingSessionStatusCode } from "amazon-chime-sdk-js";
 import AudioVideoObserver from "amazon-chime-sdk-js/build/audiovideoobserver/AudioVideoObserver";
 import * as config from "config";
 import { useInjection } from "inversify-react";
-import React from "react";
+import React, { useState } from "react";
 import { Redirect, RouteComponentProps, useRouteMatch, withRouter } from "react-router-dom";
 import styled from "styled-components";
 import Types from "types/inject";
@@ -22,6 +22,25 @@ import IAudioVideoManager from "../../chime/interfaces/IAudioVideoManager";
 import SettingsView from "./Settings/SettingsView";
 import { formatMeetingSsKey } from "./storage";
 
+const AlreadyFullScreen = styled.div`
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 999;
+    height: 2em;
+    width: 100%;
+    text-align: center;
+    overflow: unset;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+
+    // Transparent Overlay
+`;
+
 const SettingsViewContainer = styled.div`
     display: grid;
     place-content: center;
@@ -37,6 +56,7 @@ export const MeetingContainer = ({
     roomTitle,
     history,
 }: PublicProps & { history: RouteComponentProps["history"] }) => {
+    const [roomFullError, setRoomFullError] = useState(false);
     const { url } = useRouteMatch();
 
     const audioElementRef = React.createRef<HTMLAudioElement>();
@@ -70,78 +90,76 @@ export const MeetingContainer = ({
         config.ShowStartScreen && !meetingMetaData?.meetingInputOutputDevices,
     );
 
-    const initializeSession = React.useCallback(
-        async () => {
-            if (!meetingMetaData) {
-                return;
-            }
-            if (meetingMetaData.joinInfo) {
-                // Browser refresh
-                await roomManager.reInitializeMeetingSession(
-                    meetingMetaData.joinInfo,
-                    meetingMetaData.userName,
-                );
+    const initializeSession = React.useCallback(async () => {
+        if (!meetingMetaData) {
+            return;
+        }
+        if (meetingMetaData.joinInfo) {
+            // Browser refresh
+            await roomManager.reInitializeMeetingSession(
+                meetingMetaData.joinInfo,
+                meetingMetaData.userName,
+            );
 
-                if (meetingMetaData.meetingInputOutputDevices) {
-                    const promises: Array<Promise<void>> = [];
+            if (meetingMetaData.meetingInputOutputDevices) {
+                const promises: Array<Promise<void>> = [];
 
-                    const {
-                        audioInput,
-                        audioOutput,
-                        cam,
-                    } = meetingMetaData.meetingInputOutputDevices;
+                const { audioInput, audioOutput, cam } = meetingMetaData.meetingInputOutputDevices;
 
-                    if (audioInput && !meetingMetaData.muted && !meetingMetaData.forceMuted) {
-                        promises.push(
-                            (async () => {
-                                await audioVideoManager.setAudioInputDeviceSafe(audioInput);
-                                audioVideoManager.audioVideo!.start();
-                            })(),
-                        );
-                    }
-
-                    if (audioOutput) {
-                        promises.push(audioVideoManager.setAudioOutputDeviceSafe(audioOutput));
-                    }
-
-                    if (
-                        cam &&
-                        meetingMetaData.videoEnabled &&
-                        !meetingMetaData.forceVideoDisabled
-                    ) {
-                        promises.push(
-                            (async () => {
-                                await audioVideoManager.setVideoInputDeviceSafe(cam);
-                                audioVideoManager.audioVideo.start();
-                                audioVideoManager.audioVideo.startLocalVideoTile();
-                            })(),
-                        );
-                    }
-
-                    await Promise.all(promises);
+                if (audioInput && !meetingMetaData.muted && !meetingMetaData.forceMuted) {
+                    promises.push(
+                        (async () => {
+                            await audioVideoManager.setAudioInputDeviceSafe(audioInput);
+                            audioVideoManager.audioVideo!.start();
+                        })(),
+                    );
                 }
-            } else {
-                const [role, userName, title, playbackUrl] = [
-                    getPropertyCaseInsensitive(meetingMetaData, "role")!,
-                    getPropertyCaseInsensitive(meetingMetaData, "userName")!,
-                    getPropertyCaseInsensitive(meetingMetaData, "title")!,
-                    getPropertyCaseInsensitive(meetingMetaData, "playbackURL"),
-                ];
+
+                if (audioOutput) {
+                    promises.push(audioVideoManager.setAudioOutputDeviceSafe(audioOutput));
+                }
+
+                if (cam && meetingMetaData.videoEnabled && !meetingMetaData.forceVideoDisabled) {
+                    promises.push(
+                        (async () => {
+                            await audioVideoManager.setVideoInputDeviceSafe(cam);
+                            audioVideoManager.audioVideo.start();
+                            audioVideoManager.audioVideo.startLocalVideoTile();
+                        })(),
+                    );
+                }
+
+                await Promise.all(promises);
+            }
+        } else {
+            const [role, userName, title, playbackUrl] = [
+                getPropertyCaseInsensitive(meetingMetaData, "role")!,
+                getPropertyCaseInsensitive(meetingMetaData, "userName")!,
+                getPropertyCaseInsensitive(meetingMetaData, "title")!,
+                getPropertyCaseInsensitive(meetingMetaData, "playbackURL"),
+            ];
+            try {
                 const joinInfo: JoinInfo = await roomManager.createRoom(
                     role,
                     userName,
                     title,
                     playbackUrl,
                 );
+
                 setMeetingMetaData({
                     joinInfo,
                     playbackURL: joinInfo.PlaybackURL,
                     title: joinInfo.Title,
                 });
+            } catch (err: any) {
+                if (err.name === "RoomFullError") {
+                    setRoomFullError(true);
+                    return;
+                }
+                throw err;
             }
-        },
-        [roomManager, audioVideoManager.audioVideo],
-    );
+        }
+    }, [roomManager, audioVideoManager.audioVideo]);
     const { isLoading } = useLoadingGuard(true, initializeSession);
 
     React.useEffect(() => {
@@ -196,7 +214,17 @@ export const MeetingContainer = ({
         return () => audioVideoManager.audioVideo?.removeObserver(observer);
     }, [roomTitle, meetingMetaData?.role, audioVideoManager.audioVideo, roomManager, history]);
 
-    return isLoading || !meetingMetaData.joinInfo ? (
+    return roomFullError ? (
+        <AlreadyFullScreen>
+            <h2 style={{ color: "#ffffff" }}>
+                Sorry, aber diese Watch-Party ist bereits <b>voll</b> mit einer gesammelten
+                Mannschaft (11) 😟
+            </h2>
+            <a href="/">
+                <button className="btn btn--secondary">Erstelle deine eigene Watch-Party</button>
+            </a>
+        </AlreadyFullScreen>
+    ) : isLoading || !meetingMetaData.joinInfo ? (
         <LoadingAnimation fullScreen={true} />
     ) : meetingMetaData && roomTitle ? (
         showStartScreen ? (
