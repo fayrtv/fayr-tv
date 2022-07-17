@@ -1,5 +1,18 @@
 import { sample } from "lodash";
+import { TimedFeatureToggleParams } from "util/dateUtil";
 import { makeid } from "util/guidHelper";
+
+type TimingValues = "StreamOverlayAd" | "AllowToJoin";
+
+export const VFB_STREAM_TIMINGS: Record<TimingValues, TimedFeatureToggleParams> = {
+    StreamOverlayAd: {
+        enabledBefore: "2022-07-16T14:55:00+02:00",
+    },
+    AllowToJoin: {
+        enabledBefore: "2022-07-16T14:50:00+02:00",
+        enabledInDevMode: true,
+    },
+};
 
 export const BASE_HREF = "";
 
@@ -28,11 +41,11 @@ export const DEFAULT_VIDEO_STREAM = sample([
     // KIKA
     // "https://kikageohls.akamaized.net/hls/live/2022693/livetvkika_de/master.m3u8",
     // Tagesschau 24
-    // "https://tagesschau.akamaized.net/hls/live/2020117/tagesschau/tagesschau_3/master_720.m3u8",
+    "https://tagesschau.akamaized.net/hls/live/2020117/tagesschau/tagesschau_3/master_720.m3u8",
     // Amazon IVS
     // "https://5f1b94db7198.eu-central-1.playback.live-video.net/api/video/v1/eu-central-1.676057042583.channel.hWxKBDpLJc9h.m3u8"
     // AWS Elemental MediaLive
-    "https://528dc4ef17d725ed.mediapackage.eu-central-1.amazonaws.com/out/v1/2ff189e75e344a229c386c0af778e623/index.m3u8"
+    // "https://528dc4ef17d725ed.mediapackage.eu-central-1.amazonaws.com/out/v1/2ff189e75e344a229c386c0af778e623/index.m3u8",
 ]) as string;
 
 // Default Chat websocket link
