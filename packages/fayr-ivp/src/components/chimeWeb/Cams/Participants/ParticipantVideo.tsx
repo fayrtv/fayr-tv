@@ -232,7 +232,6 @@ const ParticipantVideo = ({
                             size={16}
                             color={forceMuted ? "red" : "white"}
                             iconName={muted ? "mic_off" : "mic"}
-                            onClick={isSelfHost ? onMicClicked : void 0}
                         />,
                     )}
                     {renderDeviceToggle(
@@ -242,7 +241,6 @@ const ParticipantVideo = ({
                             size={16}
                             color={forceVideoDisabled ? "red" : "white"}
                             iconName={videoEnabled ? "videocam" : "videocam_off"}
-                            onClick={isSelfHost ? onVideoClick : void 0}
                         />,
                     )}
                     <span style={{ marginTop: "2px" }}>
