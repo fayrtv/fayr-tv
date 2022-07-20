@@ -8,6 +8,7 @@ import * as config from "../../config";
 import Error from "./Error";
 import { JoinInfoForm } from "./JoinInfoForm";
 import { formatMeetingSsKey } from "./Meeting/storage";
+import ConditionalSafariSupportWarning from "./SafariSupportWarning";
 import Tutorial from "./Tutorial/Tutorial";
 
 type Props = RouteComponentProps;
@@ -74,6 +75,7 @@ const Welcome = (props: Props) => {
                     </div>
                 </div>
 
+                <ConditionalSafariSupportWarning />
                 <Tutorial show={showTutorial} setShow={setShowTutorial} />
 
                 <div className="welcome__content pd-4">

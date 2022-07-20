@@ -12,6 +12,7 @@ import { Flex } from "@fayr/common";
 import joinStyles from "./Join.module.scss";
 
 import * as config from "../../../config";
+import ConditionalSafariSupportWarning from "../SafariSupportWarning";
 import Tutorial from "../Tutorial/Tutorial";
 
 export const Join = ({ location, history }: RouteComponentProps) => {
@@ -77,6 +78,7 @@ export const Join = ({ location, history }: RouteComponentProps) => {
                 </div>
             </div>
 
+            <ConditionalSafariSupportWarning />
             <Tutorial show={showTutorial} setShow={setShowTutorial} />
 
             <div className="welcome__content pd-4">
