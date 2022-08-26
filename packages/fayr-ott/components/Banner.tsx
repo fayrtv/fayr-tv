@@ -17,11 +17,20 @@ function Banner({ netflixOriginals }: Props) {
     return (
         <div>
             <div className="absolute top-0 left-0 h-[95vh] w-screen">
-                <Image 
+                <video 
+                    src="https://share-videos.s3.amazonaws.com/development/00006/00006.mp4"
+                    typeof="mp4"
+                    autoPlay
+                    muted
+                    loop
+                >
+
+                </video>
+                {/* <Image 
                     src={`${baseUrl}${movie?.backdrop_path || movie?.poster_path}`}
                     layout="fill"
                     objectFit="cover"
-                />
+                /> */}
             </div>
         </div>
   )

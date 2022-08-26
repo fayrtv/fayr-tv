@@ -5,7 +5,13 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sfproregular: ['SF-Pro-Regular', 'sans-serif'],
+        sfprobold: ['SF-Pro-Bold', 'bold'],
+        winnersansbold: ['Winner-Sans-Narrow-Bold', 'bold'],
+      }
+    },
   },
   plugins: [],
 }

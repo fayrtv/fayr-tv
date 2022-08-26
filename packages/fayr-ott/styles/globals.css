@@ -2,18 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: "SF-Pro-Regular";
+    src: url("../public/fonts/SF-Pro-Text-Regular.otf");
+}
+
+@font-face {
+    font-family: "SF-Pro-Bold";
+    src: url("../public/fonts/SF-Pro-Text-Bold.otf");
+}
+
+@font-face {
+    font-family: "Winner-Sans-Narrow-Bold";
+    src: url("../public/fonts/Winner-Sans-Narrow-Bold.otf");
+}
+
 @layer base {
     body {
         @apply text-white bg-[#07090C];
     }
 
     header {
-        @apply fixed top-0 z-50 flex w-full items-center justify-between px-4 py-4 transition-all lg:px-10 lg:py-6;
+        @apply fixed font-winnersansbold drop-shadow-xl top-0 z-50 flex w-full items-center justify-between px-4 py-4 transition-all lg:px-10 lg:py-6 bg-gradient-to-b from-[#07090C] to-transparent;
     }
+
 }
 
 @layer components {
     .headerLink {
-        @apply cursor-pointer text-sm font-light text-[#e5e5e5] transition duration-[.4s] hover:text-[#FA7751];
+        @apply cursor-pointer text-sm text-[#e5e5e5] transition duration-[.4s] hover:text-[#FA7751];
     }
 }
