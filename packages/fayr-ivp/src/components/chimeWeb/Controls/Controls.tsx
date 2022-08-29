@@ -20,6 +20,8 @@ import SharePartyButton from "./Buttons/SharePartyButton";
 import VotingButton from "./Buttons/VotingButton";
 import ReactionButton from "./emoji-reactions/ReactionButton";
 
+import * as config from "../../../config";
+
 type Props = {
     title: string;
     attendeeId: string;

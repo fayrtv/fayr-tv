@@ -173,6 +173,8 @@ export const CamSection = ({ joinInfo }: Props) => {
         });
     }, []);
 
+    const [initialized, setInitialized] = React.useState(false);
+
     React.useEffect(() => {
         const onAttendeeUpdate = (newRosterAttendee: any) => {
             setRoster([...newRosterAttendee]);
@@ -306,7 +308,6 @@ export const CamSection = ({ joinInfo }: Props) => {
         if (attendee.attendeeId === undefined) {
             return;
         }
-
         participantVideos.set(
             attendee.attendeeId,
             <ParticipantVideo
