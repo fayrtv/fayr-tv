@@ -24,6 +24,8 @@ import { Cell, Flex, Grid, MaterialIcon, format } from "@fayr/common";
 // Styles
 import styles from "./ShareInvite.module.scss";
 
+import { useIsMobilePortrait } from "../../mediaQueries";
+
 const ButtonRowFlex = styled(Flex)`
     svg {
         max-height: 40px;
@@ -44,6 +46,7 @@ export const ShareInvite = ({ title, onCancel }: Props) => {
     const [copied, setCopied] = React.useState(false);
     const copyClickTimeout = React.useRef(0);
     const shareInviteRef = React.useRef<HTMLDivElement>(null);
+    const isMobilePortrait = useIsMobilePortrait();
 
     const [{ userName }] = useMeetingMetaData();
 
@@ -103,20 +106,35 @@ export const ShareInvite = ({ title, onCancel }: Props) => {
                 <Grid
                     className="h-full w-full"
                     gridProperties={{
-                        gridTemplateAreas: `
+                        gridTemplateAreas: isMobilePortrait
+                            ? `
 						'Header . .' 
 						'LinkCopyResponse LinkCopyResponse LinkCopyResponse'
 						'WatchPartyInvite WatchPartyInvite CopyButton'
 						'ShareButtons . .'
-						'. . Close'
-					`,
+						'. Close Close'
+					`
+                            : `
+					'Header . .' 
+					'LinkCopyResponse LinkCopyResponse LinkCopyResponse'
+					'WatchPartyInvite WatchPartyInvite CopyButton'
+					'ShareButtons . .'
+					'. . Close'
+				`,
                         gap: "1rem",
                         gridTemplateColumns: "30% 50% 20%",
                         gridTemplateRows: "repeat(1fr, 5)",
                     }}
                 >
                     <Cell gridArea="Header">
-                        <h2>{tl.Invitation}</h2>
+                        <h1
+                            style={{
+                                color: "#ffffff",
+                                wordBreak: "keep-all",
+                            }}
+                        >
+                            {tl.Invitation}
+                        </h1>
                     </Cell>
                     <Cell gridArea="LinkCopyResponse" className={styles.LinkCopyResponse}>
                         {copied && (
@@ -169,7 +187,7 @@ export const ShareInvite = ({ title, onCancel }: Props) => {
                             </EmailShareButton>
                         </ButtonRowFlex>
                     </Cell>
-                    <Cell gridArea="Close">
+                    <Cell className={styles.CloseButtonContainer} gridArea="Close">
                         <span className={styles.CloseButton} onClick={onCancel}>
                             {tl.Close}
                         </span>

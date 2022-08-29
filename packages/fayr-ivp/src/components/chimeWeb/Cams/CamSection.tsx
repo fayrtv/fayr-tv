@@ -159,169 +159,32 @@ export const CamSection = ({ joinInfo }: Props) => {
     }, [audioVideoManager.audioVideo]);
 
     // B04 repo compat section
-    const { previousRoster, roster, setRoster } = React.useContext(RosterContext);
-
-    const findRosterSlot = React.useCallback(
-        (attendeeId: any) => {
-            let index;
-            for (index = 0; index < roster.length; index++) {
-                if (roster[index].attendeeId === attendeeId) {
-                    return index;
-                }
-            }
-            for (index = 0; index < roster.length; index++) {
-                if (!roster[index].attendeeId) {
-                    return index;
-                }
-            }
-            return 0;
-        },
-        [roster],
-    );
-
-    const rosterCallback = React.useCallback(
-        (newRoster: any) => {
-            if (Object.keys(newRoster).length > 2) {
-                if (config.DEBUG) console.log("More than 2");
-            }
-
-            if (Object.keys(newRoster).length < Object.keys(previousRoster.current).length) {
-                if (config.DEBUG) console.log("Attendee(s) left");
-                const differ = Object.keys(previousRoster.current).filter(
-                    (k) => previousRoster.current[k] !== newRoster[k],
-                );
-                if (config.DEBUG) console.log(differ);
-
-                if (differ.length) {
-                    let i;
-                    for (i in differ) {
-                        const index = findRosterSlot(differ[i]);
-                        roster[index] = {
-                            videoElement: roster[index].videoElement,
-                        };
-                        setRoster(roster);
-                    }
-                }
-            }
-
-            previousRoster.current = Object.assign({}, newRoster);
-
-            let attendeeId;
-            for (attendeeId in newRoster) {
-                // Exclude self
-                if (attendeeId === joinInfo.Attendee.AttendeeId) {
-                    continue;
-                }
-
-                // exclude empty name
-                if (!newRoster[attendeeId].name) {
-                    continue;
-                }
-
-                const index = findRosterSlot(attendeeId);
-                roster[index] = {
-                    ...roster[index],
-                    attendeeId,
-                    ...newRoster[attendeeId],
-                };
-                setRoster(roster);
-            }
-        },
-        [roster, findRosterSlot],
-    );
-
-    const videoTileDidUpdateCallback = React.useCallback(
-        (tileState: any) => {
-            if (
-                !tileState.boundAttendeeId ||
-                tileState.localTile ||
-                tileState.isContent ||
-                !tileState.tileId
-            ) {
-                return;
-            }
-
-            let index = findRosterSlot(tileState.boundAttendeeId);
-            roster[index] = {
-                ...roster[index],
-                videoEnabled: tileState.active,
-                attendeeId: tileState.boundAttendeeId,
-                tileId: tileState.tileId,
-            };
-            setRoster(roster);
-
-            setTimeout(() => {
-                if (config.DEBUG) console.log(roster[index]);
-                const videoElement = document.getElementById(`video_${tileState.boundAttendeeId}`);
-                if (videoElement) {
-                    audioVideoManager.audioVideo.bindVideoElement(
-                        tileState.tileId,
-                        videoElement as any,
-                    );
-                }
-            }, 1000);
-        },
-        [roster, findRosterSlot],
-    );
-
-    const videoTileWasRemovedCallback = React.useCallback(
-        (tileId: any) => {
-            // Find the removed tileId in the roster and mark the video as disabled.
-            // eslint-disable-next-line
-            roster.find((o, i) => {
-                if (o.tileId === tileId) {
-                    roster[i].videoEnabled = false;
-                    setRoster(roster);
-                    if (config.DEBUG) {
-                        console.log(`Tile was removed ${tileId}`);
-                    }
-                }
-            });
-        },
-        [roster],
-    );
+    const [roster, setRoster] = React.useState<Array<any>>([]);
 
     React.useEffect(() => {
-        if (Object.entries(previousRoster.current).length > 0) {
-            return;
-        }
-
-        const tempRoster: any[] = [];
-        // eslint-disable-next-line
-        Array.from(Array(config.CHIME_ROOM_MAX_ATTENDEE).keys()).map((_, index) => {
-            tempRoster[index] = {
-                videoElement: React.createRef(),
-            };
+        setRoster((currentRoster) => {
+            const newRoster = [...currentRoster];
+            Array.from(Array(config.CHIME_ROOM_MAX_ATTENDEE).keys()).map((_, index) => {
+                newRoster[index] = {
+                    videoElement: React.createRef(),
+                };
+            });
+            return newRoster;
         });
-
-        setRoster(tempRoster);
     }, []);
 
     const [initialized, setInitialized] = React.useState(false);
 
     React.useEffect(() => {
-        roomManager.subscribeToRosterUpdate(rosterCallback);
-
-        if (!initialized) {
-            roomManager.publishUpdate();
-            setInitialized(true);
-        }
-
-        return () => roomManager.unsubscribeFromRosterUpdate(rosterCallback);
-    }, [initialized, rosterCallback]);
-
-    React.useEffect(() => {
-        const observer = {
-            videoTileDidUpdate: videoTileDidUpdateCallback,
-            videoTileWasRemoved: videoTileWasRemovedCallback,
+        const onAttendeeUpdate = (newRosterAttendee: any) => {
+            setRoster([...newRosterAttendee]);
         };
 
-        if (audioVideoManager.audioVideo) {
-            audioVideoManager.audioVideo.addObserver(observer);
-        }
+        roomManager.registerAttendeeRosterCallback(onAttendeeUpdate);
 
-        return () => audioVideoManager.tryRemoveObserver(observer);
-    }, [audioVideoManager.audioVideo, videoTileDidUpdateCallback, videoTileWasRemovedCallback]);
+        roomManager.publishAttendeeRoster();
+        return () => roomManager.unRegisterAttendeeRosterCallback(onAttendeeUpdate);
+    }, []);
 
     const isSelfHost = role === "host";
 
@@ -445,7 +308,6 @@ export const CamSection = ({ joinInfo }: Props) => {
         if (attendee.attendeeId === undefined) {
             return;
         }
-
         participantVideos.set(
             attendee.attendeeId,
             <ParticipantVideo

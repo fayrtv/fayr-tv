@@ -1,10 +1,12 @@
 import { isPlayerSupported, MediaPlayer, PlayerEventType, PlayerState } from "amazon-ivs-player";
 import classNames from "classnames";
+import { VFB_STREAM_TIMINGS } from "config";
 import { useInjection } from "inversify-react";
+import { Duration } from "moment";
 import React, { MouseEventHandler } from "react";
 import { RoomMemberRole } from "types/Room";
-import { isAfterSpecificTimestamp, useTimedFeatureToggle } from "util/dateUtil";
 import Types from "types/inject";
+import { formatDiffAsCountdown, useTimedFeatureToggle } from "util/dateUtil";
 import { makeid } from "util/guidHelper";
 
 import useGlobalKeyHandler from "hooks/useGlobalKeyHandler";
@@ -37,6 +39,22 @@ type Props = {
     fullScreen: boolean;
     setFullScreen: (fs: boolean) => void;
 };
+
+function AdOverlay({ timeRemaining }: { timeRemaining: Duration | undefined }) {
+    if (!timeRemaining || timeRemaining.as("s") <= 0) {
+        return <></>;
+    }
+
+    const shouldFadeOut = timeRemaining.as("s") < 20;
+
+    return (
+        <div className={classNames(styles.AdOverlay, { [styles.FadeOutSlow]: shouldFadeOut })}>
+            {timeRemaining && (
+                <h1 style={{ color: "white" }}>{formatDiffAsCountdown(timeRemaining)}</h1>
+            )}
+        </div>
+    );
+}
 
 const VideoPlayer = ({
     videoStream,
@@ -248,6 +266,10 @@ const VideoPlayer = ({
     useGlobalKeyHandler("ArrowRight", fastForward);
     useGlobalKeyHandler([" ", "Space"], pause);
 
+    const { isEnabled: shouldShowAdOverlay, timeRemaining } = useTimedFeatureToggle(
+        VFB_STREAM_TIMINGS.StreamOverlayAd,
+    );
+
     return (
         <div ref={videoElement} className={styles.PlayerWrapper}>
             <div
@@ -261,16 +283,14 @@ const VideoPlayer = ({
                     video={videoElement.current}
                     driftSyncStrategy={driftSyncStrategy}
                     role={role}
-                    title={title}
                     ssName={ssName}
                     baseHref={baseHref}
                 />
             </div>
-            <video
-                id="video-player"
-                className={classNames(styles.VideoPlayer, { [styles.fullscreen]: fullScreen })}
-                playsInline
-            />
+            <div className={classNames(styles.VideoPlayer, { [styles.fullscreen]: fullScreen })}>
+                {shouldShowAdOverlay && <AdOverlay timeRemaining={timeRemaining} />}
+                <video id="video-player" playsInline />
+            </div>
             {reactionElements}
             {fullScreen && <div className={styles.FullScreenCams}>{fullScreenCamSection}</div>}
             {fullScreen && (

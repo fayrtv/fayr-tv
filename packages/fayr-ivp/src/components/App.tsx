@@ -7,12 +7,10 @@ import { Provider } from "react-redux";
 import { BrowserRouter as Router, Route, Switch, useRouteMatch } from "react-router-dom";
 import store from "redux/store";
 
-import { usePlatformConfig } from "hooks/usePlatformConfig";
-
 import End from "components/chimeWeb/End";
 import Welcome from "components/chimeWeb/Welcome";
 
-import { applyTheme, ErrorBoundary } from "@fayr/common";
+import { applyTheme, ErrorBoundary, VFB_THEME } from "@fayr/common";
 
 import styles from "./App.module.scss";
 
@@ -35,20 +33,17 @@ function MainIvpRouter() {
         path = "";
     }
 
-    const { platformConfig } = usePlatformConfig();
-
     React.useEffect(() => {
-        if (!platformConfig?.styling?.theme) {
-            return;
-        }
-        applyTheme(platformConfig.styling.theme, document.documentElement);
-    }, [platformConfig?.styling?.theme]);
+        applyTheme(VFB_THEME, document.documentElement);
+    }, []);
 
     return (
         <Router>
             <Switch>
                 <Route path={`${path}/end`}>
-                    <End />
+                    <div className={styles.ArenaBackground}>
+                        <End />
+                    </div>
                 </Route>
                 <Route path={`${path}/meeting`}>
                     <Provider store={store}>
@@ -66,11 +61,15 @@ function MainIvpRouter() {
                     </Provider>
                 </Route>
                 <Route path={`${path}/join`}>
-                    <Join />
+                    <div className={styles.ArenaBackground}>
+                        <Join />
+                    </div>
                 </Route>
                 <Route path={`${path}/`}>
                     <ErrorBoundary>
-                        <Welcome />
+                        <div className={styles.ArenaBackground}>
+                            <Welcome />
+                        </div>
                     </ErrorBoundary>
                 </Route>
             </Switch>
@@ -98,7 +97,7 @@ function App() {
                             </Switch>
                         </Router>
                     </IvpTranslationContextProvider>
-                    <ReactQueryDevtools initialIsOpen={false} />
+                    {/*<ReactQueryDevtools initialIsOpen={false} />*/}
                 </QueryClientProvider>
             </InversifyProvider>
         </div>

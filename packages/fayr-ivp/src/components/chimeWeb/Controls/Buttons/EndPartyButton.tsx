@@ -52,7 +52,6 @@ type Props = {
     ssName: string;
     role: RoomMemberRole;
     baseHref: string;
-    title: string;
 };
 
 enum LeaveState {
@@ -60,7 +59,7 @@ enum LeaveState {
     AwaitingConfirmation,
 }
 
-export const EndPartyButton = ({ ssName, role, baseHref, title }: Props) => {
+export const EndPartyButton = ({ ssName, role, baseHref }: Props) => {
     const dispatch = useDispatch();
     const history = useHistory();
     const roomManager = useInjection<IRoomManager>(Types.IRoomManager);
@@ -73,7 +72,7 @@ export const EndPartyButton = ({ ssName, role, baseHref, title }: Props) => {
         await roomManager.leaveRoom(role === "host");
         dispatch(GlobalResetAction());
         localStorage.removeItem(ssName);
-        const whereTo = `${baseHref}/${role === "host" ? "" : "join?room=" + title}`;
+        const whereTo = `${baseHref}/end`;
         history.push(whereTo);
     };
 

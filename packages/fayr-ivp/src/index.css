@@ -76,13 +76,14 @@ select {
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   --font-mono: Consolas, monaco, "Ubuntu Mono", "Liberation Mono", "Courier New",
     Courier, monospace; */
-    --font-sans: "WinnerSans";
-    --font-serif: "WinnerSans";
-    --font-mono: "WinnerSans";
+    --font-sans: "ZionTrain Pro";
+    --font-serif: "ZionTrain Pro";
+    --font-mono: "ZionTrain Pro";
     /* Color tokens (overridden by theme) */
     --color-background: #07090c;
     --color-neutral: #d9d9d9;
     --color-white: #ffffff;
+    --color-white: #000000;
     --color-primary: #fa7751;
     --color-primary-dark: #d96242;
     --color-primary-light: #fa8966;
@@ -155,10 +156,73 @@ select {
     --grid-trio-columns: 1fr 3fr 1fr 1fr;
 }
 
+/* !! Good tool for font faces: https://transfonter.org/ !! */
+
 @font-face {
-    font-family: "WinnerSans";
-    src: local("WinnerSans"), url(./fonts/font.woff) format("woff");
-    letter-spacing: 0.9rem;
+    font-family: "ZionTrain Pro";
+    src: url("./fonts/ZionTrainPro-Regular.woff2") format("woff2"),
+        url("./fonts/ZionTrainPro-Regular.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "ZionTrain Pro";
+    src: url("fonts/ZionTrainPro-BoldItalic.woff2") format("woff2"),
+        url("fonts/ZionTrainPro-BoldItalic.woff") format("woff");
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "ZionTrain Pro";
+    src: url("fonts/ZionTrainPro-Italic.woff2") format("woff2"),
+        url("fonts/ZionTrainPro-Italic.woff") format("woff");
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "ZionTrain Pro";
+    src: url("fonts/ZionTrainPro-BlackItalic.woff2") format("woff2"),
+        url("fonts/ZionTrainPro-BlackItalic.woff") format("woff");
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "ZionTrain Pro";
+    src: url("fonts/ZionTrainPro-Bold.woff2") format("woff2"),
+        url("fonts/ZionTrainPro-Bold.woff") format("woff");
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "ZionTrain Pro";
+    src: url("fonts/ZionTrainPro-LightItalic.woff2") format("woff2"),
+        url("fonts/ZionTrainPro-LightItalic.woff") format("woff");
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "ZionTrain Pro";
+    src: url("fonts/ZionTrainPro-Light.woff2") format("woff2"),
+        url("fonts/ZionTrainPro-Light.woff") format("woff");
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+* {
+    text-underline-offset: 3px;
 }
 
 /* Mediaqueries */
@@ -223,7 +287,7 @@ body {
     height: 100%;
     margin: 0;
     padding: 0;
-    color: var(--color-white);
+    color: #000;
     background: var(--color-bg-base);
     line-height: 1.5;
 }
@@ -249,12 +313,20 @@ section {
 }
 
 h1 {
-    font-size: 3.6rem;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 48px;
+    word-break: break-word;
+    text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+    color: #000000;
 }
 
 h2 {
-    font-size: 2.4rem;
-    color: var(--color-primary);
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 38px;
+    color: #ffffff;
 }
 
 h3 {
@@ -1128,7 +1200,7 @@ button {
 input,
 select,
 textarea {
-    border: var(--btn-border-size) solid transparent;
+    border: 1px solid #949494;
     outline: none;
     appearance: none;
     resize: none;
@@ -1153,7 +1225,7 @@ input:focus,
 textarea:focus,
 .btn:focus,
 .btn:active {
-    border: var(--btn-border-size) solid var(--color-primary);
+    border: var(--btn-border-size) solid #949494;
 }
 
 select {
@@ -1179,18 +1251,18 @@ input.rounded {
 }
 
 .btn--primary {
-    background: #fa7751;
+    background: var(--color-secondary);
     color: var(--color-text-inverted);
 }
 
 .btn--primary:hover,
 .btn--primary:focus {
-    background: var(--color-secondary);
+    background: var(--color-primary);
 }
 
 .btn--secondary {
-    background: var(--color-bg-button-secondary-default);
-    color: var(--color-white);
+    background: var(--color-secondary);
+    color: black;
 }
 
 .btn--destruct {

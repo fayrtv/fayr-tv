@@ -1,15 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { RouteComponentProps, useRouteMatch, withRouter } from "react-router-dom";
 
-import { usePlatformConfig } from "hooks/usePlatformConfig";
-import useTranslations from "hooks/useTranslations";
-
-import { FayrLogo, usePersistedState } from "@fayr/common";
+import { usePersistedState } from "@fayr/common";
+import { Flex } from "@fayr/common";
 
 import * as config from "../../config";
 import Error from "./Error";
 import { JoinInfoForm } from "./JoinInfoForm";
 import { formatMeetingSsKey } from "./Meeting/storage";
+import ConditionalSafariSupportWarning from "./SafariSupportWarning";
+import Tutorial from "./Tutorial/Tutorial";
 
 type Props = RouteComponentProps;
 
@@ -20,12 +20,8 @@ const Welcome = (props: Props) => {
         url = "";
     }
 
-    const { platformConfig } = usePlatformConfig();
-
-    const tl = useTranslations();
-
     const [username, setUsername] = usePersistedState<string>("USERNAME", () => "");
-    const [roomTitle, setRoomTitle] = React.useState(config.RANDOM);
+    const [roomTitle, setRoomTitle] = React.useState("");
     const [playbackURL] = React.useState(config.DEFAULT_VIDEO_STREAM);
     const [errorMessage] = React.useState("");
     const [showError, setShowError] = React.useState(false);
@@ -52,10 +48,10 @@ const Welcome = (props: Props) => {
         createRoom();
     };
 
-    const roomUrlRelative = React.useMemo(() => `${url}/meeting?room=${roomTitle}`, [
-        roomTitle,
-        url,
-    ]);
+    const roomUrlRelative = React.useMemo(
+        () => `${url}/meeting?room=${roomTitle}`,
+        [roomTitle, url],
+    );
 
     const createRoom = () => {
         const data = {
@@ -68,25 +64,24 @@ const Welcome = (props: Props) => {
         props.history.push(roomUrlRelative);
     };
 
-    const welcomeMessage = platformConfig?.info?.welcomeMessage ?? tl.WelcomeMessageHeader;
+    const [showTutorial, setShowTutorial] = useState(false);
 
     return (
         <>
             <div className="welcome form-grid">
                 <div className="welcome__intro">
                     <div className="intro__inner formatted-text">
-                        <FayrLogo style={{ border: "none" }} />
-                        <br />
-                        <h2>{welcomeMessage}</h2>
-                        <h3>{tl.WelcomeMessageBody}</h3>
+                        <h1>Willkommen in der VfB-Watch-Party</h1>
                     </div>
                 </div>
 
+                <ConditionalSafariSupportWarning />
+                <Tutorial show={showTutorial} setShow={setShowTutorial} />
+
                 <div className="welcome__content pd-4">
                     <div className="content__inner">
-                        <h2 className="mg-b-2">{tl.StartWatchPartyHeader}</h2>
-                        <h3>{tl.StartWatchPartyBody}</h3>
                         <JoinInfoForm
+                            onHowItWorksClicked={() => setShowTutorial(true)}
                             username={username}
                             usernameInputRef={usernameInputRef}
                             onUsernameChanged={setUsername}
@@ -97,6 +92,22 @@ const Welcome = (props: Props) => {
                         />
                     </div>
                 </div>
+                <Flex className="imprint__links" direction="Row">
+                    <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href="https://www.vfb.de/de/1893/club/service/formales/impressum/"
+                    >
+                        Impressum
+                    </a>
+                    <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href="https://www.vfb.de/de/1893/club/service/formales/datenschutz/"
+                    >
+                        Datenschutz
+                    </a>
+                </Flex>
             </div>
             {showError && <Error closeError={() => setShowError(false)} errorMsg={errorMessage} />}
         </>

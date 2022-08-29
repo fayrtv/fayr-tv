@@ -12,15 +12,17 @@ export const isAfterSpecificTimestamp = (timestampWithTimezone: moment.MomentInp
 export type TimedFeatureToggleParams = (
     | { enabledBefore: moment.MomentInput; enabledAfter?: undefined }
     | { enabledBefore?: undefined; enabledAfter: moment.MomentInput }
-    ) & { enabledInDevMode?: boolean };
+) & { enabledInDevMode?: boolean };
 
 export const useTimedFeatureToggle = ({
-                                          enabledBefore,
-                                          enabledAfter,
-                                          enabledInDevMode = false,
-                                      }: TimedFeatureToggleParams) => {
+    enabledBefore,
+    enabledAfter,
+    enabledInDevMode = false,
+}: TimedFeatureToggleParams) => {
     const [isEnabled, setEnabled] = useState(false);
     const [timeRemaining, setTimeRemaining] = useState<Duration | undefined>(undefined);
+
+    const isSpecialTestDomain = window.location.hostname === "testing.fayrtv.com";
 
     useEffect(() => {
         const intervalHandle = setInterval(() => {
@@ -52,6 +54,15 @@ export const useTimedFeatureToggle = ({
             }
         };
     }, [enabledBefore, enabledAfter]);
+
+    if (isSpecialTestDomain) {
+        if (enabledAfter) {
+            return { isEnabled: true, timeRemaining: undefined };
+        }
+        if (enabledBefore) {
+            return { isEnabled: false, timeRemaining: undefined };
+        }
+    }
 
     if (enabledInDevMode && isDevMode) {
         return { isEnabled: true, timeRemaining: undefined };

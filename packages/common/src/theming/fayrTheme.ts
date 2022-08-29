@@ -14,6 +14,20 @@ export const FAYR_THEME: Theme = {
     colorBlueish: "#181F29",
 };
 
+export const VFB_THEME: Theme = {
+    id: "VFB",
+    colorBackground: "#07090C",
+    colorNeutral: "#D9D9D9",
+    colorWhite: "#ffffff",
+    colorPrimary: "#D30029",
+    colorPrimaryDark: "#D30029",
+    colorPrimaryLight: "#D30029",
+    colorSecondary: "#FFDD00",
+    colorTertiary: "transparent",
+    colorGray: "#6C6C6C",
+    colorBlueish: "#181F29",
+};
+
 export const RAINBOW_THEME: Theme = {
     id: "Rainbow",
     colorBackground: "#ABCDEF",

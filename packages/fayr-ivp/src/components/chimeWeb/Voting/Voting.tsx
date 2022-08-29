@@ -1,3 +1,4 @@
+import * as config from "config";
 import * as React from "react";
 import { useMediaQuery } from "react-responsive";
 import styled from "styled-components";
@@ -54,36 +55,39 @@ export const Voting = ({ votingRef, closeVoting, voting, updateTip }: Props) => 
         setSlidingTimeout(() => setShowTipFeedback(false), 1000);
     };
 
-    const menuEntries = React.useMemo(
-        () =>
-            new Array<MenuEntry>(
-                {
-                    content: isDesktop ? (
-                        <span>Tippen</span>
-                    ) : (
-                        <MaterialIcon type="Outlined" color="white" iconName="ballot" />
-                    ),
-                    page: VotingPage.Vote,
-                },
-                {
-                    content: isDesktop ? (
-                        <span>Übersicht</span>
-                    ) : (
-                        <MaterialIcon type="Outlined" color="white" iconName="menu" />
-                    ),
-                    page: VotingPage.Overview,
-                },
-                {
-                    content: isDesktop ? (
-                        <span>Umfrage</span>
-                    ) : (
-                        <MaterialIcon type="Outlined" color="white" iconName="poll" />
-                    ),
-                    page: VotingPage.Survey,
-                },
-            ),
-        [isDesktop],
-    );
+    const menuEntries = React.useMemo(() => {
+        const menuEntries = new Array<MenuEntry>(
+            {
+                content: isDesktop ? (
+                    <span>Tippen</span>
+                ) : (
+                    <MaterialIcon type="Outlined" color="white" iconName="ballot" />
+                ),
+                page: VotingPage.Vote,
+            },
+            {
+                content: isDesktop ? (
+                    <span>Übersicht</span>
+                ) : (
+                    <MaterialIcon type="Outlined" color="white" iconName="menu" />
+                ),
+                page: VotingPage.Overview,
+            },
+        );
+
+        if (config.ShowUmfrage) {
+            menuEntries.push({
+                content: isDesktop ? (
+                    <span>Umfrage</span>
+                ) : (
+                    <MaterialIcon type="Outlined" color="white" iconName="poll" />
+                ),
+                page: VotingPage.Survey,
+            });
+        }
+
+        return menuEntries;
+    }, [isDesktop]);
 
     return (
         <Flex

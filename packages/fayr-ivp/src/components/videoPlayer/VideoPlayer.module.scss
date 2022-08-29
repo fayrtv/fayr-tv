@@ -45,10 +45,16 @@
     }
 
     .VideoPlayer {
-        width: 100%;
-        height: 100%;
         top: 0;
         background: #000;
+        height: 100%;
+        width: 100%;
+        position: relative;
+
+        video {
+            height: 100%;
+            width: 100%;
+        }
 
         &.fullscreen {
             width: 80%;
@@ -72,6 +78,37 @@
         @media (max-width: mq.$mobile) {
             height: 50%;
             width: 100%;
+        }
+    }
+
+    .AdOverlay {
+        position: absolute;
+        display: grid;
+        place-items: center;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 0;
+        background-image: url("../../assets/vfb-arena-overlay.png");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-clip: border-box;
+        user-select: none;
+    }
+
+    .FadeOutSlow {
+        animation: fadeOut 21s linear;
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
         }
     }
 }

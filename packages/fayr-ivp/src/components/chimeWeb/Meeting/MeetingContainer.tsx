@@ -22,7 +22,7 @@ import IAudioVideoManager from "../../chime/interfaces/IAudioVideoManager";
 import SettingsView from "./Settings/SettingsView";
 import { formatMeetingSsKey } from "./storage";
 
-const AlreadyFullScreen = styled.div`
+const ErrorFullScreen = styled.div`
     position: fixed;
     display: flex;
     flex-direction: column;
@@ -156,6 +156,10 @@ export const MeetingContainer = ({
                     setRoomFullError(true);
                     return;
                 }
+                if (err.name === "CodeNotAllowedError") {
+                    history.push("/?unknown-code");
+                    return;
+                }
                 throw err;
             }
         }
@@ -215,15 +219,15 @@ export const MeetingContainer = ({
     }, [roomTitle, meetingMetaData?.role, audioVideoManager.audioVideo, roomManager, history]);
 
     return roomFullError ? (
-        <AlreadyFullScreen>
+        <ErrorFullScreen>
             <h2 style={{ color: "#ffffff" }}>
                 Sorry, aber diese Watch-Party ist bereits <b>voll</b> mit einer gesammelten
                 Mannschaft (11) 😟
             </h2>
-            <a href="/">
-                <button className="btn btn--secondary">Erstelle deine eigene Watch-Party</button>
-            </a>
-        </AlreadyFullScreen>
+            {/*<a href="/">*/}
+            {/*    <button className="btn btn--secondary">Erstelle deine eigene Watch-Party</button>*/}
+            {/*</a>*/}
+        </ErrorFullScreen>
     ) : isLoading || !meetingMetaData.joinInfo ? (
         <LoadingAnimation fullScreen={true} />
     ) : meetingMetaData && roomTitle ? (

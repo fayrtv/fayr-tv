@@ -1,5 +1,11 @@
+@use "../../mediaQueries" as mq;
+
 .FullScreen {
     width: 80%;
+
+    @media (max-width: mq.$mobile) {
+        width: 100%;
+    }
 }
 
 .PlayerControlsContainer {

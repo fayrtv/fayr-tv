@@ -141,7 +141,7 @@ const LocalVideo = ({ joinInfo, pin }: Props) => {
                     id={`${joinInfo.Attendee.AttendeeId}`}
                     space="Between"
                 >
-                    ich
+                    <span className={styles.MyName}>Ich</span>
                     <Flex mainAlign="Center" direction="Row">
                         <span style={{ marginTop: "2px", height: "16px" }}>
                             {activityState === ActivityState.Available ? (

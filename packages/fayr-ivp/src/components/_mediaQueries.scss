@@ -1,7 +1,9 @@
 $mobile: 480px;
+$tablet: 740px;
 $largeScreens: 960px;
 
 :root {
     --mobile: #{$mobile};
+    --tablet: #{$tablet};
     --largeScreens: #{$largeScreens};
 }

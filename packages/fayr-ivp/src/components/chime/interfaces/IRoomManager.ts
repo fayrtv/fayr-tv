@@ -2,6 +2,7 @@ import { MeetingSessionConfiguration } from "amazon-chime-sdk-js";
 import { Callback, Nullable } from "types/global";
 
 import { JoinInfo } from "../../chimeWeb/types";
+import { AttendeeRosterCallback } from "../RoomManager";
 import { Attendee } from "../types";
 
 export type RosterUpdateCallback = Callback<RosterMap>;
@@ -14,6 +15,10 @@ export default interface IRoomManager {
     configuration: MeetingSessionConfiguration;
     attendeeId: Nullable<string>;
     roster: RosterMap;
+
+    registerAttendeeRosterCallback(cb: AttendeeRosterCallback): void;
+    publishAttendeeRoster(): void;
+    unRegisterAttendeeRosterCallback(cb: AttendeeRosterCallback): void;
 
     subscribeToRosterUpdate(callback: RosterUpdateCallback): void;
     unsubscribeFromRosterUpdate(callback: RosterUpdateCallback): void;

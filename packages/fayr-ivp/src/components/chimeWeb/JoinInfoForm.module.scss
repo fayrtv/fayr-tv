@@ -1,15 +1,70 @@
-.JoinInfoForm {
-    &.Mobile {
-        display: flex;
-        flex-direction: row;
-    }
+@use "../mediaQueries" as mq;
 
+.JoinInfoForm {
     > div {
         display: grid;
         place-items: center;
+    }
+}
 
-        &:last-child {
-            margin-left: 10px;
+.JoinInfoFormControls {
+    padding: 25px 40px;
+    @media (min-width: mq.$mobile) and (max-width: mq.$largeScreens) and (max-height: mq.$tablet) {
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+}
+
+.NewsletterBox {
+    margin: 20px 0;
+    text-align: justify;
+    font-size: 15px;
+    font-weight: 300;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.BannerStripe {
+    background-color: var(--color-primary);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    margin-top: 146px;
+    height: 109px;
+
+    @media (min-width: mq.$mobile) and (max-width: mq.$largeScreens) and (max-height: mq.$tablet) {
+        margin-top: 73px;
+        height: 54px;
+
+        > img {
+            bottom: -25px;
+            transform: scale(0.5);
         }
     }
+}
+
+.Banner {
+    position: absolute;
+    bottom: 41px;
+}
+
+.HowItWorksLink {
+    font-weight: 350;
+    color: var(--color-gray);
+    text-decoration: underline;
+}
+
+.HowItWorksLink:hover {
+    cursor: pointer;
+    color: #949494;
+}
+
+.ErrorMessage {
+    color: #d30029;
+}
+
+.InputError {
+    border: 2px solid #d30029;
 }

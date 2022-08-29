@@ -1,5 +1,6 @@
 // Framework
 import { MediaPlayer } from "amazon-ivs-player";
+import classNames from "classnames";
 import * as config from "config";
 import * as React from "react";
 import { RoomMemberRole } from "types/Room";
@@ -22,7 +23,6 @@ type Props = {
     video: HTMLDivElement | null;
     driftSyncStrategy: IDriftSyncStrategy<number>;
     role: RoomMemberRole;
-    title: string;
     ssName: string;
     baseHref: string;
 };
@@ -33,7 +33,6 @@ export const VideoPlayerControls = ({
     video,
     driftSyncStrategy,
     role,
-    title,
     ssName,
     baseHref,
 }: Props) => {
@@ -100,7 +99,7 @@ export const VideoPlayerControls = ({
                 crossAlign="Center"
                 space="Between"
             >
-                <EndPartyButton ssName={ssName} role={role} baseHref={baseHref} title={title} />
+                <EndPartyButton ssName={ssName} role={role} baseHref={baseHref} />
 
                 <Flex className={styles.PlayerControls} direction="Row">
                     {streamControl}

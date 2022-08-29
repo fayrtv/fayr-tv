@@ -3,6 +3,7 @@
 :root {
     --section-max-width: 700px;
     --color-text-base: var(--color-white);
+    --color-text-dark: var(--color-black);
     --color-text-hint: var(--color-secondary);
     --color-text-link: var(--color-primary-dark);
     --color-text-inverted: #000;
@@ -68,9 +69,24 @@ input:disabled {
     }
 }
 
+.imprint__links {
+    margin: 20px;
+
+    a {
+        text-decoration: underline;
+    }
+
+    a:first-of-type {
+        margin-right: 15px;
+    }
+}
+
 .intro__inner {
     height: 100%;
-    padding: 7rem;
+    padding: 210px 0 0 170px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
 }
 
 .welcome__content {
@@ -79,10 +95,14 @@ input:disabled {
     align-content: center;
     justify-content: center;
     text-align: var(--intro-text-align);
+
+    align-self: center;
 }
 
 .content__inner {
-    width: 300px;
+    width: 350px;
+    background-color: #ffffff;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
 }
 
 @media (max-width: mq.$largeScreens) {
@@ -99,6 +119,20 @@ input:disabled {
 
     .content__inner {
         width: 100%;
+    }
+}
+
+@media (max-width: mq.$mobile) {
+    .welcome__content {
+        padding-top: 0;
+        padding-bottom: 0;
+        width: 100vw;
+    }
+
+    .intro__inner {
+        @media (max-width: mq.$mobile) {
+            font-size: 30px;
+        }
     }
 }
 
@@ -235,7 +269,7 @@ input:disabled {
 /* Overwrites */
 input,
 select {
-    color: var(--color-text-hint);
+    color: var(--color-text-dark);
 }
 
 a {
@@ -249,10 +283,6 @@ a.btn {
     text-align: center;
     border: 2px solid transparent;
     border-radius: var(--radius-small);
-}
-
-.btn--primary {
-    color: var(--color-text-inverted);
 }
 
 .hidden {
@@ -299,7 +329,6 @@ a.btn {
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 1;
     /* transition: background 0.1s ease-in-out; */
 
     display: grid;

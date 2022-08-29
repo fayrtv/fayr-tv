@@ -33,7 +33,7 @@ export const CamOverlay = ({ activityState }: Props) => {
 
     switch (activityState) {
         case ActivityState.AwayFromKeyboard:
-            info = "AFK";
+            info = "Abwesend";
             break;
         default:
             info = "";

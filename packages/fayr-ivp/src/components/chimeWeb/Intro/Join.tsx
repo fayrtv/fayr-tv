@@ -1,10 +1,19 @@
-import { useState, useEffect, MouseEventHandler } from "react";
+import classNames from "classnames";
+import React, { useState, useEffect, MouseEventHandler } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { Nullable } from "types/global";
 
 import Error from "components/chimeWeb/Error";
+import ImprintFooter from "components/chimeWeb/ImprintFooter";
+import styles from "components/chimeWeb/JoinInfoForm.module.scss";
+
+import { Flex } from "@fayr/common";
+
+import joinStyles from "./Join.module.scss";
 
 import * as config from "../../../config";
+import ConditionalSafariSupportWarning from "../SafariSupportWarning";
+import Tutorial from "../Tutorial/Tutorial";
 
 export const Join = ({ location, history }: RouteComponentProps) => {
     const [showError, setShowError] = useState(false);
@@ -59,40 +68,55 @@ export const Join = ({ location, history }: RouteComponentProps) => {
 
     const joinRoomDisabled = !userName;
 
+    const [showTutorial, setShowTutorial] = useState(false);
+
     return (
         <div className="welcome form-grid" onClick={handleClick}>
             <div className="welcome__intro">
                 <div className="intro__inner formatted-text">
-                    <h1>FAYR TV</h1>
-                    <h3>
-                        Erstelle eine WatchParty oder trete einer bei und verbringe mit deinen
-                        Freunden eine geile Zeit!
-                    </h3>
+                    <h1>Du wurdest zu einer Watch-Party eingeladen</h1>
                 </div>
             </div>
 
+            <ConditionalSafariSupportWarning />
+            <Tutorial show={showTutorial} setShow={setShowTutorial} />
+
             <div className="welcome__content pd-4">
-                <div className="content__inner">
-                    <h2 className="mg-b-2">Du wurdest zu einer Watch Party eingeladen!</h2>
-                    <form action="">
-                        <fieldset className="mg-b-2">
-                            <input
-                                type="text"
-                                placeholder="Name"
-                                value={userName}
-                                onChange={(e) => setUserName(e.target.value)}
-                            />
-                            <button
-                                className="mg-t-1 btn btn--primary"
-                                disabled={joinRoomDisabled}
-                                onClick={handleJoinRoom}
-                            >
-                                Beitreten
-                            </button>
-                        </fieldset>
-                    </form>
+                <div className={classNames("content__inner", joinStyles.ContentInner)}>
+                    <div className={styles.BannerStripe}>
+                        {/* <a href="../"> */}
+                        <img
+                            src={require("../../../assets/vfb-logo.png")}
+                            alt="VfB Banner"
+                            className={styles.Banner}
+                        />
+                        {/* </a> */}
+                    </div>
+                    <a onClick={() => setShowTutorial(true)} className={joinStyles.HowItWorksLink}>
+                        Wie funktioniert das?
+                    </a>
+                    <div className={styles.JoinInfoFormControls}>
+                        <form action="">
+                            <fieldset className="mg-b-2">
+                                <input
+                                    type="text"
+                                    placeholder="Name"
+                                    value={userName}
+                                    onChange={(e) => setUserName(e.target.value)}
+                                />
+                                <button
+                                    className="mg-t-1 btn btn--primary"
+                                    disabled={joinRoomDisabled}
+                                    onClick={handleJoinRoom}
+                                >
+                                    Beitreten
+                                </button>
+                            </fieldset>
+                        </form>
+                    </div>
                 </div>
             </div>
+            <ImprintFooter />
 
             {showError && <Error closeError={closeError} errorMsg={errorMessage} />}
         </div>

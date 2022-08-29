@@ -17,6 +17,8 @@ import { Flex } from "@fayr/common";
 
 import styles from "./styles/VotingContainer.module.scss";
 
+import { useAttendeeInfo } from "../../../hooks/useAttendeeInfo";
+import useMeetingMetaData from "../../../hooks/useMeetingMetaData";
 import IRoomManager, { RosterMap } from "../../chime/interfaces/IRoomManager";
 import Voting from "./Voting";
 import { AttendeeVoteDto, VotingData } from "./types";
@@ -30,27 +32,15 @@ type Props = {
 export const VotingContainer = ({ attendeeId, votings, onClose }: Props) => {
     const votingRef = React.createRef<HTMLDivElement>();
 
-    const roomManager = useInjection<IRoomManager>(Types.IRoomManager);
-
     const dispatch = useDispatch();
 
     const { socket } = useSocket();
 
     const [currentVoting, setCurrentVoting] = React.useState<Nullable<VotingData>>(votings[0]);
 
-    const [idNameMapping, setIdNameMapping] = React.useState<Map<string, string>>(
-        new Map<string, string>(),
-    );
+    const { getAttendee } = useAttendeeInfo();
 
-    React.useEffect(() => {
-        const callback: Callback<RosterMap> = (x) => {
-            setIdNameMapping(
-                new Map<string, string>(Object.entries(x).map(([key, val]) => [key, val.name])),
-            );
-        };
-        roomManager.subscribeToRosterUpdate(callback);
-        return () => roomManager.unsubscribeFromRosterUpdate(callback);
-    }, [roomManager, setIdNameMapping]);
+    const [{ userName }] = useMeetingMetaData();
 
     React.useEffect(() => {
         if (!socket) {
@@ -58,9 +48,11 @@ export const VotingContainer = ({ attendeeId, votings, onClose }: Props) => {
         }
 
         return socket.addListener<AttendeeVoteDto>(SocketEventType.AttendeeVote, (event) => {
-            const nameOfAttendee = idNameMapping.has(event.attendeeId)
-                ? idNameMapping.get(event.attendeeId)!
-                : event.attendeeId;
+            if (event.attendeeId === attendeeId) {
+                return Promise.resolve();
+            }
+
+            const nameOfAttendee = getAttendee(event.attendeeId)?.name ?? event.attendeeId;
             dispatch(
                 updateVote({
                     ...event,
@@ -69,7 +61,7 @@ export const VotingContainer = ({ attendeeId, votings, onClose }: Props) => {
             );
             return Promise.resolve();
         });
-    }, [socket, dispatch, idNameMapping]);
+    }, [socket, dispatch, getAttendee, attendeeId]);
 
     React.useEffect(() => {
         if (!votings) {
@@ -100,9 +92,6 @@ export const VotingContainer = ({ attendeeId, votings, onClose }: Props) => {
     useGlobalKeyHandler("Escape", onClose);
 
     const updateTip = (hostTip: number, guestTip: number) => {
-        const nameOfAttendee = idNameMapping.has(attendeeId)
-            ? idNameMapping.get(attendeeId)!
-            : attendeeId;
         const attendeeVote: AttendeeVoteDto = {
             attendeeId,
             guestTeam: guestTip,
@@ -113,7 +102,7 @@ export const VotingContainer = ({ attendeeId, votings, onClose }: Props) => {
         dispatch(
             updateVote({
                 ...attendeeVote,
-                name: nameOfAttendee,
+                name: userName,
             }),
         );
 
