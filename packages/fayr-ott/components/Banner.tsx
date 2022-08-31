@@ -10,9 +10,9 @@ interface Props {
 function Banner({ netflixOriginals }: Props) {
     const [movie, setMovie] = useState<Movie | null>(null)
 
-    useEffect(() => {
-        setMovie(netflixOriginals[Math.floor(Math.random() * netflixOriginals.length)])
-    },[netflixOriginals])
+    // useEffect(() => {
+    //     setMovie(netflixOriginals[Math.floor(Math.random() * netflixOriginals.length)])
+    // },[netflixOriginals])
 
     return (
         <div>
@@ -26,11 +26,8 @@ function Banner({ netflixOriginals }: Props) {
                 >
 
                 </video>
-                {/* <Image 
-                    src={`${baseUrl}${movie?.backdrop_path || movie?.poster_path}`}
-                    layout="fill"
-                    objectFit="cover"
-                /> */}
+                <h1>Schau dir das Training jetzt live an!</h1>
+                <p>Test</p>
             </div>
         </div>
   )
