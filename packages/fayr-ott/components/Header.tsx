@@ -41,10 +41,10 @@ function Header() {
           <li className="headerLink">Watch List</li>
         </ul>
       </div>
-      <div className="flex items-center space-x-4 text-sm font-light">
+      <div className="flex items-center space-x-4">
         <button
           type='button'
-          className="inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-[#07090C] bg-[#FA7751] hover:bg-[#07090C] hover:text-[#FA7751] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          className="inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-[#07090C] bg-[#FA7751] hover:bg-[#07090C] hover:text-[#FA7751] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#07090C]"
         >
           Sign up
         </button>
