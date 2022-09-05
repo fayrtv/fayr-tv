@@ -48,12 +48,10 @@ function Header() {
         >
           Sign up
         </button>
-        <BiSearch className="hidden h-6 w-6 sm:inline "/>
-        <BsBellFill className="h-6 w-6"></BsBellFill>
+        <BiSearch className="hidden h-6 w-6 sm:inline"/>
+        <BsBellFill className="hidden h-6 w-6 sm:inline"></BsBellFill>
         <Link href="/account">
-          <MdAccountCircle className="h-6 w-6">
-
-          </MdAccountCircle>
+          <MdAccountCircle className="hidden h-6 w-6 sm:inline"/>
         </Link>
       </div>
     </header>

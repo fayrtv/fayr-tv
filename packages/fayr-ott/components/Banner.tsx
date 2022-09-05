@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import { Movie } from "../typing"
 import Video from "next/"
+import { IoMdPlay } from 'react-icons/io';
+import { HiOutlineInformationCircle } from 'react-icons/hi';
 
 interface Props {
     netflixOriginals: Movie[]
@@ -20,19 +22,28 @@ function Banner({ netflixOriginals }: Props) {
                     loop
                 />
                 <div className="heroslide">
-                {/* <div className="absolute drop-shadow-lg lg:inset-x-0 lg:bottom-80 lg:left-20 md:inset-x-0 md:bottom-90 md:left-10"> */}
-                {/* <div className="absolute drop-shadow-lg lg:inset-x-0 lg:bottom-80 lg:left-20 md:inset-x-0 md:bottom-90 md:left-10"> */}
                     <h1 className="text-xl lg:text-5xl">
                         Training - Saison 22/23
                     </h1>
-                    <p className="text-sm lg:text-2xl">
+                    <p className="text-sm lg:text-2xl my-2">
                         Vorbereitung auf das Spiel am
                     </p>
                     <button
-                        type='button'
-                        className="inline-flex font-winnersansbold items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-[#07090C] bg-[#FA7751] hover:bg-[#07090C] hover:text-[#FA7751] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#07090C]"
+                        // type='button'
+                        className="calltoaction"
                     >
+                    <IoMdPlay
+                        className="mx-1 lg:mx-2"
+                    />
                     PLAY
+                    </button>
+                    <button
+                        className="infobutton"
+                    >
+                    <HiOutlineInformationCircle
+                        className="mx-1 lg:mx-2"
+                    />
+                    INFO
                     </button>
                 </div>
             </div>
