@@ -29,7 +29,6 @@ function Banner({ netflixOriginals }: Props) {
                         Vorbereitung auf das Spiel am
                     </p>
                     <button
-                        // type='button'
                         className="calltoaction"
                     >
                     <IoMdPlay

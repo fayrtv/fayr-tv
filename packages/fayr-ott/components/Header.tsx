@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { BiSearch } from 'react-icons/bi';
+import { BiMenu, BiSearch } from 'react-icons/bi';
 import { BsBellFill } from "react-icons/bs";
 import { MdAccountCircle } from "react-icons/md";
 
@@ -44,15 +44,20 @@ function Header() {
       <div className="flex items-center space-x-4">
         <button
           type='button'
-          className="inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-[#07090C] bg-[#FA7751] hover:bg-[#07090C] hover:text-[#FA7751] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#07090C]"
+          className="signup"
         >
           Sign up
         </button>
-        <BiSearch className="hidden h-6 w-6 sm:inline"/>
-        <BsBellFill className="hidden h-6 w-6 sm:inline"></BsBellFill>
+        {/* <BiSearch className="hidden h-6 w-6 sm:inline"/>
+        <BsBellFill className="hidden h-6 w-6 sm:inline"/>
         <Link href="/account">
           <MdAccountCircle className="hidden h-6 w-6 sm:inline"/>
-        </Link>
+        </Link> */}
+        <button
+          className='menu'
+        >
+          <BiMenu/>
+        </button>
       </div>
     </header>
   )
