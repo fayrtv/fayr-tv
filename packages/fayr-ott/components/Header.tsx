@@ -1,10 +1,14 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { BiMenu, BiSearch } from 'react-icons/bi';
+import { BiSearch } from 'react-icons/bi';
 import { BsBellFill } from "react-icons/bs";
 import { MdAccountCircle } from "react-icons/md";
+import { Burger } from "@mantine/core";
+import { Sidebar } from '../components/Sidebar'
 
 function Header() {
+  const [opened, setOpened] = useState(false);
+  const title = opened ? 'Close navigation' : 'Open navigation';
   const [isScrolled, setIsScrolled] = useState(false)
 
   useEffect(() => {
@@ -43,7 +47,6 @@ function Header() {
       </div>
       <div className="flex items-center space-x-4">
         <button
-          type='button'
           className="signup"
         >
           Sign up
@@ -53,11 +56,13 @@ function Header() {
         <Link href="/account">
           <MdAccountCircle className="hidden h-6 w-6 sm:inline"/>
         </Link> */}
-        <button
-          className='menu'
-        >
-          <BiMenu/>
-        </button>
+        <Burger
+            color="#D9D9D9"
+            size="sm"
+            opened={opened}
+            onClick={(Sidebar) => setOpened((o) => !o)}
+            title="Menu"
+          />
       </div>
     </header>
   )
