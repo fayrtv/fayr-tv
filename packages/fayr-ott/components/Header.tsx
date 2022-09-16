@@ -4,7 +4,7 @@ import { BiSearch } from 'react-icons/bi';
 import { BsBellFill } from "react-icons/bs";
 import { MdAccountCircle } from "react-icons/md";
 import { Burger } from "@mantine/core";
-import { Sidebar } from '../components/Sidebar'
+// import { Sidebar } from '../components/Sidebar'
 
 function Header() {
   const [opened, setOpened] = useState(false);
