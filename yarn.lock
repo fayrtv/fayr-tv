@@ -13370,6 +13370,23 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"fayr-business-card-3aa02b@workspace:packages/fayr-business-card":
+  version: 0.0.0-use.local
+  resolution: "fayr-business-card-3aa02b@workspace:packages/fayr-business-card"
+  dependencies:
+    "@types/node": 17.0.35
+    "@types/react": 18.0.9
+    "@types/react-dom": 18.0.5
+    autoprefixer: ^10.4.7
+    next: latest
+    postcss: ^8.4.14
+    react: 18.1.0
+    react-dom: 18.1.0
+    tailwindcss: ^3.1.2
+    typescript: 4.7.2
+  languageName: unknown
+  linkType: soft
+
 "fayr-ott-5aa82a@workspace:packages/fayr-ott":
   version: 0.0.0-use.local
   resolution: "fayr-ott-5aa82a@workspace:packages/fayr-ott"
