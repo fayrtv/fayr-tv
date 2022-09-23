@@ -36,6 +36,8 @@ const Home: NextPage = () => {
             </p>
           </a>
 
+          <img src="https://fayr-image-library.s3.eu-central-1.amazonaws.com/qr-codes/tin-votan/tinvotan-qr-code.svg" alt="" />
+
           <a
             href="https://nextjs.org/learn"
             className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
