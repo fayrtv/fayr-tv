@@ -6,15 +6,15 @@ const Home: NextPage = () => {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
       <Head>
-        <title>Create Next App</title>
+        <title>FAYR | Tin Votan</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
         <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
+          Nice to meet you! My name is {' '}
+          <a className="text-[#FA7751]">
+            Tin Votan
           </a>
         </h1>
 
@@ -27,12 +27,12 @@ const Home: NextPage = () => {
 
         <div className="mt-6 flex max-w-4xl flex-wrap items-center justify-around sm:w-full">
           <a
-            href="https://nextjs.org/docs"
+            href="https://vcard.link/card/DC3r.vcf"
             className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
           >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
+            <h3 className="text-2xl font-bold">Add to contacts &rarr;</h3>
             <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and its API.
+              Test 123
             </p>
           </a>
 
