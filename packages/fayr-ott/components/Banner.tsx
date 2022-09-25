@@ -12,7 +12,8 @@ function Banner({ netflixOriginals }: Props) {
     const [movie, setMovie] = useState<Movie | null>(null)
 
     return (
-        <div>
+        <div className="flex flex-col space-y-2 py-16 md:space-y-4 lgh-[65vh] lg:justify-end lg:pb-12">
+            {/* <div> */}
             <div className="absolute top-0 left-0 w-fill">
                 <video 
                     src="https://share-videos.s3.amazonaws.com/development/00006/00006.mp4"

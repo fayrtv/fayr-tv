@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+    font-family: "SF-Pro-Regular";
+    src: url("../public/fonts/SF-Pro-Text-Regular.otf");
+}
+
+@font-face {
+    font-family: "SF-Pro-Bold";
+    src: url("../public/fonts/SF-Pro-Text-Bold.otf");
+}
+
+@layer base {
+    body {
+        @apply font-sfproregular text-[#D9D9D9] bg-[#07090C];
+    }
+
+}
