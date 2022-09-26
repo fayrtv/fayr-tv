@@ -19,7 +19,7 @@ const Home: NextPage = () => {
 
         <InfoBlock/>
 
-        <ContactsBlock/>
+        {/* <ContactsBlock/> */}
         
       </main>
     </div>
