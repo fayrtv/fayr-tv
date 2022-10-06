@@ -3,12 +3,10 @@ import { useEffect, useState } from 'react';
 import { BiSearch } from 'react-icons/bi';
 import { BsBellFill } from "react-icons/bs";
 import { MdAccountCircle } from "react-icons/md";
-import { Burger } from "@mantine/core";
-// import { Sidebar } from '../components/Sidebar'
+import Sidebar from './Sidebar';
+
 
 function Header() {
-  const [opened, setOpened] = useState(false);
-  const title = opened ? 'Close navigation' : 'Open navigation';
   const [isScrolled, setIsScrolled] = useState(false)
 
   useEffect(() => {
@@ -28,6 +26,7 @@ function Header() {
   },[])
   
   return (
+    
     <header className={`${isScrolled && 'backdrop-blur-xl bg-black/50'}`}>
       <div className="flex items-center space-x-2 md:space-x-10">
         <img 
@@ -51,20 +50,15 @@ function Header() {
         >
           Sign up
         </button>
-        {/* <BiSearch className="hidden h-6 w-6 sm:inline"/>
+        <BiSearch className="hidden h-6 w-6 sm:inline"/>
         <BsBellFill className="hidden h-6 w-6 sm:inline"/>
         <Link href="/account">
           <MdAccountCircle className="hidden h-6 w-6 sm:inline"/>
-        </Link> */}
-        <Burger
-            color="#D9D9D9"
-            size="sm"
-            opened={opened}
-            onClick={(Sidebar) => setOpened((o) => !o)}
-            title="Menu"
-          />
+        </Link>
+      <Sidebar/>
       </div>
     </header>
+    
   )
 }
 

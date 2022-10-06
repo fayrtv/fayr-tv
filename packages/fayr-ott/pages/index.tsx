@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Banner from '../components/Banner'
 import Header from '../components/Header'
+import Sidebar from '../components/Sidebar'
 import { Movie } from '../typing'
 import requests from '../utils/requests'
 

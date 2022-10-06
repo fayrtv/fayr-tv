@@ -40,18 +40,18 @@
         @apply absolute drop-shadow-lg top-[50%] right-[30%] left-[4.0%] z-10
     }
     .calltoaction {
-        @apply inline-flex font-winnersansbold items-center border border-transparent shadow-sm rounded-md text-[#07090C] bg-[#FA7751] hover:bg-[#07090C] hover:text-[#FA7751] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#07090C] 
+        @apply inline-flex font-winnersansbold items-center border border-transparent shadow-sm text-[#07090C] bg-[#FA7751] hover:bg-[#07090C] hover:text-[#FA7751] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#07090C] 
         px-3 py-1 text-sm leading-4 font-medium mx-1 my-0.5
         lg:px-7 lg:py-3 lg:text-xl lg:font-medium lg:mx-1 lg:my-5
     }
     .infobutton {
-        @apply inline-flex font-winnersansbold items-center border border-transparent shadow-sm rounded-md text-[#07090C] bg-[#D9D9D9] hover:bg-[#07090C] hover:text-[#D9D9D9] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#07090C]
+        @apply inline-flex font-winnersansbold items-center border border-transparent shadow-sm text-[#07090C] bg-[#D9D9D9] hover:bg-[#07090C] hover:text-[#D9D9D9] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#07090C]
         px-3 py-1 text-sm leading-4 font-medium mx-1 my-0.5
         lg:px-7 lg:py-3 lg:text-xl lg:font-medium lg:mx-1 lg:my-5
     }
     .signup {
         /* @apply inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-base leading-4 font-medium rounded-md text-[#07090C] bg-[#FA7751] hover:bg-[#07090C] hover:text-[#FA7751] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#07090C] */
-        @apply inline-flex font-winnersansbold items-center border border-transparent shadow-sm rounded-md text-[#07090C] bg-[#FA7751] hover:bg-[#07090C] hover:text-[#D9D9D9] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#07090C]
+        @apply inline-flex font-winnersansbold items-center border border-transparent shadow-sm text-[#07090C] bg-[#FA7751] hover:bg-[#07090C] hover:text-[#D9D9D9] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#07090C]
         px-3 py-1 text-sm leading-4 font-medium mx-1 my-0.5
         lg:px-3 lg:py-2 lg:text-base lg:font-medium
     }
