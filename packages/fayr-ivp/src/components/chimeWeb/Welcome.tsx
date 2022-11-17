@@ -69,11 +69,7 @@ const Welcome = (props: Props) => {
     return (
         <>
             <div className="welcome form-grid">
-                <div className="welcome__intro">
-                    <div className="intro__inner formatted-text">
-                        <h1>Willkommen in der VfB-Watch-Party</h1>
-                    </div>
-                </div>
+                
 
                 <ConditionalSafariSupportWarning />
                 <Tutorial show={showTutorial} setShow={setShowTutorial} />
@@ -92,7 +88,10 @@ const Welcome = (props: Props) => {
                         />
                     </div>
                 </div>
-                <Flex className="imprint__links" direction="Row">
+                <div className="welcome__intro">
+                    <img className="welcome__logo" src="https://fayr-image-library.s3.eu-central-1.amazonaws.com/gamers-academy/GA_Icon_150x150.jpg" alt="gamers-academy-icon"></img>
+                </div>
+                {/* <Flex className="imprint__links" direction="Row">
                     <a
                         target="_blank"
                         rel="noopener noreferrer"
@@ -107,7 +106,7 @@ const Welcome = (props: Props) => {
                     >
                         Datenschutz
                     </a>
-                </Flex>
+                </Flex> */}
             </div>
             {showError && <Error closeError={() => setShowError(false)} errorMsg={errorMessage} />}
         </>

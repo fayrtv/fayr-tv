@@ -76,17 +76,17 @@ select {
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   --font-mono: Consolas, monaco, "Ubuntu Mono", "Liberation Mono", "Courier New",
     Courier, monospace; */
-    --font-sans: "ZionTrain Pro";
-    --font-serif: "ZionTrain Pro";
-    --font-mono: "ZionTrain Pro";
+    --font-sans: "LemonMilk";
+    --font-serif: "OpenSans";
+    /* --font-mono: "ZionTrain Pro"; */
     /* Color tokens (overridden by theme) */
     --color-background: #07090c;
     --color-neutral: #d9d9d9;
     --color-white: #ffffff;
     --color-white: #000000;
-    --color-primary: #fa7751;
-    --color-primary-dark: #d96242;
-    --color-primary-light: #fa8966;
+    --color-primary: #ff0065;
+    --color-primary-dark: #ff0065;
+    --color-primary-light: #ff0065;
     --color-secondary: #e7ecf0;
     --color-tertiary: transparent;
     --color-gray: #c4c4c4;
@@ -159,24 +159,22 @@ select {
 /* !! Good tool for font faces: https://transfonter.org/ !! */
 
 @font-face {
-    font-family: "ZionTrain Pro";
-    src: url("./fonts/ZionTrainPro-Regular.woff2") format("woff2"),
-        url("./fonts/ZionTrainPro-Regular.woff") format("woff");
-    font-weight: normal;
+    font-family: "LemonMilk";
+    src: url("./fonts/LEMONMILK-Bold.otf") format("otf");
+    font-weight: bold;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: "ZionTrain Pro";
-    src: url("fonts/ZionTrainPro-BoldItalic.woff2") format("woff2"),
-        url("fonts/ZionTrainPro-BoldItalic.woff") format("woff");
-    font-weight: bold;
-    font-style: italic;
+    font-family: "OpenSans";
+    src: url("./fonts/OpenSans-Bold.ttf") format("ttf");
+    font-weight: normal;
+    font-style: normal;
     font-display: swap;
 }
 
-@font-face {
+/* @font-face {
     font-family: "ZionTrain Pro";
     src: url("fonts/ZionTrainPro-Italic.woff2") format("woff2"),
         url("fonts/ZionTrainPro-Italic.woff") format("woff");
@@ -219,7 +217,7 @@ select {
     font-weight: 300;
     font-style: normal;
     font-display: swap;
-}
+} */
 
 * {
     text-underline-offset: 3px;
@@ -293,7 +291,7 @@ body {
 }
 
 body {
-    font-family: var(--font-sans);
+    font-family: var(url("./fonts/OpenSans-Bold.ttf"));
     font-size: 1.6rem;
 }
 
@@ -1093,6 +1091,13 @@ header h1 {
     line-height: var(--header-height);
 }
 
+.header_title {
+    font-family: var(url("./fonts/LEMONMILK-Bold.otf"));
+    color: #ff0065;
+    font-size: 38px;
+    font-weight: 600;
+}
+
 /* Modal */
 .modal {
     width: 100%;
@@ -1194,20 +1199,21 @@ button {
     appearance: none;
     cursor: pointer;
     -webkit-appearance: none;
-    border-radius: var(--radius-small);
+    /* border-radius: var(--radius-small); */
+    color: #ff0065;
 }
 
 input,
 select,
 textarea {
-    border: 1px solid #949494;
+    /* border: 1px solid #949494; */
     outline: none;
     appearance: none;
     resize: none;
     -webkit-appearance: none;
     padding: 1rem;
-    background: var(--color-bg-input) transparent;
-    border-radius: var(--radius-small);
+    background: #5d5e5e;
+    /* border-radius: var(--radius-small); */
 }
 
 .btn,
@@ -1261,13 +1267,13 @@ input.rounded {
 }
 
 .btn--secondary {
-    background: var(--color-secondary);
+    background: #ff0065;
     color: black;
 }
 
 .btn--destruct {
     /* background: var(--color--destructive); */
-    background: #b51700;
+    background: #ff0065;
     color: var(--color-text-inverted);
 }
 

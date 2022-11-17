@@ -26,7 +26,7 @@
 }
 
 .BannerStripe {
-    background-color: var(--color-primary);
+    // background-color: var(--color-primary);
     width: 100%;
     display: flex;
     justify-content: center;
@@ -62,9 +62,9 @@
 }
 
 .ErrorMessage {
-    color: #d30029;
+    color: #ff0065;
 }
 
 .InputError {
-    border: 2px solid #d30029;
+    border: 2px solid #ff0065;
 }

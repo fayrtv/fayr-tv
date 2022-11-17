@@ -17,7 +17,7 @@
     --color-bg-chat-bubble: var(--color-tertiary);
     --font-weight-bold: 600;
     --btn-size: 3.6rem;
-    --form-col-template: minmax(380px, 460px) 1fr;
+    --form-col-template: minmax(50%, 50%) 1fr;
     --form-row-template: 1fr;
     --intro-text-align: left;
     --welcome-content-align-items: center;
@@ -69,6 +69,12 @@ input:disabled {
     }
 }
 
+.welcome__logo {
+    margin-top: 10%;
+    margin-left: 70%;
+    height: auto;
+}
+
 .imprint__links {
     margin: 20px;
 
@@ -101,7 +107,7 @@ input:disabled {
 
 .content__inner {
     width: 350px;
-    background-color: #ffffff;
+    // background-color: #ffffff;
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
 }
 

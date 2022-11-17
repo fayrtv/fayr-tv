@@ -59,7 +59,7 @@ export const ShareInvite = ({ onCancel }: Props) => {
                             Nachricht an
                             <br />
                             <a
-                                style={{ color: "#D30029", userSelect: "all" }}
+                                style={{ color: "#ff0065", userSelect: "all" }}
                                 href="mailto:service@vfb-stuttgart.de"
                             >
                                 service@vfb-stuttgart.de

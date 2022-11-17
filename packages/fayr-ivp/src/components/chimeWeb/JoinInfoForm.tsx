@@ -54,12 +54,14 @@ export function JoinInfoForm({
                     <div className={styles.BannerStripe}>
                         {/* <a href="./"> */}
                         <img
-                            src={require("../../assets/vfb-logo.png")}
-                            alt="VfB Banner"
+                            src={require("../../assets/Logo_GAMERSACADEMY_white.png")}
+                            alt="GA Banner"
                             className={styles.Banner}
+                            width="80%"
                         />
                         {/* </a> */}
                     </div>
+                    <header className="header_title">Coaching Room</header>
                     <div className={styles.JoinInfoFormControls}>
                         {!shouldDisplayFormInputs && (
                             <>
@@ -68,7 +70,7 @@ export function JoinInfoForm({
                                 <b>FC Brentford</b> verfolgen!
                             </>
                         )}
-                        <div
+                        {/* <div
                             style={{
                                 marginTop: "20px",
                                 marginBottom: "20px",
@@ -78,20 +80,20 @@ export function JoinInfoForm({
                             <a onClick={onHowItWorksClicked} className={styles.HowItWorksLink}>
                                 Wie funktioniert das?
                             </a>
-                        </div>
+                        </div> */}
                         {shouldDisplayFormInputs && (
                             <>
                                 <input
                                     ref={usernameInputRef}
                                     type="text"
-                                    placeholder="Dein Name"
+                                    placeholder="1. NAME EINGEBEN"
                                     value={username}
                                     onChange={(ev) => setUsername(ev.target.value)}
                                 />
                                 <input
                                     ref={roomTitleInputRef}
                                     type="text"
-                                    placeholder="Code"
+                                    placeholder="2. CODE EINGEBEN"
                                     value={roomTitle}
                                     className={isInvalidCodeError ? styles.InputError : ""}
                                     onChange={(ev) => {
@@ -104,7 +106,7 @@ export function JoinInfoForm({
                                     disabled={!isValid || disableSubmit}
                                     onClick={onSubmit}
                                 >
-                                    STARTEN
+                                    START
                                 </button>
                                 {isInvalidCodeError && (
                                     <span className={styles.ErrorMessage}>
