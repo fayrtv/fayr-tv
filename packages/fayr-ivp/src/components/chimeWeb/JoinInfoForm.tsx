@@ -63,13 +63,7 @@ export function JoinInfoForm({
                     </div>
                     <header className="header_title">Coaching Room</header>
                     <div className={styles.JoinInfoFormControls}>
-                        {!shouldDisplayFormInputs && (
-                            <>
-                                Am <b>Samstag, den 16. Juli 2022 ab 14:55 Uhr</b> kannst du hier mit
-                                deinen Freunden auf dem virtuellen Sofa das Testspiel gegen den{" "}
-                                <b>FC Brentford</b> verfolgen!
-                            </>
-                        )}
+                        
                         {/* <div
                             style={{
                                 marginTop: "20px",
