@@ -160,7 +160,7 @@ select {
 
 @font-face {
     font-family: "LemonMilk";
-    src: url("./fonts/LEMONMILK-Bold.otf") format("otf");
+    src: url("./fonts/LEMONMILK-Bold.otf");
     font-weight: bold;
     font-style: normal;
     font-display: swap;
@@ -168,7 +168,7 @@ select {
 
 @font-face {
     font-family: "OpenSans";
-    src: url("./fonts/OpenSans-Bold.ttf") format("ttf");
+    src: url("./fonts/OpenSans-Bold.ttf");
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -1092,10 +1092,12 @@ header h1 {
 }
 
 .header_title {
-    font-family: var(url("./fonts/LEMONMILK-Bold.otf"));
+    /* font-family: var(url("./fonts/LEMONMILK-Bold.otf")); */
+    font-family: var(--font-sans);
     color: #ff0065;
-    font-size: 38px;
+    font-size: 1.5vw;
     font-weight: 600;
+    background: transparent;
 }
 
 /* Modal */
